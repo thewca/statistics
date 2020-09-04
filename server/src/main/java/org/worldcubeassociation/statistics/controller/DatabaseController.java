@@ -11,6 +11,7 @@ import org.worldcubeassociation.statistics.service.DatabaseService;
 
 @RestController
 @RequestMapping("database")
+//@CrossOrigin(origins = "*", allowedHeaders = "*") // Enable this for testing
 public class DatabaseController {
 	
 	@Autowired

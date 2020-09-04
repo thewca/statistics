@@ -15,11 +15,9 @@ public class StatisticsApplication {
 		SpringApplication app = new SpringApplication(StatisticsApplication.class);
 		ConfigurableApplicationContext applicationContext = app.run(args);
 		Environment env = applicationContext.getEnvironment();
-		log.info(
-				"\n----------------------------------------------------------\n\t"
-						+ "Access URL: http://localhost:{}/swagger-ui.html"
-						+ "\n----------------------------------------------------------",
-				env.getProperty("server.port"));
+		log.info("\n----------------------------------------------------------\n"
+				+ "\tAccess URL:\n\thttp://localhost:{}/swagger-ui.html\n"
+				+ "----------------------------------------------------------", env.getProperty("server.port"));
 	}
 
 }

@@ -20,7 +20,7 @@ public class DatabaseServiceImpl implements DatabaseService {
 
 	@Override
 	public List<LinkedHashMap<String, String>> getResultSet(String query) {
-		log.info("Execute query%n{}", query);
+		log.info("Execute query\n{}", query);
 
 		return jdbcTemplate.query(query, (rs, rowNum) -> {
 			// Makes the result set into 1 result
