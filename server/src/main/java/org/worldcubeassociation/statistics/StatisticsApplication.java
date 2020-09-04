@@ -2,12 +2,24 @@ package org.worldcubeassociation.statistics;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.core.env.Environment;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @SpringBootApplication
 public class StatisticsApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(StatisticsApplication.class, args);
+		SpringApplication app = new SpringApplication(StatisticsApplication.class);
+		ConfigurableApplicationContext applicationContext = app.run(args);
+		Environment env = applicationContext.getEnvironment();
+		log.info(
+				"\n----------------------------------------------------------\n\t"
+						+ "Access URL: http://localhost:{}/swagger-ui.html"
+						+ "\n----------------------------------------------------------",
+				env.getProperty("server.port"));
 	}
 
 }
