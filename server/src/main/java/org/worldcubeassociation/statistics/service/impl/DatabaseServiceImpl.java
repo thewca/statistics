@@ -4,7 +4,6 @@ import java.sql.ResultSetMetaData;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +42,8 @@ public class DatabaseServiceImpl implements DatabaseService {
 		});
 
 		if (sqlResult.isEmpty()) {
+			resultSetResponse.setContent(new ArrayList<>());
+			resultSetResponse.setHeaders(new ArrayList<>());
 			return resultSetResponse;
 		}
 
@@ -51,6 +52,7 @@ public class DatabaseServiceImpl implements DatabaseService {
 		// We take the first one.
 		List<String> headers = sqlResult.get(0).entrySet().stream().map(entry -> entry.getKey())
 				.collect(Collectors.toList());
+		
 		List<List<String>> content = new ArrayList<>();
 		sqlResult.forEach(hash -> {
 			List<String> list = new ArrayList<>();
