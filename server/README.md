@@ -59,3 +59,5 @@ The commands listed here should work in Unix systems or in Windows (using GitBas
 - Run the server
 
 `java -jar -Dspring.profiles.active=local target/statistics-${version}.jar`
+
+An address should be logged. Probably http://localhost:8000/swagger-ui.html#/, if you did not change port. Visit it to read the documentation.
