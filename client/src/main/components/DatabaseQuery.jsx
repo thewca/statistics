@@ -1,5 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { queryDatabase } from "../api/statistics.api";
+import { getQueryParameter, setQueryParameter } from "../util/query.param.util";
+
+const SQL_QUERY = "sqlQuery";
 
 function DatabaseQuery() {
   const [query, setQuery] = useState("");
@@ -8,6 +11,13 @@ function DatabaseQuery() {
   const [noResult, setNoResult] = useState(false);
   const [error, setError] = useState(null);
 
+  useEffect(() => {
+    let sqlQuery = getQueryParameter(SQL_QUERY);
+    if (!!sqlQuery) {
+      setQuery(sqlQuery);
+    }
+  }, []);
+
   const handleQueryChange = (evt) => {
     setQuery(evt.target.value);
   };
@@ -15,6 +25,8 @@ function DatabaseQuery() {
   const handleSubmit = (evt) => {
     // Avoid refreshing the entire page
     evt.preventDefault();
+
+    setQueryParameter(SQL_QUERY, query);
 
     setError(null);
     queryDatabase(query).then((response) => {
