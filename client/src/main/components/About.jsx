@@ -1,9 +1,13 @@
 import React from "react";
+import "./About.css";
 
 function About() {
   return (
-    <div>
-      <h1>About</h1>
+    <div className="container" id="about-wrapper">
+      <p>
+        WCA Statistics is a collection of interesting analysis over the WCA's
+        database.
+      </p>
     </div>
   );
 }
