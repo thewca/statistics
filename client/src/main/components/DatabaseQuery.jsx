@@ -38,7 +38,7 @@ function DatabaseQuery() {
       <form onSubmit={handleSubmit} className="container">
         <div className="form-group">
           <textarea
-            className="form-control my-3"
+            className="form-control my-3 shadow"
             onChange={handleQueryChange}
             value={query}
             placeholder="Type your query here"
@@ -46,7 +46,7 @@ function DatabaseQuery() {
           />
           <div className="text-center">
             <button
-              className="btn btn-primary"
+              className="btn btn-primary shadow"
               disabled={!query}
               title={!query ? "You need to provide an SQL query" : ""}
             >
@@ -59,7 +59,7 @@ function DatabaseQuery() {
       {queryResults.length > 0 && (
         <div className="container-fluid">
           <div className="table-responsive">
-            <table className="table table-hover table-striped table-bordered">
+            <table className="table table-hover table-striped table-bordered shadow">
               <thead className="thead thead-dark">
                 <tr>
                   <th className="text-center" scope="col">
