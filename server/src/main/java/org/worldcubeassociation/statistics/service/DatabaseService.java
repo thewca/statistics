@@ -1,9 +1,8 @@
 package org.worldcubeassociation.statistics.service;
 
-import java.util.LinkedHashMap;
-import java.util.List;
+import org.worldcubeassociation.statistics.controller.response.ResultSetResponse;
 
 @FunctionalInterface
 public interface DatabaseService {
-	public List<LinkedHashMap<String, String>> getResultSet(String sqlQuery);
+	public ResultSetResponse getResultSet(String sqlQuery);
 }
