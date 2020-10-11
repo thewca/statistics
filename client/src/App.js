@@ -5,6 +5,7 @@ import { HashRouter, Switch, Route } from "react-router-dom";
 import DatabaseQuery from "./main/components/DatabaseQuery";
 import Home from "./main/components/Home";
 import StatisticsList from "./main/components/StatisticsList";
+import About from "./main/components/About";
 
 const links = [
   { name: "Home", href: "/", exact: true },
@@ -16,6 +17,11 @@ const links = [
   {
     name: "Database Query",
     href: "/database-query",
+    exact: false,
+  },
+  {
+    name: "About",
+    href: "/about",
     exact: false,
   },
 ];
@@ -35,6 +41,9 @@ class App extends Component {
             </Route>
             <Route path={links[2].href}>
               <DatabaseQuery />
+            </Route>
+            <Route path={links[3].href}>
+              <About />
             </Route>
           </Switch>
         </div>

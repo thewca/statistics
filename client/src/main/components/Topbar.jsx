@@ -1,10 +1,17 @@
 import React from "react";
 import { Nav, Navbar } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import "./Topbar.css";
 
 function Topbar(props) {
   return (
-    <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
+    <Navbar
+      collapseOnSelect
+      expand="lg"
+      bg="dark"
+      variant="dark"
+      className="sticky-top"
+    >
       <Navbar.Brand>
         <Link to={props.links[0].href}>
           <img
@@ -26,7 +33,7 @@ function Topbar(props) {
           ))}
         </Nav>
         <Nav>
-          <Link className="text-white">Login</Link>
+          <Nav.Link className="text-white">Login</Nav.Link>
         </Nav>
       </Navbar.Collapse>
     </Navbar>

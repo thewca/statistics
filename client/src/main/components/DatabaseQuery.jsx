@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { queryDatabase } from "../api/statistics.api";
 
 function DatabaseQuery() {
-  const [query, setQuery] = useState("select * from Competitions limit 10");
+  const [query, setQuery] = useState("");
   const [queryResults, setQueryResults] = useState([]);
   const [headers, setHeaders] = useState([]);
   const [noResult, setNoResult] = useState(false);
@@ -12,7 +12,10 @@ function DatabaseQuery() {
     setQuery(evt.target.value);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = (evt) => {
+    // Avoid refreshing the entire page
+    evt.preventDefault();
+
     setError(null);
     queryDatabase(query).then((response) => {
       let content = response.content;
@@ -39,9 +42,16 @@ function DatabaseQuery() {
             onChange={handleQueryChange}
             value={query}
             placeholder="Type your query here"
+            rows="10"
           />
           <div className="text-center">
-            <button className="btn btn-primary">Query</button>
+            <button
+              className="btn btn-primary"
+              disabled={!query}
+              title={!query ? "You need to provide an SQL query" : ""}
+            >
+              Submit
+            </button>
           </div>
         </div>
       </form>
@@ -52,7 +62,9 @@ function DatabaseQuery() {
             <table className="table table-hover table-striped table-bordered">
               <thead className="thead thead-dark">
                 <tr>
-                  <th scope="col">#</th>
+                  <th className="text-center" scope="col">
+                    #
+                  </th>
                   {headers.map((header, i) => (
                     <th key={i} className="text-center" scope="col">
                       {header}
