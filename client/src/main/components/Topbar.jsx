@@ -26,7 +26,7 @@ function Topbar(props) {
           ))}
         </Nav>
         <Nav>
-          <Nav.Link className="text-white">Login</Nav.Link>
+          <Link className="text-white">Login</Link>
         </Nav>
       </Navbar.Collapse>
     </Navbar>
