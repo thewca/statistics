@@ -58,7 +58,7 @@ function DatabaseQuery() {
           />
           <div className="text-center">
             <button
-              className="btn btn-primary shadow"
+              className="btn btn-primary btn-lg"
               disabled={!query}
               title={!query ? "You need to provide an SQL query" : ""}
             >
