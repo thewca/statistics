@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { queryDatabase } from "../api/statistics.api";
 import { getQueryParameter, setQueryParameter } from "../util/query.param.util";
+import "./DatabaseQuery.css";
 
 const SQL_QUERY = "sqlQuery";
 
@@ -55,6 +56,7 @@ function DatabaseQuery() {
             value={query}
             placeholder="Type your query here"
             rows="10"
+            id="query-input"
           />
           <div className="text-center">
             <button
