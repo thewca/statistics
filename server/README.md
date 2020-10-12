@@ -4,8 +4,6 @@
 
 - [Java](https://www.java.com/pt-BR/)
 
-- [Maven](http://maven.apache.org/download.cgi)
-
 - [MySQL](https://dev.mysql.com/doc/refman/8.0/en/linux-installation.html)
 
 - [Lombok](https://projectlombok.org/)
@@ -52,12 +50,8 @@ The commands listed here should work in Unix systems or in Windows (using GitBas
 
 `cd statistics/server`
 
-- Build an executable
-
-`mvn clean package`
-
 - Run the server
 
-`java -jar -Dspring.profiles.active=local target/statistics-${version}.jar`
+`./gradlew bootRun --args='--spring.profiles.active=local'`
 
-An address should be logged. Probably http://localhost:8000/swagger-ui.html#/, if you did not change port. Visit it to read the documentation.
+An address should be logged. Probably http://localhost:8000/swagger-ui.html#/, if you did not change port. Visit it to read the documentation. You can run in another port (let's say 8001) by using `./gradlew bootRun --args='--spring.profiles.active=local --server.port=8001'`.

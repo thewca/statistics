@@ -1,10 +1,10 @@
 jobs:
   include:
     - language: java
-      jdk: openjdk8
+      jdk: openjdk11
       script:
         - cd server
-        - mvn clean package
+        - ./gradlew build
 
     - language: node_js
       node_js: 10
