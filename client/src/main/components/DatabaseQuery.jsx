@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { queryDatabase } from "../api/statistics.api";
 import { getQueryParameter, setQueryParameter } from "../util/query.param.util";
 import "./DatabaseQuery.css";
+import { message } from "antd";
 
 const SQL_QUERY = "sqlQuery";
 
@@ -35,7 +36,7 @@ function DatabaseQuery() {
       let headers = response.headers;
 
       if (!content || !headers) {
-        setError(response);
+        message.error("Error");
         setHeaders([]);
         setQueryResults([]);
       } else {
