@@ -30,14 +30,9 @@ function DatabaseQuery() {
       let content = response.data.content;
       let headers = response.data.headers;
 
-      if (!content || !headers) {
-        setHeaders([]);
-        setQueryResults([]);
-      } else {
-        setNoResult(content.length === 0);
-        setHeaders(headers);
-        setQueryResults(content);
-      }
+      setNoResult(content.length === 0);
+      setHeaders(headers);
+      setQueryResults(content);
     });
   };
 
