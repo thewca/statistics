@@ -1,5 +1,5 @@
+import "bootstrap/dist/css/bootstrap.min.css";
 import { HashRouter, Route, Switch } from "react-router-dom";
-import "./App.css";
 import About from "./main/components/About";
 import DatabaseQuery from "./main/components/DatabaseQuery";
 import Home from "./main/components/Home";

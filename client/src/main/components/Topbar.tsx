@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import { LinkItem } from "../model/LinkItem";
 import "./Topbar.css";
 
+import logo from "../assets/wca_logo.svg";
+
 interface TopbarProps {
   links: LinkItem[];
 }
@@ -19,11 +21,11 @@ const Topbar = ({ links }: TopbarProps) => {
       <Navbar.Brand>
         <Link to={links[0].href}>
           <img
-            src={require("../assets/wca_logo.svg")}
+            src={logo}
             width="60"
             height="60"
             className="d-inline-block align-top"
-            alt="React Bootstrap logo"
+            alt="WCA logo"
           />
         </Link>
       </Navbar.Brand>
