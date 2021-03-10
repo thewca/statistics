@@ -11,13 +11,7 @@ interface TopbarProps {
 
 const Topbar = ({ links }: TopbarProps) => {
   return (
-    <Navbar
-      collapseOnSelect
-      expand="lg"
-      bg="dark"
-      variant="dark"
-      className="sticky-top"
-    >
+    <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
       <Navbar.Brand>
         <Link to={links[0].href}>
           <img

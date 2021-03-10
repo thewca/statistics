@@ -1,3 +1,4 @@
+import { message } from "antd";
 import { SyntheticEvent, useEffect, useState } from "react";
 import statisticsApi from "../api/statistics.api";
 import { getQueryParameter, setQueryParameter } from "../util/query.param.util";
@@ -26,14 +27,17 @@ function DatabaseQuery() {
     setQueryParameter(SQL_QUERY, query);
 
     setError(null);
-    statisticsApi.queryDatabase(query).then((response) => {
-      let content = response.data.content;
-      let headers = response.data.headers;
+    statisticsApi
+      .queryDatabase(query)
+      .then((response) => {
+        let content = response.data.content;
+        let headers = response.data.headers;
 
-      setNoResult(content.length === 0);
-      setHeaders(headers);
-      setQueryResults(content);
-    });
+        setNoResult(content.length === 0);
+        setHeaders(headers);
+        setQueryResults(content);
+      })
+      .catch((e) => message.error(e.response.data.message));
   };
 
   return (
