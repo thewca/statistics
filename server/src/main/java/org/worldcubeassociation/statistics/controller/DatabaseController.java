@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.worldcubeassociation.statistics.controller.response.ResultSetResponse;
+import org.worldcubeassociation.statistics.exception.InvalidParameterException;
 import org.worldcubeassociation.statistics.service.DatabaseService;
 
 @RestController
@@ -13,12 +14,12 @@ import org.worldcubeassociation.statistics.service.DatabaseService;
 @CrossOrigin(origins = "*", allowedHeaders = "*") // Enable this for testing
 public class DatabaseController {
 
-	@Autowired
-	private DatabaseService databaseService;
+    @Autowired
+    private DatabaseService databaseService;
 
-	@GetMapping("query")
-	public ResultSetResponse getResultSet(String sqlQuery) {
-		return databaseService.getResultSet(sqlQuery);
-	}
+    @GetMapping("query")
+    public ResultSetResponse getResultSet(String sqlQuery) throws InvalidParameterException {
+        return databaseService.getResultSet(sqlQuery);
+    }
 
 }

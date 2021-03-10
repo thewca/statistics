@@ -1,4 +1,4 @@
-const baseUrl = "http://localhost:8000";
+const baseUrl = "http://localhost:8080";
 const queryDatabaseEndpoint = "/database/query";
 
 export const queryDatabase = (query) => {

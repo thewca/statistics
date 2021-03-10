@@ -1,0 +1,12 @@
+# Used in swagger ui
+version: 1.0.0
+
+# Default profile
+spring:
+  profiles:
+    active: local
+
+server:
+  error:
+    include-message: always
+    include-binding-errors: always
