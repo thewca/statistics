@@ -1,15 +1,14 @@
-import React, { useState, useEffect } from "react";
-import { queryDatabase } from "../api/statistics.api";
+import { SyntheticEvent, useEffect, useState } from "react";
+import statisticsApi from "../api/statistics.api";
 import { getQueryParameter, setQueryParameter } from "../util/query.param.util";
 import "./DatabaseQuery.css";
-import { message } from "antd";
 
 const SQL_QUERY = "sqlQuery";
 
 function DatabaseQuery() {
   const [query, setQuery] = useState("");
-  const [queryResults, setQueryResults] = useState([]);
-  const [headers, setHeaders] = useState([]);
+  const [queryResults, setQueryResults] = useState<string[][]>([]);
+  const [headers, setHeaders] = useState<string[]>([]);
   const [noResult, setNoResult] = useState(false);
   const [error, setError] = useState(null);
 
@@ -20,23 +19,18 @@ function DatabaseQuery() {
     }
   }, []);
 
-  const handleQueryChange = (evt) => {
-    setQuery(evt.target.value);
-  };
-
-  const handleSubmit = (evt) => {
+  const handleSubmit = (evt: SyntheticEvent) => {
     // Avoid refreshing the entire page
     evt.preventDefault();
 
     setQueryParameter(SQL_QUERY, query);
 
     setError(null);
-    queryDatabase(query).then((response) => {
-      let content = response.content;
-      let headers = response.headers;
+    statisticsApi.queryDatabase(query).then((response) => {
+      let content = response.data.content;
+      let headers = response.data.headers;
 
       if (!content || !headers) {
-        message.error("Error");
         setHeaders([]);
         setQueryResults([]);
       } else {
@@ -53,10 +47,10 @@ function DatabaseQuery() {
         <div className="form-group">
           <textarea
             className="form-control my-3 shadow"
-            onChange={handleQueryChange}
+            onChange={(evt) => setQuery(evt.target.value)}
             value={query}
             placeholder="Type your query here"
-            rows="10"
+            rows={10}
             id="query-input"
           />
           <div className="text-center">
@@ -88,7 +82,7 @@ function DatabaseQuery() {
                 </tr>
               </thead>
               <tbody className="tbody">
-                {queryResults.map((result, i) => (
+                {queryResults.map((result: string[], i) => (
                   <tr key={i}>
                     <th scope="row">{i + 1}</th>
                     {result.map((entry, j) => (
