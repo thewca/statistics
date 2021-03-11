@@ -7,18 +7,11 @@ import "./DatabaseQuery.css";
 const SQL_QUERY = "sqlQuery";
 
 function DatabaseQuery() {
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState(getQueryParameter(SQL_QUERY) || "");
   const [queryResults, setQueryResults] = useState<string[][]>([]);
   const [headers, setHeaders] = useState<string[]>([]);
   const [noResult, setNoResult] = useState(false);
   const [error, setError] = useState(null);
-
-  useEffect(() => {
-    let sqlQuery = getQueryParameter(SQL_QUERY);
-    if (!!sqlQuery) {
-      setQuery(sqlQuery);
-    }
-  }, []);
 
   const handleSubmit = (evt: SyntheticEvent) => {
     // Avoid refreshing the entire page
@@ -37,7 +30,7 @@ function DatabaseQuery() {
         setHeaders(headers);
         setQueryResults(content);
       })
-      .catch((e) => message.error(e.response.data.message));
+      .catch((e) => message.error(e.response?.data?.message || "Error"));
   };
 
   return (
