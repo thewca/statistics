@@ -37,7 +37,7 @@ public class DatabaseServiceImpl implements DatabaseService {
 
         query = query.trim();
         int index = query.length() - 1;
-        while (index >= 0 && query.charAt(index) == ';') {
+        while (index >= 0 && (query.charAt(index) == ';' || Character.isWhitespace(query.charAt(index)))) {
             index--;
         }
 

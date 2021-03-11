@@ -1,5 +1,5 @@
 export const getQueryParameter = (name: string) => {
-  let searchParams = new URLSearchParams(window.location.search);
+  let searchParams = new URLSearchParams(window.location.href.split("?")[1]);
   return searchParams.get(name);
 };
 

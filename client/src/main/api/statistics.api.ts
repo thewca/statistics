@@ -10,10 +10,12 @@ export class StatisticsApi {
     this.queryDatabaseEndpoint = "/database/query";
   }
 
-  queryDatabase = (sqlQuery: string) => {
+  queryDatabase = (sqlQuery: string, page: number, size: number) => {
     let url = this.BASE_URL + this.queryDatabaseEndpoint;
     let params = new URLSearchParams();
     params.append("sqlQuery", sqlQuery);
+    params.append("page", "" + page);
+    params.append("size", "" + size);
     return Axios.get<QueryDatabaseResponse>(url, { params });
   };
 }

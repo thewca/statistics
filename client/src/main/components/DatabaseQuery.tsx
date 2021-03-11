@@ -1,4 +1,4 @@
-import { message } from "antd";
+import { message, Pagination } from "antd";
 import { SyntheticEvent, useEffect, useState } from "react";
 import statisticsApi from "../api/statistics.api";
 import { getQueryParameter, setQueryParameter } from "../util/query.param.util";
@@ -12,16 +12,24 @@ function DatabaseQuery() {
   const [headers, setHeaders] = useState<string[]>([]);
   const [noResult, setNoResult] = useState(false);
   const [error, setError] = useState(null);
+  const [page, setPage] = useState(0);
+  const [pageSize, setPageSize] = useState(20);
+  const [totalPages, setTotalPages] = useState<number>();
 
-  const handleSubmit = (evt: SyntheticEvent) => {
+  const handleSubmit = (evt?: SyntheticEvent) => {
     // Avoid refreshing the entire page
-    evt.preventDefault();
+    evt?.preventDefault();
+
+    // Avoid fetch in the first render
+    if (!query) {
+      return;
+    }
 
     setQueryParameter(SQL_QUERY, query);
 
     setError(null);
     statisticsApi
-      .queryDatabase(query)
+      .queryDatabase(query, page, pageSize)
       .then((response) => {
         let content = response.data.content;
         let headers = response.data.headers;
@@ -29,8 +37,16 @@ function DatabaseQuery() {
         setNoResult(content.length === 0);
         setHeaders(headers);
         setQueryResults(content);
+        setTotalPages(response.data.totalPages);
       })
       .catch((e) => message.error(e.response?.data?.message || "Error"));
+  };
+
+  useEffect(handleSubmit, [page, pageSize]);
+
+  const handlePaginationChange = (newPage?: number, newSize?: number) => {
+    setPage((oldPage) => newPage || oldPage);
+    setPageSize((oldPageSize) => newSize || oldPageSize);
   };
 
   return (
@@ -57,6 +73,15 @@ function DatabaseQuery() {
         </div>
       </form>
       {noResult && <div className="alert alert-info">No results to show</div>}
+      {totalPages != null && (
+        <div className="my-3">
+          <Pagination
+            defaultCurrent={page}
+            total={totalPages}
+            onChange={handlePaginationChange}
+          />
+        </div>
+      )}
       {queryResults.length > 0 && (
         <div className="container-fluid">
           <div className="table-responsive">
