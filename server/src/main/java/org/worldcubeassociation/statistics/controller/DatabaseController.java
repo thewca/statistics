@@ -18,8 +18,8 @@ public class DatabaseController {
     private DatabaseService databaseService;
 
     @GetMapping("query")
-    public ResultSetResponse getResultSet(String sqlQuery) throws InvalidParameterException {
-        return databaseService.getResultSet(sqlQuery);
+    public ResultSetResponse getResultSet(String sqlQuery, Integer page, Integer size)
+            throws InvalidParameterException {
+        return databaseService.getResultSet(sqlQuery, page, size);
     }
-
 }

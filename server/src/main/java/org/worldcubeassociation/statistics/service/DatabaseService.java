@@ -5,5 +5,5 @@ import org.worldcubeassociation.statistics.exception.InvalidParameterException;
 
 @FunctionalInterface
 public interface DatabaseService {
-	public ResultSetResponse getResultSet(String sqlQuery) throws InvalidParameterException;
+    ResultSetResponse getResultSet(String query, Integer page, Integer size) throws InvalidParameterException;
 }

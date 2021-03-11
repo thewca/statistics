@@ -2,10 +2,8 @@ package org.worldcubeassociation.statistics.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 import org.worldcubeassociation.statistics.controller.response.ResultSetResponse;
 import org.worldcubeassociation.statistics.exception.InvalidParameterException;
 import org.worldcubeassociation.statistics.rowmapper.ResultSetRowMapper;
@@ -14,6 +12,7 @@ import org.worldcubeassociation.statistics.service.DatabaseService;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -26,16 +25,24 @@ public class DatabaseServiceImpl implements DatabaseService {
     @Autowired
     private ResultSetRowMapper resultSetRowMapper;
 
+    private static final String PAGINATION_WRAPPER = "select * from (%s) alias limit %s offset %s";
+
     @Override
-    public ResultSetResponse getResultSet(String query) throws InvalidParameterException {
+    public ResultSetResponse getResultSet(String query, Integer page, Integer size) throws InvalidParameterException {
         log.info("Execute query\n{}", query);
+
+        int pageNumber = Optional.ofNullable(page).orElse(0);
+        int limit = Optional.ofNullable(size).orElse(25);
+
+        String finalQuery = String.format(PAGINATION_WRAPPER, query, limit, limit * pageNumber);
+        log.info("Final query\n{}", finalQuery);
 
         ResultSetResponse resultSetResponse = new ResultSetResponse();
 
         List<LinkedHashMap<String, String>> sqlResult;
 
         try {
-            sqlResult = jdbcTemplate.query(query, resultSetRowMapper);
+            sqlResult = jdbcTemplate.query(finalQuery, resultSetRowMapper);
         } catch (Exception e) {
             log.error("" + e);
 
