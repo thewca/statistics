@@ -1,4 +1,5 @@
 import "bootstrap/dist/css/bootstrap.min.css";
+import React from "react";
 import { HashRouter, Route, Switch } from "react-router-dom";
 import About from "./main/components/About";
 import DatabaseQuery from "./main/components/DatabaseQuery";
@@ -6,23 +7,32 @@ import Home from "./main/components/Home";
 import StatisticsList from "./main/components/StatisticsList";
 import Topbar from "./main/components/Topbar";
 import { LinkItem } from "./main/model/LinkItem";
+import {
+  DatabaseOutlined,
+  HomeOutlined,
+  OrderedListOutlined,
+  SolutionOutlined,
+} from "@ant-design/icons";
 
 const links: LinkItem[] = [
-  { name: "Home", href: "/", exact: true },
+  { name: "Home", href: "/", exact: true, icon: <HomeOutlined /> },
   {
     name: "Statistics List",
     href: "/statistics-list",
     exact: false,
+    icon: <OrderedListOutlined />,
   },
   {
     name: "Database Query",
     href: "/database-query",
     exact: false,
+    icon: <DatabaseOutlined />,
   },
   {
     name: "About",
     href: "/about",
     exact: false,
+    icon: <SolutionOutlined />,
   },
 ];
 

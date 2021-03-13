@@ -92,7 +92,7 @@ function DatabaseQuery() {
       {queryResults.length > 0 && (
         <div className="container-fluid">
           <div className="table-responsive">
-            <table className="table table-hover table-striped table-bordered shadow">
+            <table className="table table-hover table-striped table-bordered shadow table-condensed">
               <thead className="thead thead-dark">
                 <tr>
                   <th className="text-center" scope="col">

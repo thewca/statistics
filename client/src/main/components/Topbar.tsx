@@ -1,9 +1,10 @@
+import { UserOutlined } from "@ant-design/icons";
+import React from "react";
 import { Nav, Navbar } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import logo from "../assets/wca_logo.svg";
 import { LinkItem } from "../model/LinkItem";
 import "./Topbar.css";
-
-import logo from "../assets/wca_logo.svg";
 
 interface TopbarProps {
   links: LinkItem[];
@@ -27,13 +28,16 @@ const Topbar = ({ links }: TopbarProps) => {
       <Navbar.Collapse id="responsive-navbar-nav">
         <Nav className="mr-auto">
           {links.map((link, i) => (
-            <Link key={i} to={link.href} className="text-white">
+            <Link key={i} to={link.href} className="text-white align-center">
+              <span>{link.icon}</span> &nbsp;
               {link.name}
             </Link>
           ))}
         </Nav>
         <Nav>
-          <Nav.Link className="text-white">Login</Nav.Link>
+          <Nav.Link className="text-white">
+            <UserOutlined /> Login
+          </Nav.Link>
         </Nav>
       </Navbar.Collapse>
     </Navbar>
