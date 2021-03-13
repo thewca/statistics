@@ -1,7 +1,7 @@
 package org.worldcubeassociation.statistics.controller;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.worldcubeassociation.statistics.exception.InvalidParameterException;
@@ -15,9 +15,9 @@ import javax.validation.constraints.NotBlank;
 @CrossOrigin(origins = "*", allowedHeaders = "*") // Enable this for testing
 public interface DatabaseQueryController {
 
-    @GetMapping("query")
+    @PostMapping("query")
     DatabaseQueryVo getResultSet(@RequestParam @NotBlank String sqlQuery,
                                  @RequestParam(defaultValue = "0") @Min(0) Integer page,
-                                 @RequestParam(defaultValue = "25") @Max(100) @Min(1) Integer size)
+                                 @RequestParam(defaultValue = "20") @Min(1) @Max(100) Integer size)
             throws InvalidParameterException;
 }
