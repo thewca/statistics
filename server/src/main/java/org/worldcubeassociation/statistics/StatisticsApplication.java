@@ -17,7 +17,8 @@ public class StatisticsApplication {
     @PostConstruct
     private void message() {
         log.info("\n----------------------------------------------------------\n"
-                + "\tAccess URL:\n\thttp://localhost:{}/swagger-ui.html\n"
+                + "\tAccess URL:\n"
+                + "\thttp://localhost:{}/swagger-ui/index.html\n"
                 + "----------------------------------------------------------", port);
     }
 
