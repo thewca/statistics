@@ -20,6 +20,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.worldcubeassociation.statistics.controller.response.ResultSetResponse;
+import org.worldcubeassociation.statistics.exception.InvalidParameterException;
 import org.worldcubeassociation.statistics.rowmapper.ResultSetRowMapper;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -37,7 +38,7 @@ public class DatabaseServiceImplTest {
 	private String query = "select * from Events";
 
 	@Test
-	public void getResultSetTest() {
+	public void getResultSetTest() throws InvalidParameterException {
 		// Ideal scenario
 
 		int nEvents = 20;
@@ -57,17 +58,17 @@ public class DatabaseServiceImplTest {
 
 		when(jdbcTemplate.query(anyString(), any(ResultSetRowMapper.class))).thenReturn(sqlResult);
 
-		ResultSetResponse result = service.getResultSet(query);
+		ResultSetResponse result = service.getResultSet(query, 0, 0);
 
 		assertEquals(tableHeaders.length, result.getHeaders().size());
 		assertEquals(nEvents, result.getContent().size());
 	}
 
 	@Test
-	public void getResultSetEmptyTest() {
+	public void getResultSetEmptyTest() throws InvalidParameterException {
 		// In case of no result, we should return an empty list
 
-		ResultSetResponse result = service.getResultSet(query);
+		ResultSetResponse result = service.getResultSet(query, 0, 0);
 
 		assertTrue(result.getHeaders().isEmpty());
 		assertTrue(result.getContent().isEmpty());
