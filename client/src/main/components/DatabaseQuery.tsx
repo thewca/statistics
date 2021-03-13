@@ -108,9 +108,13 @@ function DatabaseQuery() {
               <tbody className="tbody">
                 {queryResults.map((result: string[], i) => (
                   <tr key={i}>
-                    <th scope="row">{(page - 1) * pageSize + i + 1}</th>
+                    <th scope="row" className="text-center">
+                      {(page - 1) * pageSize + i + 1}
+                    </th>
                     {result.map((entry, j) => (
-                      <td key={j}>{entry}</td>
+                      <td key={j} className="text-center">
+                        {entry}
+                      </td>
                     ))}
                   </tr>
                 ))}

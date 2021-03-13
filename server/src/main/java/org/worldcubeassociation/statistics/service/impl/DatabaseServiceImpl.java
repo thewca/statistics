@@ -25,8 +25,8 @@ public class DatabaseServiceImpl implements DatabaseService {
     @Autowired
     private ResultSetRowMapper resultSetRowMapper;
 
-    private static final String PAGINATION_WRAPPER = "select * from (%s) alias limit %s offset %s";
-    private static final String PAGINATION_COUNT = "select count(*) from (%s) alias";
+    private static final String PAGINATION_WRAPPER = "select * from (\n%s\n) alias limit %s offset %s";
+    private static final String PAGINATION_COUNT = "select count(*) from (\n%s\n) alias";
 
     @Override
     public ResultSetResponse getResultSet(String query, Integer page, Integer size) throws InvalidParameterException {
@@ -50,7 +50,7 @@ public class DatabaseServiceImpl implements DatabaseService {
         ResultSetResponse resultSetResponse = new ResultSetResponse();
 
         List<LinkedHashMap<String, String>> sqlResult;
-        int count; // TODO cache
+        int count; // TODO cache since we are querying db twice
 
         try {
             sqlResult = jdbcTemplate.query(finalQuery, resultSetRowMapper);
