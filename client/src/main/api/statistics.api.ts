@@ -6,7 +6,7 @@ export class StatisticsApi {
   queryDatabaseEndpoint: string;
 
   constructor() {
-    this.BASE_URL = "http://localhost:8080";
+    this.BASE_URL = process.env.REACT_APP_BASE_URL!;
     this.queryDatabaseEndpoint = "/database/query";
   }
 
