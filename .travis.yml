@@ -10,5 +10,5 @@ jobs:
       node_js: 10
       script:
         - cd client
-        - npm install
-        - npm run test
+        - yarn install
+        - yarn test

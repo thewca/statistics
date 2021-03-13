@@ -1,7 +1,6 @@
-import React from "react";
 import "./About.css";
 
-function About() {
+const About = () => {
   return (
     <div className="container" id="about-wrapper">
       <p>
@@ -10,6 +9,6 @@ function About() {
       </p>
     </div>
   );
-}
+};
 
 export default About;

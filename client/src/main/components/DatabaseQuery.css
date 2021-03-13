@@ -2,3 +2,7 @@
   font-family: monospace;
   font-size: 150%;
 }
+
+.ant-pagination-item a {
+  display: inline !important; /* fix strange behavior in pagination align */
+}

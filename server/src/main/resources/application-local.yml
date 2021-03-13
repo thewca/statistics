@@ -1,0 +1,8 @@
+spring:
+  profiles:
+    active: local
+  datasource:
+    driverClassName: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/wca_development
+    username: root
+    password:

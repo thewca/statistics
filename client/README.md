@@ -20,8 +20,8 @@ The commands listed here should work in Unix systems or in Windows (using GitBas
 
 - Install dependencies
 
-`npm install`
+`yarn install`
 
 - Run the client
 
-`yarn start` or `npm start`
+`yarn start`
