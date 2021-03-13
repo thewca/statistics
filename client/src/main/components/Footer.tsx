@@ -7,9 +7,9 @@ import "./Footer.css";
 
 const Footer = () => {
   return (
-    <div id="footer-wrapper" className="container-fluid border-top text-muted">
-      <footer className="container">
-        <div className="row text-small">
+    <div id="footer" className="container-fluid text-muted">
+      <footer className="container border-top">
+        <div className="row text-small mt-4">
           <div className="col-6 col-md">
             <h5>Links</h5>
             <ul className="list-unstyled">

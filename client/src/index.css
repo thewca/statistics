@@ -9,3 +9,16 @@ body {
   -moz-osx-font-smoothing: grayscale;
   background-color: rgb(245, 245, 245) !important;
 }
+
+#page-container {
+  position: relative;
+  min-height: 100vh;
+  padding-bottom: 150px;
+}
+
+#footer {
+  margin-top: 150px;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}
