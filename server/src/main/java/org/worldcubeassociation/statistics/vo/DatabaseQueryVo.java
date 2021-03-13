@@ -1,11 +1,11 @@
-package org.worldcubeassociation.statistics.controller.response;
+package org.worldcubeassociation.statistics.vo;
 
 import java.util.List;
 
 import lombok.Data;
 
 @Data
-public class ResultSetResponse {
+public class DatabaseQueryVo {
 	private List<String> headers; 	// Column names
 	private List<List<String>> content;
 

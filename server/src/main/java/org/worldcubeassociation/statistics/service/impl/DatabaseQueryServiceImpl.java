@@ -4,10 +4,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
-import org.worldcubeassociation.statistics.controller.response.ResultSetResponse;
+import org.worldcubeassociation.statistics.service.DatabaseQueryService;
+import org.worldcubeassociation.statistics.vo.DatabaseQueryVo;
 import org.worldcubeassociation.statistics.exception.InvalidParameterException;
 import org.worldcubeassociation.statistics.rowmapper.ResultSetRowMapper;
-import org.worldcubeassociation.statistics.service.DatabaseService;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Service
-public class DatabaseServiceImpl implements DatabaseService {
+public class DatabaseQueryServiceImpl implements DatabaseQueryService {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -29,7 +29,7 @@ public class DatabaseServiceImpl implements DatabaseService {
     private static final String PAGINATION_COUNT = "select count(*) from (\n%s\n) alias";
 
     @Override
-    public ResultSetResponse getResultSet(String query, Integer page, Integer size) throws InvalidParameterException {
+    public DatabaseQueryVo getResultSet(String query, Integer page, Integer size) throws InvalidParameterException {
         log.info("Execute query\n{}", query);
 
         int pageNumber = Optional.ofNullable(page).orElse(0);
@@ -47,7 +47,7 @@ public class DatabaseServiceImpl implements DatabaseService {
         String finalQuery = String.format(PAGINATION_WRAPPER, query, limit, limit * pageNumber);
         log.info("Final query\n{}", finalQuery);
 
-        ResultSetResponse resultSetResponse = new ResultSetResponse();
+        DatabaseQueryVo databaseQueryVo = new DatabaseQueryVo();
 
         List<LinkedHashMap<String, String>> sqlResult;
         int count; // TODO cache since we are querying db twice
@@ -64,21 +64,21 @@ public class DatabaseServiceImpl implements DatabaseService {
 
         int totalPages = (int) Math.round(Math.ceil(1.0 * count / limit));
 
-        resultSetResponse.setNumber(pageNumber);
-        resultSetResponse.setNumberOfElements(sqlResult.size());
-        resultSetResponse.setSize(limit);
-        resultSetResponse.setTotalElements(count);
-        resultSetResponse.setTotalPages(totalPages);
-        resultSetResponse.setHasContent(!sqlResult.isEmpty());
-        resultSetResponse.setHasNextPage(pageNumber < totalPages);
-        resultSetResponse.setHasPreviousPage(pageNumber > 0);
-        resultSetResponse.setFirstPage(pageNumber == 0);
-        resultSetResponse.setLastPage(pageNumber == totalPages);
+        databaseQueryVo.setNumber(pageNumber);
+        databaseQueryVo.setNumberOfElements(sqlResult.size());
+        databaseQueryVo.setSize(limit);
+        databaseQueryVo.setTotalElements(count);
+        databaseQueryVo.setTotalPages(totalPages);
+        databaseQueryVo.setHasContent(!sqlResult.isEmpty());
+        databaseQueryVo.setHasNextPage(pageNumber < totalPages);
+        databaseQueryVo.setHasPreviousPage(pageNumber > 0);
+        databaseQueryVo.setFirstPage(pageNumber == 0);
+        databaseQueryVo.setLastPage(pageNumber == totalPages);
 
         if (sqlResult.isEmpty()) {
-            resultSetResponse.setContent(new ArrayList<>());
-            resultSetResponse.setHeaders(new ArrayList<>());
-            return resultSetResponse;
+            databaseQueryVo.setContent(new ArrayList<>());
+            databaseQueryVo.setHeaders(new ArrayList<>());
+            return databaseQueryVo;
         }
 
         // Since we are using LinkedHashMap, the headers should be the same accross
@@ -93,10 +93,10 @@ public class DatabaseServiceImpl implements DatabaseService {
             hash.entrySet().forEach(entry -> list.add(entry.getValue()));
             content.add(list);
         });
-        resultSetResponse.setHeaders(headers);
-        resultSetResponse.setContent(content);
+        databaseQueryVo.setHeaders(headers);
+        databaseQueryVo.setContent(content);
 
-        return resultSetResponse;
+        return databaseQueryVo;
     }
 
 }

@@ -19,15 +19,15 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.worldcubeassociation.statistics.controller.response.ResultSetResponse;
+import org.worldcubeassociation.statistics.vo.DatabaseQueryVo;
 import org.worldcubeassociation.statistics.exception.InvalidParameterException;
 import org.worldcubeassociation.statistics.rowmapper.ResultSetRowMapper;
 
 @RunWith(MockitoJUnitRunner.class)
-public class DatabaseServiceImplTest {
+public class DatabaseQueryServiceImplTest {
 
 	@InjectMocks
-	private DatabaseServiceImpl service;
+	private DatabaseQueryServiceImpl service;
 
 	@Mock
 	private JdbcTemplate jdbcTemplate;
@@ -58,7 +58,7 @@ public class DatabaseServiceImplTest {
 
 		when(jdbcTemplate.query(anyString(), any(ResultSetRowMapper.class))).thenReturn(sqlResult);
 
-		ResultSetResponse result = service.getResultSet(query, 0, 0);
+		DatabaseQueryVo result = service.getResultSet(query, 0, 0);
 
 		assertEquals(tableHeaders.length, result.getHeaders().size());
 		assertEquals(nEvents, result.getContent().size());
@@ -68,7 +68,7 @@ public class DatabaseServiceImplTest {
 	public void getResultSetEmptyTest() throws InvalidParameterException {
 		// In case of no result, we should return an empty list
 
-		ResultSetResponse result = service.getResultSet(query, 0, 0);
+		DatabaseQueryVo result = service.getResultSet(query, 0, 0);
 
 		assertTrue(result.getHeaders().isEmpty());
 		assertTrue(result.getContent().isEmpty());
