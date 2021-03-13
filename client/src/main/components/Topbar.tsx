@@ -1,4 +1,5 @@
 import { UserOutlined } from "@ant-design/icons";
+import { message } from "antd";
 import React from "react";
 import { Nav, Navbar } from "react-bootstrap";
 import { Link } from "react-router-dom";
@@ -35,7 +36,10 @@ const Topbar = ({ links }: TopbarProps) => {
           ))}
         </Nav>
         <Nav>
-          <Nav.Link className="text-white">
+          <Nav.Link
+            className="text-white"
+            onClick={() => message.info("Not implemented yet")}
+          >
             <UserOutlined /> Login
           </Nav.Link>
         </Nav>
