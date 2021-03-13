@@ -1,5 +1,5 @@
 import { message, Pagination } from "antd";
-import { SyntheticEvent, useEffect, useState } from "react";
+import { useState } from "react";
 import statisticsApi from "../api/statistics.api";
 import { getQueryParameter, setQueryParameter } from "../util/query.param.util";
 import "./DatabaseQuery.css";
@@ -12,14 +12,11 @@ function DatabaseQuery() {
   const [headers, setHeaders] = useState<string[]>([]);
   const [noResult, setNoResult] = useState(false);
   const [error, setError] = useState(null);
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(20);
-  const [totalPages, setTotalPages] = useState<number>();
+  const [totalElements, setTotalElements] = useState<number>(0);
 
-  const handleSubmit = (evt?: SyntheticEvent) => {
-    // Avoid refreshing the entire page
-    evt?.preventDefault();
-
+  const handleSubmit = (page: number, pageSize = 0) => {
     // Avoid fetch in the first render
     if (!query) {
       return;
@@ -29,7 +26,7 @@ function DatabaseQuery() {
 
     setError(null);
     statisticsApi
-      .queryDatabase(query, page, pageSize)
+      .queryDatabase(query, page - 1, pageSize)
       .then((response) => {
         let content = response.data.content;
         let headers = response.data.headers;
@@ -37,21 +34,30 @@ function DatabaseQuery() {
         setNoResult(content.length === 0);
         setHeaders(headers);
         setQueryResults(content);
-        setTotalPages(response.data.totalPages);
+        setTotalElements(response.data.totalElements);
       })
       .catch((e) => message.error(e.response?.data?.message || "Error"));
   };
 
-  useEffect(handleSubmit, [page, pageSize]);
+  const handlePaginationChange = (newPage: number, newSize?: number) => {
+    if (newSize !== pageSize) {
+      newPage = 1;
+    }
+    setPage(newPage);
+    setPageSize((oldSize) => newSize || oldSize);
 
-  const handlePaginationChange = (newPage?: number, newSize?: number) => {
-    setPage((oldPage) => newPage || oldPage);
-    setPageSize((oldPageSize) => newSize || oldPageSize);
+    handleSubmit(newPage, newSize);
   };
 
   return (
     <div>
-      <form onSubmit={handleSubmit} className="container">
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          handleSubmit(page, pageSize);
+        }}
+        className="container"
+      >
         <div className="form-group">
           <textarea
             className="form-control my-3 shadow"
@@ -73,11 +79,12 @@ function DatabaseQuery() {
         </div>
       </form>
       {noResult && <div className="alert alert-info">No results to show</div>}
-      {totalPages != null && (
-        <div className="my-3">
+      {totalElements > 0 && (
+        <div className="my-3 text-center">
           <Pagination
-            defaultCurrent={page}
-            total={totalPages}
+            defaultPageSize={pageSize}
+            current={page}
+            total={totalElements}
             onChange={handlePaginationChange}
           />
         </div>
@@ -101,7 +108,7 @@ function DatabaseQuery() {
               <tbody className="tbody">
                 {queryResults.map((result: string[], i) => (
                   <tr key={i}>
-                    <th scope="row">{i + 1}</th>
+                    <th scope="row">{(page - 1) * pageSize + i + 1}</th>
                     {result.map((entry, j) => (
                       <td key={j}>{entry}</td>
                     ))}
