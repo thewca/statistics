@@ -4,15 +4,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
-import org.worldcubeassociation.statistics.service.DatabaseQueryService;
-import org.worldcubeassociation.statistics.vo.DatabaseQueryVo;
 import org.worldcubeassociation.statistics.exception.InvalidParameterException;
 import org.worldcubeassociation.statistics.rowmapper.ResultSetRowMapper;
+import org.worldcubeassociation.statistics.service.DatabaseQueryService;
+import org.worldcubeassociation.statistics.vo.DatabaseQueryVo;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -32,9 +31,6 @@ public class DatabaseQueryServiceImpl implements DatabaseQueryService {
     public DatabaseQueryVo getResultSet(String query, Integer page, Integer size) throws InvalidParameterException {
         log.info("Execute query\n{}", query);
 
-        int pageNumber = Optional.ofNullable(page).orElse(0);
-        int limit = Optional.ofNullable(size).orElse(25);
-
         query = query.trim();
         int index = query.length() - 1;
         while (index >= 0 && (query.charAt(index) == ';' || Character.isWhitespace(query.charAt(index)))) {
@@ -44,7 +40,7 @@ public class DatabaseQueryServiceImpl implements DatabaseQueryService {
         query = query.substring(0, index + 1);
 
         String countQuery = String.format(PAGINATION_COUNT, query);
-        String finalQuery = String.format(PAGINATION_WRAPPER, query, limit, limit * pageNumber);
+        String finalQuery = String.format(PAGINATION_WRAPPER, query, size, size * page);
         log.info("Final query\n{}", finalQuery);
 
         DatabaseQueryVo databaseQueryVo = new DatabaseQueryVo();
@@ -62,18 +58,18 @@ public class DatabaseQueryServiceImpl implements DatabaseQueryService {
             throw new InvalidParameterException(e.getCause().getMessage());
         }
 
-        int totalPages = (int) Math.round(Math.ceil(1.0 * count / limit));
+        int totalPages = (int) Math.round(Math.ceil(1.0 * count / size));
 
-        databaseQueryVo.setNumber(pageNumber);
+        databaseQueryVo.setNumber(page);
         databaseQueryVo.setNumberOfElements(sqlResult.size());
-        databaseQueryVo.setSize(limit);
+        databaseQueryVo.setSize(size);
         databaseQueryVo.setTotalElements(count);
         databaseQueryVo.setTotalPages(totalPages);
         databaseQueryVo.setHasContent(!sqlResult.isEmpty());
-        databaseQueryVo.setHasNextPage(pageNumber < totalPages);
-        databaseQueryVo.setHasPreviousPage(pageNumber > 0);
-        databaseQueryVo.setFirstPage(pageNumber == 0);
-        databaseQueryVo.setLastPage(pageNumber == totalPages);
+        databaseQueryVo.setHasNextPage(page < totalPages);
+        databaseQueryVo.setHasPreviousPage(page > 0);
+        databaseQueryVo.setFirstPage(page == 0);
+        databaseQueryVo.setLastPage(page == totalPages);
 
         if (sqlResult.isEmpty()) {
             databaseQueryVo.setContent(new ArrayList<>());
