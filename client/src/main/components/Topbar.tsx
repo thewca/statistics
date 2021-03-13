@@ -13,13 +13,13 @@ interface TopbarProps {
 
 const Topbar = ({ links }: TopbarProps) => {
   return (
-    <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
+    <Navbar collapseOnSelect bg="dark" variant="dark">
       <Navbar.Brand>
         <Link to={links[0].href}>
           <img
             src={logo}
-            width="60"
-            height="60"
+            width="30"
+            height="30"
             className="d-inline-block align-top"
             alt="WCA logo"
           />

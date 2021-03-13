@@ -13,6 +13,7 @@ import {
   OrderedListOutlined,
   SolutionOutlined,
 } from "@ant-design/icons";
+import Footer from "./main/components/Footer";
 
 const links: LinkItem[] = [
   { name: "Home", href: "/", exact: true, icon: <HomeOutlined /> },
@@ -55,6 +56,7 @@ function App() {
             <About />
           </Route>
         </Switch>
+        <Footer />
       </div>
     </HashRouter>
   );
