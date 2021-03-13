@@ -6,7 +6,7 @@ import {
 } from "@ant-design/icons";
 import "bootstrap/dist/css/bootstrap.min.css";
 import React from "react";
-import { HashRouter, Route, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import About from "./main/components/About";
 import DatabaseQuery from "./main/components/DatabaseQuery";
 import Footer from "./main/components/Footer";
@@ -16,51 +16,53 @@ import Topbar from "./main/components/Topbar";
 import { LinkItem } from "./main/model/LinkItem";
 
 const links: LinkItem[] = [
-  { name: "Home", href: "/", exact: true, icon: <HomeOutlined /> },
+  {
+    name: "Home",
+    href: "/",
+    exact: true,
+    icon: <HomeOutlined />,
+    component: <Home />,
+  },
   {
     name: "Statistics List",
     href: "/statistics-list",
     exact: false,
     icon: <OrderedListOutlined />,
+    component: <StatisticsList />,
   },
   {
     name: "Database Query",
     href: "/database-query",
     exact: false,
     icon: <DatabaseOutlined />,
+    component: <DatabaseQuery />,
   },
   {
     name: "About",
     href: "/about",
     exact: false,
     icon: <SolutionOutlined />,
+    component: <About />,
   },
 ];
 
 function App() {
   return (
-    <HashRouter basename={links[0].href}>
+    <Router>
       <div id="page-container">
         <div id="content-wrapper">
           <Topbar links={links} />
           <Switch>
-            <Route exact path={links[0].href}>
-              <Home />
-            </Route>
-            <Route path={links[1].href}>
-              <StatisticsList />
-            </Route>
-            <Route path={links[2].href}>
-              <DatabaseQuery />
-            </Route>
-            <Route path={links[3].href}>
-              <About />
-            </Route>
+            {links.map((link) => (
+              <Route key={link.href} path={link.href} exact={link.exact}>
+                {link.component}
+              </Route>
+            ))}
           </Switch>
         </div>
         <Footer />
       </div>
-    </HashRouter>
+    </Router>
   );
 }
 
