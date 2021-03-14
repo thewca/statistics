@@ -1,7 +1,7 @@
 import { UserOutlined } from "@ant-design/icons";
-import { message } from "antd";
+import { Menu, message } from "antd";
+import MenuItem from "antd/lib/menu/MenuItem";
 import React from "react";
-import { Nav, Navbar } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import logo from "../assets/wca_logo.svg";
 import { LinkItem } from "../model/LinkItem";
@@ -13,38 +13,26 @@ interface TopbarProps {
 
 const Topbar = ({ links }: TopbarProps) => {
   return (
-    <Navbar collapseOnSelect bg="dark" variant="dark">
-      <Navbar.Brand>
+    <Menu theme="dark" mode="horizontal">
+      <Menu.Item className="h-100">
         <Link to={links[0].href}>
-          <img
-            src={logo}
-            width="30"
-            height="30"
-            className="d-inline-block align-top"
-            alt="WCA logo"
-          />
+          <img src={logo} width="30" height="30" alt="WCA logo" />
         </Link>
-      </Navbar.Brand>
-      <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-      <Navbar.Collapse id="responsive-navbar-nav">
-        <Nav className="mr-auto">
-          {links.map((link, i) => (
-            <Link key={i} to={link.href} className="text-white align-center">
-              <span>{link.icon}</span> &nbsp;
-              {link.name}
-            </Link>
-          ))}
-        </Nav>
-        <Nav>
-          <Nav.Link
-            className="text-white"
-            onClick={() => message.info("Not implemented yet")}
-          >
-            <UserOutlined /> Login
-          </Nav.Link>
-        </Nav>
-      </Navbar.Collapse>
-    </Navbar>
+      </Menu.Item>
+      {links.map((link) => (
+        <MenuItem key={link.href}>
+          <Link to={link.href} className="text-white align-center">
+            <span>{link.icon}</span>
+            {link.name}
+          </Link>
+        </MenuItem>
+      ))}
+      <div id="login">
+        <button onClick={() => message.info("Not implemented")}>
+          <UserOutlined /> Login
+        </button>
+      </div>
+    </Menu>
   );
 };
 
