@@ -1,8 +1,9 @@
 import { UserOutlined } from "@ant-design/icons";
-import { Menu, message } from "antd";
+import { Menu } from "antd";
 import MenuItem from "antd/lib/menu/MenuItem";
 import React from "react";
 import { Link } from "react-router-dom";
+import wcaApi from "../api/wca.api";
 import logo from "../assets/wca_logo.svg";
 import { LinkItem } from "../model/LinkItem";
 import "./Topbar.css";
@@ -12,6 +13,10 @@ interface TopbarProps {
 }
 
 const Topbar = ({ links }: TopbarProps) => {
+  const handleLogin = () => {
+    wcaApi.handleLogin();
+  };
+
   return (
     <Menu theme="dark" mode="horizontal">
       <Menu.Item className="h-100">
@@ -28,7 +33,7 @@ const Topbar = ({ links }: TopbarProps) => {
         </MenuItem>
       ))}
       <div id="login">
-        <button onClick={() => message.info("Not implemented")}>
+        <button onClick={handleLogin}>
           <UserOutlined /> Login
         </button>
       </div>

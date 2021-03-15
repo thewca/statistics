@@ -17,6 +17,11 @@ export class StatisticsApi {
       params,
     });
   };
+
+  getWcaAuthenticationUrl = (frontendHost: string) =>
+    Axios.get<string>(this.BASE_URL + "/authentication/wca-url", {
+      params: { frontendHost },
+    });
 }
 
 const statisticsApi = new StatisticsApi();
