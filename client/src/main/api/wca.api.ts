@@ -52,6 +52,33 @@ export class WcaApi {
         window.location.href = response.data;
       });
   };
+
+  isLogged = () => {
+    if (this.accessToken == null) {
+      return false;
+    }
+
+    if (this.expiresIn == null) {
+      return false;
+    }
+
+    if (new Date() < new Date(this.expiresIn)) {
+      return true;
+    }
+
+    this.logout();
+    return false;
+  };
+
+  logout = () => {
+    delete localStorage[ACCESS_TOKEN];
+    delete localStorage[TOKEN_TYPE];
+    delete localStorage[EXPIRES_IN];
+    this.accessToken = null;
+    this.tokenType = null;
+    this.expiresIn = null;
+    window.location.reload();
+  };
 }
 
 const wcaApi = new WcaApi();

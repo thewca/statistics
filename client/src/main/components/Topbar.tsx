@@ -13,8 +13,12 @@ interface TopbarProps {
 }
 
 const Topbar = ({ links }: TopbarProps) => {
-  const handleLogin = () => {
-    wcaApi.handleLogin();
+  const handle = () => {
+    if (wcaApi.isLogged()) {
+      wcaApi.logout();
+    } else {
+      wcaApi.handleLogin();
+    }
   };
 
   return (
@@ -33,8 +37,8 @@ const Topbar = ({ links }: TopbarProps) => {
         </MenuItem>
       ))}
       <div id="login">
-        <button onClick={handleLogin}>
-          <UserOutlined /> Login
+        <button onClick={handle}>
+          <UserOutlined /> {wcaApi.isLogged() ? "Logout" : "Login"}
         </button>
       </div>
     </Menu>
