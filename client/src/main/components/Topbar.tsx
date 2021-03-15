@@ -1,10 +1,9 @@
 import { UserOutlined } from "@ant-design/icons";
 import { Menu } from "antd";
 import MenuItem from "antd/lib/menu/MenuItem";
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import wcaApi from "../api/wca.api";
-import logo from "../assets/wca_logo.svg";
 import { LinkItem } from "../model/LinkItem";
 import "./Topbar.css";
 
@@ -13,9 +12,12 @@ interface TopbarProps {
 }
 
 const Topbar = ({ links }: TopbarProps) => {
+  const [logged, setLogged] = useState(wcaApi.isLogged());
+
   const handle = () => {
-    if (wcaApi.isLogged()) {
+    if (logged) {
       wcaApi.logout();
+      setLogged(false);
     } else {
       wcaApi.handleLogin();
     }
@@ -23,10 +25,8 @@ const Topbar = ({ links }: TopbarProps) => {
 
   return (
     <Menu theme="dark" mode="horizontal">
-      <Menu.Item className="h-100">
-        <Link to={links[0].href}>
-          <img src={logo} width="30" height="30" alt="WCA logo" />
-        </Link>
+      <Menu.Item>
+        <Link to={links[0].href}></Link>
       </Menu.Item>
       {links.map((link) => (
         <MenuItem key={link.href}>
@@ -38,7 +38,17 @@ const Topbar = ({ links }: TopbarProps) => {
       ))}
       <div id="login">
         <button onClick={handle}>
-          <UserOutlined /> {wcaApi.isLogged() ? "Logout" : "Login"}
+          {logged ? (
+            <img
+              src={wcaApi.getUserInfo()?.avatar?.thumb_url}
+              width="30"
+              height="30"
+              alt="Avatar"
+            />
+          ) : (
+            <UserOutlined />
+          )}{" "}
+          {logged ? "Logout" : "Login"}
         </button>
       </div>
     </Menu>

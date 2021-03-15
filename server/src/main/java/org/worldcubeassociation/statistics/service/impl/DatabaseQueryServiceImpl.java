@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import org.worldcubeassociation.statistics.exception.InvalidParameterException;
 import org.worldcubeassociation.statistics.rowmapper.ResultSetRowMapper;
 import org.worldcubeassociation.statistics.service.DatabaseQueryService;
-import org.worldcubeassociation.statistics.vo.DatabaseQueryVo;
+import org.worldcubeassociation.statistics.dto.DatabaseQueryDTO;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -28,7 +28,7 @@ public class DatabaseQueryServiceImpl implements DatabaseQueryService {
     private static final String PAGINATION_COUNT = "select count(*) from (\n%s\n) alias";
 
     @Override
-    public DatabaseQueryVo getResultSet(String query, Integer page, Integer size) throws InvalidParameterException {
+    public DatabaseQueryDTO getResultSet(String query, Integer page, Integer size) throws InvalidParameterException {
         log.info("Execute query\n{}", query);
 
         query = query.trim();
@@ -43,7 +43,7 @@ public class DatabaseQueryServiceImpl implements DatabaseQueryService {
         String finalQuery = String.format(PAGINATION_WRAPPER, query, size, size * page);
         log.info("Final query\n{}", finalQuery);
 
-        DatabaseQueryVo databaseQueryVo = new DatabaseQueryVo();
+        DatabaseQueryDTO databaseQueryDTO = new DatabaseQueryDTO();
 
         List<LinkedHashMap<String, String>> sqlResult;
         int count; // TODO cache since we are querying db twice
@@ -60,21 +60,21 @@ public class DatabaseQueryServiceImpl implements DatabaseQueryService {
 
         int totalPages = (int) Math.round(Math.ceil(1.0 * count / size));
 
-        databaseQueryVo.setNumber(page);
-        databaseQueryVo.setNumberOfElements(sqlResult.size());
-        databaseQueryVo.setSize(size);
-        databaseQueryVo.setTotalElements(count);
-        databaseQueryVo.setTotalPages(totalPages);
-        databaseQueryVo.setHasContent(!sqlResult.isEmpty());
-        databaseQueryVo.setHasNextPage(page < totalPages);
-        databaseQueryVo.setHasPreviousPage(page > 0);
-        databaseQueryVo.setFirstPage(page == 0);
-        databaseQueryVo.setLastPage(page == totalPages);
+        databaseQueryDTO.setNumber(page);
+        databaseQueryDTO.setNumberOfElements(sqlResult.size());
+        databaseQueryDTO.setSize(size);
+        databaseQueryDTO.setTotalElements(count);
+        databaseQueryDTO.setTotalPages(totalPages);
+        databaseQueryDTO.setHasContent(!sqlResult.isEmpty());
+        databaseQueryDTO.setHasNextPage(page < totalPages);
+        databaseQueryDTO.setHasPreviousPage(page > 0);
+        databaseQueryDTO.setFirstPage(page == 0);
+        databaseQueryDTO.setLastPage(page == totalPages);
 
         if (sqlResult.isEmpty()) {
-            databaseQueryVo.setContent(new ArrayList<>());
-            databaseQueryVo.setHeaders(new ArrayList<>());
-            return databaseQueryVo;
+            databaseQueryDTO.setContent(new ArrayList<>());
+            databaseQueryDTO.setHeaders(new ArrayList<>());
+            return databaseQueryDTO;
         }
 
         // Since we are using LinkedHashMap, the headers should be the same accross
@@ -89,10 +89,10 @@ public class DatabaseQueryServiceImpl implements DatabaseQueryService {
             hash.entrySet().forEach(entry -> list.add(entry.getValue()));
             content.add(list);
         });
-        databaseQueryVo.setHeaders(headers);
-        databaseQueryVo.setContent(content);
+        databaseQueryDTO.setHeaders(headers);
+        databaseQueryDTO.setContent(content);
 
-        return databaseQueryVo;
+        return databaseQueryDTO;
     }
 
 }

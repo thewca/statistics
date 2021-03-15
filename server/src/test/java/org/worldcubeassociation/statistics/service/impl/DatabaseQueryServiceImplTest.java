@@ -11,7 +11,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.worldcubeassociation.statistics.exception.InvalidParameterException;
 import org.worldcubeassociation.statistics.rowmapper.ResultSetRowMapper;
-import org.worldcubeassociation.statistics.vo.DatabaseQueryVo;
+import org.worldcubeassociation.statistics.dto.DatabaseQueryDTO;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -59,7 +59,7 @@ public class DatabaseQueryServiceImplTest {
         when(jdbcTemplate.query(anyString(), any(ResultSetRowMapper.class))).thenReturn(sqlResult);
         when(jdbcTemplate.queryForObject(anyString(), any(Class.class))).thenReturn(100);
 
-        DatabaseQueryVo result = service.getResultSet(query, 0, 25);
+        DatabaseQueryDTO result = service.getResultSet(query, 0, 25);
 
         assertEquals(tableHeaders.length, result.getHeaders().size());
         assertEquals(nEvents, result.getContent().size());
@@ -71,7 +71,7 @@ public class DatabaseQueryServiceImplTest {
 
         when(jdbcTemplate.queryForObject(anyString(), any(Class.class))).thenReturn(100);
 
-        DatabaseQueryVo result = service.getResultSet(query, 0, 25);
+        DatabaseQueryDTO result = service.getResultSet(query, 0, 25);
 
         assertTrue(result.getHeaders().isEmpty());
         assertTrue(result.getContent().isEmpty());
