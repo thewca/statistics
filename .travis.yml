@@ -7,7 +7,7 @@ jobs:
         - ./gradlew build
 
     - language: node_js
-      node_js: 10
+      node_js: 14
       script:
         - cd client
         - yarn install
