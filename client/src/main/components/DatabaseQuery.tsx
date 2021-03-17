@@ -15,6 +15,7 @@ function DatabaseQuery() {
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(20);
   const [totalElements, setTotalElements] = useState<number>(0);
+  const [lastSearchedQuery, setLastSearchedQuery] = useState<string>();
 
   const handleSubmit = (page: number, pageSize = 0) => {
     // Avoid fetch in the first render
@@ -23,6 +24,13 @@ function DatabaseQuery() {
     }
 
     setQueryParameter(SQL_QUERY, query);
+
+    // Resets page if it's a new query
+    if (query !== lastSearchedQuery) {
+      page = 1;
+      setPage(1);
+    }
+    setLastSearchedQuery(query);
 
     setError(null);
     statisticsApi
