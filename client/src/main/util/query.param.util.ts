@@ -33,7 +33,7 @@ const updateUrl = (searchParams: URLSearchParams) => {
 
 const handleHash = () => {
   // Replace hash with query
-  let currentLocation = window.location.href.replaceAll("#", "?");
+  let currentLocation = window.location.href.replace(/#/g, "?");
 
   // If we end up with multiple, '?', we replace the other ones
   let index = currentLocation.indexOf("?");
