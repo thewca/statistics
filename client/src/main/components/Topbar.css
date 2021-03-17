@@ -1,11 +1,28 @@
-a {
-  margin: 20px 20px;
-  font-size: 150%;
+nav a {
+  margin: 0px 20px;
   color: #fff;
   font-variant: small-caps;
   text-shadow: 2px 2px 5px #888;
 }
 
-a span {
+nav a span {
   vertical-align: text-top !important;
+}
+
+#login {
+  float: right;
+}
+
+#login button {
+  background-color: inherit;
+  border: none;
+  padding: 0;
+  margin: 0 5px;
+  padding: 0 20px;
+  height: 100%;
+  color: #fff
+}
+
+#login button:hover {
+  background-color: #1890ff
 }

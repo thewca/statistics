@@ -1,11 +1,11 @@
-package org.worldcubeassociation.statistics.vo;
+package org.worldcubeassociation.statistics.dto;
 
 import java.util.List;
 
 import lombok.Data;
 
 @Data
-public class DatabaseQueryVo {
+public class DatabaseQueryDTO {
 	private List<String> headers; 	// Column names
 	private List<List<String>> content;
 

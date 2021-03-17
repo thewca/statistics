@@ -5,4 +5,5 @@ export interface LinkItem {
   href: string;
   exact: boolean;
   icon: ReactElement;
+  component: ReactElement;
 }

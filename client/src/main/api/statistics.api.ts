@@ -1,5 +1,6 @@
 import Axios from "axios";
 import { QueryDatabaseResponse } from "../model/QueryDatabase";
+import { UserInfo } from "../model/UserInfo";
 
 export class StatisticsApi {
   BASE_URL: string;
@@ -17,6 +18,16 @@ export class StatisticsApi {
       params,
     });
   };
+
+  getWcaAuthenticationUrl = (frontendHost: string) =>
+    Axios.get<string>(this.BASE_URL + "/wca/authentication", {
+      params: { frontendHost },
+    });
+
+  getUserInfo = (accessToken: string, tokenType: string) =>
+    Axios.get<UserInfo>(this.BASE_URL + "/wca/user", {
+      params: { accessToken, tokenType },
+    });
 }
 
 const statisticsApi = new StatisticsApi();

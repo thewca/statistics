@@ -1,50 +1,60 @@
 import { UserOutlined } from "@ant-design/icons";
-import { message } from "antd";
-import React from "react";
-import { Nav, Navbar } from "react-bootstrap";
+import { Menu } from "antd";
+import MenuItem from "antd/lib/menu/MenuItem";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import logo from "../assets/wca_logo.svg";
+import wcaApi from "../api/wca.api";
 import { LinkItem } from "../model/LinkItem";
 import "./Topbar.css";
+import logo from "../assets/wca_logo.svg";
 
 interface TopbarProps {
   links: LinkItem[];
 }
 
 const Topbar = ({ links }: TopbarProps) => {
+  const [logged, setLogged] = useState(wcaApi.isLogged());
+
+  const handle = () => {
+    if (logged) {
+      wcaApi.logout();
+      setLogged(false);
+    } else {
+      wcaApi.handleLogin();
+    }
+  };
+
   return (
-    <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
-      <Navbar.Brand>
+    <Menu theme="dark" mode="horizontal">
+      <Menu.Item key="logo">
         <Link to={links[0].href}>
-          <img
-            src={logo}
-            width="60"
-            height="60"
-            className="d-inline-block align-top"
-            alt="WCA logo"
-          />
+          <img src={logo} width="30" height="30" alt="Logo" />
         </Link>
-      </Navbar.Brand>
-      <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-      <Navbar.Collapse id="responsive-navbar-nav">
-        <Nav className="mr-auto">
-          {links.map((link, i) => (
-            <Link key={i} to={link.href} className="text-white align-center">
-              <span>{link.icon}</span> &nbsp;
-              {link.name}
-            </Link>
-          ))}
-        </Nav>
-        <Nav>
-          <Nav.Link
-            className="text-white"
-            onClick={() => message.info("Not implemented yet")}
-          >
-            <UserOutlined /> Login
-          </Nav.Link>
-        </Nav>
-      </Navbar.Collapse>
-    </Navbar>
+      </Menu.Item>
+      {links.map((link) => (
+        <MenuItem key={link.href}>
+          <Link to={link.href} className="text-white align-center">
+            <span>{link.icon}</span>
+            {link.name}
+          </Link>
+        </MenuItem>
+      ))}
+      <div id="login">
+        <button onClick={handle}>
+          {logged ? (
+            <img
+              src={wcaApi.getUserInfo()?.avatar?.thumb_url}
+              width="30"
+              height="30"
+              alt="Avatar"
+            />
+          ) : (
+            <UserOutlined />
+          )}{" "}
+          {logged ? "Logout" : "Login"}
+        </button>
+      </div>
+    </Menu>
   );
 };
 
