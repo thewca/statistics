@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import wcaApi from "../api/wca.api";
 import { LinkItem } from "../model/LinkItem";
 import "./Topbar.css";
+import logo from "../assets/wca_logo.svg";
 
 interface TopbarProps {
   links: LinkItem[];
@@ -25,8 +26,10 @@ const Topbar = ({ links }: TopbarProps) => {
 
   return (
     <Menu theme="dark" mode="horizontal">
-      <Menu.Item>
-        <Link to={links[0].href}></Link>
+      <Menu.Item key="logo">
+        <Link to={links[0].href}>
+          <img src={logo} width="30" height="30" alt="Logo" />
+        </Link>
       </Menu.Item>
       {links.map((link) => (
         <MenuItem key={link.href}>

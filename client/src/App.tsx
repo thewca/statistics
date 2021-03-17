@@ -54,7 +54,7 @@ function App() {
           <Topbar links={links} />
           <Switch>
             {links.map((link) => (
-              <Route path={link.href} exact={link.exact}>
+              <Route key={link.href} path={link.href} exact={link.exact}>
                 {link.component}
               </Route>
             ))}
