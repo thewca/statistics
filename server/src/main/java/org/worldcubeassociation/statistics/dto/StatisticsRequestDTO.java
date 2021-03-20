@@ -2,6 +2,7 @@ package org.worldcubeassociation.statistics.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.annotations.ApiParam;
 import lombok.Data;
 
 import java.util.LinkedHashMap;
@@ -14,17 +15,21 @@ public class StatisticsRequestDTO {
     private static final String VERSION = "v1";
 
     @NotBlank
-    @ApiModelProperty("Statistics display title.")
+    @ApiModelProperty(value = "Statistics display title.", example = "Competitors with most rounds")
     private String title;
 
-    @ApiModelProperty("Explanation about the current statistic.")
+    @ApiModelProperty(value = "Explanation about the current statistic.",
+            example = "Competitors with most rounds considering first round, second round, finals and so on. Node: "
+                    + "FMC and MBLD BO2 or BO3 count as 1.")
     private String explanation;
 
-    @NotBlank
-    @ApiModelProperty("Custom table headers. If none is provided, it will default to the SQL columns response.")
+    @ApiModelProperty(value = "Custom table headers. If none is provided, it will default to the SQL columns response.",
+            example = "[\"Name\",\"Country\",\"Count\"]")
     private List<String> headers;
 
-    @ApiModelProperty("Query used to generate a statistic. Either provide this or sqlQueries.")
+    @ApiModelProperty(value = "Query used to generate a statistic. Either provide this or sqlQueries.", example =
+            "select personName, countryId, count(*) rounds from Results group by personName, countryId order by "
+                    + "rounds desc")
     private String sqlQuery;
 
     @ApiModelProperty(
@@ -32,10 +37,19 @@ public class StatisticsRequestDTO {
                     + "for average'}. Either provide this or sqlQuery")
     private LinkedHashMap<String, StatisticsGroupRequestDTO> sqlQueries;
 
+    @ApiParam(allowableValues = "DEFAULT, SELECTOR")
+    @ApiModelProperty(
+            "In case of grouped statistics, you can select DEFAULT to display all of them in the frontend or "
+                    + "'SELECTOR' to group them in a selector.")
+    private String displayMode;
+
     @Data
     private static class StatisticsGroupRequestDTO {
         @NotBlank
+        @ApiModelProperty("select * from ... where countryId = 'country1'")
         private String sqlQuery;
+
+        @ApiModelProperty("Result for country 1")
         private String explanation;
     }
 }

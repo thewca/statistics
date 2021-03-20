@@ -12,16 +12,22 @@ public class StatisticsResponseDTO {
     @JsonProperty("version")
     private static final String VERSION = "v1";
 
-    @ApiModelProperty("Statistics display title.")
+    @ApiModelProperty(value = "Statistics display title.", example = "Competitors with most rounds")
     private String title;
 
-    @ApiModelProperty("Explanation about the current statistic.")
+    @ApiModelProperty(value = "Explanation about the current statistic.",
+            example = "Competitors with most rounds considering first round, second round, finals and so on. Node: "
+                    + "FMC and MBLD BO2 or BO3 count as 1.")
     private String explanation;
 
     private LinkedHashMap<String, StatisticsGroupResponseDTO> statistics;
 
-    @ApiModelProperty("Tables' headers.")
+    @ApiModelProperty(value = "Custom table headers. If none is provided, it will default to the SQL columns response.",
+            example = "[\"Name\",\"Country\",\"Count\"]")
     private List<String> headers;
+
+
+    private String displayMode;
 
     @Data
     private static class StatisticsGroupResponseDTO {
