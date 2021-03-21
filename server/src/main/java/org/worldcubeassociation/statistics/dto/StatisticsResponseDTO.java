@@ -42,4 +42,8 @@ public class StatisticsResponseDTO {
             example = "DEFAULT")
     @NotBlank
     private String displayMode;
+
+    @NotBlank
+    @ApiParam(value = "Path to the current statistics.", example = "countries-with-most-competitions")
+    private String path;
 }

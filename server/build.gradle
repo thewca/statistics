@@ -37,4 +37,7 @@ dependencies {
     implementation group: 'io.springfox', name: 'springfox-boot-starter', version: '3.0.0'
 
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation', version: '2.4.3'
+
+    implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.12.0'
+
 }

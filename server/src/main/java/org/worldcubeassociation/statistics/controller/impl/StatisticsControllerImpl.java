@@ -7,12 +7,14 @@ import org.worldcubeassociation.statistics.dto.StatisticsRequestDTO;
 import org.worldcubeassociation.statistics.dto.StatisticsResponseDTO;
 import org.worldcubeassociation.statistics.service.StatisticsService;
 
+import java.io.IOException;
+
 @RestController
 public class StatisticsControllerImpl implements StatisticsController {
     @Autowired
     private StatisticsService statisticsService;
 
-    public StatisticsResponseDTO sqlToStatistics(StatisticsRequestDTO statisticsRequestDTO) {
+    public StatisticsResponseDTO sqlToStatistics(StatisticsRequestDTO statisticsRequestDTO) throws IOException {
         return statisticsService.sqlToStatistics(statisticsRequestDTO);
     }
 }

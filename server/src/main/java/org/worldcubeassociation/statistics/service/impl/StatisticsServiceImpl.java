@@ -1,9 +1,11 @@
 package org.worldcubeassociation.statistics.service.impl;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 import org.worldcubeassociation.statistics.dto.DatabaseQueryBaseDTO;
 import org.worldcubeassociation.statistics.dto.StatisticsGroupRequestDTO;
 import org.worldcubeassociation.statistics.dto.StatisticsGroupResponseDTO;
@@ -13,6 +15,8 @@ import org.worldcubeassociation.statistics.exception.InvalidParameterException;
 import org.worldcubeassociation.statistics.service.DatabaseQueryService;
 import org.worldcubeassociation.statistics.service.StatisticsService;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -23,8 +27,14 @@ public class StatisticsServiceImpl implements StatisticsService {
     @Autowired
     private DatabaseQueryService databaseQueryService;
 
+    private static final ObjectMapper MAPPER = new ObjectMapper();
+
+    static {
+        MAPPER.enable(SerializationFeature.INDENT_OUTPUT);
+    }
+
     @Override
-    public StatisticsResponseDTO sqlToStatistics(StatisticsRequestDTO statisticsRequestDTO) {
+    public StatisticsResponseDTO sqlToStatistics(StatisticsRequestDTO statisticsRequestDTO) throws IOException {
         log.info("SQL to statistics for {}", statisticsRequestDTO);
 
         validateRequest(statisticsRequestDTO);
@@ -79,6 +89,18 @@ public class StatisticsServiceImpl implements StatisticsService {
                 .setDisplayMode(Optional.ofNullable(statisticsRequestDTO.getDisplayMode()).orElse("DEFAULT"));
         statisticsResponseDTO.setExplanation(statisticsRequestDTO.getExplanation());
         statisticsResponseDTO.setTitle(statisticsRequestDTO.getTitle());
+
+        String path = String.join("-",
+                StringUtils.stripAccents(statisticsRequestDTO.getTitle().replaceAll("[^a-zA-Z0-9 ]", "")).split(" "))
+                .toLowerCase();
+        ;
+        statisticsResponseDTO.setPath(path);
+
+        String fileName = String.format("statistics-list/%s.json", path);
+        File file = new File(fileName);
+        file.getParentFile().mkdirs();
+        file.createNewFile();
+        MAPPER.writeValue(file, statisticsResponseDTO);
 
         return statisticsResponseDTO;
     }
