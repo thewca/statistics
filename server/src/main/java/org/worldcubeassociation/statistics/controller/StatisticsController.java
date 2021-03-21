@@ -2,6 +2,7 @@ package org.worldcubeassociation.statistics.controller;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,7 +24,9 @@ public interface StatisticsController {
     @PostMapping("generate")
     void generateAll() throws IOException;
 
-    @GetMapping
+    @GetMapping("list")
     List<ControlItemDTO> list() throws IOException;
 
+    @GetMapping("list/{pathId}")
+    StatisticsResponseDTO getStatistic(@PathVariable String pathId) throws IOException;
 }

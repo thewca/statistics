@@ -14,6 +14,7 @@ import org.worldcubeassociation.statistics.dto.StatisticsGroupResponseDTO;
 import org.worldcubeassociation.statistics.dto.StatisticsRequestDTO;
 import org.worldcubeassociation.statistics.dto.StatisticsResponseDTO;
 import org.worldcubeassociation.statistics.exception.InvalidParameterException;
+import org.worldcubeassociation.statistics.exception.NotFoundException;
 import org.worldcubeassociation.statistics.service.DatabaseQueryService;
 import org.worldcubeassociation.statistics.service.StatisticsService;
 
@@ -152,6 +153,15 @@ public class StatisticsServiceImpl implements StatisticsService {
         Collections.sort(controlList, (o1, o2) -> o1.getTitle().compareTo(o2.getTitle()));
 
         return controlList;
+    }
+
+    @Override
+    public StatisticsResponseDTO getStatistic(String pathId) throws IOException {
+        File file = new File(String.format("statistics-list/%s.json", pathId));
+        if (!file.exists()) {
+            throw new NotFoundException(String.format("Statistic %s does not exists", pathId));
+        }
+        return MAPPER.readValue(file, StatisticsResponseDTO.class);
     }
 
     private File getControlFile() {

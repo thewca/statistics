@@ -13,4 +13,6 @@ public interface StatisticsService {
     void generateAll() throws IOException;
 
     List<ControlItemDTO> list() throws IOException;
+
+    StatisticsResponseDTO getStatistic(String pathId) throws IOException;
 }

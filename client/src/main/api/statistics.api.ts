@@ -31,7 +31,10 @@ export class StatisticsApi {
     });
 
   getStatisticsList = () =>
-    Axios.get<StatisticItem[]>(this.BASE_URL + "/statistics");
+    Axios.get<StatisticItem[]>(this.BASE_URL + "/statistics/list");
+
+  getStatistic = (pathId: string) =>
+    Axios.get(this.BASE_URL + "/statistics/list/" + pathId);
 }
 
 const statisticsApi = new StatisticsApi();

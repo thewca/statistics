@@ -29,4 +29,9 @@ public class StatisticsControllerImpl implements StatisticsController {
     public List<ControlItemDTO> list() throws IOException {
         return statisticsService.list();
     }
+
+    @Override
+    public StatisticsResponseDTO getStatistic(String pathId) throws IOException {
+        return statisticsService.getStatistic(pathId);
+    }
 }
