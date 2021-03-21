@@ -6,8 +6,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.worldcubeassociation.statistics.dto.StatisticsRequestDTO;
 import org.worldcubeassociation.statistics.dto.StatisticsResponseDTO;
 
+import javax.validation.Valid;
+
 @RequestMapping("statistic")
 public interface StatisticsController {
     @PostMapping
-    StatisticsResponseDTO sqlToStatistics(@RequestBody StatisticsRequestDTO statisticsRequestDTO);
+    StatisticsResponseDTO sqlToStatistics(@Valid @RequestBody StatisticsRequestDTO statisticsRequestDTO);
 }

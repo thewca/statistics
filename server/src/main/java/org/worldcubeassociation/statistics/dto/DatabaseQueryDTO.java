@@ -1,8 +1,12 @@
 package org.worldcubeassociation.statistics.dto;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
-@Data
+@Getter
+@Setter
+@ToString
 public class DatabaseQueryDTO extends DatabaseQueryBaseDTO {
     // Based on spring Page
     private int number; // Current page

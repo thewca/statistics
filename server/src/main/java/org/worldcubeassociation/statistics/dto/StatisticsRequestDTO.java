@@ -5,9 +5,9 @@ import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiParam;
 import lombok.Data;
 
-import java.util.LinkedHashMap;
 import java.util.List;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 
 @Data
 public class StatisticsRequestDTO {
@@ -33,11 +33,13 @@ public class StatisticsRequestDTO {
     private String sqlQuery;
 
     @ApiModelProperty(
-            "Groups statistics results by key. Example: you can use {'single': 'query for single', 'average', 'query "
-                    + "for average'}. Either provide this or sqlQuery")
-    private LinkedHashMap<String, StatisticsGroupRequestDTO> sqlQueries;
+            "Groups statistics results by key. Example: you can use [{'key': 'single', 'explanation': 'Results for "
+                    + "single', 'sqlQuery': 'select * from...'}, {'key': 'average', 'explanation': 'Results for "
+                    + "average', 'sqlQuery': 'select * from ...'}]")
+    private List<StatisticsGroupRequestDTO> sqlQueries;
 
     @ApiParam(allowableValues = "DEFAULT, SELECTOR")
+    @Pattern(regexp = "^(DEFAULT|SELECTOR)")
     @ApiModelProperty(
             "In case of grouped statistics, you can select DEFAULT to display all of them in the frontend or "
                     + "'SELECTOR' to group them in a selector.")

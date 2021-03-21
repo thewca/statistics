@@ -13,9 +13,8 @@ import org.worldcubeassociation.statistics.service.DatabaseQueryService;
 import org.worldcubeassociation.statistics.service.StatisticsService;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @Slf4j
 @Service
@@ -40,6 +39,8 @@ public class StatisticsServiceImpl implements StatisticsService {
 
             statisticsResponseDTO
                     .setHeaders(Optional.ofNullable(statisticsRequestDTO.getHeaders()).orElse(sqlResult.getHeaders()));
+        } else {
+
         }
 
         statisticsResponseDTO.setDisplayMode(statisticsRequestDTO.getDisplayMode());
@@ -51,9 +52,7 @@ public class StatisticsServiceImpl implements StatisticsService {
 
     private void validate(StatisticsRequestDTO statisticsRequestDTO) {
         boolean isQueryEmpty = StringUtils.isEmpty(statisticsRequestDTO.getSqlQuery());
-        int numberOfQueries =
-                Optional.ofNullable(statisticsRequestDTO.getSqlQueries()).map(LinkedHashMap::entrySet).map(Set::size)
-                        .orElse(0);
+        int numberOfQueries = Optional.ofNullable(statisticsRequestDTO.getSqlQueries()).map(List::size).orElse(0);
 
         if (isQueryEmpty && numberOfQueries == 0) {
             throw new InvalidParameterException("No SQL query informed.");
@@ -61,6 +60,14 @@ public class StatisticsServiceImpl implements StatisticsService {
 
         if (!isQueryEmpty && numberOfQueries > 0) {
             throw new InvalidParameterException("Please provide either a query or a set of queries, but not both.");
+        }
+
+        if (numberOfQueries > 0){
+            statisticsRequestDTO.getSqlQueries().forEach(query -> {
+                if (StringUtils.isEmpty(query)){
+                    throw new InvalidParameterException("One of the provided queries is empty");
+                }
+            });
         }
     }
 }
