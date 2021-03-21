@@ -1,5 +1,6 @@
 import Axios from "axios";
 import { QueryDatabaseResponse } from "../model/QueryDatabase";
+import { StatisticItem } from "../model/StatisticItem";
 import { UserInfo } from "../model/UserInfo";
 
 export class StatisticsApi {
@@ -28,6 +29,9 @@ export class StatisticsApi {
     Axios.get<UserInfo>(this.BASE_URL + "/wca/user", {
       params: { accessToken, tokenType },
     });
+
+  getStatisticsList = () =>
+    Axios.get<StatisticItem[]>(this.BASE_URL + "/statistics");
 }
 
 const statisticsApi = new StatisticsApi();

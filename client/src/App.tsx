@@ -11,6 +11,7 @@ import About from "./main/components/About";
 import DatabaseQuery from "./main/components/DatabaseQuery";
 import Footer from "./main/components/Footer";
 import Home from "./main/components/Home";
+import StatisticItem from "./main/components/StatisticItem";
 import StatisticsList from "./main/components/StatisticsList";
 import Topbar from "./main/components/Topbar";
 import { LinkItem } from "./main/model/LinkItem";
@@ -26,7 +27,7 @@ const links: LinkItem[] = [
   {
     name: "Statistics List",
     href: "/statistics-list",
-    exact: false,
+    exact: true,
     icon: <OrderedListOutlined />,
     component: <StatisticsList />,
   },
@@ -58,6 +59,7 @@ function App() {
                 {link.component}
               </Route>
             ))}
+            <Route path="/statistics-list/:pathId" component={StatisticItem} />
           </Switch>
         </div>
         <Footer />

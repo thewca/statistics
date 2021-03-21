@@ -127,6 +127,37 @@ public class StatisticsServiceImpl implements StatisticsService {
 
     }
 
+    @Override
+    public List<ControlItemDTO> list() throws IOException {
+        File controlFile = getControlFile();
+
+        List<ControlItemDTO> controlList = new ArrayList<>();
+
+        File folder = controlFile.getParentFile();
+        List<String> statistics =
+                Arrays.stream(folder.list()).filter(name -> !controlFile.getName().endsWith(name)).collect(
+                        Collectors.toList());
+
+        for (String fileName : statistics) {
+            File file = new File("statistics-list/" + fileName);
+            StatisticsResponseDTO stat = MAPPER.readValue(file, StatisticsResponseDTO.class);
+
+            ControlItemDTO controlItemDTO = new ControlItemDTO();
+            controlItemDTO.setPath(stat.getPath());
+            controlItemDTO.setTitle(stat.getTitle());
+
+            controlList.add(controlItemDTO);
+        }
+
+        Collections.sort(controlList, (o1, o2) -> o1.getTitle().compareTo(o2.getTitle()));
+
+        return controlList;
+    }
+
+    private File getControlFile() {
+        return new File("statistics-list/_control-list_.json");
+    }
+
     private void validateRequest(StatisticsRequestDTO statisticsRequestDTO) {
         boolean isQueryEmpty = StringUtils.isEmpty(statisticsRequestDTO.getSqlQuery());
         int numberOfQueries = Optional.ofNullable(statisticsRequestDTO.getSqlQueries()).map(List::size).orElse(0);
@@ -179,32 +210,9 @@ public class StatisticsServiceImpl implements StatisticsService {
 
     private void updateControlList() throws IOException {
         log.info("Update control list");
-
-        String controlListFileName = "statistics-list/_control-list_.json";
-        File controlFile = new File(controlListFileName);
-
-        List<ControlItemDTO> controlList = new ArrayList<>();
-
-        File folder = controlFile.getParentFile();
-        List<String> statistics =
-                Arrays.stream(folder.list()).filter(name -> !controlListFileName.endsWith(name)).collect(
-                        Collectors.toList());
-
-        for (String fileName : statistics) {
-            File file = new File("statistics-list/" + fileName);
-            StatisticsResponseDTO stat = MAPPER.readValue(file, StatisticsResponseDTO.class);
-
-            ControlItemDTO controlItemDTO = new ControlItemDTO();
-            controlItemDTO.setPath(stat.getPath());
-            controlItemDTO.setTitle(stat.getTitle());
-
-            controlList.add(controlItemDTO);
-        }
-
-        Collections.sort(controlList, (o1, o2) -> o1.getTitle().compareTo(o2.getTitle()));
-
+        List<ControlItemDTO> controlList = list();
+        File controlFile = getControlFile();
         MAPPER.writeValue(controlFile, controlList);
-
         log.info("List updated");
 
     }
