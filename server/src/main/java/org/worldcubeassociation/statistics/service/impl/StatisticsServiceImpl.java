@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.worldcubeassociation.statistics.dto.ControlItemDTO;
 import org.worldcubeassociation.statistics.dto.DatabaseQueryBaseDTO;
 import org.worldcubeassociation.statistics.dto.StatisticsGroupRequestDTO;
 import org.worldcubeassociation.statistics.dto.StatisticsGroupResponseDTO;
@@ -18,8 +19,11 @@ import org.worldcubeassociation.statistics.service.StatisticsService;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -96,11 +100,9 @@ public class StatisticsServiceImpl implements StatisticsService {
         ;
         statisticsResponseDTO.setPath(path);
 
-        String fileName = String.format("statistics-list/%s.json", path);
-        File file = new File(fileName);
-        file.getParentFile().mkdirs();
-        file.createNewFile();
-        MAPPER.writeValue(file, statisticsResponseDTO);
+        createLocalFile(statisticsResponseDTO, path);
+
+        updateControlList();
 
         return statisticsResponseDTO;
     }
@@ -143,5 +145,47 @@ public class StatisticsServiceImpl implements StatisticsService {
         }
 
         log.info("Validated");
+    }
+
+    private void createLocalFile(StatisticsResponseDTO statisticsResponseDTO, String path) throws IOException {
+        log.info("Create local file");
+        String fileName = String.format("statistics-list/%s.json", path);
+        File file = new File(fileName);
+        file.getParentFile().mkdirs();
+        file.createNewFile();
+        MAPPER.writeValue(file, statisticsResponseDTO);
+        log.info("Local file created");
+    }
+
+    private void updateControlList() throws IOException {
+        log.info("Update control list");
+
+        String controlListFileName = "statistics-list/_control-list_.json";
+        File controlFile = new File(controlListFileName);
+
+        List<ControlItemDTO> controlList = new ArrayList<>();
+
+        File folder = controlFile.getParentFile();
+        List<String> statistics =
+                Arrays.stream(folder.list()).filter(name -> !controlListFileName.endsWith(name)).collect(
+                        Collectors.toList());
+
+        for (String fileName : statistics) {
+            File file = new File("statistics-list/" + fileName);
+            StatisticsResponseDTO stat = MAPPER.readValue(file, StatisticsResponseDTO.class);
+
+            ControlItemDTO controlItemDTO = new ControlItemDTO();
+            controlItemDTO.setPath(stat.getPath());
+            controlItemDTO.setTitle(stat.getTitle());
+
+            controlList.add(controlItemDTO);
+        }
+
+        Collections.sort(controlList, (o1, o2) -> o1.getTitle().compareTo(o2.getTitle()));
+
+        MAPPER.writeValue(controlFile, controlList);
+
+        log.info("List updated");
+
     }
 }
