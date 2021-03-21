@@ -3,6 +3,7 @@ import { useState } from "react";
 import statisticsApi from "../api/statistics.api";
 import { getQueryParameter, setQueryParameter } from "../util/query.param.util";
 import "./DatabaseQuery.css";
+import StatisticsTable from "./StatisticsTable";
 
 const SQL_QUERY = "sqlQuery";
 
@@ -98,41 +99,12 @@ function DatabaseQuery() {
         </div>
       )}
       {queryResults.length > 0 && (
-        <div className="container-fluid">
-          <div className="table-responsive">
-            <table className="table table-hover table-striped table-bordered shadow table-condensed">
-              <thead className="thead thead-dark">
-                <tr>
-                  <th className="text-center" scope="col">
-                    #
-                  </th>
-                  {headers.map((header, i) => (
-                    <th key={i} className="text-center" scope="col">
-                      {header}
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody className="tbody">
-                {queryResults.map((result: string[], i) => (
-                  <tr key={i}>
-                    <th scope="row" className="text-center">
-                      {(page - 1) * pageSize + i + 1}
-                    </th>
-                    {result.map((entry, j) => (
-                      <td key={j} className="text-center">
-                        {entry}
-                      </td>
-                    ))}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      )}
-      {!!error && (
-        <div className="alert alert-danger">{JSON.stringify(error)}</div>
+        <StatisticsTable
+          headers={headers}
+          content={queryResults}
+          page={page}
+          pageSize={pageSize}
+        />
       )}
     </div>
   );
