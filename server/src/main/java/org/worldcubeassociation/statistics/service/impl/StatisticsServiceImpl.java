@@ -27,7 +27,7 @@ public class StatisticsServiceImpl implements StatisticsService {
     public StatisticsResponseDTO sqlToStatistics(StatisticsRequestDTO statisticsRequestDTO) {
         log.info("SQL to statistics for {}", statisticsRequestDTO);
 
-        validate(statisticsRequestDTO);
+        validateRequest(statisticsRequestDTO);
 
         StatisticsResponseDTO statisticsResponseDTO = new StatisticsResponseDTO();
         statisticsResponseDTO.setStatistics(new ArrayList<>());
@@ -50,7 +50,9 @@ public class StatisticsServiceImpl implements StatisticsService {
         } else {
             log.info("Multiple query mode");
 
-            statisticsRequestDTO.getSqlQueries().forEach(query -> {
+            Integer headersCount = null;
+
+            for (StatisticsGroupRequestDTO query : statisticsRequestDTO.getSqlQueries()) {
                 DatabaseQueryBaseDTO sqlResult = databaseQueryService.getResultSet(query.getSqlQuery());
 
                 StatisticsGroupResponseDTO statisticsGroupResponseDTO = new StatisticsGroupResponseDTO();
@@ -59,7 +61,18 @@ public class StatisticsServiceImpl implements StatisticsService {
                 statisticsResponseDTO.getStatistics().add(statisticsGroupResponseDTO);
                 statisticsResponseDTO.setHeaders(
                         Optional.ofNullable(statisticsRequestDTO.getHeaders()).orElse(sqlResult.getHeaders()));
-            });
+
+                if (headersCount != null && statisticsResponseDTO.getHeaders().size() != headersCount) {
+                    throw new InvalidParameterException("The number of headers must match across all queries");
+                }
+
+                if (statisticsRequestDTO.getHeaders() != null
+                        && statisticsResponseDTO.getHeaders().size() != sqlResult.getHeaders().size()) {
+                    throw new InvalidParameterException(
+                            "The provided headers length and the response headers length must match. If you are "
+                                    + "unsure, leave it empty.");
+                }
+            }
         }
 
         statisticsResponseDTO
@@ -70,7 +83,7 @@ public class StatisticsServiceImpl implements StatisticsService {
         return statisticsResponseDTO;
     }
 
-    private void validate(StatisticsRequestDTO statisticsRequestDTO) {
+    private void validateRequest(StatisticsRequestDTO statisticsRequestDTO) {
         boolean isQueryEmpty = StringUtils.isEmpty(statisticsRequestDTO.getSqlQuery());
         int numberOfQueries = Optional.ofNullable(statisticsRequestDTO.getSqlQueries()).map(List::size).orElse(0);
 
