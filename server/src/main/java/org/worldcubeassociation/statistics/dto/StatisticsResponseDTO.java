@@ -16,11 +16,11 @@ public class StatisticsResponseDTO {
     private String title;
 
     @ApiModelProperty(value = "Explanation about the current statistic.",
-            example = "Competitors with most rounds considering first round, second round, finals and so on. Node: "
-                    + "FMC and MBLD BO2 or BO3 count as 1.")
+            example = "Competitors with most rounds considering first round, second round, finals and so on. Note: "
+                    + "FMC and MBLD BO2, BO3 or MO3 count as 1.")
     private String explanation;
 
-    private LinkedHashMap<String, StatisticsGroupResponseDTO> statistics;
+    private List<StatisticsGroupResponseDTO> statistics;
 
     @ApiModelProperty(value = "Custom table headers. If none is provided, it will default to the SQL columns response.",
             example = "[\"Name\",\"Country\",\"Count\"]")
@@ -28,14 +28,4 @@ public class StatisticsResponseDTO {
 
 
     private String displayMode;
-
-    @Data
-    private static class StatisticsGroupResponseDTO {
-        @ApiModelProperty("Grouped statistics explanation")
-        private String explanation;
-
-        @ApiModelProperty("Grouped statistics content")
-        private List<List<String>> content;
-
-    }
 }
