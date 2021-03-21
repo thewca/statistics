@@ -4,15 +4,17 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.util.List;
+import javax.validation.constraints.NotNull;
 
 @Data
 public class StatisticsGroupResponseDTO {
-    @ApiModelProperty("Group identifier")
+    @ApiModelProperty(value = "Group identifier", example = "key1")
     private String key;
 
-    @ApiModelProperty("Grouped statistics explanation")
+    @ApiModelProperty(value = "Grouped statistics explanation", example = "Explanation for this specific key")
     private String explanation;
 
+    @NotNull
     @ApiModelProperty("Grouped statistics content")
-    private List<List<String>> content;
+    private List<@NotNull List<@NotNull String>> content;
 }

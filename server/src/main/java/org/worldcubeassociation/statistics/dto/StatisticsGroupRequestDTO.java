@@ -7,13 +7,15 @@ import javax.validation.constraints.NotBlank;
 
 @Data
 public class StatisticsGroupRequestDTO {
-    @ApiModelProperty("Group identifier")
+    @NotBlank
+    @ApiModelProperty(value = "Group identifier", example = "2010")
     private String key;
 
     @NotBlank
-    @ApiModelProperty("select * from ... where countryId = 'country1'")
+    @ApiModelProperty(value = "Query to be grouped",
+            example = "select countryId, count(*) qt from Competitions where year = 2010 group by countryId order by qt desc")
     private String sqlQuery;
 
-    @ApiModelProperty("Result for country 1")
+    @ApiModelProperty(value = "Grouped query purpose", example = "Competitions in 2010")
     private String explanation;
 }

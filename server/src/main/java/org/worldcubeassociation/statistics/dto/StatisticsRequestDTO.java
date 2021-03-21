@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiParam;
 import lombok.Data;
 
 import java.util.List;
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
@@ -15,33 +16,39 @@ public class StatisticsRequestDTO {
     private static final String VERSION = "v1";
 
     @NotBlank
-    @ApiModelProperty(value = "Statistics display title.", example = "Competitors with most rounds")
+    @ApiModelProperty(value = "Statistics display title.", example = "Countries with most competitions.")
     private String title;
 
     @ApiModelProperty(value = "Explanation about the current statistic.",
-            example = "Competitors with most rounds considering first round, second round, finals and so on. Note: "
-                    + "FMC and MBLD BO2, BO3 or MO3 count as 1.")
+            example = "Number of competitions in each country sorted from the highest to the lowest.")
     private String explanation;
 
     @ApiModelProperty(value = "Custom table headers. If none is provided, it will default to the SQL columns response.",
-            example = "[\"Name\",\"Country\",\"Count\"]")
+            example = "[\"Country\",\"Competitions\"]")
     private List<String> headers;
 
     @ApiModelProperty(value = "Query used to generate a statistic. Either provide this or sqlQueries.", example =
-            "select personName, countryId, count(*) rounds from Results group by personName, countryId order by "
-                    + "rounds desc limit 10")
+            "select countryId, count(*) qt from Competitions group by countryId order by qt desc")
     private String sqlQuery;
 
     @ApiModelProperty(
-            "Groups statistics results by key. Example: you can use [{'key': 'single', 'explanation': 'Results for "
-                    + "single', 'sqlQuery': 'select * from...'}, {'key': 'average', 'explanation': 'Results for "
-                    + "average', 'sqlQuery': 'select * from ...'}]")
-    private List<StatisticsGroupRequestDTO> sqlQueries;
+            value = "The same query but filtered somehow (example by user, country or competition) with a replaceable"
+                    + " placeholder for finding a specific result",
+            example = "select countryId, count(*) qt from Competitions where countryId = '%s' group by countryId "
+                    + "order by qt desc")
+    private String sqlQueryCustom;
+
+    @ApiModelProperty(
+            "Groups statistics results by key. Example: you can use [{'key': '2010', 'explanation': 'Competitions in "
+                    + "2010', 'sqlQuery': 'select * from... where year = 2010'}, {'key': '2015', 'explanation': "
+                    + "'Competitions in 2015', 'sqlQuery': 'select * from ... where year = 2015'}]")
+    private List<@Valid StatisticsGroupRequestDTO> sqlQueries;
 
     @ApiParam(allowableValues = "DEFAULT, SELECTOR")
     @Pattern(regexp = "^(DEFAULT|SELECTOR)")
     @ApiModelProperty(
-            "In case of grouped statistics, you can select DEFAULT to display all of them in the frontend or "
-                    + "'SELECTOR' to group them in a selector.")
+            value = "In case of grouped statistics, you can select DEFAULT to display all of them in the frontend or "
+                    + "'SELECTOR' to group them in a selector.",
+            example = "DEFAULT")
     private String displayMode;
 }
