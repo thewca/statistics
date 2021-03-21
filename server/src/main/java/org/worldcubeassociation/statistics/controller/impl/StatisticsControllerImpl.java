@@ -17,4 +17,9 @@ public class StatisticsControllerImpl implements StatisticsController {
     public StatisticsResponseDTO sqlToStatistics(StatisticsRequestDTO statisticsRequestDTO) throws IOException {
         return statisticsService.sqlToStatistics(statisticsRequestDTO);
     }
+
+    @Override
+    public void generateAll() throws IOException {
+        statisticsService.generateAll();
+    }
 }

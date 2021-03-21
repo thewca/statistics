@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ResourceUtils;
 import org.worldcubeassociation.statistics.dto.ControlItemDTO;
 import org.worldcubeassociation.statistics.dto.DatabaseQueryBaseDTO;
 import org.worldcubeassociation.statistics.dto.StatisticsGroupRequestDTO;
@@ -105,6 +106,25 @@ public class StatisticsServiceImpl implements StatisticsService {
         updateControlList();
 
         return statisticsResponseDTO;
+    }
+
+    @Override
+    public void generateAll() throws IOException {
+        log.info("Find all statistics");
+
+        File folder = ResourceUtils.getFile("classpath:statistics-request-list");
+
+        List<File> files = Arrays.asList(folder.listFiles());
+        log.info("Found {} statistics to generate", files.size());
+
+        for (File file : files) {
+            StatisticsRequestDTO request = MAPPER.readValue(file, StatisticsRequestDTO.class);
+            log.info("Statistic {}", request.getTitle());
+
+            sqlToStatistics(request);
+        }
+
+
     }
 
     private void validateRequest(StatisticsRequestDTO statisticsRequestDTO) {

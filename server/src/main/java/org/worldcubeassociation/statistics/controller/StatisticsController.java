@@ -9,9 +9,13 @@ import org.worldcubeassociation.statistics.dto.StatisticsResponseDTO;
 import java.io.IOException;
 import javax.validation.Valid;
 
-@RequestMapping("statistic")
+@RequestMapping("statistics")
 public interface StatisticsController {
     @PostMapping
     StatisticsResponseDTO sqlToStatistics(@Valid @RequestBody StatisticsRequestDTO statisticsRequestDTO)
             throws IOException;
+
+    @PostMapping("generate")
+    void generateAll() throws IOException;
+
 }
