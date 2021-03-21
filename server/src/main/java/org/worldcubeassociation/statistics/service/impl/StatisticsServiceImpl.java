@@ -70,7 +70,7 @@ public class StatisticsServiceImpl implements StatisticsService {
                 DatabaseQueryBaseDTO sqlResult = databaseQueryService.getResultSet(query.getSqlQuery());
 
                 StatisticsGroupResponseDTO statisticsGroupResponseDTO = new StatisticsGroupResponseDTO();
-                statisticsGroupResponseDTO.setKey(query.getKey());
+                statisticsGroupResponseDTO.setKeys(query.getKeys());
                 statisticsGroupResponseDTO.setContent(sqlResult.getContent());
                 statisticsResponseDTO.getStatistics().add(statisticsGroupResponseDTO);
                 statisticsResponseDTO.setHeaders(
@@ -139,7 +139,7 @@ public class StatisticsServiceImpl implements StatisticsService {
             });
 
             // Key emptiness validation already happens in the bean, so we can validate just if keys are unique
-            if (queries.size() != queries.stream().map(StatisticsGroupRequestDTO::getKey).distinct().count()) {
+            if (queries.size() != queries.stream().map(StatisticsGroupRequestDTO::getKeys).distinct().count()) {
                 throw new InvalidParameterException("The identifier keys must be unique.");
             }
         }

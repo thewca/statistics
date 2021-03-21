@@ -38,4 +38,4 @@ bin/*
 ### Export ###
 wca-developer-database-dump*
 
-*.json
+statistics-list/*
