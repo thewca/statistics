@@ -1,30 +1,24 @@
-import { message } from "antd";
-import { useEffect, useState } from "react";
-import statisticsApi from "../api/statistics.api";
-import { StatisticItem } from "../model/StatisticItem";
+import { StatisticsItem } from "../model/StatisticItem";
+import "./StatisticsList.css";
 
-const StatisticsList = () => {
-  const [statisticsList, setStatisticsList] = useState<StatisticItem[]>([]);
-  const getStatisticsList = () => {
-    statisticsApi
-      .getStatisticsList()
-      .then((response) => setStatisticsList(response.data))
-      .catch((e) => message.error("Error fetching statistics list"));
-  };
-  useEffect(getStatisticsList, []);
+interface StatisticsListProps {
+  statisticsList: StatisticsItem[];
+}
+
+const StatisticsList = ({ statisticsList }: StatisticsListProps) => {
   return (
-    <div>
-      <h1>Statistics List</h1>
+    <div className="container">
+      <h1 className="page-title">Statistics List</h1>
       {statisticsList.length > 0 && (
-        <div>
-          <ul>
-            {statisticsList.map((item) => (
-              <li key={item.path}>
-                <a href={"statistics-list/" + item.path}>{item.title}</a>
-              </li>
-            ))}
-          </ul>
-        </div>
+        <ul>
+          {statisticsList.map((statisticsItem) => (
+            <li key={statisticsItem.path} className="list-item">
+              <a href={`/statistics-list/${statisticsItem.path}`}>
+                {statisticsItem.title}
+              </a>
+            </li>
+          ))}
+        </ul>
       )}
     </div>
   );

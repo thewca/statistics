@@ -12,7 +12,7 @@ const StatisticsTable = ({
   pageSize = 0,
 }: StatisticsTableProps) => {
   return (
-    <div className="container-fluid">
+    <div className="container">
       <div className="table-responsive">
         <table className="table table-hover table-striped table-bordered shadow table-condensed">
           <thead className="thead thead-dark">

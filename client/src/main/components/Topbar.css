@@ -1,5 +1,4 @@
-nav a {
-  margin: 0px 20px;
+#top-bar {
   color: #fff;
   font-variant: small-caps;
   text-shadow: 2px 2px 5px #888;
@@ -20,9 +19,9 @@ nav a span {
   margin: 0 5px;
   padding: 0 20px;
   height: 100%;
-  color: #fff
+  color: #fff;
 }
 
 #login button:hover {
-  background-color: #1890ff
+  background-color: #1890ff;
 }

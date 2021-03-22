@@ -12,7 +12,6 @@ function DatabaseQuery() {
   const [queryResults, setQueryResults] = useState<string[][]>([]);
   const [headers, setHeaders] = useState<string[]>([]);
   const [noResult, setNoResult] = useState(false);
-  const [error, setError] = useState(null);
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(20);
   const [totalElements, setTotalElements] = useState<number>(0);
@@ -33,7 +32,6 @@ function DatabaseQuery() {
     }
     setLastSearchedQuery(query);
 
-    setError(null);
     statisticsApi
       .queryDatabase(query, page - 1, pageSize)
       .then((response) => {
@@ -59,13 +57,13 @@ function DatabaseQuery() {
   };
 
   return (
-    <div>
+    <div className="container">
+      <h1 className="page-title">Database Query</h1>
       <form
         onSubmit={(e) => {
           e.preventDefault();
           handleSubmit(page, pageSize);
         }}
-        className="container"
       >
         <div className="form-group">
           <textarea

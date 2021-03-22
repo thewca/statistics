@@ -1,4 +1,4 @@
-export interface StatisticItem {
+export interface StatisticsItem {
   title: string;
   path: string;
 }
