@@ -3,6 +3,7 @@ interface StatisticsTableProps {
   content: string[][];
   page?: number;
   pageSize?: number;
+  allowInnerHTML: boolean;
 }
 
 const StatisticsTable = ({
@@ -10,6 +11,7 @@ const StatisticsTable = ({
   headers,
   page = 0,
   pageSize = 0,
+  allowInnerHTML = false,
 }: StatisticsTableProps) => {
   return (
     <div className="container">
@@ -35,7 +37,12 @@ const StatisticsTable = ({
                 </th>
                 {result.map((entry, j) => (
                   <td key={j} className="text-center">
-                    {entry}
+                    {/* We allow rendering HTML (eg.: for links) in the statistics (not in the user's query) */}
+                    {allowInnerHTML ? (
+                      <span dangerouslySetInnerHTML={{ __html: entry }} />
+                    ) : (
+                      entry
+                    )}
                   </td>
                 ))}
               </tr>

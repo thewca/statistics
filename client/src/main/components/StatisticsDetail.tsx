@@ -40,6 +40,7 @@ const StatisticsDetail = () => {
             <StatisticsTable
               headers={statistics.headers}
               content={stat.content}
+              allowInnerHTML={true}
             />
           </div>
         ))}

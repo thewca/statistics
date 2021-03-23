@@ -102,6 +102,7 @@ function DatabaseQuery() {
           content={queryResults}
           page={page}
           pageSize={pageSize}
+          allowInnerHTML={false}
         />
       )}
     </div>
