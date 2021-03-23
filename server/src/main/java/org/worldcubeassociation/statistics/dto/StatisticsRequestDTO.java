@@ -8,6 +8,7 @@ import lombok.Data;
 import java.util.List;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 
 @Data
@@ -23,26 +24,12 @@ public class StatisticsRequestDTO {
             example = "Number of competitions in each country sorted from the highest to the lowest.")
     private String explanation;
 
-    @ApiModelProperty(value = "Custom table headers. If none is provided, it will default to the SQL columns response.",
-            example = "[\"Country\",\"Competitions\"]")
-    private List<String> headers;
-
-    @ApiModelProperty(value = "Query used to generate a statistic. Either provide this or sqlQueries.", example =
-            "select countryId, count(*) qt from Competitions group by countryId order by qt desc")
-    private String sqlQuery;
-
-    @ApiModelProperty(
-            value = "The same query but filtered somehow (example by user, country or competition) with a replaceable"
-                    + " placeholder for finding a specific result",
-            example = "select countryId, count(*) qt from Competitions where countryId = '%s' group by countryId "
-                    + "order by qt desc")
-    private String sqlQueryCustom;
-
+    @NotEmpty
     @ApiModelProperty(
             "Groups statistics results by key. Example: you can use [{'key': '2010', 'explanation': 'Competitions in "
                     + "2010', 'sqlQuery': 'select * from... where year = 2010'}, {'key': '2015', 'explanation': "
                     + "'Competitions in 2015', 'sqlQuery': 'select * from ... where year = 2015'}]")
-    private List<@Valid StatisticsGroupRequestDTO> sqlQueries;
+    private List<@Valid StatisticsGroupRequestDTO> queries;
 
     @ApiParam(allowableValues = "DEFAULT, SELECTOR")
     @Pattern(regexp = "^(DEFAULT|SELECTOR)")
