@@ -5,10 +5,11 @@ import lombok.Data;
 
 import java.util.List;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 
 @Data
 public class StatisticsGroupRequestDTO {
-    @NotBlank
+    @NotEmpty
     @ApiModelProperty(value = "Group identifier", example = "[\"2010\"], [\"Brazil\", \"2010\"]")
     private List<@NotBlank String> keys;
 

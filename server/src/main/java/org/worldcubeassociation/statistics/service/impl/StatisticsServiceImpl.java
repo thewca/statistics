@@ -80,7 +80,7 @@ public class StatisticsServiceImpl implements StatisticsService {
                         // First option is the headers provided in this key
                         Optional.ofNullable(query.getHeaders())
                                 // Second option is the one provided in the request
-                                .or(() -> Optional.of(statisticsRequestDTO.getHeaders()))
+                                .or(() -> Optional.ofNullable(statisticsRequestDTO.getHeaders()))
                                 // Finally, the one provided by the query
                                 .orElse(sqlResult.getHeaders()));
 
