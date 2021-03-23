@@ -25,7 +25,6 @@ public class StatisticsResponseDTO {
             example = "Number of competitions in each country sorted from the highest to the lowest.")
     private String explanation;
 
-
     @NotNull
     @ApiModelProperty(value = "Custom table headers. If none is provided, it will default to the SQL columns response.",
             example = "[\"Country\",\"Competitions\"]")

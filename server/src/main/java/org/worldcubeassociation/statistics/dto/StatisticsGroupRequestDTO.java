@@ -18,6 +18,10 @@ public class StatisticsGroupRequestDTO {
                     + "qt desc")
     private String sqlQuery;
 
+    @ApiModelProperty(value = "Custom table headers. If none is provided, it will default to the SQL columns response.",
+            example = "[\"Country\",\"Competitions\"]")
+    private List<String> headers;
+
     @ApiModelProperty(
             value = "The same query but filtered somehow (example by user, country or competition) with a replaceable"
                     + " placeholder for finding a specific result",

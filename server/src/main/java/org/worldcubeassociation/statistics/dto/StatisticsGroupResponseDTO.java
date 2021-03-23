@@ -19,6 +19,11 @@ public class StatisticsGroupResponseDTO {
     private String explanation;
 
     @NotNull
+    @ApiModelProperty(value = "Custom table headers. If none is provided, it will default to the SQL columns response.",
+            example = "[\"Country\",\"Competitions\"]")
+    private List<String> headers;
+
+    @NotNull
     @ApiModelProperty("Grouped statistics content")
     private List<@NotNull List<@NotNull String>> content;
 }

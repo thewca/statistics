@@ -64,7 +64,7 @@ public class StatisticsServiceImpl implements StatisticsService {
             // Setting display mode null since the user might have made a mistake
             statisticsRequestDTO.setDisplayMode(null);
         } else {
-            log.info("Multiple query mode");
+            log.info("Multiple queries mode");
 
             Integer headersCount = null;
 
@@ -75,8 +75,14 @@ public class StatisticsServiceImpl implements StatisticsService {
                 statisticsGroupResponseDTO.setKeys(query.getKeys());
                 statisticsGroupResponseDTO.setContent(sqlResult.getContent());
                 statisticsResponseDTO.getStatistics().add(statisticsGroupResponseDTO);
+
                 statisticsResponseDTO.setHeaders(
-                        Optional.ofNullable(statisticsRequestDTO.getHeaders()).orElse(sqlResult.getHeaders()));
+                        // First option is the headers provided in this key
+                        Optional.ofNullable(query.getHeaders())
+                                // Second option is the one provided in the request
+                                .or(() -> Optional.of(statisticsRequestDTO.getHeaders()))
+                                // Finally, the one provided by the query
+                                .orElse(sqlResult.getHeaders()));
 
                 if (headersCount != null && statisticsResponseDTO.getHeaders().size() != headersCount) {
                     throw new InvalidParameterException("The number of headers must match across all queries");
