@@ -20,6 +20,8 @@ import org.worldcubeassociation.statistics.service.StatisticsService;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -55,6 +57,9 @@ public class StatisticsServiceImpl implements StatisticsService {
             statisticsGroupResponseDTO.setKeys(query.getKeys());
             statisticsGroupResponseDTO.setContent(sqlResult.getContent());
             statisticsResponseDTO.getStatistics().add(statisticsGroupResponseDTO);
+
+            Optional.ofNullable(query.getSqlQueryCustom()).ifPresent(
+                    q -> statisticsGroupResponseDTO.setSqlQueryCustom(URLEncoder.encode(q, StandardCharsets.UTF_8)));
 
             statisticsResponseDTO.setHeaders(
                     // First option is the headers provided in this key
@@ -97,8 +102,8 @@ public class StatisticsServiceImpl implements StatisticsService {
         log.info("Found {} statistics to generate", files.size());
 
         for (File file : files) {
+            log.info("Statistic {}", file.getName());
             StatisticsRequestDTO request = MAPPER.readValue(file, StatisticsRequestDTO.class);
-            log.info("Statistic {}", request.getTitle());
 
             sqlToStatistics(request);
         }

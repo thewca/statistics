@@ -1,5 +1,5 @@
 {
-  "sqlQueries": [
+  "queries": [
     {
       "keys": ["Average"],
       "sqlQuery": "select\n    concat(\n        '<a href=\"https://www.worldcubeassociation.org/persons/',\n        personId,\n        '\">',\n        personName,\n        '</a>'\n    ) Name,\n    Country,\n    count(*) Apperances\nfrom\n    (\n        select\n            personName,\n            personId,\n            average,\n            countryId Country\n        from\n            Results r\n        where\n            eventId = '333'\n            and average > 0\n        order by\n            average\n        limit\n            100\n    ) r\ngroup by\n    personName,\n    personId,\n    Country\norder by\n    Apperances desc"

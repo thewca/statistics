@@ -12,6 +12,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 
 @Data
+
 public class StatisticsRequestDTO {
     @JsonProperty("version")
     private static final String VERSION = "v1";

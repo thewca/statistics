@@ -6,14 +6,14 @@ import {
 } from "@ant-design/icons";
 import { message } from "antd";
 import "bootstrap/dist/css/bootstrap.min.css";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import statisticsApi from "./main/api/statistics.api";
 import About from "./main/components/About";
 import DatabaseQuery from "./main/components/DatabaseQuery";
 import Footer from "./main/components/Footer";
 import Home from "./main/components/Home";
-import StatisticsDetail from "./main/components/StatisticsDetail";
+import StatisticsDisplay from "./main/components/StatisticsDisplay";
 import StatisticsList from "./main/components/StatisticsList";
 import Topbar from "./main/components/Topbar";
 import { LinkItem } from "./main/model/LinkItem";
@@ -73,7 +73,7 @@ function App() {
             ))}
             <Route
               path="/statistics-list/:pathId"
-              component={StatisticsDetail}
+              component={StatisticsDisplay}
             />
           </Switch>
         </div>

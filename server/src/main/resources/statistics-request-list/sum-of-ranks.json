@@ -1,5 +1,5 @@
 {
-  "sqlQueries": [
+  "queries": [
     {
       "keys": ["Single"],
       "sqlQuery": "select\n\tname Name,\n\tcountryId Country,\n\tr3 + r4 + r5 Sum,\n\tr3 '3x3',\n\tr4 '4x4',\n\tr5 '5x5'\nfrom\n\t(\n\tselect\n\t\tid,\n\t\tp.name,\n\t\tp.countryId,\n\t\t(\n\t\tselect\n\t\t\tworldRank\n\t\tfrom\n\t\t\tRanksSingle\n\t\twhere\n\t\t\tpersonId = p.id\n\t\t\tand eventId = '333') r3,\n\t\t(\n\t\tselect\n\t\t\tworldRank\n\t\tfrom\n\t\t\tRanksSingle\n\t\twhere\n\t\t\tpersonId = p.id\n\t\t\tand eventId = '444') r4,\n\t\t(\n\t\tselect\n\t\t\tworldRank\n\t\tfrom\n\t\t\tRanksSingle\n\t\twhere\n\t\t\tpersonId = p.id\n\t\t\tand eventId = '555') r5\n\tfrom\n\t\tPersons p) r\nwhere\n\tr3 is not null\n\tand r4 is not null\n\tand r5 is not null\norder by\n\tSum asc\nlimit 20",

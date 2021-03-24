@@ -1,6 +1,6 @@
 import Axios from "axios";
 import { QueryDatabaseResponse } from "../model/QueryDatabase";
-import Statistics from "../model/Statistic";
+import { Statistics } from "../model/Statistic";
 import { StatisticsItem } from "../model/StatisticItem";
 import { UserInfo } from "../model/UserInfo";
 

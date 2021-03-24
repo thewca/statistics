@@ -1,7 +1,7 @@
 {
-  "sqlQueries": [
+  "queries": [
     {
-      "keys": ["333"],
+      "keys": ["3x3x3"],
       "sqlQuery": "select\n\tpersonName,\n\tcountryId,\n\tsum(case when pos = 1 then 1 else 0 end) Golds,\n\tsum(case when pos = 2 then 1 else 0 end) Silvers,\n\tsum(case when pos = 3 then 1 else 0 end) Bronzes\nfrom\n\tResults\nwhere\n\troundTypeId in ('c', 'f')\n\tand best > 0\n\tand eventId = '333'\ngroup by\n\tpersonName,\n\tcountryId\norder by\n\tGolds desc\nlimit 20",
       "sqlQueryCustom": "select\n\tpersonName,\n\tcountryId,\n\tsum(case when pos = 1 then 1 else 0 end) Golds,\n\tsum(case when pos = 2 then 1 else 0 end) Silvers,\n\tsum(case when pos = 3 then 1 else 0 end) Bronzes\nfrom\n\tResults\nwhere\n\troundTypeId in ('c', 'f')\n\tand best > 0\n\tand eventId = '333'\n\tand personId = '%s'\ngroup by\n\tpersonName,\n\tcountryId\norder by\n\tGolds desc\nlimit 20"
     },
