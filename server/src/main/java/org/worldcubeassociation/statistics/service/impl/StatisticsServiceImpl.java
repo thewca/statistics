@@ -114,7 +114,8 @@ public class StatisticsServiceImpl implements StatisticsService {
 
         File folder = controlFile.getParentFile();
         List<String> statistics =
-                Arrays.stream(folder.list()).filter(name -> !controlFile.getName().endsWith(name)).collect(
+                Arrays.stream(Optional.ofNullable(folder.list()).orElse(new String[]{}))
+                        .filter(name -> !controlFile.getName().endsWith(name)).collect(
                         Collectors.toList());
 
         for (String fileName : statistics) {
