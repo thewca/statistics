@@ -1,4 +1,4 @@
-import { Input, message, Pagination } from "antd";
+import { Input, message, Pagination, Skeleton } from "antd";
 import { useEffect, useState } from "react";
 import statisticsApi from "../api/statistics.api";
 import { getQueryParameter, setQueryParameter } from "../util/query.param.util";
@@ -22,6 +22,7 @@ function DatabaseQuery() {
   const [totalElements, setTotalElements] = useState<number>(0);
   const [lastSearchedQuery, setLastSearchedQuery] = useState<string>();
   const [replaceList, setReplaceList] = useState<ReplaceItem[]>([]);
+  const [loading, setLoading] = useState(false);
 
   // We allow common replacement with the form :ALL_UPPER
   useEffect(() => {
@@ -66,6 +67,7 @@ function DatabaseQuery() {
         (finalQuery = finalQuery.replaceAll(replaceItem.key, replaceItem.value))
     );
 
+    setLoading(true);
     statisticsApi
       .queryDatabase(finalQuery, page - 1, pageSize)
       .then((response) => {
@@ -77,7 +79,8 @@ function DatabaseQuery() {
         setQueryResults(content);
         setTotalElements(response.data.totalElements);
       })
-      .catch((e) => message.error(e.response?.data?.message || "Error"));
+      .catch((e) => message.error(e.response?.data?.message || "Error"))
+      .finally(() => setLoading(false));
   };
 
   const handlePaginationChange = (newPage: number, newSize?: number) => {
@@ -150,7 +153,8 @@ function DatabaseQuery() {
           />
         </div>
       )}
-      {queryResults.length > 0 && (
+      {loading && <Skeleton active />}
+      {queryResults.length > 0 && !loading && (
         <StatisticsTable
           headers={headers}
           content={queryResults}
