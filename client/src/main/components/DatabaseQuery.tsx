@@ -60,8 +60,14 @@ function DatabaseQuery() {
     }
     setLastSearchedQuery(query);
 
+    let finalQuery = "" + query;
+    replaceList.forEach(
+      (replaceItem) =>
+        (finalQuery = finalQuery.replaceAll(replaceItem.key, replaceItem.value))
+    );
+
     statisticsApi
-      .queryDatabase(query, page - 1, pageSize)
+      .queryDatabase(finalQuery, page - 1, pageSize)
       .then((response) => {
         let content = response.data.content;
         let headers = response.data.headers;
