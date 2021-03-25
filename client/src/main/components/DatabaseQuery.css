@@ -6,3 +6,7 @@
 .ant-pagination-item a {
   display: inline !important; /* fix strange behavior in pagination align */
 }
+
+.replace-item {
+  margin: 5px 0;
+}
