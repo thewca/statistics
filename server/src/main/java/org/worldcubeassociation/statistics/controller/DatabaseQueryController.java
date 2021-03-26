@@ -5,7 +5,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.worldcubeassociation.statistics.dto.DatabaseQueryDTO;
-import org.worldcubeassociation.statistics.exception.InvalidParameterException;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -18,6 +17,5 @@ public interface DatabaseQueryController {
     @PostMapping("query")
     DatabaseQueryDTO getResultSet(@RequestParam @NotBlank String sqlQuery,
                                   @RequestParam(defaultValue = "0") @Min(0) Integer page,
-                                  @RequestParam(defaultValue = "20") @Min(1) @Max(100) Integer size)
-            throws InvalidParameterException;
+                                  @RequestParam(defaultValue = "20") @Min(1) @Max(100) Integer size);
 }

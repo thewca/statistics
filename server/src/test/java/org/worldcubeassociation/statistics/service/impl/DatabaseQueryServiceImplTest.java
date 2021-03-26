@@ -9,9 +9,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.worldcubeassociation.statistics.exception.InvalidParameterException;
-import org.worldcubeassociation.statistics.rowmapper.ResultSetRowMapper;
 import org.worldcubeassociation.statistics.dto.DatabaseQueryDTO;
+import org.worldcubeassociation.statistics.rowmapper.ResultSetRowMapper;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -38,7 +37,7 @@ public class DatabaseQueryServiceImplTest {
     private String query = "select * from Events";
 
     @Test
-    public void getResultSetTest() throws InvalidParameterException {
+    public void getResultSetTest() {
         // Ideal scenario
 
         int nEvents = 20;
@@ -66,7 +65,7 @@ public class DatabaseQueryServiceImplTest {
     }
 
     @Test
-    public void getResultSetEmptyTest() throws InvalidParameterException {
+    public void getResultSetEmptyTest() {
         // In case of no result, we should return an empty list
 
         when(jdbcTemplate.queryForObject(anyString(), any(Class.class))).thenReturn(100);

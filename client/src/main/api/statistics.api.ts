@@ -1,5 +1,7 @@
 import Axios from "axios";
 import { QueryDatabaseResponse } from "../model/QueryDatabase";
+import { Statistics } from "../model/Statistic";
+import { StatisticsItem } from "../model/StatisticItem";
 import { UserInfo } from "../model/UserInfo";
 
 export class StatisticsApi {
@@ -28,6 +30,12 @@ export class StatisticsApi {
     Axios.get<UserInfo>(this.BASE_URL + "/wca/user", {
       params: { accessToken, tokenType },
     });
+
+  getStatisticsList = () =>
+    Axios.get<StatisticsItem[]>(this.BASE_URL + "/statistics/list");
+
+  getStatistic = (pathId: string) =>
+    Axios.get<Statistics>(this.BASE_URL + "/statistics/list/" + pathId);
 }
 
 const statisticsApi = new StatisticsApi();

@@ -22,3 +22,14 @@ body {
   bottom: 0;
   width: 100%;
 }
+
+.page-title {
+  text-align: center;
+  font-variant: small-caps;
+  font-weight: bold;
+  margin: 20px 0;
+}
+
+.anticon {
+  vertical-align: baseline;
+}

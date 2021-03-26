@@ -28,17 +28,17 @@ const Footer = () => {
             <ul className="list-unstyled">
               <li>
                 <a href="https://www.facebook.com/WorldCubeAssociation">
-                  <FacebookOutlined />
+                  <FacebookOutlined /> Facebook
                 </a>
               </li>
               <li>
                 <a href="https://www.instagram.com/thewcaofficial">
-                  <InstagramOutlined />
+                  <InstagramOutlined /> Instagram
                 </a>
               </li>
               <li>
                 <a href="https://www.youtube.com/channel/UC5OUMUnS8PvY1RvtB1pQZ0g">
-                  <YoutubeOutlined />
+                  <YoutubeOutlined /> YouTube
                 </a>
               </li>
             </ul>
