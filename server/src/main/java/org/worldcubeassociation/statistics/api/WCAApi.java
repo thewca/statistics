@@ -1,6 +1,5 @@
 package org.worldcubeassociation.statistics.api;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -20,7 +19,7 @@ public class WCAApi {
     @Value("${api.wca.baseurl}")
     private String wcaBaseUrl;
 
-    public UserInfoDTO getUserInfo(String accessToken, String tokenType) throws JsonProcessingException {
+    public UserInfoDTO getUserInfo(String accessToken, String tokenType) {
         log.info("Get user info");
 
         String url = wcaBaseUrl + "/api/v0/me";

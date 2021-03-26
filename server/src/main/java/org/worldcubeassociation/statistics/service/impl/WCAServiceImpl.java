@@ -1,6 +1,5 @@
 package org.worldcubeassociation.statistics.service.impl;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -27,9 +26,8 @@ public class WCAServiceImpl implements WCAService {
     }
 
     @Override
-    public UserInfoDTO getUserInfo(String accessToken, String tokenType) throws JsonProcessingException {
+    public UserInfoDTO getUserInfo(String accessToken, String tokenType) {
         return wcaApi.getUserInfo(accessToken, tokenType);
-
     }
 
 }

@@ -1,6 +1,5 @@
 package org.worldcubeassociation.statistics.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,5 +15,5 @@ public interface WCAController {
     String getWcaAuthenticationUrl(@NotBlank String frontendHost);
 
     @GetMapping("user")
-    UserInfoDTO getUserInfo(@NotBlank String accessToken, @NotBlank String tokenType) throws JsonProcessingException;
+    UserInfoDTO getUserInfo(@NotBlank String accessToken, @NotBlank String tokenType);
 }
