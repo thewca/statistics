@@ -25,3 +25,15 @@ The commands listed here should work in Unix systems or in Windows (using GitBas
 - Run the client
 
 `yarn start`
+
+## Run with docker
+
+- Build an image
+
+`docker build -t user/client .`
+
+- Run the image
+
+`docker run -d -p 3000:3000 --name client user/client:latest`
+
+The `-d` part means "detached", so you'll have to stop by killing the process running on port 3000.
