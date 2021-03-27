@@ -1,0 +1,47 @@
+version: "3.7"
+
+services:
+  server:
+    build:
+      context: server
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    restart: always
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/wca_development?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false
+    depends_on:
+      - db
+    networks:
+      - server
+      - client
+
+  client:
+    build:
+      context: client
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    restart: always
+    depends_on:
+      - server
+    networks:
+      - client
+
+  db:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_DATABASE: wca_development
+      MYSQL_ALLOW_EMPTY_PASSWORD: "true"
+    volumes:
+      - db-data:/var/lib/mysql
+    networks:
+      - server
+
+volumes:
+  db-data:
+
+networks:
+  server:
+  client:

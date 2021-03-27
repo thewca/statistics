@@ -55,3 +55,15 @@ The commands listed here should work in Unix systems or in Windows (using GitBas
 `./gradlew bootRun --args='--spring.profiles.active=local'`
 
 An address should be logged. Probably http://localhost:8000/swagger-ui.html#/, if you did not change port. Visit it to read the documentation. You can run in another port (let's say 8001) by using `./gradlew bootRun --args='--spring.profiles.active=local --server.port=8001'`.
+
+## Run with docker
+
+- Build an image
+
+`docker build -t user/statistics-server .`
+
+- Run the image
+
+`docker run -d -p 8080:8080 --name statistics-server user/statistics-server:latest`
+
+The `-d` part means "detached", so you'll have to stop by killing the process running on port 8080.
