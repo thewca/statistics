@@ -5,8 +5,10 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
+import org.springframework.core.io.support.ResourcePatternUtils;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ResourceUtils;
 import org.worldcubeassociation.statistics.dto.ControlItemDTO;
 import org.worldcubeassociation.statistics.dto.DatabaseQueryBaseDTO;
 import org.worldcubeassociation.statistics.dto.StatisticsGroupRequestDTO;
@@ -18,8 +20,11 @@ import org.worldcubeassociation.statistics.exception.NotFoundException;
 import org.worldcubeassociation.statistics.service.DatabaseQueryService;
 import org.worldcubeassociation.statistics.service.StatisticsService;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -34,6 +39,9 @@ import java.util.stream.Collectors;
 public class StatisticsServiceImpl implements StatisticsService {
     @Autowired
     private DatabaseQueryService databaseQueryService;
+
+    @Autowired
+    private ResourceLoader resourceLoader;
 
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
@@ -96,19 +104,22 @@ public class StatisticsServiceImpl implements StatisticsService {
     public void generateAll() throws IOException {
         log.info("Find all statistics");
 
-        File folder = ResourceUtils.getFile("classpath:statistics-request-list");
+        Resource[] resources =
+                ResourcePatternUtils.getResourcePatternResolver(resourceLoader)
+                        .getResources("classpath:statistics-request-list/*.json");
 
-        List<File> files = Arrays.asList(folder.listFiles());
-        log.info("Found {} statistics to generate", files.size());
+        for (Resource resource : resources) {
+            log.info("Statistic {}", resource.getDescription());
 
-        for (File file : files) {
-            log.info("Statistic {}", file.getName());
-            StatisticsRequestDTO request = MAPPER.readValue(file, StatisticsRequestDTO.class);
+            InputStream inputStream = resource.getInputStream();
+
+            String fileContent = new BufferedReader(new InputStreamReader(inputStream))
+                    .lines().collect(Collectors.joining("\n"));
+
+            StatisticsRequestDTO request = MAPPER.readValue(fileContent, StatisticsRequestDTO.class);
 
             sqlToStatistics(request);
         }
-
-
     }
 
     @Override
