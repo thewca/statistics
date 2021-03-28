@@ -10,4 +10,16 @@ This project is composed of front end and backend. You can check the requirement
 
 ## How to run it
 
-You can follow instruction in each one.
+This project is separated in server and client, backend and front and respectively. You can run each one by following instructions in client and server's folder, located in the README.
+
+## Run with docker
+
+- Build server's jar
+
+`cd server && ./gradlew build && cd ..`
+
+- Download the database export and build it in a database called `wca_development`. You can use the file `server/get_db_export.sh`.
+
+- Run docker
+
+`docker-compose up`
