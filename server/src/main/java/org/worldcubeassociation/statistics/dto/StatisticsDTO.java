@@ -27,11 +27,6 @@ public class StatisticsDTO {
     private String explanation;
 
     @NotNull
-    @ApiModelProperty(value = "Custom table headers. If none is provided, it will default to the SQL columns response.",
-            example = "[\"Country\",\"Competitions\"]")
-    private List<String> headers;
-
-    @NotNull
     private List<@Valid StatisticsGroupResponseDTO> statistics;
 
     @ApiParam(allowableValues = "DEFAULT, SELECTOR")

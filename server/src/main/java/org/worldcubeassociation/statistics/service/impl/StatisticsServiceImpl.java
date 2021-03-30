@@ -70,13 +70,13 @@ public class StatisticsServiceImpl implements StatisticsService {
             Optional.ofNullable(query.getSqlQueryCustom()).ifPresent(
                     q -> statisticsGroupResponseDTO.setSqlQueryCustom(URLEncoder.encode(q, StandardCharsets.UTF_8)));
 
-            statisticsDTO.setHeaders(
+            statisticsGroupResponseDTO.setHeaders(
                     // First option is the headers provided in this key
                     Optional.ofNullable(query.getHeaders())
                             // Then, the one provided by the query
                             .orElse(sqlResult.getHeaders()));
 
-            if (statisticsDTO.getHeaders().size() != sqlResult.getHeaders().size()) {
+            if (statisticsGroupResponseDTO.getHeaders().size() != sqlResult.getHeaders().size()) {
                 throw new InvalidParameterException(
                         "The provided headers length and the response headers length must match. If you are "
                                 + "unsure, leave it empty.");
@@ -154,7 +154,10 @@ public class StatisticsServiceImpl implements StatisticsService {
     public StatisticsResponseDTO create(StatisticsDTO statisticsDTO) throws IOException {
         log.info("Create statistics from {}", statisticsDTO);
 
-        StatisticsResponseDTO statisticsResponseDTO = (StatisticsResponseDTO) statisticsDTO;
+        statisticsDTO
+                .setDisplayMode(Optional.ofNullable(statisticsDTO.getDisplayMode()).orElse("DEFAULT"));
+
+        StatisticsResponseDTO statisticsResponseDTO = new StatisticsResponseDTO(statisticsDTO);
 
         String path = String.join("-",
                 StringUtils.stripAccents(statisticsDTO.getTitle().replaceAll("[^a-zA-Z0-9 ]", "")).split(" "))

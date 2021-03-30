@@ -1,6 +1,7 @@
 import bisect
 import csv
 import logging
+import json
 
 import requests
 
@@ -64,6 +65,7 @@ def largest_range_fmc():
     name_list = []
     country_list = []
 
+    log.info("Read tsv")
     with open('WCA_export/WCA_export_Results.tsv') as tsvin:
         tsvin = csv.reader(tsvin, delimiter='\t')
 
@@ -99,6 +101,7 @@ def largest_range_fmc():
     id_list_out = []
     country_list_out = []
 
+    log.info("Calculate ranges")
     for i in range(len(id_list)):
         if len(lists_of_results[i]) < 1:  # skipping people with only 1 result
             continue
@@ -110,11 +113,10 @@ def largest_range_fmc():
         min_out.append(b)
         max_out.append(c)
 
+    log.info("Build results")
     table = []
-
     prev = None
     count = 0
-    pos = 0
     for a, b, c, name, country, wca_id in sorted(zip(range_out, min_out, max_out, name_out, country_list_out, id_list_out))[::-1]:
         count += 1
 
@@ -129,16 +131,23 @@ def largest_range_fmc():
     out["explanation"] = "Range here means no gap"
     headers = ["Range", "Person",
                "Country", "Range Start", "Range End"]
-    out["statistics"] = [{"keys": [], "content": table, headers: headers}]
+    out["statistics"] = [{"keys": [], "content": table, "headers": headers}]
+    print(out)
     return out
 
 
 def main():
     data = largest_range_fmc()
 
-    response = requests.post(
-        "ttp://localhost:8080/statistics/create", data=data)
-    log.info(response)
+    url = "http://localhost:8080/statistics/create"
+
+    log.info("Post data to %s" % url)
+    response = requests.post(url, json=data)
+    log.info(response.status_code)
+    if response.status_code == 200:
+        log.info("Success")
+    else:
+        log.info("Error")
 
 
 main()
