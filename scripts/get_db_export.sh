@@ -28,3 +28,5 @@ unzip "$export_file_zip"
 echo "Executing the .sql"
 echo "This can take a few hours"
 sudo mysql -e "create database if not exists wca_development; USE wca_development; SOURCE $export_file_sql;"
+
+echo "Complete"

@@ -1,4 +1,9 @@
+# Log
 server/log*
 
+# SQL export
 wca-developer-database-dump.sql
 wca-developer-database-dump.zip
+
+# TSV export
+WCA_export*
