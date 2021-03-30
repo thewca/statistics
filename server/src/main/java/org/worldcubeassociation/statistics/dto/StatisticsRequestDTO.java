@@ -18,7 +18,7 @@ public class StatisticsRequestDTO {
     private static final String VERSION = "v1";
 
     @NotBlank
-    @ApiModelProperty(value = "Statistics display title.", example = "Countries with most competitions.")
+    @ApiModelProperty(value = "Statistics display title.", example = "Countries with most competitions")
     private String title;
 
     @ApiModelProperty(value = "Explanation about the current statistic.",
