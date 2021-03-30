@@ -11,7 +11,7 @@ import javax.validation.Valid;
 public interface StatisticsService {
     StatisticsResponseDTO sqlToStatistics(StatisticsRequestDTO statisticsRequestDTO) throws IOException;
 
-    void generateAll() throws IOException;
+    void generateAllFromSql() throws IOException;
 
     List<ControlItemDTO> list() throws IOException;
 

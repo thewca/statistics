@@ -22,8 +22,8 @@ public class StatisticsControllerImpl implements StatisticsController {
     }
 
     @Override
-    public void generateAll() throws IOException {
-        statisticsService.generateAll();
+    public void generateAllFromSql() throws IOException {
+        statisticsService.generateAllFromSql();
     }
 
     @Override

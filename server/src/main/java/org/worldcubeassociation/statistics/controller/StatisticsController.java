@@ -27,8 +27,8 @@ public interface StatisticsController {
     StatisticsResponseDTO sqlToStatistics(@Valid @RequestBody StatisticsRequestDTO statisticsRequestDTO)
             throws IOException;
 
-    @PostMapping("generate")
-    void generateAll() throws IOException;
+    @PostMapping("generate-all-from-sql")
+    void generateAllFromSql() throws IOException;
 
     @GetMapping("list")
     List<ControlItemDTO> list() throws IOException;

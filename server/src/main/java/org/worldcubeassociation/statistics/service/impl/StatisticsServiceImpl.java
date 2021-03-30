@@ -91,7 +91,7 @@ public class StatisticsServiceImpl implements StatisticsService {
     }
 
     @Override
-    public void generateAll() throws IOException {
+    public void generateAllFromSql() throws IOException {
         log.info("Find all statistics");
 
         Resource[] resources =
