@@ -29,7 +29,7 @@ The database `wca_development` will be populated with WCA data. If you want to c
 
 You need your copy of the database from WCA. If you already have it (with a user 'root' with no password), you can skip this.
 
-Download [the latest export](https://www.worldcubeassociation.org/wst/wca-developer-database-dump.zip) and execute the sql (as stated in the last step). If you wish, you can execute the file `get_db_export.sh` in this folder.
+Download [the latest export](https://www.worldcubeassociation.org/wst/wca-developer-database-dump.zip) and execute the sql (as stated in the last step). If you wish, you can execute the file `get_db_export.sh` in the scripts folder.
 
 ```
 chmod +x get_db_export.sh
