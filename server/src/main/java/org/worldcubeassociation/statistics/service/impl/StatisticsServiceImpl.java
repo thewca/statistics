@@ -87,17 +87,7 @@ public class StatisticsServiceImpl implements StatisticsService {
         statisticsResponseDTO.setExplanation(statisticsRequestDTO.getExplanation());
         statisticsResponseDTO.setTitle(statisticsRequestDTO.getTitle());
 
-        String path = String.join("-",
-                StringUtils.stripAccents(statisticsRequestDTO.getTitle().replaceAll("[^a-zA-Z0-9 ]", "")).split(" "))
-                .toLowerCase();
-        ;
-        statisticsResponseDTO.setPath(path);
-
-        createLocalFile(statisticsResponseDTO, path);
-
-        updateControlList();
-
-        return statisticsResponseDTO;
+        return create(statisticsResponseDTO);
     }
 
     @Override
@@ -157,6 +147,22 @@ public class StatisticsServiceImpl implements StatisticsService {
             throw new NotFoundException(String.format("Statistic %s does not exists", pathId));
         }
         return MAPPER.readValue(file, StatisticsResponseDTO.class);
+    }
+
+    @Override
+    public StatisticsResponseDTO create(StatisticsResponseDTO statisticsResponseDTO) throws IOException {
+        log.info("Create statistics from {}", statisticsResponseDTO);
+
+        String path = String.join("-",
+                StringUtils.stripAccents(statisticsResponseDTO.getTitle().replaceAll("[^a-zA-Z0-9 ]", "")).split(" "))
+                .toLowerCase();
+
+        statisticsResponseDTO.setPath(path);
+
+        createLocalFile(statisticsResponseDTO, path);
+
+        updateControlList();
+        return statisticsResponseDTO;
     }
 
     private File getControlFile() {

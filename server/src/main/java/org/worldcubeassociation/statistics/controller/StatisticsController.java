@@ -35,4 +35,11 @@ public interface StatisticsController {
 
     @GetMapping("list/{pathId}")
     StatisticsResponseDTO getStatistic(@PathVariable String pathId) throws IOException;
+
+    @PostMapping("create")
+    @ApiOperation(
+            "This method allows you to create a new statistics in any language you like. Just post a valid payload "
+                    + "and it will be available.")
+    StatisticsResponseDTO createStatistics(@Valid @RequestBody StatisticsResponseDTO statisticsResponseDto)
+            throws IOException;
 }

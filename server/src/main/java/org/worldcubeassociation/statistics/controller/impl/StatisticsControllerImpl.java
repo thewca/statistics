@@ -10,6 +10,7 @@ import org.worldcubeassociation.statistics.service.StatisticsService;
 
 import java.io.IOException;
 import java.util.List;
+import javax.validation.Valid;
 
 @RestController
 public class StatisticsControllerImpl implements StatisticsController {
@@ -33,5 +34,11 @@ public class StatisticsControllerImpl implements StatisticsController {
     @Override
     public StatisticsResponseDTO getStatistic(String pathId) throws IOException {
         return statisticsService.getStatistic(pathId);
+    }
+
+    @Override
+    public StatisticsResponseDTO createStatistics(@Valid StatisticsResponseDTO statisticsResponseDto)
+            throws IOException {
+        return statisticsService.create(statisticsResponseDto);
     }
 }

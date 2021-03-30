@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiParam;
 import lombok.Data;
 
 import java.util.List;
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -31,7 +32,7 @@ public class StatisticsResponseDTO {
     private List<String> headers;
 
     @NotNull
-    private List<StatisticsGroupResponseDTO> statistics;
+    private List<@Valid StatisticsGroupResponseDTO> statistics;
 
     @ApiParam(allowableValues = "DEFAULT, SELECTOR")
     @Pattern(regexp = "^(DEFAULT|SELECTOR)")
@@ -39,10 +40,8 @@ public class StatisticsResponseDTO {
             value = "In case of grouped statistics, you can select DEFAULT to display all of them in the frontend or "
                     + "'SELECTOR' to group them in a selector.",
             example = "DEFAULT")
-    @NotBlank
     private String displayMode;
 
-    @NotBlank
     @ApiParam(value = "Path to the current statistics.", example = "countries-with-most-competitions")
     private String path;
 }
