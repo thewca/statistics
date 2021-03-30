@@ -1,10 +1,11 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
 import bisect
 import csv
-import json
-import sys
+import logging
+
+import requests
+
+logging.basicConfig(level=logging.INFO)
+log = logging.getLogger()
 
 
 def largest_range(lista):
@@ -125,19 +126,19 @@ def largest_range_fmc():
         prev = a
     out = {}
     out["title"] = "Range in FMC"
-    out["explanation"] = "Range here means no gap."
-    out["headers"] = ["Range", "Person",
-                      "Country", "Range Start", "Range End"]
-    out["statistics"] = [{"keys": [], "content": table}]
-    out["path"] = "ranges-fmc"
+    out["explanation"] = "Range here means no gap"
+    headers = ["Range", "Person",
+               "Country", "Range Start", "Range End"]
+    out["statistics"] = [{"keys": [], "content": table, headers: headers}]
     return out
 
 
 def main():
-    out = largest_range_fmc()
+    data = largest_range_fmc()
 
-    with open("../../../server/statistics-list/%s.json" % out["path"], "w") as file:
-        file.write(json.dumps(out))
+    response = requests.post(
+        "ttp://localhost:8080/statistics/create", data=data)
+    log.info(response)
 
 
 main()
