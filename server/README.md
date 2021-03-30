@@ -31,9 +31,11 @@ You need your copy of the database from WCA. If you already have it (with a user
 
 Download [the latest export](https://www.worldcubeassociation.org/wst/wca-developer-database-dump.zip) and execute the sql (as stated in the last step). If you wish, you can execute the file `get_db_export.sh` in the scripts folder.
 
+From the root folder, use
+
 ```
-chmod +x get_db_export.sh
-./get_db_export.sh
+chmod +x scripts/get_db_export.sh
+./scripts/get_db_export.sh
 ```
 
 It will ask you to run in sudo mode in order to execute the sql.
@@ -60,10 +62,10 @@ An address should be logged. Probably http://localhost:8000/swagger-ui.html#/, i
 
 - Build an image
 
-`docker build -t user/statistics-server .`
+`docker build -t {user}/statistics-server .`
 
 - Run the image
 
-`docker run -d -p 8080:8080 --name statistics-server user/statistics-server:latest`
+`docker run -d -p 8080:8080 --name statistics-server {user}/statistics-server:latest`
 
 The `-d` part means "detached", so you'll have to stop by killing the process running on port 8080.

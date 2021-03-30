@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 import org.worldcubeassociation.statistics.controller.StatisticsController;
 import org.worldcubeassociation.statistics.dto.ControlItemDTO;
+import org.worldcubeassociation.statistics.dto.StatisticsDTO;
 import org.worldcubeassociation.statistics.dto.StatisticsRequestDTO;
 import org.worldcubeassociation.statistics.dto.StatisticsResponseDTO;
 import org.worldcubeassociation.statistics.service.StatisticsService;
@@ -37,8 +38,8 @@ public class StatisticsControllerImpl implements StatisticsController {
     }
 
     @Override
-    public StatisticsResponseDTO createStatistics(@Valid StatisticsResponseDTO statisticsResponseDto)
+    public StatisticsResponseDTO createStatistics(@Valid StatisticsDTO statisticsDTO)
             throws IOException {
-        return statisticsService.create(statisticsResponseDto);
+        return statisticsService.create(statisticsDTO);
     }
 }

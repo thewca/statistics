@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# This requires unzip to be installed
+# give this file permission to execute and execute it
+# 
+# ./get_db_export.sh
+
 export_file_zip="wca-developer-database-dump.zip"
 export_file_sql="wca-developer-database-dump.sql"
 

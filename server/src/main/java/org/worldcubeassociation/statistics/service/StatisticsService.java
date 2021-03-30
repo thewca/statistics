@@ -1,6 +1,7 @@
 package org.worldcubeassociation.statistics.service;
 
 import org.worldcubeassociation.statistics.dto.ControlItemDTO;
+import org.worldcubeassociation.statistics.dto.StatisticsDTO;
 import org.worldcubeassociation.statistics.dto.StatisticsRequestDTO;
 import org.worldcubeassociation.statistics.dto.StatisticsResponseDTO;
 
@@ -17,5 +18,5 @@ public interface StatisticsService {
 
     StatisticsResponseDTO getStatistic(String pathId) throws IOException;
 
-    StatisticsResponseDTO create(@Valid StatisticsResponseDTO statisticsResponseDto) throws IOException;
+    StatisticsResponseDTO create(@Valid StatisticsDTO statisticsDTO) throws IOException;
 }

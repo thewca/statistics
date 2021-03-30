@@ -11,6 +11,7 @@ import org.springframework.core.io.support.ResourcePatternUtils;
 import org.springframework.stereotype.Service;
 import org.worldcubeassociation.statistics.dto.ControlItemDTO;
 import org.worldcubeassociation.statistics.dto.DatabaseQueryBaseDTO;
+import org.worldcubeassociation.statistics.dto.StatisticsDTO;
 import org.worldcubeassociation.statistics.dto.StatisticsGroupRequestDTO;
 import org.worldcubeassociation.statistics.dto.StatisticsGroupResponseDTO;
 import org.worldcubeassociation.statistics.dto.StatisticsRequestDTO;
@@ -55,8 +56,8 @@ public class StatisticsServiceImpl implements StatisticsService {
 
         validateRequest(statisticsRequestDTO);
 
-        StatisticsResponseDTO statisticsResponseDTO = new StatisticsResponseDTO();
-        statisticsResponseDTO.setStatistics(new ArrayList<>());
+        StatisticsDTO statisticsDTO = new StatisticsDTO();
+        statisticsDTO.setStatistics(new ArrayList<>());
 
         for (StatisticsGroupRequestDTO query : statisticsRequestDTO.getQueries()) {
             DatabaseQueryBaseDTO sqlResult = databaseQueryService.getResultSet(query.getSqlQuery());
@@ -64,30 +65,30 @@ public class StatisticsServiceImpl implements StatisticsService {
             StatisticsGroupResponseDTO statisticsGroupResponseDTO = new StatisticsGroupResponseDTO();
             statisticsGroupResponseDTO.setKeys(query.getKeys());
             statisticsGroupResponseDTO.setContent(sqlResult.getContent());
-            statisticsResponseDTO.getStatistics().add(statisticsGroupResponseDTO);
+            statisticsDTO.getStatistics().add(statisticsGroupResponseDTO);
 
             Optional.ofNullable(query.getSqlQueryCustom()).ifPresent(
                     q -> statisticsGroupResponseDTO.setSqlQueryCustom(URLEncoder.encode(q, StandardCharsets.UTF_8)));
 
-            statisticsResponseDTO.setHeaders(
+            statisticsDTO.setHeaders(
                     // First option is the headers provided in this key
                     Optional.ofNullable(query.getHeaders())
                             // Then, the one provided by the query
                             .orElse(sqlResult.getHeaders()));
 
-            if (statisticsResponseDTO.getHeaders().size() != sqlResult.getHeaders().size()) {
+            if (statisticsDTO.getHeaders().size() != sqlResult.getHeaders().size()) {
                 throw new InvalidParameterException(
                         "The provided headers length and the response headers length must match. If you are "
                                 + "unsure, leave it empty.");
             }
         }
 
-        statisticsResponseDTO
+        statisticsDTO
                 .setDisplayMode(Optional.ofNullable(statisticsRequestDTO.getDisplayMode()).orElse("DEFAULT"));
-        statisticsResponseDTO.setExplanation(statisticsRequestDTO.getExplanation());
-        statisticsResponseDTO.setTitle(statisticsRequestDTO.getTitle());
+        statisticsDTO.setExplanation(statisticsRequestDTO.getExplanation());
+        statisticsDTO.setTitle(statisticsRequestDTO.getTitle());
 
-        return create(statisticsResponseDTO);
+        return create(statisticsDTO);
     }
 
     @Override
@@ -150,11 +151,13 @@ public class StatisticsServiceImpl implements StatisticsService {
     }
 
     @Override
-    public StatisticsResponseDTO create(StatisticsResponseDTO statisticsResponseDTO) throws IOException {
-        log.info("Create statistics from {}", statisticsResponseDTO);
+    public StatisticsResponseDTO create(StatisticsDTO statisticsDTO) throws IOException {
+        log.info("Create statistics from {}", statisticsDTO);
+
+        StatisticsResponseDTO statisticsResponseDTO = (StatisticsResponseDTO) statisticsDTO;
 
         String path = String.join("-",
-                StringUtils.stripAccents(statisticsResponseDTO.getTitle().replaceAll("[^a-zA-Z0-9 ]", "")).split(" "))
+                StringUtils.stripAccents(statisticsDTO.getTitle().replaceAll("[^a-zA-Z0-9 ]", "")).split(" "))
                 .toLowerCase();
 
         statisticsResponseDTO.setPath(path);

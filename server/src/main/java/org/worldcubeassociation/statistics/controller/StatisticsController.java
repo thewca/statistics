@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.worldcubeassociation.statistics.dto.ControlItemDTO;
+import org.worldcubeassociation.statistics.dto.StatisticsDTO;
 import org.worldcubeassociation.statistics.dto.StatisticsRequestDTO;
 import org.worldcubeassociation.statistics.dto.StatisticsResponseDTO;
 
@@ -28,6 +29,7 @@ public interface StatisticsController {
             throws IOException;
 
     @PostMapping("generate-all-from-sql")
+    @ApiOperation("Convert all sql queries in the resource folder to statistics")
     void generateAllFromSql() throws IOException;
 
     @GetMapping("list")
@@ -40,6 +42,6 @@ public interface StatisticsController {
     @ApiOperation(
             "This method allows you to create a new statistics in any language you like. Just post a valid payload "
                     + "and it will be available.")
-    StatisticsResponseDTO createStatistics(@Valid @RequestBody StatisticsResponseDTO statisticsResponseDto)
+    StatisticsResponseDTO createStatistics(@Valid @RequestBody StatisticsDTO statisticsDTO)
             throws IOException;
 }
