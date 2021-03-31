@@ -1,8 +1,12 @@
+# From the root python3 -m misc.python.statistics.ranges_fmc
+
+
+from ..util.statistics_api_util import create_statistics
+from ..util.html_util import get_competitor_link, html_link_format
 import bisect
 import csv
 import logging
 
-import requests
 
 logging.basicConfig(level=logging.INFO)
 log = logging.getLogger()
@@ -41,19 +45,6 @@ def largest_range(lista):
 
     # len of range, start, end
     return (max_r, min_range, max_range)
-
-
-def get_competitor_link(wca_id):
-    return "https://www.worldcubeassociation.org/persons/%s" % wca_id
-
-
-def html_link_format(text, link):
-    return '<a href="%s">%s</a>' % (link, text)
-
-
-def get_competition_html_link(competition_id):
-    link = "https://www.worldcubeassociation.org/competitions/%s" % competition_id
-    return html_link_format(competition_id, link)
 
 
 def largest_range_fmc():
@@ -137,14 +128,7 @@ def largest_range_fmc():
 def main():
     data = largest_range_fmc()
 
-    url = "http://localhost:8080/statistics/create"
-
-    log.info("Post data to %s" % url)
-    response = requests.post(url, json=data)
-    if response.status_code == 200:
-        log.info("Success")
-    else:
-        log.info("Error")
+    create_statistics(data)
 
 
 if __name__ == "__main__":

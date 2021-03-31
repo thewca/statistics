@@ -7,3 +7,6 @@ wca-developer-database-dump.zip
 
 # TSV export
 WCA_export*
+
+# Python
+*__pycache__*
