@@ -3,7 +3,8 @@ import { message, Popover } from "antd";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import statisticsApi from "../api/statistics.api";
-import { Statistics, StatisticsDetail } from "../model/Statistic";
+import { Statistics } from "../model/Statistic";
+import { StatisticsDetail } from "../model/StatisticsDetail";
 import "./StatisticsDisplay.css";
 import StatisticsTable from "./StatisticsTable";
 
@@ -54,12 +55,16 @@ const StatisticsDisplay = () => {
   return (
     <div className="container">
       <h1 className="page-title">{statistics?.title}</h1>
+      {!!statistics?.explanation && (
+        <h5 className="text-right">{statistics.explanation}</h5>
+      )}
       {!!statistics &&
         statistics.statistics.map((stat, i) => (
           <div key={i}>
             {showKeys(stat)}
+            {!!stat.explanation && <h5>{stat.explanation}</h5>}
             <StatisticsTable
-              headers={statistics.headers}
+              headers={stat.headers}
               content={stat.content}
               allowInnerHTML={true}
             />

@@ -1,7 +1,6 @@
 import bisect
 import csv
 import logging
-import json
 
 import requests
 
@@ -132,7 +131,6 @@ def largest_range_fmc():
     headers = ["Range", "Person",
                "Country", "Range Start", "Range End"]
     out["statistics"] = [{"keys": [], "content": table, "headers": headers}]
-    print(out)
     return out
 
 
@@ -143,11 +141,11 @@ def main():
 
     log.info("Post data to %s" % url)
     response = requests.post(url, json=data)
-    log.info(response.status_code)
     if response.status_code == 200:
         log.info("Success")
     else:
         log.info("Error")
 
 
-main()
+if __name__ == "__main__":
+    main()
