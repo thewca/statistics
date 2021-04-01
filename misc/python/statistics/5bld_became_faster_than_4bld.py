@@ -1,8 +1,9 @@
-# python3 -m misc.python.statistics.5bld_before_4bld
+# python3 - m misc.python.statistics.5bld_became_faster_than_4bld
+
 
 import bisect
-import csv
 import datetime
+import csv
 
 from ..util.html_util import (get_competition_html_link, get_competitor_link,
                               html_link_format)
@@ -11,7 +12,9 @@ from ..util.time_util import time_format
 
 
 def compare_results(ev1, ev2):
-    """Checks if a competitor got ev1 before ev2, expect for 333mbf and 333mbo, due to time encode."""
+    """Checks if ev1 happened before ev2."""
+
+    # This won't work for 333mbf and 333mbo, since `best` is encoded differently.
 
     wca_ids = []
     names = []
@@ -46,8 +49,9 @@ def compare_results(ev1, ev2):
 
                 best = int(line[4])
                 j = evs.index(event)
-                if best > 0 and first_results[i][j] == None:
-                    first_results[i][j] = time_format(best)
+                # first ev1 result ever
+                if best > 0 and j == 0 and first_results[i][0] == None:
+                    first_results[i][j] = best
                     first_competition[i][j] = competition
 
                     year = int(line[17])
@@ -56,9 +60,17 @@ def compare_results(ev1, ev2):
                     date = datetime.date(year, month, day)
                     first_date[i][j] = date
 
-                    if first_date[i][0] != None and first_date[i][1] != None:
-                        diff = (first_date[i][1]-first_date[i][0]).days
-                        diffs[i] = diff
+                elif best > 0 and j == 1 and first_results[i][1] == None and first_results[i][0] != None and best < first_results[i][0]:
+                    first_results[i][j] = best
+                    first_competition[i][j] = competition
+
+                    year = int(line[17])
+                    month = int(line[18])
+                    day = int(line[19])
+                    date = datetime.date(year, month, day)
+                    first_date[i][j] = date
+
+                    diffs[i] = (first_date[i][1] - first_date[i][0]).days
 
     table = []
 
@@ -81,33 +93,29 @@ def compare_results(ev1, ev2):
             out_competition_ev1.append(first_competition[i][0])
             out_competition_ev2.append(first_competition[i][1])
 
-    count = 1
-    for diff, wca_id, name, result1, comp1, result2, comp2 in sorted(zip(out_diffs, out_ids, out_names, out_ev1_results, out_competition_ev1, out_ev2_results, out_competition_ev2))[::-1]:
+    for diff, wca_id, name, result1, comp1, result2, comp2 in sorted(zip(out_diffs, out_ids, out_names, out_ev1_results, out_competition_ev1, out_ev2_results, out_competition_ev2)):
 
         link = get_competitor_link(wca_id)
-        table.append([diff, html_link_format(name, link), result1, get_competition_html_link(
-            comp1), result2, get_competition_html_link(comp2)])
+        table.append([diff, html_link_format(name, link), time_format(
+            result1), get_competition_html_link(comp1), time_format(result2), get_competition_html_link(comp2)])
 
-        count += 1
-
-    headers = ["Days", "Name", "First result %s" %
-               ev1, "Competition", "First result %s" % ev2, "Competition"]
     out = {}
-    out["title"] = "Competitors who got 5BLD before 4BLD"
     out["explanation"] = "In case of multiple first results (eg. ao3), best one is taken."
+    out["title"] = "5BLD become faster than 4BLD"
+    headers = ["Days", "Name", "First %s result" %
+               ev1, "Competition", "First faster %s result" % ev2, "Competition"]
     out["statistics"] = [{"keys": [], "content": table, "headers": headers}]
-
     return out
 
 
 def main():
 
-    ev1 = "555bf"
-    ev2 = "444bf"
+    ev1 = "444bf"
+    ev2 = "555bf"
 
-    data = compare_results(ev1, ev2)
+    out = compare_results(ev1, ev2)
 
-    create_statistics(data)
+    create_statistics(out)
 
 
 main()
