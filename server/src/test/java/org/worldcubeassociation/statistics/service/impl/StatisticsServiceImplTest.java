@@ -56,7 +56,6 @@ public class StatisticsServiceImplTest {
         StatisticsResponseDTO expectedResponse = new StatisticsResponseDTO();
         expectedResponse.setPath(path);
         expectedResponse.setTitle("Test");
-        expectedResponse.setHeaders(getDefaultHeaders(columnNumber));
         expectedResponse.setStatistics(getDefaultStatistics(columnNumber));
         expectedResponse.setDisplayMode("DEFAULT");
 
@@ -85,6 +84,7 @@ public class StatisticsServiceImplTest {
 
         for (int i = 0; i < numberOfQueries; i++) {
             StatisticsGroupResponseDTO groupItem = new StatisticsGroupResponseDTO();
+            groupItem.setHeaders(getDefaultHeaders(columnNumber));
             groupItem.setKeys(Arrays.asList("Key " + i));
             List<List<String>> content = new ArrayList<>();
             int rows = 1 + RANDOM.nextInt(50);
