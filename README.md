@@ -16,9 +16,14 @@ This project is separated in server and client, backend and front and respective
 
 - Build server's jar
 
-`cd server && ./gradlew build && cd ..`
+`./server/gradlew build -p server` (or navigate to the server folder and execute `./gradlew build`)
 
-- Download the database export and build it in a database called `wca_development`. You can use the file `server/get_db_export.sh`.
+- Download the database export and build it in a database called `wca_development`. You can use the file `server/get_db_export.sh` with
+
+```
+chmod +x server/get_db_export.sh
+./server/get_db_export.sh
+```
 
 - Run docker
 
