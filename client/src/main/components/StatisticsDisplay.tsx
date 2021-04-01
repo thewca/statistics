@@ -56,7 +56,7 @@ const StatisticsDisplay = () => {
     <div className="container">
       <h1 className="page-title">{statistics?.title}</h1>
       {!!statistics?.explanation && (
-        <h5 className="text-right">{statistics.explanation}</h5>
+        <h5 className="text-right mr-5">{statistics.explanation}</h5>
       )}
       {!!statistics &&
         statistics.statistics.map((stat, i) => (
