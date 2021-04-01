@@ -19,4 +19,6 @@ public interface StatisticsService {
     StatisticsResponseDTO getStatistic(String pathId) throws IOException;
 
     StatisticsResponseDTO create(@Valid StatisticsDTO statisticsDTO) throws IOException;
+
+    void deleteAll() throws IOException;
 }

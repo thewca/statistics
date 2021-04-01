@@ -28,3 +28,12 @@ chmod +x server/get_db_export.sh
 - Run docker
 
 `docker-compose up`
+
+## Generate all statistics
+
+First, you'll need to start the server, then you can execute
+
+```
+chmod +x scripts/generate_all_statistics.sh
+./scripts/generate_all_statistics.sh
+```

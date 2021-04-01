@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
@@ -171,6 +172,16 @@ public class StatisticsServiceImpl implements StatisticsService {
         return statisticsResponseDTO;
     }
 
+    @Override
+    public void deleteAll() throws IOException {
+        log.info("Delete all statistics");
+        File file = new File("statistics-list");
+        FileUtils.deleteDirectory(file);
+        log.info("Deleted");
+
+        updateControlList();
+    }
+
     private File getControlFile() {
         return new File("statistics-list/_control-list_.json");
     }
@@ -208,6 +219,11 @@ public class StatisticsServiceImpl implements StatisticsService {
         log.info("Update control list");
         List<ControlItemDTO> controlList = list();
         File controlFile = getControlFile();
+
+        // Creates folder structure just in case
+        controlFile.getParentFile().mkdirs();
+        controlFile.createNewFile();
+
         MAPPER.writeValue(controlFile, controlList);
         log.info("List updated");
     }

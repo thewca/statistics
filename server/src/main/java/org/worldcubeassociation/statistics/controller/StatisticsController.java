@@ -2,6 +2,7 @@ package org.worldcubeassociation.statistics.controller;
 
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -44,4 +45,10 @@ public interface StatisticsController {
                     + "and it will be available.")
     StatisticsResponseDTO createStatistics(@Valid @RequestBody StatisticsDTO statisticsDTO)
             throws IOException;
+
+    @DeleteMapping
+    @ApiOperation(
+            "Deletes all generated statistics")
+    void deleteAll() throws IOException;
+
 }

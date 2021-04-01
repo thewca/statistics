@@ -42,4 +42,9 @@ public class StatisticsControllerImpl implements StatisticsController {
             throws IOException {
         return statisticsService.create(statisticsDTO);
     }
+
+    @Override
+    public void deleteAll() throws IOException {
+        statisticsService.deleteAll();
+    }
 }
