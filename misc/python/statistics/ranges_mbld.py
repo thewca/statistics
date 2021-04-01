@@ -1,13 +1,15 @@
 # From the root python3 -m misc.python.statistics.ranges_mbld
 
-# TODO merge with range fmc and allow range in timed events (by 0.01)
-
 import bisect
 import csv
+import logging
 
 from ..util.html_util import get_competitor_link, html_link_format
 from ..util.range_util import largest_range
 from ..util.statistics_api_util import create_statistics
+
+logging.basicConfig(level=logging.INFO)
+log = logging.getLogger()
 
 
 def largest_range_fmc():
@@ -18,6 +20,7 @@ def largest_range_fmc():
     name_list = []
     country_list = []
 
+    log.info("Read tsv")
     with open('WCA_export/WCA_export_Results.tsv') as tsvin:
         tsvin = csv.reader(tsvin, delimiter='\t')
 

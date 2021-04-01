@@ -53,8 +53,9 @@ def main():
     del data_competition, competition_id_competition_all_caps
 
     log.info("Sort data")
+    round_sorter = ['h', '0', 'd', '1', 'b', '2', 'e', 'g', '3', 'c', 'f']
     data_results.sort_values(by=["year", "month", "day", "competitionId", "eventId", "roundTypeId", "pos"], ascending=[
-                             True, True, True, True, True, True, False], inplace=True)
+                             True, True, True, True, True, round_sorter, False], inplace=True)
 
     log.info("Save to WCA_export_Results_Ordered.tsv")
     data_results.to_csv("WCA_export/WCA_export_Results_Ordered.tsv",

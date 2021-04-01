@@ -1,12 +1,14 @@
 # From the root python3 -m misc.python.statistics.ranges_fmc
 
+# TODO merge with range mbld and allow range in timed events (by 0.01)
+# extend for other events should be fairly easy, just use [10:15]: instead of [10:13]: and plug the event id
 
 import bisect
 import csv
 import logging
+from ...python.util.range_util import largest_range
 
 from ..util.html_util import get_competitor_link, html_link_format
-from ..util.range_util import largest_range
 from ..util.statistics_api_util import create_statistics
 
 logging.basicConfig(level=logging.INFO)
