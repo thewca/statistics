@@ -1,16 +1,13 @@
-# From the root python3 -m misc.python.statistics.ranges_fmc
+# From the root python3 -m misc.python.statistics.ranges_mbld
 
+# TODO merge with range fmc and allow range in timed events (by 0.01)
 
 import bisect
 import csv
-import logging
 
 from ..util.html_util import get_competitor_link, html_link_format
 from ..util.range_util import largest_range
 from ..util.statistics_api_util import create_statistics
-
-logging.basicConfig(level=logging.INFO)
-log = logging.getLogger()
 
 
 def largest_range_fmc():
@@ -21,7 +18,6 @@ def largest_range_fmc():
     name_list = []
     country_list = []
 
-    log.info("Read tsv")
     with open('WCA_export/WCA_export_Results.tsv') as tsvin:
         tsvin = csv.reader(tsvin, delimiter='\t')
 
@@ -29,7 +25,7 @@ def largest_range_fmc():
         for line in tsvin:
 
             event = line[1]
-            if skip_header or event != "333fm":
+            if skip_header or event != "333mbf":
                 skip_header = False
                 continue
 
@@ -44,11 +40,15 @@ def largest_range_fmc():
                 country_list.insert(i, country)
 
             for x in line[10:13]:
-                x = int(x)
-                if x > 0:
-                    j = bisect.bisect_left(lists_of_results[i], x)
-                    if j == len(lists_of_results[i]) or lists_of_results[i][j] != x:
-                        lists_of_results[i].insert(j, x)
+                if x in ["-2", "-1", "0"]:
+                    continue
+                missed = int(x[-2:])
+                DD = int(x[:2])
+                points = 99-DD
+
+                j = bisect.bisect_left(lists_of_results[i], points)
+                if j == len(lists_of_results[i]) or lists_of_results[i][j] != points:
+                    lists_of_results[i].insert(j, points)
 
     name_out = []
     range_out = []
@@ -57,7 +57,6 @@ def largest_range_fmc():
     id_list_out = []
     country_list_out = []
 
-    log.info("Calculate ranges")
     for i in range(len(id_list)):
         if len(lists_of_results[i]) < 1:  # skipping people with only 1 result
             continue
@@ -69,8 +68,8 @@ def largest_range_fmc():
         min_out.append(b)
         max_out.append(c)
 
-    log.info("Build results")
     table = []
+
     prev = None
     count = 0
     for a, b, c, name, country, wca_id in sorted(zip(range_out, min_out, max_out, name_out, country_list_out, id_list_out))[::-1]:
@@ -83,7 +82,7 @@ def largest_range_fmc():
 
         prev = a
     out = {}
-    out["title"] = "Range in FMC"
+    out["title"] = "Range in MBLD"
     out["explanation"] = "Range here means no gap"
     headers = ["Range", "Person",
                "Country", "Range Start", "Range End"]
@@ -92,10 +91,9 @@ def largest_range_fmc():
 
 
 def main():
-    data = largest_range_fmc()
+    out = largest_range_fmc()
 
-    create_statistics(data)
+    create_statistics(out)
 
 
-if __name__ == "__main__":
-    main()
+main()
