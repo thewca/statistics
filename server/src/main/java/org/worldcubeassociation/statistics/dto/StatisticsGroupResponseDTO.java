@@ -21,7 +21,7 @@ public class StatisticsGroupResponseDTO {
     @ApiModelProperty(
             value = "The same query but filtered somehow (example by user, country or competition) with a replaceable"
                     + " placeholder for finding a specific result",
-            example = "select countryId, count(*) qt from Competitions where countryId = '%s' group by countryId "
+            example = "select countryId, count(*) qt from Competitions where countryId = ':COUNTRY_ID' group by countryId "
                     + "order by qt desc")
     private String sqlQueryCustom;
 

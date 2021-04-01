@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# This requires unzip to be installed
+# give this file permission to execute and execute it
+# 
+# ./get_db_export.sh
+
 export_file_zip="wca-developer-database-dump.zip"
 export_file_sql="wca-developer-database-dump.sql"
 
@@ -23,3 +28,5 @@ unzip "$export_file_zip"
 echo "Executing the .sql"
 echo "This can take a few hours"
 sudo mysql -e "create database if not exists wca_development; USE wca_development; SOURCE $export_file_sql;"
+
+echo "Complete"

@@ -61,19 +61,21 @@ const Topbar = ({ links, statisticsList }: TopbarProps) => {
         ))}
       </SubMenu>
       <div id="login">
-        <button onClick={handle}>
-          {logged ? (
-            <img
-              src={wcaApi.getUserInfo()?.avatar?.thumb_url}
-              width="30"
-              height="30"
-              alt="Avatar"
-            />
-          ) : (
-            <UserOutlined />
-          )}{" "}
-          {logged ? "Logout" : "Login"}
-        </button>
+        <Menu theme="dark" mode="horizontal" id="top-bar" onClick={handle}>
+          <MenuItem key="login">
+            {logged ? (
+              <img
+                src={wcaApi.getUserInfo()?.avatar?.thumb_url}
+                width="30"
+                height="30"
+                alt="Avatar"
+              />
+            ) : (
+              <UserOutlined />
+            )}{" "}
+            {logged ? "Logout" : "Login"}
+          </MenuItem>
+        </Menu>
       </div>
     </Menu>
   );

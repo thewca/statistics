@@ -1,5 +1,6 @@
 package org.worldcubeassociation.statistics.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiParam;
@@ -8,12 +9,12 @@ import lombok.Data;
 import java.util.List;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 @Data
-
-public class StatisticsRequestDTO {
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class StatisticsDTO {
     @JsonProperty("version")
     private static final String VERSION = "v1";
 
@@ -25,12 +26,8 @@ public class StatisticsRequestDTO {
             example = "Number of competitions in each country sorted from the highest to the lowest.")
     private String explanation;
 
-    @NotEmpty
-    @ApiModelProperty(
-            "Groups statistics results by key. Example: you can use [{'key': '2010', 'explanation': 'Competitions in "
-                    + "2010', 'sqlQuery': 'select * from... where year = 2010'}, {'key': '2015', 'explanation': "
-                    + "'Competitions in 2015', 'sqlQuery': 'select * from ... where year = 2015'}]")
-    private List<@Valid StatisticsGroupRequestDTO> queries;
+    @NotNull
+    private List<@Valid StatisticsGroupResponseDTO> statistics;
 
     @ApiParam(allowableValues = "DEFAULT, SELECTOR")
     @Pattern(regexp = "^(DEFAULT|SELECTOR)")

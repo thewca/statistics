@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
@@ -11,6 +12,7 @@ import org.springframework.core.io.support.ResourcePatternUtils;
 import org.springframework.stereotype.Service;
 import org.worldcubeassociation.statistics.dto.ControlItemDTO;
 import org.worldcubeassociation.statistics.dto.DatabaseQueryBaseDTO;
+import org.worldcubeassociation.statistics.dto.StatisticsDTO;
 import org.worldcubeassociation.statistics.dto.StatisticsGroupRequestDTO;
 import org.worldcubeassociation.statistics.dto.StatisticsGroupResponseDTO;
 import org.worldcubeassociation.statistics.dto.StatisticsRequestDTO;
@@ -55,8 +57,8 @@ public class StatisticsServiceImpl implements StatisticsService {
 
         validateRequest(statisticsRequestDTO);
 
-        StatisticsResponseDTO statisticsResponseDTO = new StatisticsResponseDTO();
-        statisticsResponseDTO.setStatistics(new ArrayList<>());
+        StatisticsDTO statisticsDTO = new StatisticsDTO();
+        statisticsDTO.setStatistics(new ArrayList<>());
 
         for (StatisticsGroupRequestDTO query : statisticsRequestDTO.getQueries()) {
             DatabaseQueryBaseDTO sqlResult = databaseQueryService.getResultSet(query.getSqlQuery());
@@ -64,44 +66,34 @@ public class StatisticsServiceImpl implements StatisticsService {
             StatisticsGroupResponseDTO statisticsGroupResponseDTO = new StatisticsGroupResponseDTO();
             statisticsGroupResponseDTO.setKeys(query.getKeys());
             statisticsGroupResponseDTO.setContent(sqlResult.getContent());
-            statisticsResponseDTO.getStatistics().add(statisticsGroupResponseDTO);
+            statisticsDTO.getStatistics().add(statisticsGroupResponseDTO);
 
             Optional.ofNullable(query.getSqlQueryCustom()).ifPresent(
                     q -> statisticsGroupResponseDTO.setSqlQueryCustom(URLEncoder.encode(q, StandardCharsets.UTF_8)));
 
-            statisticsResponseDTO.setHeaders(
+            statisticsGroupResponseDTO.setHeaders(
                     // First option is the headers provided in this key
                     Optional.ofNullable(query.getHeaders())
                             // Then, the one provided by the query
                             .orElse(sqlResult.getHeaders()));
 
-            if (statisticsResponseDTO.getHeaders().size() != sqlResult.getHeaders().size()) {
+            if (statisticsGroupResponseDTO.getHeaders().size() != sqlResult.getHeaders().size()) {
                 throw new InvalidParameterException(
                         "The provided headers length and the response headers length must match. If you are "
                                 + "unsure, leave it empty.");
             }
         }
 
-        statisticsResponseDTO
+        statisticsDTO
                 .setDisplayMode(Optional.ofNullable(statisticsRequestDTO.getDisplayMode()).orElse("DEFAULT"));
-        statisticsResponseDTO.setExplanation(statisticsRequestDTO.getExplanation());
-        statisticsResponseDTO.setTitle(statisticsRequestDTO.getTitle());
+        statisticsDTO.setExplanation(statisticsRequestDTO.getExplanation());
+        statisticsDTO.setTitle(statisticsRequestDTO.getTitle());
 
-        String path = String.join("-",
-                StringUtils.stripAccents(statisticsRequestDTO.getTitle().replaceAll("[^a-zA-Z0-9 ]", "")).split(" "))
-                .toLowerCase();
-        ;
-        statisticsResponseDTO.setPath(path);
-
-        createLocalFile(statisticsResponseDTO, path);
-
-        updateControlList();
-
-        return statisticsResponseDTO;
+        return create(statisticsDTO);
     }
 
     @Override
-    public void generateAll() throws IOException {
+    public void generateAllFromSql() throws IOException {
         log.info("Find all statistics");
 
         Resource[] resources =
@@ -159,6 +151,37 @@ public class StatisticsServiceImpl implements StatisticsService {
         return MAPPER.readValue(file, StatisticsResponseDTO.class);
     }
 
+    @Override
+    public StatisticsResponseDTO create(StatisticsDTO statisticsDTO) throws IOException {
+        log.info("Create statistics from {}", statisticsDTO);
+
+        statisticsDTO
+                .setDisplayMode(Optional.ofNullable(statisticsDTO.getDisplayMode()).orElse("DEFAULT"));
+
+        StatisticsResponseDTO statisticsResponseDTO = new StatisticsResponseDTO(statisticsDTO);
+
+        String path = String.join("-",
+                StringUtils.stripAccents(statisticsDTO.getTitle().replaceAll("[^a-zA-Z0-9 ]", "")).split(" "))
+                .toLowerCase();
+
+        statisticsResponseDTO.setPath(path);
+
+        createLocalFile(statisticsResponseDTO, path);
+
+        updateControlList();
+        return statisticsResponseDTO;
+    }
+
+    @Override
+    public void deleteAll() throws IOException {
+        log.info("Delete all statistics");
+        File file = new File("statistics-list");
+        FileUtils.deleteDirectory(file);
+        log.info("Deleted");
+
+        updateControlList();
+    }
+
     private File getControlFile() {
         return new File("statistics-list/_control-list_.json");
     }
@@ -196,6 +219,11 @@ public class StatisticsServiceImpl implements StatisticsService {
         log.info("Update control list");
         List<ControlItemDTO> controlList = list();
         File controlFile = getControlFile();
+
+        // Creates folder structure just in case
+        controlFile.getParentFile().mkdirs();
+        controlFile.createNewFile();
+
         MAPPER.writeValue(controlFile, controlList);
         log.info("List updated");
     }
