@@ -2,15 +2,17 @@
 
 # server must be running
 
-echo "Generate all statistics from sql"
-curl -X POST "http://localhost:8080/statistics/generate-all-from-sql" -H "accept: */*" -d ""
-echo "Sql statistics generated"
+echo "Deleting existing statistics"
+curl -X DELETE "http://localhost:8080/statistics" -H "accept: */*"
 
-echo "Generate python statistics"
-for filename in misc/python/statistics/*.py; do
-    echo $filename
-    to_execute="python3 -m ${filename%.*}"
-    module=${to_execute//[\/]/.}
-    ($module)
-done
-echo "Python statistics generated"
+# Download db export
+./scripts/get_db_export.sh
+
+# Download tsv export and build ordered results
+./scripts/get_tsv_export.sh
+
+# Sql stats
+./scripts/generate_sql_statistics.sh
+
+# Python
+./scripts/generate_python_statistics.sh

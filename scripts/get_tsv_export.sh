@@ -1,3 +1,5 @@
+#!/bin/bash
+
 export_file="WCA_export.tsv.zip"
 export_folder="WCA_export"
 ordered_file="WCA_export/WCA_export_Results_Ordered.tsv"
