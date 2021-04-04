@@ -1,5 +1,8 @@
 def largest_range(lista):
 
+    if len(lista) < 2:
+        return (1, None, None)  # it should be ignored
+
     i = 0
     r = 1
     max_r = 0
