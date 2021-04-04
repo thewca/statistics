@@ -26,7 +26,7 @@ def has_multiple_results(results):
 
 
 def ranges():
-    LIMIT = 50
+    LIMIT = 10
 
     out = {}
     out["title"] = "Ranges"
