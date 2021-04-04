@@ -3,8 +3,9 @@
   "explanation": "Sum of podium averages ordered from lowest to highest",
   "queries": [
     {
-      "keys": ["3x3x3 Cube"],
+      "explanation": "Best podiums for the 3x3x3 Cube event",
       "headers": ["Competition", "Sum", "First", "Avg", "Second", "Avg", "Third", "Avg"],
+      "keys": ["3x3x3 Cube"],
       "sqlQuery": "select concat('<a href=\"https://www.worldcubeassociation.org/competitions/', comp_id, '\">', c.name, '</a>'),\n	format((first_avg + second_avg + third_avg)/ 100, 2) avg_sum,\n	concat('<a href=\"https://www.worldcubeassociation.org/persons/', first_id, '\">', first_name, '</a>'),\n	format(first_avg / 100, 2),\n	concat('<a href=\"https://www.worldcubeassociation.org/persons/', second_id, '\">', second_name, '</a>'),\n	format(second_avg / 100, 2),\n	concat('<a href=\"https://www.worldcubeassociation.org/persons/', third_id, '\">', third_name, '</a>'),\n	format(third_avg / 100, 2)\nfrom (\n    select competitionId comp_id, \n        max(case when row_num=1 then personId end) first_id, \n        max(case when row_num=1 then personName end) first_name,\n        max(case when row_num=1 then average end) first_avg, \n        max(case when row_num=2 then personId end) second_id, \n        max(case when row_num=2 then personName end) second_name, \n        max(case when row_num=2 then average end) second_avg, \n        max(case when row_num=3 then personId end) third_id, \n        max(case when row_num=3 then personName end) third_name, \n        max(case when row_num=3 then average end) third_avg\n    from (\n        select competitionId, personId, personName, average,\n            row_number() over (partition by competitionId order by average) row_num\n        from Results\n        where eventId = '333' and roundTypeId in ('c', 'f') and average > 0\n        ) final_podiums_without_ties\n    group by competitionId\n) podiums_pivotted\ninner join Competitions as c on podiums_pivotted.comp_id = c.id\nwhere third_avg is not null\norder by convert(avg_sum, float)\nlimit 10"
     }  
   ],
