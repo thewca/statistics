@@ -26,8 +26,12 @@ const StatisticsDisplay = () => {
       .getStatistic(pathId)
       .then((response) => {
         setStatistics(response.data);
-        setFilteredStatistics([response.data.statistics[0]]);
-        setSelectedKeys(joinKeys(response.data.statistics[0].keys));
+        setFilteredStatistics(
+          response.data.displayMode === "DEFAULT"
+            ? response.data.statistics
+            : [response.data.statistics[0]]
+        );
+        setSelectedKeys(joinKeys(response.data.statistics[0]?.keys));
       })
       .catch(() =>
         message.error("Could not get statistics result for " + pathId)
