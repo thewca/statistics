@@ -134,8 +134,8 @@ def ranges():
 
             prev = range_size
 
-        explanation = "Step of 1" if current_event in (
-            "333fm", "333mbf") else "Step of 0.01"
+        explanation = "Competitors that got all results from the range start to the range end in %s" % ("steps of 1" if current_event in (
+            "333fm", "333mbf") else "step of 0.01")
         out["statistics"].append(
             {"keys": [event["name"]], "content": table, "headers": headers, "explanation": explanation})
 

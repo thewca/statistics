@@ -33,7 +33,9 @@ const StatisticsTable = ({
             {content.map((result: string[], i) => (
               <tr key={i}>
                 <th scope="row" className="text-center">
-                  {(page - 1) * pageSize + i + 1}
+                  {i === 0 || content[i][0] !== content[i - 1][0]
+                    ? (page - 1) * pageSize + i + 1
+                    : "-"}
                 </th>
                 {result.map((entry, j) => (
                   <td key={j} className="text-center">

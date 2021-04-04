@@ -16,12 +16,19 @@ const StatisticsDisplay = () => {
   const { pathId } = useParams<StatisticsDisplayProps>();
 
   const [statistics, setStatistics] = useState<Statistics>();
-  const [selectedKeys, setSelectedKeys] = useState("");
+  const [selectedKeys, setSelectedKeys] = useState<string>();
+  const [filteredStatistics, setFilteredStatistics] = useState<
+    StatisticsDetail[]
+  >();
 
   useEffect(() => {
     statisticsApi
       .getStatistic(pathId)
-      .then((response) => setStatistics(response.data))
+      .then((response) => {
+        setStatistics(response.data);
+        setFilteredStatistics([response.data.statistics[0]]);
+        setSelectedKeys(joinKeys(response.data.statistics[0].keys));
+      })
       .catch(() =>
         message.error("Could not get statistics result for " + pathId)
       );
@@ -45,7 +52,7 @@ const StatisticsDisplay = () => {
 
   const showKeys = (
     statisticsDetail: StatisticsDetail,
-    displayMode: DisplayMode
+    displayMode?: DisplayMode
   ) => {
     if (
       !statisticsDetail.keys ||
@@ -62,12 +69,19 @@ const StatisticsDisplay = () => {
     );
   };
 
-  const handleChange = (keys: string[]) => {};
+  const handleChange = (jointKeys: string) => {
+    setSelectedKeys(jointKeys);
+    setFilteredStatistics(
+      statistics?.statistics.filter((it) => it.keys + "" === jointKeys)
+    );
+  };
+
+  const joinKeys = (keys?: string[]) => keys?.join(" > ");
 
   const getOptions = (statistics?: Statistics) => {
     return statistics?.statistics.map((stat) => ({
       value: "" + stat.keys,
-      label: stat.keys?.join(" > "),
+      label: joinKeys(stat.keys),
     }));
   };
 
@@ -80,21 +94,26 @@ const StatisticsDisplay = () => {
       {statistics?.displayMode === "SELECTOR" && (
         <div id="display-mode-wrapper">
           <Select
+            value={selectedKeys}
             onChange={handleChange}
             options={getOptions(statistics)}
             style={{ width: "50%" }}
           />
         </div>
       )}
-      {!!statistics &&
-        statistics.statistics.map((stat, i) => (
+      {!!filteredStatistics &&
+        filteredStatistics.map((stat, i) => (
           <div key={i}>
-            {showKeys(stat, statistics.displayMode)}
-            {!!stat.explanation && <h5>{stat.explanation}</h5>}
+            {showKeys(stat, statistics?.displayMode)}
+            {!!stat.explanation && (
+              <h6 className="text-right mr-5 mt-4 text-muted">
+                {stat.explanation}
+              </h6>
+            )}
             <StatisticsTable
               headers={stat.headers}
               content={stat.content}
-              allowInnerHTML={true}
+              allowInnerHTML
             />
           </div>
         ))}
