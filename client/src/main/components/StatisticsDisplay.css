@@ -3,3 +3,8 @@
   margin: 40px 40px 10px;
   font-size: 120%;
 }
+
+#display-mode-wrapper {
+  padding: 10x;
+  text-align: center;
+}
