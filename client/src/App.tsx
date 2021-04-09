@@ -17,6 +17,7 @@ import { StatisticsItem } from "./main/model/StatisticItem";
 import About from "./main/pages/About";
 import DatabaseQuery from "./main/pages/DatabaseQuery";
 import Home from "./main/pages/Home";
+import NotFound from "./main/pages/NotFound";
 import StatisticsList from "./main/pages/StatisticsList";
 
 function App() {
@@ -63,20 +64,21 @@ function App() {
   return (
     <Router>
       <div id="page-container">
-        <div id="content-wrapper">
-          <Topbar links={links} statisticsList={statisticsList} />
-          <Switch>
-            {links.map((link) => (
-              <Route key={link.href} path={link.href} exact={link.exact}>
-                {link.component}
-              </Route>
-            ))}
-            <Route
-              path="/statistics-list/:pathId"
-              component={StatisticsDisplay}
-            />
-          </Switch>
-        </div>
+        <Topbar links={links} statisticsList={statisticsList} />
+        <Switch>
+          {links.map((link) => (
+            <Route key={link.href} path={link.href} exact={link.exact}>
+              {link.component}
+            </Route>
+          ))}
+          <Route
+            path="/statistics-list/:pathId"
+            component={StatisticsDisplay}
+          />
+          <Route path="*">
+            <NotFound />
+          </Route>
+        </Switch>
         <Footer />
       </div>
     </Router>
