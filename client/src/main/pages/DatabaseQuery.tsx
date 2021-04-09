@@ -1,9 +1,9 @@
 import { Input, message, Pagination, Skeleton } from "antd";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import statisticsApi from "../api/statistics.api";
+import StatisticsTable from "../components/StatisticsTable";
 import { getQueryParameter, setQueryParameter } from "../util/query.param.util";
 import "./DatabaseQuery.css";
-import StatisticsTable from "./StatisticsTable";
 
 const SQL_QUERY = "sqlQuery";
 
