@@ -1,4 +1,4 @@
-# python3 - m misc.python.statistics.5bld_became_faster_than_4bld
+# python3 -m misc.python.statistics.5bld_became_faster_than_4bld
 
 
 import bisect

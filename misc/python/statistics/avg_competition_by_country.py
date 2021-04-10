@@ -1,10 +1,11 @@
+# python3 -m misc.python.statistics.avg_competition_by_country
+
 # avg number of comps per country since 2010
 # we are taking the average of the number of comps/year since 2010.
 
 import csv
 from datetime import datetime
 
-from ..util.html_util import get_competitor_link, html_link_format
 from ..util.log_util import log
 from ..util.statistics_api_util import create_statistics
 
@@ -14,9 +15,10 @@ def avg_competitions():
     comp_year = []
     avg_list = []
 
-    max_year = datetime.now().year-1
+    current_year = datetime.now().year
     year_range = 5
-    min_year = max_year - year_range
+    max_year = current_year-1
+    min_year = current_year - year_range
 
     header = True
 
@@ -49,7 +51,7 @@ def avg_competitions():
             comp_year[i][year-min_year] += 1
 
         for x in comp_year:
-            avg_list.append(sum(x)/(year_range+1))
+            avg_list.append(sum(x)/(year_range))
 
         table = []
         for (x, y, z) in sorted(zip(avg_list, country_list, comp_year))[::-1]:
