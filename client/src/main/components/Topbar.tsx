@@ -1,6 +1,5 @@
 import { UserOutlined } from "@ant-design/icons";
 import { Menu } from "antd";
-import MenuItem from "antd/lib/menu/MenuItem";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import wcaApi from "../api/wca.api";
@@ -42,12 +41,12 @@ const Topbar = ({ links, statisticsList }: TopbarProps) => {
       {links
         .filter((link) => link.name !== STATISTICS_LIST)
         .map((link) => (
-          <MenuItem key={link.href}>
+          <Menu.Item key={link.href}>
             <Link to={link.href} className="text-white align-center">
               <span>{link.icon}</span>
               {link.name}
             </Link>
-          </MenuItem>
+          </Menu.Item>
         ))}
       <SubMenu
         key="sub2"
@@ -62,7 +61,7 @@ const Topbar = ({ links, statisticsList }: TopbarProps) => {
       </SubMenu>
       <div id="login">
         <Menu theme="dark" mode="horizontal" id="top-bar" onClick={handle}>
-          <MenuItem key="login">
+          <Menu.Item key="login">
             {logged ? (
               <img
                 src={wcaApi.getUserInfo()?.avatar?.thumb_url}
@@ -74,7 +73,7 @@ const Topbar = ({ links, statisticsList }: TopbarProps) => {
               <UserOutlined />
             )}{" "}
             {logged ? "Logout" : "Login"}
-          </MenuItem>
+          </Menu.Item>
         </Menu>
       </div>
     </Menu>

@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { StatisticsItem } from "../model/StatisticItem";
 import "./StatisticsList.css";
 
@@ -13,9 +14,9 @@ const StatisticsList = ({ statisticsList }: StatisticsListProps) => {
         <ul>
           {statisticsList.map((statisticsItem) => (
             <li key={statisticsItem.path} className="list-item">
-              <a href={`/statistics-list/${statisticsItem.path}`}>
+              <Link to={`/statistics-list/${statisticsItem.path}`}>
                 {statisticsItem.title}
-              </a>
+              </Link>
             </li>
           ))}
         </ul>
