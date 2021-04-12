@@ -8,45 +8,59 @@ from datetime import datetime
 # ['competitionId', 'eventId', 'roundTypeId', 'pos', 'best', 'average', 'personName', 'personId', 'personCountryId', 'formatId', 'value1', 'value2', 'value3', 'value4', 'value5', 'regionalSingleRecord', 'regionalAverageRecord', 'year', 'month', 'day']
 
 
-def summarize_results(today_wca_ids, today_corresponding_best, all_time_wca_id, all_time_best_results, all_time_best_rank, all_time_bests):
+class Competitor:
+    wca_id = None
+    best = None
+    best_rank = None
+    best_rank_start = None
+
+    def __init__(self, wca_id):
+        self.wca_id = wca_id
+
+    def __lt__(self, other):
+        return self.wca_id < other.wca_id
+
+    def __eq__(self, other):
+        return self.wca_id == other.wca_id
+
+    def __repr__(self):
+        return "Competitor[wca_id=%s, best=%s, best_rank=%s]" % (self.wca_id, self.best, self.best_rank)
+
+
+def summarize_results(today_competitors, all_time_competitors, all_time_bests):
     # Assign today's best result
-    for wca_id, best in zip(today_wca_ids, today_corresponding_best):
-        if not best:
+    for competitor in today_competitors:
+        if not competitor.best:
             continue
 
-        index = bisect_left(all_time_wca_id, wca_id)
-
-        if index == len(all_time_wca_id) or all_time_wca_id[index] != wca_id:
+        index = bisect_left(all_time_competitors, competitor)
+        if index == len(all_time_competitors) or all_time_competitors[index] != competitor:
             # Person is competing for the first time
-            all_time_wca_id.insert(index, wca_id)
-            all_time_best_results.insert(index, None)
-            all_time_best_rank.insert(index, None)
+            all_time_competitors.insert(index, competitor)
+            insort_left(all_time_bests, competitor.best)
 
-        old_best = all_time_best_results[index]
+        old_best = all_time_competitors[index].best
         if not old_best:
-            all_time_best_results[index] = best
-            insort_left(all_time_bests, best)
-        elif best < old_best:
+            all_time_competitors[index].best = competitor.best
+            insort_left(all_time_bests, competitor.best)
+        elif competitor.best < old_best:
             # In this case, competitor broke a PR
             # We can remove 1 result from the old an include a new best
 
             old_index = bisect_left(all_time_bests, old_best)
             del all_time_bests[old_index]
 
-            insort_left(all_time_bests, best)
+            insort_left(all_time_bests, competitor.best)
 
-            all_time_best_results[index] = best
+            all_time_competitors[index].best = competitor.best
 
-    for i in range(len(all_time_wca_id)):
-        wca_id = all_time_wca_id[i]
-        competitor_best = all_time_bests[i]
-
-        if not competitor_best:
+    for competitor in all_time_competitors:
+        if not competitor.best:
             continue
 
-        current_best_rank = bisect_left(all_time_bests, competitor_best)
-        if not all_time_best_rank[i] or current_best_rank < all_time_best_rank[i]:
-            all_time_best_rank[i] = current_best_rank
+        current_best_rank = bisect_left(all_time_bests, competitor.best)
+        if not competitor.best_rank or current_best_rank < competitor.best_rank:
+            competitor.best_rank = current_best_rank
 
 
 def main():
@@ -55,13 +69,9 @@ def main():
 
         all_time_bests = []
 
-        all_time_wca_id = []
-        all_time_best_results = []
-        all_time_best_rank = []
-
         # Sorted by wca_id
-        today_wca_ids = []
-        today_corresponding_best = []
+        all_time_competitors = []
+        today_competitors = []
 
         # Skip header
         next(tsvin, None)
@@ -81,35 +91,34 @@ def main():
             if current_date != this_date:
                 # Compute rankings after today
 
-                summarize_results(today_wca_ids, today_corresponding_best,
-                                  all_time_wca_id, all_time_best_results, all_time_best_rank, all_time_bests)
-                today_wca_ids = []
-                today_corresponding_best = []
+                summarize_results(today_competitors,
+                                  all_time_competitors, all_time_bests)
+                today_competitors = []
 
             wca_id = line[7]
+            competitor = Competitor(wca_id)
 
-            i = bisect_left(today_wca_ids, wca_id)
-            if i == len(today_wca_ids) or today_wca_ids[i] != wca_id:
-                today_wca_ids.insert(i, wca_id)
-                today_corresponding_best.insert(i, None)
+            i = bisect_left(today_competitors, competitor)
+            if i == len(today_competitors) or today_competitors[i] != competitor:
+                today_competitors.insert(i, competitor)
 
+            competitor = today_competitors[i]
             best = int(line[5])  # average because I know my best rank
-            old_best = today_corresponding_best[i]
+            old_best = competitor.best
             if best <= 0:
                 continue
             if not old_best or best < old_best:
                 # In this case, we should removeth old result and insert the new one
-                today_corresponding_best[i] = best
+                competitor.best = best
+
+        summarize_results(today_competitors,
+                          all_time_competitors, all_time_bests)
 
         c = 0
-        for x, y, z in zip(all_time_wca_id, all_time_best_results, all_time_best_rank):
-            if x == '2015CAMP17':
-                print(x, y, z)
+        for competitor in all_time_competitors:
+            if competitor.wca_id == '2015CAMP17':
+                print(competitor)
                 break
-
-        for i in range(100):
-            print(all_time_best_results[i],
-                  all_time_wca_id[i], all_time_best_rank[i])
 
 
 if __name__ == "__main__":
