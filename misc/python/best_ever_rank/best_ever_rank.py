@@ -29,12 +29,9 @@ class Competitor:
         return "Competitor[wca_id=%s, best=%s, best_rank=%s, start=%s, end=%s]" % (self.wca_id, self.best, self.best_rank, self.best_rank_start, self.best_rank_end)
 
 
-def summarize_results(today, today_competitors, all_time_competitors, all_time_bests):
+def summarize_results(today_competitors, all_time_competitors, all_time_bests):
     # Assign today's best result
     for competitor in today_competitors:
-        if not competitor.best:
-            continue
-
         index = bisect_left(all_time_competitors, competitor)
         if index == len(all_time_competitors) or all_time_competitors[index] != competitor:
             # Person is competing for the first time
@@ -54,14 +51,9 @@ def summarize_results(today, today_competitors, all_time_competitors, all_time_b
 
             insort_left(all_time_bests, competitor.best)
 
-            all_time_competitors[index].best = competitor.best
-            all_time_competitors[index].best_rank_start = competitor.best_rank_start
-            all_time_competitors[index].best_rank_end = None
+            all_time_competitors[index] = competitor
 
     for competitor in all_time_competitors:
-        if not competitor.best:
-            continue
-
         current_best_rank = bisect_left(all_time_bests, competitor.best)
         if not competitor.best_rank or current_best_rank < competitor.best_rank:
             competitor.best_rank = current_best_rank
@@ -83,14 +75,11 @@ def main():
         # Skip header
         next(tsvin, None)
 
-        for line in tsvin:
-            y, m, d = map(int, [line[17], line[18], line[19]])
-            break
-
-        current_date = datetime(y, m, d)
+        current_date = None
         for line in tsvin:
             event = line[1]
-            if event != '333fm':
+            best = int(line[5])  # average because I know my best rank
+            if event != '333fm' or best < 1:
                 continue
 
             y, m, d = map(int, [line[17], line[18], line[19]])
@@ -98,7 +87,7 @@ def main():
             if current_date != this_date:
                 # Compute rankings after today
 
-                summarize_results(this_date, today_competitors,
+                summarize_results(today_competitors,
                                   all_time_competitors, all_time_bests)
                 today_competitors = []
 
@@ -110,18 +99,14 @@ def main():
                 today_competitors.insert(i, competitor)
 
             competitor = today_competitors[i]
-            best = int(line[4])  # average because I know my best rank
             old_best = competitor.best
-            if best <= 0:
-                continue
             if not old_best or best < old_best:
                 # In this case, we should removeth old result and insert the new one
                 competitor.best = best
 
-        summarize_results(current_date, today_competitors,
+        summarize_results(today_competitors,
                           all_time_competitors, all_time_bests)
 
-        c = 0
         for competitor in all_time_competitors:
             if competitor.wca_id == '2015CAMP17':
                 print(competitor)
