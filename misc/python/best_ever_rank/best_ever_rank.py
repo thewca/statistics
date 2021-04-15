@@ -4,6 +4,8 @@ import csv
 from bisect import bisect_left, insort_left
 from datetime import datetime, timedelta
 
+from misc.python.util.log_util import log
+
 # column order
 # ['competitionId', 'eventId', 'roundTypeId', 'pos', 'best', 'average', 'personName', 'personId', 'personCountryId', 'formatId', 'value1', 'value2', 'value3', 'value4', 'value5', 'regionalSingleRecord', 'regionalAverageRecord', 'year', 'month', 'day']
 
@@ -58,8 +60,8 @@ def summarize_results(today_competitors, all_time_competitors, all_time_bests):
         if not competitor.best_rank or current_best_rank < competitor.best_rank:
             competitor.best_rank = current_best_rank
 
-        if current_best_rank > competitor.best_rank and not competitor.best_rank_end:
-            competitor.best_rank_end = today - timedelta(days=1)
+        # if current_best_rank > competitor.best_rank and not competitor.best_rank_end:
+        #     competitor.best_rank_end = today - timedelta(days=1)
 
 
 def main():
@@ -86,10 +88,12 @@ def main():
             this_date = datetime(y, m, d)
             if current_date != this_date:
                 # Compute rankings after today
+                #log.info("Date %s", current_date)
 
                 summarize_results(today_competitors,
                                   all_time_competitors, all_time_bests)
                 today_competitors = []
+                current_date = this_date
 
             wca_id = line[7]
             competitor = Competitor(wca_id, this_date)
