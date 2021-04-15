@@ -6,7 +6,7 @@ from bisect import bisect_left
 from misc.python.model.competitor import Competitor as Comp
 from misc.python.util.log_util import log
 
-RANGE = 10
+RANGE = 6
 
 
 class Competitor(Comp):
@@ -47,6 +47,10 @@ def normalize_result(result) -> int:
 
 def can_be_discarded(result, wr_index) -> bool:
     return result < 1 or normalize_result(result) >= wr_index + RANGE
+
+
+def sum_to_index(competitor, i):
+    return sum(competitor.count[:i+1])
 
 
 def main():
@@ -91,10 +95,10 @@ def main():
 
     for i in range(RANGE):
         sorted_i = sorted(
-            filter(lambda c: c.count[i] > 0, competitors), key=lambda c: c.count[i])[::-1]
+            filter(lambda c: sum_to_index(c, i) > 0, competitors), key=lambda c: sum_to_index(c, i))[::-1]
         print("Sub %s" % (i+wr_index+1))
         for x in sorted_i[:10]:
-            print(x.wca_id, x.count[i])
+            print(x.wca_id, sum_to_index(x, i))
         print()
 
 
