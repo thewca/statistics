@@ -12,8 +12,9 @@ from misc.python.util.log_util import log
 
 class Competitor:
     wca_id = None
-    best = None
+    best = None  # Global best
     best_rank = None
+    best_rank_best = None  # Best considering the best rank
     best_rank_start = None
     best_rank_end = None
 
@@ -28,10 +29,10 @@ class Competitor:
         return self.wca_id == other.wca_id
 
     def __repr__(self):
-        return "Competitor[wca_id=%s, best=%s, best_rank=%s, start=%s, end=%s]" % (self.wca_id, self.best, self.best_rank, self.best_rank_start, self.best_rank_end)
+        return "Competitor[wca_id=%s, best_rank_best=%s, best_rank=%s, start=%s, end=%s]" % (self.wca_id, self.best_rank_best, self.best_rank, self.best_rank_start, self.best_rank_end)
 
 
-def summarize_results(today_competitors, all_time_competitors, all_time_bests):
+def summarize_results(today, today_competitors, all_time_competitors, all_time_bests):
     # Assign today's best result
     for competitor in today_competitors:
         index = bisect_left(all_time_competitors, competitor)
@@ -53,15 +54,18 @@ def summarize_results(today_competitors, all_time_competitors, all_time_bests):
 
             insort_left(all_time_bests, competitor.best)
 
-            all_time_competitors[index] = competitor
+            all_time_competitors[index].best = competitor.best
+            all_time_competitors[index].best_rank_start = today
+            all_time_competitors[index].best_rank_end = None
 
     for competitor in all_time_competitors:
         current_best_rank = bisect_left(all_time_bests, competitor.best)
         if not competitor.best_rank or current_best_rank < competitor.best_rank:
             competitor.best_rank = current_best_rank
+            competitor.best_rank_best = competitor.best
 
-        # if current_best_rank > competitor.best_rank and not competitor.best_rank_end:
-        #     competitor.best_rank_end = today - timedelta(days=1)
+        if current_best_rank > competitor.best_rank and not competitor.best_rank_end:
+            competitor.best_rank_end = today - timedelta(days=1)
 
 
 def main():
@@ -81,7 +85,7 @@ def main():
         for line in tsvin:
             event = line[1]
             best = int(line[5])  # average because I know my best rank
-            if event != '333fm' or best < 1:
+            if event != 'sq1' or best < 1:
                 continue
 
             y, m, d = map(int, [line[17], line[18], line[19]])
@@ -90,7 +94,7 @@ def main():
                 # Compute rankings after today
                 #log.info("Date %s", current_date)
 
-                summarize_results(today_competitors,
+                summarize_results(this_date, today_competitors,
                                   all_time_competitors, all_time_bests)
                 today_competitors = []
                 current_date = this_date
@@ -108,7 +112,8 @@ def main():
                 # In this case, we should removeth old result and insert the new one
                 competitor.best = best
 
-        summarize_results(today_competitors,
+        # One last summarization for the last day
+        summarize_results(this_date, today_competitors,
                           all_time_competitors, all_time_bests)
 
         for competitor in all_time_competitors:
