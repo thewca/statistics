@@ -9,6 +9,8 @@ from misc.python.util.log_util import log
 # column order
 # ['competitionId', 'eventId', 'roundTypeId', 'pos', 'best', 'average', 'personName', 'personId', 'personCountryId', 'formatId', 'value1', 'value2', 'value3', 'value4', 'value5', 'regionalSingleRecord', 'regionalAverageRecord', 'year', 'month', 'day']
 
+# WIP
+
 
 class Competitor:
     wca_id = None
@@ -85,7 +87,7 @@ def main():
         for line in tsvin:
             event = line[1]
             best = int(line[5])  # average because I know my best rank
-            if event != 'sq1' or best < 1:
+            if event != '333fm' or best < 1:
                 continue
 
             y, m, d = map(int, [line[17], line[18], line[19]])
