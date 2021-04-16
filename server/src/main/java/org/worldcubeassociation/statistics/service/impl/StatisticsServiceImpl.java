@@ -17,6 +17,7 @@ import org.worldcubeassociation.statistics.dto.StatisticsGroupRequestDTO;
 import org.worldcubeassociation.statistics.dto.StatisticsGroupResponseDTO;
 import org.worldcubeassociation.statistics.dto.StatisticsRequestDTO;
 import org.worldcubeassociation.statistics.dto.StatisticsResponseDTO;
+import org.worldcubeassociation.statistics.enums.DisplayModeEnum;
 import org.worldcubeassociation.statistics.exception.InvalidParameterException;
 import org.worldcubeassociation.statistics.exception.NotFoundException;
 import org.worldcubeassociation.statistics.service.DatabaseQueryService;
@@ -85,7 +86,8 @@ public class StatisticsServiceImpl implements StatisticsService {
         }
 
         statisticsDTO
-                .setDisplayMode(Optional.ofNullable(statisticsRequestDTO.getDisplayMode()).orElse("DEFAULT"));
+                .setDisplayMode(
+                        Optional.ofNullable(statisticsRequestDTO.getDisplayMode()).orElse(DisplayModeEnum.DEFAULT));
         statisticsDTO.setExplanation(statisticsRequestDTO.getExplanation());
         statisticsDTO.setTitle(statisticsRequestDTO.getTitle());
 
@@ -156,7 +158,7 @@ public class StatisticsServiceImpl implements StatisticsService {
         log.info("Create statistics from {}", statisticsDTO);
 
         statisticsDTO
-                .setDisplayMode(Optional.ofNullable(statisticsDTO.getDisplayMode()).orElse("DEFAULT"));
+                .setDisplayMode(Optional.ofNullable(statisticsDTO.getDisplayMode()).orElse(DisplayModeEnum.DEFAULT));
 
         StatisticsResponseDTO statisticsResponseDTO = new StatisticsResponseDTO(statisticsDTO);
 

@@ -28,4 +28,5 @@ def get_current_events():
         event = Event(id, name, rank)
         events.append(event)
 
+    # Sort by rank
     return sorted(events, key=lambda e: e.rank)

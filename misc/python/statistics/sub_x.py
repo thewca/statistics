@@ -66,12 +66,17 @@ def sub_x():
     statistics["title"] = "Most Sub-X solves"
     statistics["statistics"] = []
     headers = ["Count", "Name", "Country"]
+    statistics["displayMode"] = "GROUPED"
 
     for current_event in get_current_events():
 
         event = current_event.event_id
 
         if event == "333mbf":
+            continue
+
+        # TODO remove, this is a mock
+        if event not in ["333", "222"]:
             continue
 
         log.info("Find sub x for %s" % current_event.name)
