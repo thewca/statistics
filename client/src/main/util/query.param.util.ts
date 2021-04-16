@@ -13,10 +13,14 @@ export const getHashParameter = (name: string) => {
   return getQueryParameter(name);
 };
 
-export const setQueryParameter = (name: string, value: string | number) => {
-  let searchParams = new URLSearchParams(window.location.search);
-  searchParams.set(name, "" + value);
-  updateUrl(searchParams);
+export const setQueryParameter = (name: string, value?: string | number) => {
+  if (!value) {
+    deleteParameter(name);
+  } else {
+    let searchParams = new URLSearchParams(window.location.search);
+    searchParams.set(name, "" + value);
+    updateUrl(searchParams);
+  }
 };
 
 export const deleteParameter = (...names: string[]) => {

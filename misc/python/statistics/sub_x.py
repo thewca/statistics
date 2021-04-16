@@ -8,6 +8,7 @@ from misc.python.util.event_util import get_current_events
 from misc.python.util.html_util import get_competitor_html_link
 from misc.python.util.log_util import log
 from misc.python.util.statistics_api_util import create_statistics
+from misc.python.util.time_util import time_format
 
 RANGE = 6
 
@@ -42,14 +43,16 @@ def find_wr_single(event):
     return wr_single
 
 
-def normalize_result(result) -> int:
+def normalize_result(result, event) -> int:
     """WCA stores results in cents. 4 seconds is stored as 400.
     This normalizes the result so it can be used as index."""
+    if event == "333fm":
+        return result
     return result // 100
 
 
-def can_be_discarded(result, wr_index) -> bool:
-    return result < 1 or normalize_result(result) >= wr_index + RANGE
+def can_be_discarded(result, wr_index, event) -> bool:
+    return result < 1 or normalize_result(result, event) >= wr_index + RANGE
 
 
 def sum_to_index(competitor, i):
@@ -57,8 +60,6 @@ def sum_to_index(competitor, i):
 
 
 def sub_x():
-
-    competitors = []
 
     LIMIT = 10
 
@@ -70,25 +71,27 @@ def sub_x():
 
     for current_event in get_current_events():
 
+        competitors = []
+
         event = current_event.event_id
 
         if event == "333mbf":
             continue
 
-        # TODO remove, this is a mock
-        if event not in ["333", "222"]:
+        # TODO remove
+        if event not in ["222", "333", "333fm"]:
             continue
 
         log.info("Find sub x for %s" % current_event.name)
 
         wr_single = find_wr_single(event)
-        wr_index = wr_single // 100
-        log.info("WR single for %s is %s" % (event, wr_single/100))
+        wr_index = wr_single if event == "333fm" else wr_single // 100
+        log.info("WR single for %s is %s" % (event, time_format(wr_single)))
 
         tsv_file = open("WCA_export/WCA_export_Results.tsv")
 
         log.info("Compute sub %s results" %
-                 (normalize_result(wr_single)+RANGE))
+                 (normalize_result(wr_single, event)+RANGE))
         tsvreader = csv.reader(tsv_file, delimiter="\t")
         for line in tsvreader:
             this_event = line[1]
@@ -98,7 +101,7 @@ def sub_x():
             best = int(line[4])
 
             # We exclude people with DNF or results out of the range
-            if can_be_discarded(best, wr_index):
+            if can_be_discarded(best, wr_index, event):
                 continue
 
             wca_id = line[7]
@@ -113,8 +116,8 @@ def sub_x():
 
             for x in line[10:15]:
                 x = int(x)
-                if not can_be_discarded(x, wr_index):
-                    index = normalize_result(x)-wr_index
+                if not can_be_discarded(x, wr_index, event):
+                    index = normalize_result(x, event)-wr_index
                     competitor.count[index] += 1
 
         log.info("%s elegible competitors" % len(competitors))
@@ -137,8 +140,10 @@ def sub_x():
 
                 prev = s
                 c += 1
+            current_sub = i+wr_index + \
+                1 if event == "333fm" else (i+wr_index+1)*100
             statistics["statistics"].append(
-                {"keys": [current_event.name, "Sub %s" % (i+wr_index+1)], "content": stat, "headers": headers})
+                {"keys": [current_event.name, "Sub %s" % time_format(current_sub, event)], "content": stat, "headers": headers})
 
     return statistics
 

@@ -33,6 +33,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -139,7 +140,9 @@ public class StatisticsServiceImpl implements StatisticsService {
             controlList.add(controlItemDTO);
         }
 
-        Collections.sort(controlList, (o1, o2) -> o1.getTitle().compareTo(o2.getTitle()));
+        // TODO validate if key size is 2 in case of GROUPED
+
+        Collections.sort(controlList, Comparator.comparing(ControlItemDTO::getTitle));
 
         return controlList;
     }

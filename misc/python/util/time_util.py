@@ -1,4 +1,6 @@
-def time_format(cents):
+def time_format(cents, event=None):
+    if event == "333fm":
+        return cents
     cents = int(cents)
 
     h, cents = divmod(cents, 360000)
