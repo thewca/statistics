@@ -1,8 +1,21 @@
-import csv
 from typing import List
 
 from misc.python.model.event import Event
+from misc.python.util.database_util import get_database_connection
 from misc.python.util.log_util import log
+
+query = """
+select
+    id,
+    name
+from
+    Events e
+where
+    -- Exclude inactive
+    `rank` < 900
+order by
+    `rank`
+"""
 
 
 def get_current_events() -> List[Event]:
@@ -10,24 +23,17 @@ def get_current_events() -> List[Event]:
 
     events = []
 
-    log.info("Read tsv")
-    tsv_file = open("WCA_export/WCA_export_Events.tsv")
-    tsvreader = csv.reader(tsv_file, delimiter="\t")
+    cnx = get_database_connection()
+    cursor = cnx.cursor()
 
-    # Skip header
-    next(tsvreader, None)
+    cursor.execute(query)
 
-    for line in tsvreader:
-        rank = int(line[2])
-
-        # Inavtive events
-        if rank > 900:
-            continue
-
-        id = line[0]
-        name = line[1]
-        event = Event(id, name, rank)
+    for id, name in cursor:
+        event = Event(id, name)
         events.append(event)
 
-    # Sort by rank
-    return sorted(events, key=lambda e: e.rank)
+    cnx.close()
+
+    log.info("Found %s events" % len(events))
+
+    return events

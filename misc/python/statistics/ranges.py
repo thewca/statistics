@@ -4,13 +4,13 @@
 import bisect
 import csv
 import logging
-from misc.python.util.mbld_util import get_mbld_points
-from misc.python.util.event_util import get_current_events
 
-from ..util.html_util import get_competitor_html_link, get_competitor_link, html_link_format
-from ..util.range_util import largest_range
-from ..util.statistics_api_util import create_statistics
-from ..util.time_util import time_format
+from misc.python.util.event_util import get_current_events
+from misc.python.util.html_util import get_competitor_html_link
+from misc.python.util.mbld_util import get_mbld_points
+from misc.python.util.range_util import largest_range
+from misc.python.util.statistics_api_util import create_statistics
+from misc.python.util.time_util import time_format
 
 logging.basicConfig(level=logging.INFO)
 log = logging.getLogger()
@@ -38,9 +38,6 @@ def ranges():
     current_events = get_current_events()
 
     for current_event in current_events:
-        # TODO remove mock
-        if current_event.event_id not in ["444", "555"]:
-            continue
 
         lists_of_results = []
         id_list = []
