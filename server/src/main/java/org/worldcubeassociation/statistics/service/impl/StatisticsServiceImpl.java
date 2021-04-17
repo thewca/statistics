@@ -22,12 +22,11 @@ import org.worldcubeassociation.statistics.exception.InvalidParameterException;
 import org.worldcubeassociation.statistics.exception.NotFoundException;
 import org.worldcubeassociation.statistics.service.DatabaseQueryService;
 import org.worldcubeassociation.statistics.service.StatisticsService;
+import org.yaml.snakeyaml.Yaml;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -48,6 +47,8 @@ public class StatisticsServiceImpl implements StatisticsService {
     private ResourceLoader resourceLoader;
 
     private static final ObjectMapper MAPPER = new ObjectMapper();
+
+    private static final Yaml YAML = new Yaml();
 
     static {
         MAPPER.enable(SerializationFeature.INDENT_OUTPUT);
@@ -101,17 +102,14 @@ public class StatisticsServiceImpl implements StatisticsService {
 
         Resource[] resources =
                 ResourcePatternUtils.getResourcePatternResolver(resourceLoader)
-                        .getResources("classpath:statistics-request-list/*.json");
+                        .getResources("classpath:statistics-request-list/*.yml");
 
         for (Resource resource : resources) {
             log.info("Statistic {}", resource.getDescription());
 
             InputStream inputStream = resource.getInputStream();
 
-            String fileContent = new BufferedReader(new InputStreamReader(inputStream))
-                    .lines().collect(Collectors.joining("\n"));
-
-            StatisticsRequestDTO request = MAPPER.readValue(fileContent, StatisticsRequestDTO.class);
+            StatisticsRequestDTO request = YAML.loadAs(inputStream, StatisticsRequestDTO.class);
 
             sqlToStatistics(request);
         }
