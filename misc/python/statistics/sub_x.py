@@ -78,10 +78,6 @@ def sub_x():
         if event == "333mbf":
             continue
 
-        # TODO remove
-        if event not in ["222", "333", "333fm"]:
-            continue
-
         log.info("Find sub x for %s" % current_event.name)
 
         wr_single = find_wr_single(event)
@@ -140,8 +136,8 @@ def sub_x():
 
                 prev = s
                 c += 1
-            current_sub = i+wr_index + \
-                1 if event == "333fm" else (i+wr_index+1)*100
+            index = i+wr_index+1
+            current_sub = index if event == "333fm" else index*100
             statistics["statistics"].append(
                 {"keys": [current_event.name, "Sub %s" % time_format(current_sub, event)], "content": stat, "headers": headers})
 

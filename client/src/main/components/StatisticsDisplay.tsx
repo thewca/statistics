@@ -24,40 +24,56 @@ const StatisticsDisplay = () => {
     StatisticsDetail[]
   >();
 
-  const handleFilteredStatistics = useCallback((statistics: Statistics) => {
-    switch (statistics.displayMode) {
-      case "GROUPED":
-        let key =
-          selectedKeys ||
-          (!!statistics.statistics[0].keys
-            ? statistics.statistics[0].keys[0]
-            : null);
-        if (!!key) {
-          setFilteredStatistics(
-            statistics.statistics.filter(
-              (stat) => !!stat.keys && stat.keys[0] === key
-            )
+  const handleFilteredStatistics = useCallback(
+    (statistics: Statistics, selectedKeys: string | null) => {
+      switch (statistics.displayMode) {
+        case "GROUPED":
+          let key =
+            selectedKeys ||
+            (!!statistics.statistics[0].keys?.length
+              ? statistics.statistics[0].keys[0]
+              : null);
+          if (!!key) {
+            setFilteredStatistics(
+              statistics.statistics.filter(
+                (stat) => !!stat.keys && stat.keys[0] === key
+              )
+            );
+            setSelectedKeys(key);
+          } else {
+            setFilteredStatistics(statistics.statistics);
+          }
+          break;
+        case "SELECTOR":
+          let filtered = statistics.statistics.filter(
+            (it) => joinKeys(it.keys) === selectedKeys
           );
-          setSelectedKeys(key);
-        } else {
+
+          // Display stats based on query parameter
+          if (filtered.length > 0) {
+            setFilteredStatistics(filtered);
+          } else {
+            // Otherwise, display the first one
+            setFilteredStatistics([statistics.statistics[0]]);
+            setSelectedKeys(joinKeys(statistics.statistics[0]?.keys));
+          }
+          break;
+        default:
           setFilteredStatistics(statistics.statistics);
-        }
-        break;
-      case "SELECTOR":
-        setFilteredStatistics([statistics.statistics[0]]);
-        setSelectedKeys(joinKeys(statistics.statistics[0]?.keys));
-        break;
-      default:
-        setFilteredStatistics(statistics.statistics);
-    }
-  }, []);
+      }
+    },
+    []
+  );
 
   useEffect(() => {
     statisticsApi
       .getStatistic(pathId)
       .then((response) => {
         setStatistics(response.data);
-        handleFilteredStatistics(response.data);
+        handleFilteredStatistics(
+          response.data,
+          getQueryParameter("selectedKeys")
+        );
       })
       .catch(() =>
         message.error("Could not get statistics result for " + pathId)

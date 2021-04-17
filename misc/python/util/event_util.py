@@ -1,10 +1,11 @@
 import csv
+from typing import List
 
 from misc.python.model.event import Event
 from misc.python.util.log_util import log
 
 
-def get_current_events():
+def get_current_events() -> List[Event]:
     log.info("Get current events")
 
     events = []

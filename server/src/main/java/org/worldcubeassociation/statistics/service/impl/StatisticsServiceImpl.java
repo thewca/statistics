@@ -140,8 +140,6 @@ public class StatisticsServiceImpl implements StatisticsService {
             controlList.add(controlItemDTO);
         }
 
-        // TODO validate if key size is 2 in case of GROUPED
-
         Collections.sort(controlList, Comparator.comparing(ControlItemDTO::getTitle));
 
         return controlList;
