@@ -1,0 +1,48 @@
+displayMode: DEFAULT
+explanation: Sum of podium averages ordered from lowest to highest
+queries:
+  - explanation: Best podiums for the 3x3x3 Cube event
+    headers:
+      - Competition
+      - Sum
+      - First
+      - Avg
+      - Second
+      - Avg
+      - Third
+      - Avg
+    keys:
+      - 3x3x3 Cube
+    sqlQuery: |-
+      select concat('<a href="https://www.worldcubeassociation.org/competitions/', comp_id, '">', c.name, '</a>'),
+          format((first_avg + second_avg + third_avg)/ 100, 2) avg_sum,
+          concat('<a href="https://www.worldcubeassociation.org/persons/', first_id, '">', first_name, '</a>'),
+          format(first_avg / 100, 2),
+          concat('<a href="https://www.worldcubeassociation.org/persons/', second_id, '">', second_name, '</a>'),
+          format(second_avg / 100, 2),
+          concat('<a href="https://www.worldcubeassociation.org/persons/', third_id, '">', third_name, '</a>'),
+          format(third_avg / 100, 2)
+      from (
+          select competitionId comp_id, 
+              max(case when row_num=1 then personId end) first_id, 
+              max(case when row_num=1 then personName end) first_name,
+              max(case when row_num=1 then average end) first_avg, 
+              max(case when row_num=2 then personId end) second_id, 
+              max(case when row_num=2 then personName end) second_name, 
+              max(case when row_num=2 then average end) second_avg, 
+              max(case when row_num=3 then personId end) third_id, 
+              max(case when row_num=3 then personName end) third_name, 
+              max(case when row_num=3 then average end) third_avg
+          from (
+              select competitionId, personId, personName, average,
+                  row_number() over (partition by competitionId order by average) row_num
+              from Results
+              where eventId = '333' and roundTypeId in ('c', 'f') and average > 0
+              ) final_podiums_without_ties
+          group by competitionId
+      ) podiums_pivotted
+      inner join Competitions as c on podiums_pivotted.comp_id = c.id
+      where third_avg is not null
+      order by convert(avg_sum, float)
+      limit 10
+title: Best podiums

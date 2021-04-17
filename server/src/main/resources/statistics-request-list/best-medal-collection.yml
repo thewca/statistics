@@ -1,0 +1,94 @@
+queries:
+  - headers:
+      - Person
+      - Country
+      - Golds
+      - Silvers
+      - Bronzes
+    keys:
+      - 3x3x3
+    sqlQuery: |-
+      select
+          personName,
+          countryId,
+          sum(case when pos = 1 then 1 else 0 end) Golds,
+          sum(case when pos = 2 then 1 else 0 end) Silvers,
+          sum(case when pos = 3 then 1 else 0 end) Bronzes
+      from
+          Results
+      where
+          roundTypeId in ('c', 'f')
+          and best > 0
+          and eventId = '333'
+      group by
+          personName,
+          countryId
+      order by
+          Golds desc
+      limit 10
+    sqlQueryCustom: |
+      select
+          personName,
+          countryId,
+          sum( case when pos = 1 then 1 else 0 end ) Golds,
+          sum( case when pos = 2 then 1 else 0 end ) Silvers,
+          sum( case when pos = 3 then 1 else 0 end ) Bronzes
+      from
+          Results
+      where
+          roundTypeId in ('c', 'f')
+          and best > 0
+          and eventId = '333'
+          and personId = ':WCA_ID'
+      group by
+          personName,
+          countryId
+      order by
+          Golds desc
+      limit 10
+  - headers:
+      - Person
+      - Country
+      - Golds
+      - Silvers
+      - Bronzes
+    keys:
+      - Overall
+    sqlQuery: |-
+      select
+          personName,
+          countryId,
+          sum(case when pos = 1 then 1 else 0 end) Golds,
+          sum(case when pos = 2 then 1 else 0 end) Silvers,
+          sum(case when pos = 3 then 1 else 0 end) Bronzes
+      from
+          Results
+      where
+          roundTypeId in ('c', 'f')
+          and best > 0
+      group by
+          personName,
+          countryId
+      order by
+          Golds desc
+      limit 10
+    sqlQueryCustom: |
+      select
+          personName,
+          countryId,
+          sum(case when pos = 1 then 1 else 0 end) Golds,
+          sum(case when pos = 2 then 1 else 0 end) Silvers,
+          sum(case when pos = 3 then 1 else 0 end) Bronzes
+      from
+          Results
+      where
+          roundTypeId in ('c', 'f')
+          and best > 0
+          and personId = ':WCA_ID'
+      group by
+          personName,
+          countryId
+      order by
+          Golds desc
+      limit 10
+title: Best medal collection
