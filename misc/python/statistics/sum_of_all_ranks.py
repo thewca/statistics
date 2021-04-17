@@ -1,18 +1,18 @@
 # python3 -m misc.python.statistics.sum_of_all_ranks
 
 from bisect import bisect_left
+from typing import List
 
 from misc.python.model.event import Event as Ev
 from misc.python.statistics.sub_x import Competitor as Comp
 from misc.python.util.database_util import get_database_connection
+from misc.python.util.html_util import get_competitor_html_link
 from misc.python.util.log_util import log
 from misc.python.util.statistics_api_util import create_statistics
-from misc.python.util.html_util import get_competitor_html_link
-
 
 LIMIT = 10
 
-query_events = """
+events_query = """
 select
     e.id,
     e.name,
@@ -35,7 +35,7 @@ order by
 """
 
 # Repalce %s with Average or Single for different table
-query_competitors = """
+competitors_query = """
 select
     personId,
     worldRank,
@@ -54,6 +54,40 @@ where
             `rank` < 900
     )
 """
+
+custom_query = """select
+    name Name,
+    %(event_names)s Sum,
+    my_ranks.*
+from Persons p
+    inner join
+    (
+        select%(custom_sub_queries)s
+    ) my_ranks on p.id = ':WCA_ID'
+"""
+
+custom_sub_query = """
+            (
+                select
+                    coalesce(
+                        (
+                            select
+                                ifnull(
+                                    (
+                                        select
+                                            worldRank
+                                        from
+                                            Ranks%(result_type)s
+                                        where
+                                            eventId = '%(event_id)s'
+                                            and personId = ':WCA_ID'
+                                    ),
+                                    null
+                                )
+                        ),
+                        %(max_rank)s
+                    )
+            ) `%(event_name)s`"""
 
 
 class Competitor(Comp):
@@ -74,6 +108,20 @@ class Event(Ev):
         self.max_rank = max_rank
 
 
+def get_custom_query(result_type, events: List[Event]):
+    custom_sub_queries = []
+
+    for event in events:
+        custom_sub_queries.append(custom_sub_query % {"max_rank": event.max_rank,
+                                                      "result_type": result_type, "event_id": event.event_id, "event_name": event.name})
+
+    event_names = " + ".join(list(map(lambda e: "`%s`" % e.name, events)))
+
+    return custom_query % {"event_names": event_names, "custom_sub_queries": ",".join(custom_sub_queries)}
+
+    # return sub_query
+
+
 def sum_of_all_ranks():
 
     cnx = get_database_connection()
@@ -83,10 +131,10 @@ def sum_of_all_ranks():
     statistics["title"] = "Sum of all ranks"
     statistics["statistics"] = []
 
-    for type in ["Average", "Single"]:
+    for result_type in ["Average", "Single"]:
 
         events = []
-        cursor.execute(query_events % type)  # Not an sql replacement
+        cursor.execute(events_query % result_type)  # Not an sql replacement
 
         for event_id, event_name, max_rank in cursor:
             event = Event(event_id, event_name, max_rank)
@@ -95,7 +143,8 @@ def sum_of_all_ranks():
 
         event_ids = list(map(lambda e: e.event_id, events))
 
-        cursor.execute(query_competitors % type)  # Not an sql replacement
+        cursor.execute(competitors_query %
+                       result_type)  # Not an sql replacement
 
         competitors = []
 
@@ -145,12 +194,11 @@ def sum_of_all_ranks():
                                                   competitor.name), s, *competitor.ranks])
             c += 1
 
+        custom_query = get_custom_query(result_type, events)
+
         headers = ["Name", "Sum", *map(lambda c:c.name, events)]
-
         statistics["statistics"].append(
-            {"keys": [type], "content": stat, "headers": headers, "showPositions": True, "positionTieBreakerIndex": 1})
-
-        print(event_ids)
+            {"keys": [result_type], "content": stat, "headers": headers, "showPositions": True, "positionTieBreakerIndex": 1, "sqlQueryCustom": custom_query})
 
     cnx.close()
 

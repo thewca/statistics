@@ -15,10 +15,8 @@ export class StatisticsApi {
 
   queryDatabase = (sqlQuery: string, page: number, size: number) => {
     let url = this.BASE_URL + this.queryDatabaseEndpoint;
-    let params = { sqlQuery, page, size };
-    return Axios.post<QueryDatabaseResponse>(url, null, {
-      params,
-    });
+    let body = { sqlQuery, page, size };
+    return Axios.post<QueryDatabaseResponse>(url, body);
   };
 
   getWcaAuthenticationUrl = (frontendHost: string) =>

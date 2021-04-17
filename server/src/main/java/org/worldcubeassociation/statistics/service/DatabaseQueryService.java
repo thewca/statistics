@@ -2,9 +2,10 @@ package org.worldcubeassociation.statistics.service;
 
 import org.worldcubeassociation.statistics.dto.DatabaseQueryBaseDTO;
 import org.worldcubeassociation.statistics.dto.DatabaseQueryDTO;
+import org.worldcubeassociation.statistics.request.DatabaseQueryRequest;
 
 public interface DatabaseQueryService {
-    DatabaseQueryDTO getResultSet(String query, Integer page, Integer size);
+    DatabaseQueryDTO getResultSet(DatabaseQueryRequest databaseQueryRequest);
 
     DatabaseQueryBaseDTO getResultSet(String query);
 }

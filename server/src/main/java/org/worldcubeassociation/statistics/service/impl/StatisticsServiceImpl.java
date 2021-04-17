@@ -74,7 +74,7 @@ public class StatisticsServiceImpl implements StatisticsService {
             statisticsDTO.getStatistics().add(statisticsGroupResponseDTO);
 
             Optional.ofNullable(query.getSqlQueryCustom()).ifPresent(
-                    q -> statisticsGroupResponseDTO.setSqlQueryCustom(URLEncoder.encode(q, StandardCharsets.UTF_8)));
+                    q -> statisticsGroupResponseDTO.setSqlQueryCustom(q));
 
             statisticsGroupResponseDTO.setHeaders(
                     // First option is the headers provided in this key
@@ -168,6 +168,11 @@ public class StatisticsServiceImpl implements StatisticsService {
                 .toLowerCase();
 
         statisticsResponseDTO.setPath(path);
+
+        statisticsDTO.getStatistics().forEach(stat -> {
+            Optional.ofNullable(stat.getSqlQueryCustom()).ifPresent(q -> stat.setSqlQueryCustom(
+                    URLEncoder.encode(q, StandardCharsets.UTF_8)));
+        });
 
         createLocalFile(statisticsResponseDTO, path);
 
