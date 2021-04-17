@@ -72,7 +72,7 @@ def avg_competitions():
             headers.append(year)
 
         out["statistics"] = [
-            {"keys": [], "content": table, "headers": headers}]
+            {"keys": [], "content": table, "headers": headers, "showPositions": True, "positionTieBreakerIndex": 0}]
         return out
 
 

@@ -192,6 +192,8 @@ const StatisticsDisplay = () => {
             <StatisticsTable
               headers={stat.headers}
               content={stat.content}
+              showPositions={stat.showPositions}
+              positionTieBreakerIndex={stat.positionTieBreakerIndex}
               allowInnerHTML
             />
           </div>

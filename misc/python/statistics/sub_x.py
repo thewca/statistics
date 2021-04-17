@@ -139,7 +139,7 @@ def sub_x():
             index = i+wr_index+1
             current_sub = index if event == "333fm" else index*100
             statistics["statistics"].append(
-                {"keys": [current_event.name, "Sub %s" % time_format(current_sub, event)], "content": stat, "headers": headers})
+                {"keys": [current_event.name, "Sub %s" % time_format(current_sub, event)], "content": stat, "headers": headers, "showPositions": True, "positionTieBreakerIndex": 0})
 
     return statistics
 

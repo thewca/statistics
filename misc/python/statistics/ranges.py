@@ -7,7 +7,7 @@ import logging
 from misc.python.util.mbld_util import get_mbld_points
 from misc.python.util.event_util import get_current_events
 
-from ..util.html_util import get_competitor_link, html_link_format
+from ..util.html_util import get_competitor_html_link, get_competitor_link, html_link_format
 from ..util.range_util import largest_range
 from ..util.statistics_api_util import create_statistics
 from ..util.time_util import time_format
@@ -31,13 +31,17 @@ def ranges():
     out = {}
     out["title"] = "Ranges"
     out["displayMode"] = "SELECTOR"
-    headers = ["Range", "Person",
+    headers = ["Person", "Range Size",
                "Country", "Range Start", "Range End"]
     out["statistics"] = []
 
     current_events = get_current_events()
 
     for current_event in current_events:
+        # TODO remove mock
+        if current_event.event_id not in ["444", "555"]:
+            continue
+
         lists_of_results = []
         id_list = []
         name_list = []
@@ -118,16 +122,15 @@ def ranges():
             if current_event not in ("333fm", "333mbf"):
                 range_s = time_format(range_s)
                 range_e = time_format(range_e)
-            link = get_competitor_link(wca_id)
-            table.append([range_size, html_link_format(
-                name, link), country, range_s, range_e])
+            link = get_competitor_html_link(wca_id, name)
+            table.append([link, range_size, country, range_s, range_e])
 
             prev = range_size
 
         explanation = "Competitors that got all results from the range start to the range end in %s" % ("steps of 1" if event in (
-            "333fm", "333mbf") else "step of 0.01")
+            "333fm", "333mbf") else "steps of 0.01")
         out["statistics"].append(
-            {"keys": [current_event.name], "content": table, "headers": headers, "explanation": explanation})
+            {"keys": [current_event.name], "content": table, "headers": headers, "explanation": explanation, "showPositions": True, "positionTieBreakerIndex": 1})
 
     return out
 

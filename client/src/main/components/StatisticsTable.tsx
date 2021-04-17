@@ -4,6 +4,8 @@ interface StatisticsTableProps {
   page?: number;
   pageSize?: number;
   allowInnerHTML: boolean;
+  positionTieBreakerIndex?: number;
+  showPositions: boolean;
 }
 
 const StatisticsTable = ({
@@ -12,6 +14,8 @@ const StatisticsTable = ({
   page = 0,
   pageSize = 0,
   allowInnerHTML = false,
+  showPositions,
+  positionTieBreakerIndex = 0,
 }: StatisticsTableProps) => {
   return (
     <div className="container">
@@ -19,9 +23,11 @@ const StatisticsTable = ({
         <table className="table table-hover table-striped table-bordered shadow table-condensed">
           <thead className="thead thead-dark">
             <tr>
-              <th className="text-center" scope="col">
-                #
-              </th>
+              {showPositions && (
+                <th className="text-center" scope="col">
+                  #
+                </th>
+              )}
               {headers.map((header, i) => (
                 <th key={i} className="text-center" scope="col">
                   {header}
@@ -32,11 +38,15 @@ const StatisticsTable = ({
           <tbody className="tbody">
             {content.map((result: string[], i) => (
               <tr key={i}>
-                <th scope="row" className="text-center">
-                  {i === 0 || content[i][0] !== content[i - 1][0]
-                    ? (page - 1) * pageSize + i + 1
-                    : "-"}
-                </th>
+                {showPositions && (
+                  <th scope="row" className="text-center">
+                    {i === 0 ||
+                    content[i][positionTieBreakerIndex] !==
+                      content[i - 1][positionTieBreakerIndex]
+                      ? (page - 1) * pageSize + i + 1
+                      : "-"}
+                  </th>
+                )}
                 {result.map((entry, j) => (
                   <td key={j} className="text-center">
                     {/* We allow rendering HTML (eg.: for links) in the statistics (not in the user's query) */}

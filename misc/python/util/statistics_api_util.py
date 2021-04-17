@@ -16,3 +16,4 @@ def create_statistics(data):
         log.info("Success")
     else:
         log.info("Error")
+        log.info(response.json())

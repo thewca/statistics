@@ -47,7 +47,7 @@ def avg_events():
         min_year, max_year)
     headers = ["Avg", "Country"]
     out["statistics"] = [
-        {"keys": [], "content": table, "headers": headers}]
+        {"keys": [], "content": table, "headers": headers, "showPositions": True, "positionTieBreakerIndex": 0}]
     out["table"] = table
 
     return out

@@ -23,6 +23,8 @@ function DatabaseQuery() {
   const [lastSearchedQuery, setLastSearchedQuery] = useState<string>();
   const [replaceList, setReplaceList] = useState<ReplaceItem[]>([]);
   const [loading, setLoading] = useState(false);
+  const [positionTieBreakerIndex, setPositionTieBreakerIndex] = useState(0);
+  const [showPositions, setShowPositions] = useState(true);
 
   // We allow common replacement with the form :ALL_UPPER
   useEffect(() => {
@@ -161,6 +163,8 @@ function DatabaseQuery() {
           page={page}
           pageSize={pageSize}
           allowInnerHTML={false}
+          showPositions={showPositions}
+          positionTieBreakerIndex={positionTieBreakerIndex}
         />
       )}
     </div>
