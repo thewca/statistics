@@ -2,6 +2,8 @@ displayMode: DEFAULT
 explanation: Sum of podium averages ordered from lowest to highest
 queries:
   - explanation: Best podiums for the 3x3x3 Cube event
+    showPositions: true
+    positionTieBreakerIndex: 1
     headers:
       - Competition
       - Sum

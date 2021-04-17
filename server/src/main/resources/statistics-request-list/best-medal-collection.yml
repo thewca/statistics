@@ -7,6 +7,8 @@ queries:
       - Bronzes
     keys:
       - 3x3x3
+    showPositions: true
+    positionTieBreakerIndex: 2
     sqlQuery: |-
       select
           personName,
@@ -54,6 +56,8 @@ queries:
       - Bronzes
     keys:
       - Overall
+    showPositions: true
+    positionTieBreakerIndex: 2
     sqlQuery: |-
       select
           personName,

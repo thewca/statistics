@@ -69,6 +69,8 @@ public class StatisticsServiceImpl implements StatisticsService {
             StatisticsGroupResponseDTO statisticsGroupResponseDTO = new StatisticsGroupResponseDTO();
             statisticsGroupResponseDTO.setKeys(query.getKeys());
             statisticsGroupResponseDTO.setContent(sqlResult.getContent());
+            statisticsGroupResponseDTO.setShowPositions(query.getShowPositions());
+            statisticsGroupResponseDTO.setPositionTieBreakerIndex(query.getPositionTieBreakerIndex());
             statisticsDTO.getStatistics().add(statisticsGroupResponseDTO);
 
             Optional.ofNullable(query.getSqlQueryCustom()).ifPresent(

@@ -1,6 +1,8 @@
 queries:
   - keys:
       - Single
+    showPositions: true
+    positionTieBreakerIndex: 2
     headers:
       - Name
       - Country
@@ -116,6 +118,8 @@ queries:
       limit 10
   - keys:
       - Average
+    showPositions: true
+    positionTieBreakerIndex: 2
     headers:
       - Name
       - Country

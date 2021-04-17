@@ -1,6 +1,8 @@
 queries:
   - keys:
       - Average
+    showPositions: true
+    positionTieBreakerIndex: 2
     sqlQuery: |-
       select
           concat(
@@ -37,6 +39,8 @@ queries:
           Apperances desc
   - keys:
       - Single
+    showPositions: true
+    positionTieBreakerIndex: 2
     sqlQuery: |-
       select
           concat(
