@@ -94,7 +94,7 @@ class Competitor(Comp):
     def __init__(self, wca_id, events):
         super().__init__(wca_id)
 
-        # Every competitor is considered as the mas rank at first
+        # Every competitor is considered as the max rank at first
         self.ranks = list(map(lambda e: e.max_rank, events))
         self.sum_of_ranks = None
 
@@ -118,8 +118,6 @@ def get_custom_query(result_type, events: List[Event]):
     event_names = " + ".join(list(map(lambda e: "`%s`" % e.name, events)))
 
     return custom_query % {"event_names": event_names, "custom_sub_queries": ",".join(custom_sub_queries)}
-
-    # return sub_query
 
 
 def sum_of_all_ranks():

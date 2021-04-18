@@ -1,4 +1,4 @@
-# python3 - m misc.python.best_podiums
+# python3 -m misc.python.best_podiums
 
 from misc.python.util.time_util import time_format
 from misc.python.util.html_util import get_competition_html_link, get_competitor_html_link

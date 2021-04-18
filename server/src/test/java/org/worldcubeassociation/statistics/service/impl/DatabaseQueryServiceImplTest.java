@@ -10,6 +10,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.worldcubeassociation.statistics.dto.DatabaseQueryDTO;
+import org.worldcubeassociation.statistics.request.DatabaseQueryRequest;
 import org.worldcubeassociation.statistics.rowmapper.ResultSetRowMapper;
 
 import java.util.ArrayList;
@@ -58,7 +59,12 @@ public class DatabaseQueryServiceImplTest {
         when(jdbcTemplate.query(anyString(), any(ResultSetRowMapper.class))).thenReturn(sqlResult);
         when(jdbcTemplate.queryForObject(anyString(), any(Class.class))).thenReturn(100);
 
-        DatabaseQueryDTO result = service.getResultSet(query, 0, 25);
+        DatabaseQueryRequest databaseQueryRequest = new DatabaseQueryRequest();
+        databaseQueryRequest.setSqlQuery(query);
+        databaseQueryRequest.setPage(0);
+        databaseQueryRequest.setSize(25);
+
+        DatabaseQueryDTO result = service.getResultSet(databaseQueryRequest);
 
         assertEquals(tableHeaders.length, result.getHeaders().size());
         assertEquals(nEvents, result.getContent().size());
@@ -70,7 +76,12 @@ public class DatabaseQueryServiceImplTest {
 
         when(jdbcTemplate.queryForObject(anyString(), any(Class.class))).thenReturn(100);
 
-        DatabaseQueryDTO result = service.getResultSet(query, 0, 25);
+        DatabaseQueryRequest databaseQueryRequest = new DatabaseQueryRequest();
+        databaseQueryRequest.setSqlQuery(query);
+        databaseQueryRequest.setPage(0);
+        databaseQueryRequest.setSize(25);
+
+        DatabaseQueryDTO result = service.getResultSet(databaseQueryRequest);
 
         assertTrue(result.getHeaders().isEmpty());
         assertTrue(result.getContent().isEmpty());
