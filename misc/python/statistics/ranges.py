@@ -7,13 +7,11 @@ import logging
 
 from misc.python.util.event_util import get_current_events
 from misc.python.util.html_util import get_competitor_html_link
+from misc.python.util.log_util import log
 from misc.python.util.mbld_util import get_mbld_points
 from misc.python.util.range_util import largest_range
 from misc.python.util.statistics_api_util import create_statistics
 from misc.python.util.time_util import time_format
-
-logging.basicConfig(level=logging.INFO)
-log = logging.getLogger()
 
 
 def has_multiple_results(results):

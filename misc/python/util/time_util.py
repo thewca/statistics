@@ -1,6 +1,9 @@
-def time_format(cents, event=None):
+def time_format(cents, event=None, type=None):
     if event == "333fm":
+        if type == "average":
+            return "%.2f" % (cents/100)
         return cents
+
     cents = int(cents)
 
     h, cents = divmod(cents, 360000)
