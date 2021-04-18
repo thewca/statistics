@@ -15,7 +15,7 @@ const StatisticsTable = ({
   pageSize = 0,
   allowInnerHTML = false,
   showPositions,
-  positionTieBreakerIndex = 0,
+  positionTieBreakerIndex,
 }: StatisticsTableProps) => {
   return (
     <div className="container">
@@ -41,6 +41,7 @@ const StatisticsTable = ({
                 {showPositions && (
                   <th scope="row" className="text-center">
                     {i === 0 ||
+                    !positionTieBreakerIndex ||
                     content[i][positionTieBreakerIndex] !==
                       content[i - 1][positionTieBreakerIndex]
                       ? (page - 1) * pageSize + i + 1
