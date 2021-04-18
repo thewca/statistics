@@ -1,0 +1,236 @@
+queries:
+  - keys:
+      - Single
+    showPositions: true
+    positionTieBreakerIndex: 2
+    headers:
+      - Name
+      - Country
+      - Sum
+      - R1
+      - R2
+      - R3
+    sqlQuery: |-
+      select
+          concat(
+              '<a href="https://www.worldcubeassociation.org/persons/',
+              id,
+              '">',
+              name,
+              '</a>'
+          ),
+          countryId Country,
+          r3 + r4 + r5 Sum,
+          r3 '3x3',
+          r4 '4x4',
+          r5 '5x5'
+      from
+          (
+              select
+                  id,
+                  p.name,
+                  p.countryId,
+                  (
+                      select
+                          worldRank
+                      from
+                          RanksSingle
+                      where
+                          personId = p.id
+                          and eventId = '333'
+                  ) r3,
+                  (
+                      select
+                          worldRank
+                      from
+                          RanksSingle
+                      where
+                          personId = p.id
+                          and eventId = '444'
+                  ) r4,
+                  (
+                      select
+                          worldRank
+                      from
+                          RanksSingle
+                      where
+                          personId = p.id
+                          and eventId = '555'
+                  ) r5
+              from
+                  Persons p
+          ) r
+      where
+          r3 is not null
+          and r4 is not null
+          and r5 is not null
+      order by
+          Sum asc
+      limit
+          10
+    sqlQueryCustom: |-
+      select
+          name Name,
+          countryId Country,
+          r3 + r4 + r5 Sum,
+          r3 '3x3',
+          r4 '4x4',
+          r5 '5x5'
+      from
+          (
+          select
+              id,
+              p.name,
+              p.countryId,
+              (
+              select
+                  worldRank
+              from
+                  RanksSingle
+              where
+                  personId = p.id
+                  and eventId = '333') r3,
+              (
+              select
+                  worldRank
+              from
+                  RanksSingle
+              where
+                  personId = p.id
+                  and eventId = '444') r4,
+              (
+              select
+                  worldRank
+              from
+                  RanksSingle
+              where
+                  personId = p.id
+                  and eventId = '555') r5
+          from
+              Persons p) r
+      where
+          r3 is not null
+          and r4 is not null
+          and r5 is not null
+          and id = ':WCA_ID'
+      order by
+          Sum asc
+      limit 10
+  - keys:
+      - Average
+    showPositions: true
+    positionTieBreakerIndex: 2
+    headers:
+      - Name
+      - Country
+      - Sum
+      - R1
+      - R2
+      - R3
+    sqlQuery: |-
+      select
+          concat(
+              '<a href="https://www.worldcubeassociation.org/persons/',
+              id,
+              '">',
+              name,
+              '</a>'
+          ),
+          countryId Country,
+          r3 + r4 + r5 Sum,
+          r3 '3x3',
+          r4 '4x4',
+          r5 '5x5'
+      from
+          (
+              select
+                  id,
+                  p.name,
+                  p.countryId,
+                  (
+                      select
+                          worldRank
+                      from
+                          RanksAverage
+                      where
+                          personId = p.id
+                          and eventId = '333'
+                  ) r3,
+                  (
+                      select
+                          worldRank
+                      from
+                          RanksAverage
+                      where
+                          personId = p.id
+                          and eventId = '444'
+                  ) r4,
+                  (
+                      select
+                          worldRank
+                      from
+                          RanksAverage
+                      where
+                          personId = p.id
+                          and eventId = '555'
+                  ) r5
+              from
+                  Persons p
+          ) r
+      where
+          r3 is not null
+          and r4 is not null
+          and r5 is not null
+      order by
+          Sum asc
+      limit
+          10
+    sqlQueryCustom: |-
+      select
+          name Name,
+          countryId Country,
+          r3 + r4 + r5 Sum,
+          r3 '3x3',
+          r4 '4x4',
+          r5 '5x5'
+      from
+          (
+          select
+              id,
+              p.name,
+              p.countryId,
+              (
+              select
+                  worldRank
+              from
+                  RanksAverage
+              where
+                  personId = p.id
+                  and eventId = '333') r3,
+              (
+              select
+                  worldRank
+              from
+                  RanksAverage
+              where
+                  personId = p.id
+                  and eventId = '444') r4,
+              (
+              select
+                  worldRank
+              from
+                  RanksAverage
+              where
+                  personId = p.id
+                  and eventId = '555') r5
+          from
+              Persons p) r
+      where
+          r3 is not null
+          and r4 is not null
+          and r5 is not null
+          and id = ':WCA_ID'
+      order by
+          Sum asc
+      limit 10
+title: Sum of 3x3/4x4/5x5 ranks

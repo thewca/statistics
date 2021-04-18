@@ -14,6 +14,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.worldcubeassociation.statistics.api.WCAApi;
 import org.worldcubeassociation.statistics.dto.StatisticsGroupResponseDTO;
 import org.worldcubeassociation.statistics.dto.StatisticsResponseDTO;
+import org.worldcubeassociation.statistics.enums.DisplayModeEnum;
 
 import java.io.File;
 import java.io.IOException;
@@ -57,7 +58,7 @@ public class StatisticsServiceImplTest {
         expectedResponse.setPath(path);
         expectedResponse.setTitle("Test");
         expectedResponse.setStatistics(getDefaultStatistics(columnNumber));
-        expectedResponse.setDisplayMode("DEFAULT");
+        expectedResponse.setDisplayMode(DisplayModeEnum.DEFAULT);
 
         MAPPER.writeValue(file, expectedResponse);
 

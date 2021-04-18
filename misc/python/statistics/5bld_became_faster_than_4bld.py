@@ -1,4 +1,4 @@
-# python3 - m misc.python.statistics.5bld_became_faster_than_4bld
+# python3 -m misc.python.statistics.5bld_became_faster_than_4bld
 
 
 import bisect
@@ -104,7 +104,8 @@ def compare_results(ev1, ev2):
     out["title"] = "5BLD become faster than 4BLD"
     headers = ["Days", "Name", "First %s result" %
                ev1, "Competition", "First faster %s result" % ev2, "Competition"]
-    out["statistics"] = [{"keys": [], "content": table, "headers": headers}]
+    out["statistics"] = [{"keys": [], "content": table,
+                          "headers": headers, "showPositions": True, "positionTieBreakerIndex": 0}]
     return out
 
 

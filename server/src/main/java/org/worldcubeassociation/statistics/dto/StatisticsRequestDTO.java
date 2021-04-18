@@ -2,14 +2,13 @@ package org.worldcubeassociation.statistics.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
-import io.swagger.annotations.ApiParam;
 import lombok.Data;
+import org.worldcubeassociation.statistics.enums.DisplayModeEnum;
 
 import java.util.List;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Pattern;
 
 @Data
 
@@ -32,11 +31,10 @@ public class StatisticsRequestDTO {
                     + "'Competitions in 2015', 'sqlQuery': 'select * from ... where year = 2015'}]")
     private List<@Valid StatisticsGroupRequestDTO> queries;
 
-    @ApiParam(allowableValues = "DEFAULT, SELECTOR")
-    @Pattern(regexp = "^(DEFAULT|SELECTOR)")
+    @Valid
     @ApiModelProperty(
             value = "In case of grouped statistics, you can select DEFAULT to display all of them in the frontend or "
                     + "'SELECTOR' to group them in a selector.",
             example = "DEFAULT")
-    private String displayMode;
+    private DisplayModeEnum displayMode;
 }

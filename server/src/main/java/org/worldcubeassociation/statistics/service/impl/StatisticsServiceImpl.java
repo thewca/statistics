@@ -17,21 +17,22 @@ import org.worldcubeassociation.statistics.dto.StatisticsGroupRequestDTO;
 import org.worldcubeassociation.statistics.dto.StatisticsGroupResponseDTO;
 import org.worldcubeassociation.statistics.dto.StatisticsRequestDTO;
 import org.worldcubeassociation.statistics.dto.StatisticsResponseDTO;
+import org.worldcubeassociation.statistics.enums.DisplayModeEnum;
 import org.worldcubeassociation.statistics.exception.InvalidParameterException;
 import org.worldcubeassociation.statistics.exception.NotFoundException;
 import org.worldcubeassociation.statistics.service.DatabaseQueryService;
 import org.worldcubeassociation.statistics.service.StatisticsService;
+import org.yaml.snakeyaml.Yaml;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -46,6 +47,8 @@ public class StatisticsServiceImpl implements StatisticsService {
     private ResourceLoader resourceLoader;
 
     private static final ObjectMapper MAPPER = new ObjectMapper();
+
+    private static final Yaml YAML = new Yaml();
 
     static {
         MAPPER.enable(SerializationFeature.INDENT_OUTPUT);
@@ -66,10 +69,12 @@ public class StatisticsServiceImpl implements StatisticsService {
             StatisticsGroupResponseDTO statisticsGroupResponseDTO = new StatisticsGroupResponseDTO();
             statisticsGroupResponseDTO.setKeys(query.getKeys());
             statisticsGroupResponseDTO.setContent(sqlResult.getContent());
+            statisticsGroupResponseDTO.setShowPositions(query.getShowPositions());
+            statisticsGroupResponseDTO.setPositionTieBreakerIndex(query.getPositionTieBreakerIndex());
             statisticsDTO.getStatistics().add(statisticsGroupResponseDTO);
 
             Optional.ofNullable(query.getSqlQueryCustom()).ifPresent(
-                    q -> statisticsGroupResponseDTO.setSqlQueryCustom(URLEncoder.encode(q, StandardCharsets.UTF_8)));
+                    q -> statisticsGroupResponseDTO.setSqlQueryCustom(q));
 
             statisticsGroupResponseDTO.setHeaders(
                     // First option is the headers provided in this key
@@ -85,7 +90,8 @@ public class StatisticsServiceImpl implements StatisticsService {
         }
 
         statisticsDTO
-                .setDisplayMode(Optional.ofNullable(statisticsRequestDTO.getDisplayMode()).orElse("DEFAULT"));
+                .setDisplayMode(
+                        Optional.ofNullable(statisticsRequestDTO.getDisplayMode()).orElse(DisplayModeEnum.DEFAULT));
         statisticsDTO.setExplanation(statisticsRequestDTO.getExplanation());
         statisticsDTO.setTitle(statisticsRequestDTO.getTitle());
 
@@ -98,17 +104,14 @@ public class StatisticsServiceImpl implements StatisticsService {
 
         Resource[] resources =
                 ResourcePatternUtils.getResourcePatternResolver(resourceLoader)
-                        .getResources("classpath:statistics-request-list/*.json");
+                        .getResources("classpath:statistics-request-list/*.yml");
 
         for (Resource resource : resources) {
             log.info("Statistic {}", resource.getDescription());
 
             InputStream inputStream = resource.getInputStream();
 
-            String fileContent = new BufferedReader(new InputStreamReader(inputStream))
-                    .lines().collect(Collectors.joining("\n"));
-
-            StatisticsRequestDTO request = MAPPER.readValue(fileContent, StatisticsRequestDTO.class);
+            StatisticsRequestDTO request = YAML.loadAs(inputStream, StatisticsRequestDTO.class);
 
             sqlToStatistics(request);
         }
@@ -137,7 +140,7 @@ public class StatisticsServiceImpl implements StatisticsService {
             controlList.add(controlItemDTO);
         }
 
-        Collections.sort(controlList, (o1, o2) -> o1.getTitle().compareTo(o2.getTitle()));
+        Collections.sort(controlList, Comparator.comparing(ControlItemDTO::getTitle));
 
         return controlList;
     }
@@ -156,7 +159,7 @@ public class StatisticsServiceImpl implements StatisticsService {
         log.info("Create statistics from {}", statisticsDTO);
 
         statisticsDTO
-                .setDisplayMode(Optional.ofNullable(statisticsDTO.getDisplayMode()).orElse("DEFAULT"));
+                .setDisplayMode(Optional.ofNullable(statisticsDTO.getDisplayMode()).orElse(DisplayModeEnum.DEFAULT));
 
         StatisticsResponseDTO statisticsResponseDTO = new StatisticsResponseDTO(statisticsDTO);
 
@@ -165,6 +168,11 @@ public class StatisticsServiceImpl implements StatisticsService {
                 .toLowerCase();
 
         statisticsResponseDTO.setPath(path);
+
+        statisticsDTO.getStatistics().forEach(stat -> {
+            Optional.ofNullable(stat.getSqlQueryCustom()).ifPresent(q -> stat.setSqlQueryCustom(
+                    URLEncoder.encode(q, StandardCharsets.UTF_8)));
+        });
 
         createLocalFile(statisticsResponseDTO, path);
 

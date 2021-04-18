@@ -1,6 +1,7 @@
-import { Input, message, Pagination, Skeleton } from "antd";
-import React, { useEffect, useState } from "react";
+import { Button, Input, message, Pagination, Skeleton } from "antd";
+import { useEffect, useState } from "react";
 import statisticsApi from "../api/statistics.api";
+import DatabaseQueryOptions from "../components/DatabaseQueryOptions";
 import StatisticsTable from "../components/StatisticsTable";
 import { getQueryParameter, setQueryParameter } from "../util/query.param.util";
 import "./DatabaseQuery.css";
@@ -23,6 +24,14 @@ function DatabaseQuery() {
   const [lastSearchedQuery, setLastSearchedQuery] = useState<string>();
   const [replaceList, setReplaceList] = useState<ReplaceItem[]>([]);
   const [loading, setLoading] = useState(false);
+  const [
+    positionTieBreakerIndex,
+    setPositionTieBreakerIndex,
+  ] = useState<number>();
+  const [showPositions, setShowPositions] = useState(true);
+  const [modalOpen, setModalOpen] = useState(false);
+
+  const toggleModal = () => setModalOpen((f) => !f);
 
   // We allow common replacement with the form :ALL_UPPER
   useEffect(() => {
@@ -131,27 +140,50 @@ function DatabaseQuery() {
             />
           ))}
           <div className="text-center">
-            <button
-              className="btn btn-primary btn-lg"
+            <Button
+              htmlType="submit"
+              type="primary"
+              shape="round"
+              size="large"
               disabled={!query}
               title={!query ? "You need to provide an SQL query" : ""}
             >
               Submit
-            </button>
+            </Button>
           </div>
         </div>
       </form>
       {noResult && <div className="alert alert-info">No results to show</div>}
 
       {totalElements > 0 && (
-        <div className="my-3 text-center">
-          <Pagination
-            defaultPageSize={pageSize}
-            current={page}
-            total={totalElements}
-            onChange={handlePaginationChange}
-          />
-        </div>
+        <>
+          <div className="my-3 text-center">
+            <Button
+              type="primary"
+              shape="round"
+              size="small"
+              className="options-button"
+              onClick={toggleModal}
+            >
+              Options
+            </Button>
+            <DatabaseQueryOptions
+              visible={modalOpen}
+              onCancel={toggleModal}
+              headers={headers}
+              showPositions={showPositions}
+              positionTieBreakerIndex={positionTieBreakerIndex}
+              setShowPositions={setShowPositions}
+              setPositionTieBreakerIndex={setPositionTieBreakerIndex}
+            />
+            <Pagination
+              defaultPageSize={pageSize}
+              current={page}
+              total={totalElements}
+              onChange={handlePaginationChange}
+            />
+          </div>
+        </>
       )}
       {loading && <Skeleton active />}
       {queryResults.length > 0 && !loading && (
@@ -161,6 +193,8 @@ function DatabaseQuery() {
           page={page}
           pageSize={pageSize}
           allowInnerHTML={false}
+          showPositions={showPositions}
+          positionTieBreakerIndex={positionTieBreakerIndex}
         />
       )}
     </div>

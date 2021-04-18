@@ -1,0 +1,131 @@
+queries:
+  - keys:
+      - Average
+    showPositions: true
+    positionTieBreakerIndex: 2
+    sqlQuery: |-
+      select
+          concat(
+              '<a href="https://www.worldcubeassociation.org/persons/',
+              personId,
+              '">',
+              personName,
+              '</a>'
+          ) Name,
+          Country,
+          count(*) Apperances
+      from
+          (
+              select
+                  personName,
+                  personId,
+                  average,
+                  countryId Country
+              from
+                  Results r
+              where
+                  eventId = '333'
+                  and average > 0
+              order by
+                  average
+              limit
+                  100
+          ) r
+      group by
+          personName,
+          personId,
+          Country
+      order by
+          Apperances desc
+  - keys:
+      - Single
+    showPositions: true
+    positionTieBreakerIndex: 2
+    sqlQuery: |-
+      select
+          concat(
+              '<a href="https://www.worldcubeassociation.org/persons/',
+              personId,
+              '">',
+              personName,
+              '</a>'
+          ) Name,
+          Country,
+          count(*) Apperances
+      from
+          (
+              select
+                  *
+              from
+                  (
+                      select
+                          personName,
+                          personId,
+                          value1 result,
+                          countryId Country
+                      from
+                          Results
+                      where
+                          eventId = '333'
+                          and value1 > 0
+                      union
+                      all
+                      select
+                          personName,
+                          personId,
+                          value2 result,
+                          countryId Country
+                      from
+                          Results
+                      where
+                          eventId = '333'
+                          and value2 > 0
+                      union
+                      all
+                      select
+                          personName,
+                          personId,
+                          value3 result,
+                          countryId Country
+                      from
+                          Results
+                      where
+                          eventId = '333'
+                          and value3 > 0
+                      union
+                      all
+                      select
+                          personName,
+                          personId,
+                          value4 result,
+                          countryId Country
+                      from
+                          Results
+                      where
+                          eventId = '333'
+                          and value4 > 0
+                      union
+                      all
+                      select
+                          personName,
+                          personId,
+                          value5 result,
+                          countryId Country
+                      from
+                          Results
+                      where
+                          eventId = '333'
+                          and value5 > 0
+                  ) r
+              order by
+                  result
+              limit
+                  100
+          ) final
+      group by
+          personName,
+          personId,
+          Country
+      order by
+          Apperances desc
+title: Appearances in 3x3x3 Cube top 100 results

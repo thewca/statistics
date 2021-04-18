@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.worldcubeassociation.statistics.dto.DatabaseQueryBaseDTO;
 import org.worldcubeassociation.statistics.dto.DatabaseQueryDTO;
 import org.worldcubeassociation.statistics.exception.InvalidParameterException;
+import org.worldcubeassociation.statistics.request.DatabaseQueryRequest;
 import org.worldcubeassociation.statistics.rowmapper.ResultSetRowMapper;
 import org.worldcubeassociation.statistics.service.DatabaseQueryService;
 
@@ -30,7 +31,11 @@ public class DatabaseQueryServiceImpl implements DatabaseQueryService {
     private static final String PAGINATION_COUNT = "select count(*) from (\n%s\n) alias";
 
     @Override
-    public DatabaseQueryDTO getResultSet(String query, Integer page, Integer size) {
+    public DatabaseQueryDTO getResultSet(DatabaseQueryRequest databaseQueryRequest) {
+        String query = databaseQueryRequest.getSqlQuery();
+        int page = databaseQueryRequest.getPage();
+        int size = databaseQueryRequest.getSize();
+
         log.info("Execute query\n{}", query);
 
         query = query.trim();

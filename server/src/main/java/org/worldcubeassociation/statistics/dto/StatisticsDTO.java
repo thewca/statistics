@@ -3,14 +3,13 @@ package org.worldcubeassociation.statistics.dto;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
-import io.swagger.annotations.ApiParam;
 import lombok.Data;
+import org.worldcubeassociation.statistics.enums.DisplayModeEnum;
 
 import java.util.List;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -29,11 +28,9 @@ public class StatisticsDTO {
     @NotNull
     private List<@Valid StatisticsGroupResponseDTO> statistics;
 
-    @ApiParam(allowableValues = "DEFAULT, SELECTOR")
-    @Pattern(regexp = "^(DEFAULT|SELECTOR)")
     @ApiModelProperty(
             value = "In case of grouped statistics, you can select DEFAULT to display all of them in the frontend or "
                     + "'SELECTOR' to group them in a selector.",
             example = "DEFAULT")
-    private String displayMode;
+    private DisplayModeEnum displayMode;
 }

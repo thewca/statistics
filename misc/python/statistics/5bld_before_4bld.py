@@ -95,7 +95,8 @@ def compare_results(ev1, ev2):
     out = {}
     out["title"] = "Competitors who got 5BLD before 4BLD"
     out["explanation"] = "In case of multiple first results (eg. ao3), best one is taken."
-    out["statistics"] = [{"keys": [], "content": table, "headers": headers}]
+    out["statistics"] = [{"keys": [], "content": table,
+                          "headers": headers, "showPositions": True, "positionTieBreakerIndex": 0}]
 
     return out
 
