@@ -1,6 +1,5 @@
 class Competitor:
     wca_id = None
-    best = None
     country = None
     name = None
 
