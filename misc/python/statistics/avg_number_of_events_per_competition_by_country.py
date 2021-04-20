@@ -2,58 +2,65 @@
 
 from datetime import datetime
 
-import pandas as pd
+from misc.python.util.database_util import get_database_connection
+from misc.python.util.log_util import log
+from misc.python.util.statistics_api_util import create_statistics
 
-from ..util.log_util import log
-from ..util.statistics_api_util import create_statistics
+current_year = datetime.now().year
+range = 5
+
+min_year = current_year - range
+max_year = current_year - 1
+
+title = "Average number of events in a competition for each country from %s to %s" % (
+    min_year, max_year)
+
+query = """select
+	format(average, 2),
+	name
+from
+	(
+	select
+		ct.name,
+		count(*)/ count(distinct competition_id) average
+	from
+		Competitions c
+	inner join competition_events e on
+		c.id = e.competition_id
+	inner join Countries ct on
+		c.countryId = ct.id
+	where
+		year(c.start_date) <= %(max_year)s
+		and year(c.start_date) >= %(min_year)s
+	group by
+		countryId) result
+order by
+	average desc,
+	name
+"""
 
 
 def avg_events():
 
-    current_year = datetime.now().year
-    range = 5
-
-    min_year = current_year - range
-    max_year = current_year - 1
-
-    country_list = []
-    event_list = []
-
-    log.info("Read csv")
-    data = pd.read_csv('WCA_export/WCA_export_Competitions.tsv', sep='\t')
-    for country, events, year in zip(data["countryId"], data["eventSpecs"], data["year"]):
-
-        if int(year) < min_year or int(year) > max_year:
-            continue
-
-        if country not in country_list:
-            country_list.append(country)
-            event_list.append([])
-
-        i = country_list.index(country)
-
-        events = events.split()
-        event_list[i].append(len(events))
-
-    for x in event_list:
-        avg_list = map(lambda l: sum(l)/len(l), event_list)
-
-    table = []
-    for (x, y) in sorted(zip(avg_list, country_list))[::-1]:
-        table.append([("%.2f" % x).zfill(5), y])
+    cnx = get_database_connection()
+    cursor = cnx.cursor()
+    cursor.execute(query, {"min_year": min_year, "max_year": max_year})
+    content = cursor.fetchall()
 
     out = {}
-    out["title"] = "Avg number of events in a competition for each country from %s to %s" % (
-        min_year, max_year)
+    out["title"] = title
     headers = ["Avg", "Country"]
     out["statistics"] = [
-        {"keys": [], "content": table, "headers": headers, "showPositions": True, "positionTieBreakerIndex": 0}]
-    out["table"] = table
+        {"keys": [], "content": content, "headers": headers, "showPositions": True, "positionTieBreakerIndex": 0}]
+
+    cnx.close()
 
     return out
 
 
 def main():
+    log.info(" ========== %s ==========" % title)
+
     stat = avg_events()
     create_statistics(stat)
 
