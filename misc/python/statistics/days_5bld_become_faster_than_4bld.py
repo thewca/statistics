@@ -58,8 +58,6 @@ def compare_results(ev1, ev2):
 
     cursor.execute(query % (ev1, ev2))
 
-    evs = [ev1, ev2]
-
     for wca_id, country_id, name, best, start_date, competition_id, competition_name, event_id in cursor:
         competitor = Competitor(wca_id, country_id, name)
         i = bisect.bisect_left(competitors, competitor)
@@ -67,15 +65,13 @@ def compare_results(ev1, ev2):
             competitors.insert(i, competitor)
         competitor = competitors[i]
 
-        j = evs.index(event_id)
         # first ev1 result ever
-
-        if j == 0 and competitor.first_results[0] == None:
+        if event_id == ev1 and not competitor.first_results[0]:
             competitor.first_results[0] = best
             competitor.first_competitions[0] = [
                 competition_id, competition_name]
             competitor.first_dates[0] = start_date
-        elif j == 1 and competitor.first_results[1] == None and competitor.first_results[0] != None and best < competitor.first_results[0]:
+        elif event_id == ev2 and not competitor.first_results[1] and competitor.first_results[0] and best < competitor.first_results[0]:
             competitor.first_results[1] = best
             competitor.first_competitions[1] = [
                 competition_id, competition_name]
