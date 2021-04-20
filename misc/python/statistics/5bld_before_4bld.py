@@ -5,8 +5,7 @@ import bisect
 from misc.python.statistics.days_5bld_become_faster_than_4bld import Competitor
 from misc.python.util.database_util import get_database_connection
 from misc.python.util.html_util import (get_competition_html_link,
-                                        get_competitor_html_link,
-                                        get_competitor_link, html_link_format)
+                                        get_competitor_html_link)
 from misc.python.util.log_util import log
 from misc.python.util.statistics_api_util import create_statistics
 from misc.python.util.time_util import time_format
