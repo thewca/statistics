@@ -61,7 +61,7 @@ class Competitor(Comp):
         self.best_rank = None
 
     def __repr__(self) -> str:
-        return "Competitor[wca_id=%s, best=%s, competition_id=%s, min_date=%s, best_rank=%s]" % (self.wca_id, self.best, self.competition_id, self.min_date, self.best_rank)
+        return "Competitor[wca_id=%s, best=%s, competition_id=%s, best_rank=%s, best_rank_start=%s, best_rank_end=%s]" % (self.wca_id, self.best, self.competition_id, self.best_rank, self.best_rank_start, self.best_rank_end)
 
 
 def summarize_results(today, today_competitors, all_time_competitors, all_time_bests):
@@ -88,19 +88,19 @@ def summarize_results(today, today_competitors, all_time_competitors, all_time_b
 
             all_time_competitors[index].competition_id = competitor.competition_id
             all_time_competitors[index].min_date = today
-            all_time_competitors[index].best_rank_start = today
             all_time_competitors[index].best = competitor.best
+            all_time_competitors[index].best_rank_start = today
             all_time_competitors[index].best_rank_end = None
 
     for competitor in all_time_competitors:
         current_best_rank = bisect_left(all_time_bests, competitor.best)
-        if not competitor.best_rank or current_best_rank < competitor.best_rank:
+        if competitor.best_rank == None or current_best_rank < competitor.best_rank:
             competitor.best_rank = current_best_rank
             competitor.best_rank_best = competitor.best
             competitor.best_rank_end = None
 
-        # if current_best_rank > competitor.best_rank and not competitor.best_rank_end:
-        #     competitor.best_rank_end = today - timedelta(days=1)
+        if current_best_rank > competitor.best_rank and not competitor.best_rank_end:
+            competitor.best_rank_end = today - timedelta(days=1)
 
 
 def main():
