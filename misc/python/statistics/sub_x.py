@@ -161,7 +161,7 @@ def sub_x():
 
 
 def main():
-    log.info(" ========== Sub x ==========")
+    log.info("========== Sub x ==========")
     statistics = sub_x()
     create_statistics(statistics)
 
