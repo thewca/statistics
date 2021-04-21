@@ -71,6 +71,7 @@ public class StatisticsServiceImpl implements StatisticsService {
             statisticsGroupResponseDTO.setContent(sqlResult.getContent());
             statisticsGroupResponseDTO.setShowPositions(query.getShowPositions());
             statisticsGroupResponseDTO.setPositionTieBreakerIndex(query.getPositionTieBreakerIndex());
+            statisticsGroupResponseDTO.setExplanation(query.getExplanation());
             statisticsDTO.getStatistics().add(statisticsGroupResponseDTO);
 
             Optional.ofNullable(query.getSqlQueryCustom()).ifPresent(
@@ -102,10 +103,29 @@ public class StatisticsServiceImpl implements StatisticsService {
     public void generateAllFromSql() throws IOException {
         log.info("Find all statistics");
 
-        Resource[] resources =
-                ResourcePatternUtils.getResourcePatternResolver(resourceLoader)
-                        .getResources("classpath:statistics-request-list/*.yml");
+        List<Resource> resources =
+                Arrays.asList(ResourcePatternUtils.getResourcePatternResolver(resourceLoader)
+                        .getResources("classpath:statistics-request-list/*.yml"));
 
+        resourcesToStatistics(resources);
+    }
+
+    @Override
+    public void generateFromSql(String pathId) throws IOException {
+        log.info("Generate statistics with path {}", pathId);
+
+        List<Resource> resources =
+                Arrays.asList(ResourcePatternUtils.getResourcePatternResolver(resourceLoader)
+                        .getResources(String.format("classpath:statistics-request-list/%s.yml", pathId)));
+
+        if (resources.isEmpty()) {
+            throw new NotFoundException(String.format("Resource %s not found", pathId));
+        }
+
+        resourcesToStatistics(resources);
+    }
+
+    private void resourcesToStatistics(List<Resource> resources) throws IOException {
         for (Resource resource : resources) {
             log.info("Statistic {}", resource.getDescription());
 

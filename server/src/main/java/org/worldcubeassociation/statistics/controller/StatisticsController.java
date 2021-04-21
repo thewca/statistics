@@ -29,9 +29,13 @@ public interface StatisticsController {
     StatisticsResponseDTO sqlToStatistics(@Valid @RequestBody StatisticsRequestDTO statisticsRequestDTO)
             throws IOException;
 
-    @PostMapping("generate-all-from-sql")
+    @PostMapping("generate-from-sql")
     @ApiOperation("Convert all sql queries in the resource folder to statistics")
     void generateAllFromSql() throws IOException;
+
+    @PostMapping("generate-from-sql/{pathId}")
+    @ApiOperation("Convert specific sql queries in the resource folder to statistics")
+    void generateFromSql(String pathId) throws IOException;
 
     @GetMapping("list")
     List<ControlItemDTO> list() throws IOException;
