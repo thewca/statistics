@@ -9,20 +9,16 @@ from misc.python.util.log_util import log
 
 # WIP
 
-query_date = """set
-    @min_date = (
-        select
-            min(start_date)
-        from
-            Competitions c
-            inner join competition_events e on e.competition_id = c.id
-        where
-            start_date > %(date)s
-            and event_id = %(event_id)s
-    )"""
+query_date = """select
+    min(start_date)
+from
+    Competitions c
+    inner join competition_events e on e.competition_id = c.id
+where
+    start_date > %(date)s
+    and event_id = %(event_id)s"""
 
 query_next_results = """select
-    @min_date,
     person_id,
     min_best best,
     (
@@ -32,10 +28,10 @@ query_next_results = """select
             Results r
             inner join Competitions c on r.competitionId = c.id
         where
-            r.eventId = %(event_id)s
-            and r.best = min_best
+            r.eventId = '%(event_id)s'
+            and r.%(result_type)s = min_best
             and r.personId = personId
-            and c.start_date = @min_date
+            and c.start_date = date('%(date)s')
         limit
             1
     ) competition_id
@@ -43,14 +39,14 @@ from
     (
         select
             personId person_id,
-            min(best) min_best
+            min(average) min_best
         from
             Results r
             inner join Competitions c on r.competitionId = c.id
         where
-            best > 0
-            and eventId = %(event_id)s
-            and c.start_date = @min_date
+            %(result_type)s > 0
+            and eventId = '%(event_id)s'
+            and c.start_date = date('%(date)s')
         group by
             personId
     ) min_results"""
@@ -68,7 +64,7 @@ class Competitor(Comp):
         return "Competitor[wca_id=%s, best=%s, competition_id=%s, min_date=%s, best_rank=%s]" % (self.wca_id, self.best, self.competition_id, self.min_date, self.best_rank)
 
 
-def summarize_results(today: date, today_competitors, all_time_competitors, all_time_bests):
+def summarize_results(today, today_competitors, all_time_competitors, all_time_bests):
     # Assign today's best result
     for competitor in today_competitors:
         index = bisect_left(all_time_competitors, competitor)
@@ -90,8 +86,10 @@ def summarize_results(today: date, today_competitors, all_time_competitors, all_
 
             insort_left(all_time_bests, competitor.best)
 
-            all_time_competitors[index].best = competitor.best
+            all_time_competitors[index].competition_id = competitor.competition_id
+            all_time_competitors[index].min_date = today
             all_time_competitors[index].best_rank_start = today
+            all_time_competitors[index].best = competitor.best
             all_time_competitors[index].best_rank_end = None
 
     for competitor in all_time_competitors:
@@ -124,14 +122,15 @@ def main():
     while True:
         cursor.execute(
             query_date, {"date": current_date, "event_id": event_id})
-        cursor.execute(query_next_results, {"event_id": event_id})
-        today_results = cursor.fetchall()
-        if not today_results:
+        current_date = cursor.fetchone()[0]
+        if not current_date:
             break
-        for min_date, wca_id, best, competition_id in today_results:
-            competitor = Competitor(wca_id, best, competition_id, min_date)
+        cursor.execute(query_next_results % {
+                       "result_type": "average", "date": current_date, "event_id": event_id})
+        today_results = cursor.fetchall()
+        for wca_id, best, competition_id in today_results:
+            competitor = Competitor(wca_id, best, competition_id, current_date)
             today_competitors.append(competitor)
-            current_date = min_date
 
         # One last summarization for the last day
         summarize_results(current_date, today_competitors,
