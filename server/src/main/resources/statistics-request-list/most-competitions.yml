@@ -1,0 +1,61 @@
+queries:
+  - keys:
+      - Event
+    showPositions: false
+    headers:
+      - Person
+      - Competitions
+    sqlQuery: |-
+      SELECT
+          personId,
+          count(DISTINCT competitionId) numberOfCompetitions
+      FROM
+          Results
+      GROUP BY
+          personId
+      ORDER BY
+          numberOfCompetitions DESC,
+          personId
+      LIMIT
+          10
+  - keys:
+      - Event
+    headers:
+      - Event
+      - Competitions
+    sqlQuery: |-
+      SELECT
+          eventId,
+          count(DISTINCT competitionId) numberOfCompetitions
+      FROM
+          Results
+      GROUP BY
+          eventId
+      ORDER BY
+          numberOfCompetitions DESC,
+          eventId
+      LIMIT
+          10
+  - keys:
+      - Country
+    showPositions: false
+    headers:
+      - Country
+      - Persons
+    sqlQuery: |-
+      SELECT
+          countryId,
+          count(*) numberOfCompetitions
+      FROM
+          Competitions c
+      WHERE
+          showAtAll
+          AND datediff(c.start_date, curdate()) < 0
+      GROUP BY
+          countryId
+      ORDER BY
+          numberOfCompetitions DESC,
+          countryId
+      LIMIT
+          10
+title: Most competitions
