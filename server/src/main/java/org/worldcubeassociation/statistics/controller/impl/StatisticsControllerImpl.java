@@ -28,6 +28,11 @@ public class StatisticsControllerImpl implements StatisticsController {
     }
 
     @Override
+    public void generateFromSql(String pathId) throws IOException {
+        statisticsService.generateFromSql(pathId);
+    }
+
+    @Override
     public List<ControlItemDTO> list() throws IOException {
         return statisticsService.list();
     }

@@ -2,6 +2,7 @@ package org.worldcubeassociation.statistics.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.util.Pair;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.worldcubeassociation.statistics.dto.DatabaseQueryBaseDTO;
@@ -12,9 +13,7 @@ import org.worldcubeassociation.statistics.rowmapper.ResultSetRowMapper;
 import org.worldcubeassociation.statistics.service.DatabaseQueryService;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -88,7 +87,7 @@ public class DatabaseQueryServiceImpl implements DatabaseQueryService {
 
         DatabaseQueryBaseDTO result = new DatabaseQueryBaseDTO();
 
-        List<LinkedHashMap<String, String>> sqlResult;
+        List<Pair<List<String>, List<String>>> sqlResult;
         try {
             sqlResult = jdbcTemplate.query(query, resultSetRowMapper);
         } catch (Exception e) {
@@ -103,18 +102,9 @@ public class DatabaseQueryServiceImpl implements DatabaseQueryService {
             result.setHeaders(new ArrayList<>());
         } else {
 
-            // Since we are using LinkedHashMap, the headers should be the same accross
-            // every line of the content.
-            // We take the first one.
-            List<String> headers =
-                    sqlResult.get(0).entrySet().stream().map(Map.Entry::getKey).collect(Collectors.toList());
-
-            List<List<String>> content = new ArrayList<>();
-            sqlResult.forEach(hash -> {
-                List<String> list = new ArrayList<>();
-                hash.entrySet().forEach(entry -> list.add(entry.getValue()));
-                content.add(list);
-            });
+            // The headers should be the same across every line of the content. We take the first one.
+            List<String> headers = sqlResult.get(0).getFirst();
+            List<List<String>> content = sqlResult.stream().map(Pair::getSecond).collect(Collectors.toList());
             result.setHeaders(headers);
             result.setContent(content);
         }

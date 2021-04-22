@@ -1,0 +1,61 @@
+queries:
+  - keys:
+      - Evemt
+    showPositions: false
+    headers:
+      - Event
+      - Persons
+    sqlQuery: |-
+      select
+          e.name,
+          count(distinct personId) qt
+      from
+          RanksSingle rs
+          inner join Events e on rs.eventId = e.id
+      where
+          e.`rank` < 900
+      group by
+          eventId
+      order by
+          qt desc,
+          eventId
+  - keys:
+      - Competition
+    headers:
+      - Competition
+      - Persons
+    sqlQuery: |-
+      select
+          c.name,
+          count(distinct personId) qt
+      from
+          Results r
+          inner join Competitions c on r.competitionId = c.id
+      group by
+          c.name
+      order by
+          qt desc,
+          c.name
+      limit
+          10
+  - keys:
+      - Country
+    showPositions: false
+    headers:
+      - Country
+      - Persons
+    sqlQuery: |-
+      SELECT
+          countryId,
+          count(DISTINCT personId) numberOfPersons
+      FROM
+          Results
+      GROUP BY
+          countryId
+      ORDER BY
+          numberOfPersons DESC,
+          countryId
+      LIMIT
+          10
+title: Most persons
+

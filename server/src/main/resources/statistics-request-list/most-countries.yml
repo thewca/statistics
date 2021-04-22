@@ -1,0 +1,77 @@
+queries:
+  - keys:
+      - Person
+    showPositions: false
+    headers:
+      - Person
+      - ID
+      - Countries
+    sqlQuery: |-
+      SELECT
+          person.name,
+          personId,
+          COUNT(competition_countries_by_person.countryId) numberOfCountries
+      FROM
+          (
+              SELECT
+                  DISTINCT personId,
+                  competition.countryId
+              FROM
+                  Results
+                  JOIN Competitions competition ON competition.id = competitionId
+              WHERE
+                  competition.countryId NOT REGEXP '^X[A-Z]{1}$'
+          ) AS competition_countries_by_person
+          JOIN Persons person ON person.id = personId
+          AND subId = 1
+      GROUP BY
+          person.name,
+          personId
+      ORDER BY
+          numberOfCountries DESC,
+          person.name
+      LIMIT
+          10
+  - keys:
+      - Event
+    headers:
+      - Event
+      - Countries
+    sqlQuery: |-
+      select
+          ce.event_id,
+          count(distinct c.countryId) qt
+      from
+          competition_events ce
+          inner join Competitions c on ce.competition_id = c.id
+      where
+          c.countryId NOT REGEXP '^X[A-Z]{1}$'
+      group by
+          ce.event_id
+      order by
+          qt desc,
+          ce.event_id
+      limit
+          10
+  - keys:
+      - Competition
+    showPositions: false
+    headers:
+      - Competition
+      - Countries
+    sqlQuery: |-
+      SELECT
+          competitionId,
+          count(DISTINCT result.countryId) numberOfCountries
+      FROM
+          Results result
+      WHERE
+          result.countryId NOT REGEXP '^X[A-Z]{1}$'
+      GROUP BY
+          competitionId
+      ORDER BY
+          numberOfCountries DESC,
+          competitionId
+      LIMIT
+          10
+title: Most countries

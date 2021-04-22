@@ -14,6 +14,8 @@ public interface StatisticsService {
 
     void generateAllFromSql() throws IOException;
 
+    void generateFromSql(String pathId) throws IOException;
+
     List<ControlItemDTO> list() throws IOException;
 
     StatisticsResponseDTO getStatistic(String pathId) throws IOException;

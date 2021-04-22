@@ -1,94 +1,92 @@
 # python3 -m misc.python.statistics.5bld_before_4bld
 
 import bisect
-import csv
-import datetime
 
-from ..util.html_util import (get_competition_html_link, get_competitor_link,
-                              html_link_format)
-from ..util.statistics_api_util import create_statistics
-from ..util.time_util import time_format
+from misc.python.statistics.days_5bld_become_faster_than_4bld import Competitor
+from misc.python.util.database_util import get_database_connection
+from misc.python.util.html_util import (get_competition_html_link,
+                                        get_competitor_html_link)
+from misc.python.util.log_util import log
+from misc.python.util.statistics_api_util import create_statistics
+from misc.python.util.time_util import time_format
+
+query = """select
+	personId,
+	personName,
+	r.countryId,
+    eventId,
+	best,
+	c.id,
+	c.name,
+	c.start_date
+from
+	Results r
+inner join Competitions c on
+	r.competitionId = c.id
+where
+	eventId in ('%s', '%s')
+	and best > 0
+order by
+	c.start_date"""
 
 
 def compare_results(ev1, ev2):
     """Checks if a competitor got ev1 before ev2, expect for 333mbf and 333mbo, due to time encode."""
 
-    wca_ids = []
-    names = []
-    first_results = []
-    first_competition = []
-    first_date = []
-    diffs = []
+    competitors = []
 
-    with open('WCA_export/WCA_export_Results_Ordered.tsv') as tsvin:
-        tsvin = csv.reader(tsvin, delimiter='\t')
+    log.info("Connect to the database")
+    cnx = get_database_connection()
+    cursor = cnx.cursor()
+    cursor.execute(query % (ev1, ev2))
 
-        evs = [ev1, ev2]
-        for line in tsvin:
-            event = line[1]
-            if event in evs:
-                wca_id = line[7]
+    evs = [ev1, ev2]
 
-                i = bisect.bisect_left(wca_ids, wca_id)
+    log.info("Assign results")
+    for wca_id, name, country_id, event_id, best, competition_id, competition_name, date in cursor:
+        competitor = Competitor(wca_id, country_id, name)
 
-                if i == len(wca_ids) or wca_ids[i] != wca_id:
-                    name = line[6]
+        i = bisect.bisect_left(competitors, competitor)
+        if i == len(competitors) or competitors[i] != competitor:
+            competitor.first_results = [None, None]
+            competitor.first_competitions = [None, None]
+            competitor.first_dates = [None, None]
+            competitor.diff = None
 
-                    wca_ids.insert(i, wca_id)
-                    names.insert(i, name)
+            competitors.insert(i, competitor)
 
-                    first_results.insert(i, [None, None])
-                    first_competition.insert(i, [None, None])
-                    first_date.insert(i, [None, None])
-                    diffs.insert(i, None)
+        competitor = competitors[i]
 
-                competition = line[0]
+        j = evs.index(event_id)
+        if competitor.first_results[j] == None:
+            competitor.first_results[j] = time_format(best)
+            competitor.first_competitions[j] = [
+                competition_id, competition_name]
+            competitor.first_dates[j] = date
+    log.info("Found %s competitors" % len(competitors))
 
-                best = int(line[4])
-                j = evs.index(event)
-                if best > 0 and first_results[i][j] == None:
-                    first_results[i][j] = time_format(best)
-                    first_competition[i][j] = competition
+    competitors = list(filter(
+        lambda c: c.first_results[0] and c.first_results[1], competitors))
+    log.info("Found %s competitors with both success" % len(competitors))
 
-                    year = int(line[17])
-                    month = int(line[18])
-                    day = int(line[19])
-                    date = datetime.date(year, month, day)
-                    first_date[i][j] = date
+    log.info("Fill diffs")
+    for competitor in competitors:
+        competitor.diff = (
+            competitor.first_dates[1]-competitor.first_dates[0]).days
 
-                    if first_date[i][0] != None and first_date[i][1] != None:
-                        diff = (first_date[i][1]-first_date[i][0]).days
-                        diffs[i] = diff
+    # Filter
+    competitors = sorted(
+        filter(lambda c: c.diff > 0, competitors), key=lambda c: -c.diff)
+    log.info("Found %s competitors that got %s before %s" %
+             (len(competitors), ev1, ev2))
 
     table = []
+    for competitor in competitors:
 
-    out_diffs = []
-    out_ids = []
-    out_names = []
-    out_ev1_results = []
-    out_ev2_results = []
-    out_competition_ev1 = []
-    out_competition_ev2 = []
-    for i in range(len(wca_ids)):
-        if diffs[i] != None and diffs[i] > 0:
-            out_diffs.append(diffs[i])
-            out_ids.append(wca_ids[i])
-            out_names.append(names[i])
-
-            out_ev1_results.append(first_results[i][0])
-            out_ev2_results.append(first_results[i][1])
-
-            out_competition_ev1.append(first_competition[i][0])
-            out_competition_ev2.append(first_competition[i][1])
-
-    count = 1
-    for diff, wca_id, name, result1, comp1, result2, comp2 in sorted(zip(out_diffs, out_ids, out_names, out_ev1_results, out_competition_ev1, out_ev2_results, out_competition_ev2))[::-1]:
-
-        link = get_competitor_link(wca_id)
-        table.append([diff, html_link_format(name, link), result1, get_competition_html_link(
-            comp1), result2, get_competition_html_link(comp2)])
-
-        count += 1
+        link = get_competitor_html_link(competitor.wca_id, competitor.name)
+        table.append([competitor.diff, link, competitor.first_results[0], get_competition_html_link(
+            competitor.first_competitions[0][0], competitor.first_competitions[0][1]), competitor.first_results[1], get_competition_html_link(
+            competitor.first_competitions[1][0], competitor.first_competitions[1][1])])
 
     headers = ["Days", "Name", "First result %s" %
                ev1, "Competition", "First result %s" % ev2, "Competition"]
@@ -97,6 +95,8 @@ def compare_results(ev1, ev2):
     out["explanation"] = "In case of multiple first results (eg. ao3), best one is taken."
     out["statistics"] = [{"keys": [], "content": table,
                           "headers": headers, "showPositions": True, "positionTieBreakerIndex": 0}]
+
+    cnx.close()
 
     return out
 

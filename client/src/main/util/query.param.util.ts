@@ -32,7 +32,7 @@ export const deleteParameter = (...names: string[]) => {
 const updateUrl = (searchParams: URLSearchParams) => {
   let currentLocationWithoutQuery = window.location.href.split("?")[0];
   let url = currentLocationWithoutQuery + "?" + searchParams.toString();
-  window.history.pushState(null, "", url);
+  window.history.replaceState(null, "", url);
 };
 
 const handleHash = () => {

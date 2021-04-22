@@ -41,7 +41,7 @@ const StatisticsTable = ({
                 {showPositions && (
                   <th scope="row" className="text-center">
                     {i === 0 ||
-                    !positionTieBreakerIndex ||
+                    positionTieBreakerIndex == null ||
                     content[i][positionTieBreakerIndex] !==
                       content[i - 1][positionTieBreakerIndex]
                       ? (page - 1) * pageSize + i + 1

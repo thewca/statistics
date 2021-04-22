@@ -1,0 +1,241 @@
+queries:
+  - keys:
+      - Competitors
+    showPositions: true
+    positionTieBreakerIndex: 1
+    headers:
+      - Competitor
+      - Number of Events
+      - Events
+    explanation: Current events, all time records
+    sqlQuery: |-
+      select
+          personName,
+          worldRecordEvents,
+          events
+      from
+          (
+              select
+                  personId,
+                  personName,
+                  count(distinct eventId) worldRecordEvents,
+                  group_concat(distinct r.eventId separator ', ') events
+              from
+                  Results r
+                  inner join Events e on r.eventId = e.id
+              where
+                  (
+                      regionalSingleRecord = 'WR'
+                      or regionalAverageRecord = 'WR'
+                  )
+                  and e.`rank` < 900
+              group by
+                  personId,
+                  personName
+              order by
+                  worldRecordEvents DESC,
+                  personName
+          ) worldRecordEvents
+      where
+          worldRecordEvents >= (
+              select
+                  min(worldRecordEvents)
+              from
+                  (
+                      select
+                          count(distinct eventId) worldRecordEvents
+                      from
+                          Results r
+                          inner join Events e on r.eventId = e.id
+                      where
+                          (
+                              regionalSingleRecord = 'WR'
+                              or regionalAverageRecord = 'WR'
+                          )
+                          and e.`rank` < 900
+                      group by
+                          personId,
+                          personName
+                      order by
+                          worldRecordEvents DESC,
+                          personName
+                      limit
+                          10
+                  ) min_records
+          )
+    sqlQueryCustom: |-
+      select
+      	name,
+      	(
+      	select
+      		count(distinct eventId)
+      	from
+      		Results r
+      	inner join Events e on
+      		r.eventId = e.id
+      	where
+      		r.personId = p.id
+      		and e.`rank` < 900
+      		-- Active events
+      		and (regionalAverageRecord = 'WR'
+      		or regionalSingleRecord = 'WR')) events
+      from
+      	Persons p
+      where
+      	p.id = ':WCA_ID'
+  - keys:
+      - Countries
+    showPositions: true
+    positionTieBreakerIndex: 1
+    headers:
+      - Country
+      - Number of Events
+      - Events
+    explanation: Current events, all time records
+    sqlQuery: |-
+      select
+          countryId,
+          qt,
+          events
+      from
+          (
+              select
+                  countryId,
+                  count(distinct eventId) qt,
+                  group_concat(distinct r.eventId separator ', ') events
+              from
+                  Results r
+                  inner join Events e on r.eventId = e.id
+              where
+                  (
+                      regionalSingleRecord = 'WR'
+                      or regionalAverageRecord = 'WR'
+                  )
+                  and e.`rank` < 900 -- active events
+              group by
+                  countryId
+              order by
+                  qt desc
+          ) results
+      where
+          qt >= (
+              select
+                  min(qt)
+              from
+                  (
+                      select
+                          count(distinct eventId) qt
+                      from
+                          Results r
+                          inner join Events e on r.eventId = e.id
+                      where
+                          (
+                              regionalSingleRecord = 'WR'
+                              or regionalAverageRecord = 'WR'
+                          )
+                          and e.`rank` < 900 -- active events
+                      group by
+                          countryId
+                      order by
+                          qt desc
+                      limit
+                          10
+                  ) records
+          )
+    sqlQueryCustom: |-
+      select
+          id,
+          (
+              select
+                  count(distinct eventId)
+              from
+                  Results r
+                  inner join Events e on r.eventId = e.id
+              where
+                  r.countryId = c.id
+                  and (
+                      r.regionalAverageRecord = 'WR'
+                      or r.regionalSingleRecord = 'WR'
+                  )
+                  and e.`rank` < 900
+          ) events
+      from
+          Countries c
+      where
+          id = ':COUNTRY'
+  - keys:
+      - Competitions
+    showPositions: true
+    positionTieBreakerIndex: 1
+    headers:
+      - Competition
+      - Number of Events
+      - Events
+    explanation: All time events
+    sqlQuery: |-
+      select
+          name,
+          qt,
+          events
+      from
+          (
+              select
+                  c.name,
+                  count(distinct eventId) qt,
+                  group_concat(distinct r.eventId separator ', ') events
+              from
+                  Results r
+                  inner join Competitions c on r.competitionId = c.id
+              where
+                  (
+                      regionalAverageRecord = 'WR'
+                      or regionalSingleRecord = 'WR'
+                  )
+              group by
+                  name
+              order by
+                  qt desc
+          ) results
+      where
+          qt >= (
+              select
+                  min(qt)
+              from
+                  (
+                      select
+                          count(distinct eventId) qt
+                      from
+                          Results
+                      where
+                          (
+                              regionalAverageRecord = 'WR'
+                              or regionalSingleRecord = 'WR'
+                          )
+                      group by
+                          competitionId
+                      order by
+                          qt desc
+                      limit
+                          10
+                  ) records
+          )
+    sqlQueryCustom: |-
+      select
+          id,
+          (
+              select
+                  count(distinct eventId)
+              from
+                  Results r
+              where
+                  r.competitionId = c.id
+                  and (
+                      r.regionalAverageRecord = 'WR'
+                      or r.regionalSingleRecord = 'WR'
+                  )
+          ) records
+      from
+          Competitions c
+      where
+          c.id = ':COMPETITION_ID'
+title: World records in most events
