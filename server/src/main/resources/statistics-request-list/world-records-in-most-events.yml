@@ -7,7 +7,7 @@ queries:
       - Competitor
       - Number of Events
       - Events
-    explanation: Current events
+    explanation: Current events, all time records
     sqlQuery: |-
       select
           personName,
@@ -19,7 +19,7 @@ queries:
                   personId,
                   personName,
                   count(distinct eventId) worldRecordEvents,
-                  group_concat(distinct r.eventId, ', ') events
+                  group_concat(distinct r.eventId separator ', ') events
               from
                   Results r
                   inner join Events e on r.eventId = e.id
@@ -91,7 +91,7 @@ queries:
       - Country
       - Number of Events
       - Events
-    explanation: Current events
+    explanation: Current events, all time records
     sqlQuery: |-
       select
           countryId,
@@ -102,7 +102,7 @@ queries:
               select
                   countryId,
                   count(distinct eventId) qt,
-                  group_concat(distinct r.eventId, ', ') events
+                  group_concat(distinct r.eventId separator ', ') events
               from
                   Results r
                   inner join Events e on r.eventId = e.id
@@ -182,7 +182,7 @@ queries:
               select
                   c.name,
                   count(distinct eventId) qt,
-                  group_concat(distinct r.eventId, ', ') events
+                  group_concat(distinct r.eventId separator ', ') events
               from
                   Results r
                   inner join Competitions c on r.competitionId = c.id

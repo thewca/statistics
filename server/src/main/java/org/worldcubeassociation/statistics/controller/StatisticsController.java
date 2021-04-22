@@ -35,7 +35,7 @@ public interface StatisticsController {
 
     @PostMapping("generate-from-sql/{pathId}")
     @ApiOperation("Convert specific sql queries in the resource folder to statistics")
-    void generateFromSql(String pathId) throws IOException;
+    void generateFromSql(@PathVariable String pathId) throws IOException;
 
     @GetMapping("list")
     List<ControlItemDTO> list() throws IOException;
