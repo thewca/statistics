@@ -8,13 +8,14 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.data.util.Pair;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.worldcubeassociation.statistics.dto.DatabaseQueryDTO;
 import org.worldcubeassociation.statistics.request.DatabaseQueryRequest;
 import org.worldcubeassociation.statistics.rowmapper.ResultSetRowMapper;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -44,16 +45,16 @@ public class DatabaseQueryServiceImplTest {
         int nEvents = 20;
 
         // We simulate a result set. This is a simulation of Events
-        String[] tableHeaders = new String[]{"id", "name", "rank", "format", "cellName"};
+        List<String> tableHeaders = Arrays.asList("id", "name", "rank", "format", "cellName");
 
-        List<LinkedHashMap<String, String>> sqlResult = new ArrayList<>();
+        List<Pair<List<String>, List<String>>> sqlResult = new ArrayList<>();
 
         for (int i = 0; i < nEvents; i++) {
-            LinkedHashMap<String, String> puzzleResult = new LinkedHashMap<>();
-            for (int j = 0; j < tableHeaders.length; j++) {
-                puzzleResult.put(tableHeaders[j], " puzzle " + j + tableHeaders[j]);
+            List<String> row = new ArrayList<>();
+            for (int j = 0; j < tableHeaders.size(); j++) {
+                row.add(" puzzle " + j + tableHeaders.get(j));
             }
-            sqlResult.add(puzzleResult);
+            sqlResult.add(Pair.of(tableHeaders, row));
         }
 
         when(jdbcTemplate.query(anyString(), any(ResultSetRowMapper.class))).thenReturn(sqlResult);
@@ -66,7 +67,7 @@ public class DatabaseQueryServiceImplTest {
 
         DatabaseQueryDTO result = service.getResultSet(databaseQueryRequest);
 
-        assertEquals(tableHeaders.length, result.getHeaders().size());
+        assertEquals(tableHeaders.size(), result.getHeaders().size());
         assertEquals(nEvents, result.getContent().size());
     }
 
