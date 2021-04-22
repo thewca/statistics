@@ -5,9 +5,6 @@
 # Download db export
 ./scripts/get_db_export.sh
 
-# Download tsv export and build ordered results
-./scripts/get_tsv_export.sh
-
 echo "Deleting existing statistics"
 curl -X DELETE "http://localhost:8080/statistics" -H "accept: */*"
 

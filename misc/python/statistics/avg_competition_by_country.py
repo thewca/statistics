@@ -74,6 +74,7 @@ def avg_competitions():
 
     out["statistics"] = [
         {"keys": [], "content": table, "headers": headers, "showPositions": True, "positionTieBreakerIndex": 0}]
+    cnx.close()
     return out
 
 
