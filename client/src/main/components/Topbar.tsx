@@ -5,19 +5,19 @@ import { Link } from "react-router-dom";
 import wcaApi from "../api/wca.api";
 import logo from "../assets/wca_logo.svg";
 import { LinkItem } from "../model/LinkItem";
-import { StatisticsItem } from "../model/StatisticItem";
+import { StatisticsGroup } from "../model/StatisticItem";
 import "./Topbar.css";
 
 interface TopbarProps {
   links: LinkItem[];
-  statisticsList?: StatisticsItem[];
+  statisticsGroups?: StatisticsGroup[];
 }
 
 const STATISTICS_LIST = "Statistics List";
 
 const { SubMenu } = Menu;
 
-const Topbar = ({ links, statisticsList }: TopbarProps) => {
+const Topbar = ({ links, statisticsGroups }: TopbarProps) => {
   const [logged, setLogged] = useState(wcaApi.isLogged());
 
   const handle = () => {
@@ -53,10 +53,17 @@ const Topbar = ({ links, statisticsList }: TopbarProps) => {
         icon={statisticsListLink?.icon}
         title={<Link to="/statistics-list">Statistics List</Link>}
       >
-        {statisticsList?.map((stat) => (
-          <Menu.Item key={stat.path}>
-            <Link to={`/statistics-list/${stat.path}`}>{stat.title}</Link>
-          </Menu.Item>
+        {statisticsGroups?.map((statisticsGroup) => (
+          <Menu.ItemGroup
+            key={statisticsGroup.group}
+            title={statisticsGroup.group}
+          >
+            {statisticsGroup.statistics.map((stat) => (
+              <Menu.Item key={stat.path}>
+                <Link to={`/statistics-list/${stat.path}`}>{stat.title}</Link>
+              </Menu.Item>
+            ))}
+          </Menu.ItemGroup>
         ))}
       </SubMenu>
       <div id="login">

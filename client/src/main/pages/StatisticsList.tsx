@@ -1,27 +1,35 @@
+import { Collapse } from "antd";
 import { Link } from "react-router-dom";
-import { StatisticsItem } from "../model/StatisticItem";
+import { StatisticsGroup, StatisticsItem } from "../model/StatisticItem";
 import "./StatisticsList.css";
 
+const { Panel } = Collapse;
+
 interface StatisticsListProps {
-  statisticsList?: StatisticsItem[];
+  statisticsGroups?: StatisticsGroup[];
 }
 
-const StatisticsList = ({ statisticsList }: StatisticsListProps) => {
+const StatisticsList = ({ statisticsGroups }: StatisticsListProps) => {
   return (
-    <div className="container">
+    <Collapse defaultActiveKey={statisticsGroups?.map((stat) => stat.group)}>
       <h1 className="page-title">Statistics List</h1>
-      {(statisticsList?.length || 0) > 0 && (
-        <ul>
-          {statisticsList?.map((statisticsItem) => (
-            <li key={statisticsItem.path} className="list-item">
-              <Link to={`/statistics-list/${statisticsItem.path}`}>
-                {statisticsItem.title}
-              </Link>
-            </li>
-          ))}
-        </ul>
-      )}
-    </div>
+      {(statisticsGroups?.length || 0) > 0 &&
+        statisticsGroups?.map((statisticsGroup, i) => (
+          <Panel
+            key={statisticsGroup.group}
+            header={statisticsGroup.group}
+            className="list-item"
+          >
+            <ul>
+              {statisticsGroup.statistics.map((stat) => (
+                <li key={stat.path}>
+                  <Link to={`/statistics-list/${stat.path}`}>{stat.title}</Link>
+                </li>
+              ))}
+            </ul>
+          </Panel>
+        ))}
+    </Collapse>
   );
 };
 
