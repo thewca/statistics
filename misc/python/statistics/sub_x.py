@@ -11,7 +11,10 @@ from misc.python.util.log_util import log
 from misc.python.util.statistics_api_util import create_statistics
 from misc.python.util.time_util import time_format
 
+title = "Most Sub-X solves"
+
 RANGE = 6
+
 
 query_wr = """select
 	best
@@ -86,7 +89,7 @@ def sub_x():
     cursor = cnx.cursor()
 
     statistics = {}
-    statistics["title"] = "Most Sub-X solves"
+    statistics["title"] = title
     statistics["statistics"] = []
     headers = ["Count", "Name", "Country"]
     statistics["displayMode"] = "GROUPED"
@@ -161,7 +164,7 @@ def sub_x():
 
 
 def main():
-    log.info("========== Sub x ==========")
+    log.info("========== %s ==========" % title)
     statistics = sub_x()
     create_statistics(statistics)
 
