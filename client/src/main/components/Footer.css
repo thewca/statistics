@@ -5,3 +5,7 @@ footer a {
 footer a span {
   vertical-align: text-top !important;
 }
+
+.footer-title {
+  margin-left: 37px;
+}
