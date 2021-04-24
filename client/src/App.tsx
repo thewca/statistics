@@ -21,7 +21,7 @@ import NotFound from "./main/pages/NotFound";
 import StatisticsList from "./main/pages/StatisticsList";
 
 function App() {
-  const [statisticsList, setStatisticsList] = useState<StatisticsItem[]>([]);
+  const [statisticsList, setStatisticsList] = useState<StatisticsItem[]>();
   const getStatisticsList = () => {
     statisticsApi
       .getStatisticsList()

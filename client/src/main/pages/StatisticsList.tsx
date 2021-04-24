@@ -3,16 +3,16 @@ import { StatisticsItem } from "../model/StatisticItem";
 import "./StatisticsList.css";
 
 interface StatisticsListProps {
-  statisticsList: StatisticsItem[];
+  statisticsList?: StatisticsItem[];
 }
 
 const StatisticsList = ({ statisticsList }: StatisticsListProps) => {
   return (
     <div className="container">
       <h1 className="page-title">Statistics List</h1>
-      {statisticsList.length > 0 && (
+      {(statisticsList?.length || 0) > 0 && (
         <ul>
-          {statisticsList.map((statisticsItem) => (
+          {statisticsList?.map((statisticsItem) => (
             <li key={statisticsItem.path} className="list-item">
               <Link to={`/statistics-list/${statisticsItem.path}`}>
                 {statisticsItem.title}

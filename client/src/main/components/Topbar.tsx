@@ -10,7 +10,7 @@ import "./Topbar.css";
 
 interface TopbarProps {
   links: LinkItem[];
-  statisticsList: StatisticsItem[];
+  statisticsList?: StatisticsItem[];
 }
 
 const STATISTICS_LIST = "Statistics List";
@@ -53,7 +53,7 @@ const Topbar = ({ links, statisticsList }: TopbarProps) => {
         icon={statisticsListLink?.icon}
         title={<Link to="/statistics-list">Statistics List</Link>}
       >
-        {statisticsList.map((stat) => (
+        {statisticsList?.map((stat) => (
           <Menu.Item key={stat.path}>
             <Link to={`/statistics-list/${stat.path}`}>{stat.title}</Link>
           </Menu.Item>
