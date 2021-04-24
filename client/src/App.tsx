@@ -12,12 +12,13 @@ import Footer from "./main/components/Footer";
 import StatisticsDisplay from "./main/components/StatisticsDisplay";
 import Topbar from "./main/components/Topbar";
 import { LinkItem } from "./main/model/LinkItem";
-import { StatisticsGroup, StatisticsItem } from "./main/model/StatisticItem";
+import { StatisticsGroup } from "./main/model/StatisticItem";
 import About from "./main/pages/About";
 import DatabaseQuery from "./main/pages/DatabaseQuery";
 import Home from "./main/pages/Home";
 import NotFound from "./main/pages/NotFound";
 import StatisticsList from "./main/pages/StatisticsList";
+import "./App.css";
 
 function App() {
   const [statisticsGroups, setStatisticsGroups] = useState<StatisticsGroup[]>();
@@ -64,20 +65,22 @@ function App() {
     <Router>
       <div id="page-container">
         <Topbar links={links} statisticsGroups={statisticsGroups} />
-        <Switch>
-          {links.map((link) => (
-            <Route key={link.href} path={link.href} exact={link.exact}>
-              {link.component}
+        <div id="content-wrapper">
+          <Switch>
+            {links.map((link) => (
+              <Route key={link.href} path={link.href} exact={link.exact}>
+                {link.component}
+              </Route>
+            ))}
+            <Route
+              path="/statistics-list/:pathId"
+              component={StatisticsDisplay}
+            />
+            <Route path="*">
+              <NotFound />
             </Route>
-          ))}
-          <Route
-            path="/statistics-list/:pathId"
-            component={StatisticsDisplay}
-          />
-          <Route path="*">
-            <NotFound />
-          </Route>
-        </Switch>
+          </Switch>
+        </div>
         <Footer />
       </div>
     </Router>

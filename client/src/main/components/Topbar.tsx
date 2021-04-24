@@ -54,16 +54,13 @@ const Topbar = ({ links, statisticsGroups }: TopbarProps) => {
         title={<Link to="/statistics-list">Statistics List</Link>}
       >
         {statisticsGroups?.map((statisticsGroup) => (
-          <Menu.ItemGroup
-            key={statisticsGroup.group}
-            title={statisticsGroup.group}
-          >
+          <SubMenu key={statisticsGroup.group} title={statisticsGroup.group}>
             {statisticsGroup.statistics.map((stat) => (
               <Menu.Item key={stat.path}>
                 <Link to={`/statistics-list/${stat.path}`}>{stat.title}</Link>
               </Menu.Item>
             ))}
-          </Menu.ItemGroup>
+          </SubMenu>
         ))}
       </SubMenu>
       <div id="login">
