@@ -3,8 +3,8 @@ package org.worldcubeassociation.statistics.controller.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 import org.worldcubeassociation.statistics.controller.StatisticsController;
-import org.worldcubeassociation.statistics.dto.ControlItemDTO;
 import org.worldcubeassociation.statistics.dto.StatisticsDTO;
+import org.worldcubeassociation.statistics.dto.StatisticsGroupDTO;
 import org.worldcubeassociation.statistics.dto.StatisticsRequestDTO;
 import org.worldcubeassociation.statistics.dto.StatisticsResponseDTO;
 import org.worldcubeassociation.statistics.service.StatisticsService;
@@ -33,7 +33,7 @@ public class StatisticsControllerImpl implements StatisticsController {
     }
 
     @Override
-    public List<ControlItemDTO> list() throws IOException {
+    public List<StatisticsGroupDTO> list() throws IOException {
         return statisticsService.list();
     }
 
