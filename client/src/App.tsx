@@ -5,7 +5,6 @@ import {
   SolutionOutlined,
 } from "@ant-design/icons";
 import { message } from "antd";
-import "bootstrap/dist/css/bootstrap.min.css";
 import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import statisticsApi from "./main/api/statistics.api";
