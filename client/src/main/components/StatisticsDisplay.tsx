@@ -168,7 +168,7 @@ const StatisticsDisplay = () => {
     <div className="container">
       <h1 className="page-title">{statistics?.title}</h1>
       {!!statistics?.explanation && (
-        <h5 className="text-right mr-5">{statistics.explanation}</h5>
+        <h5 className="explanation">{statistics.explanation}</h5>
       )}
       {["SELECTOR", "GROUPED"].includes(statistics?.displayMode || "") && (
         <div id="display-mode-wrapper">
@@ -185,9 +185,7 @@ const StatisticsDisplay = () => {
           <div key={i}>
             {showKeys(stat, statistics?.displayMode)}
             {!!stat.explanation && (
-              <h6 className="text-right mr-5 mt-4 text-muted">
-                {stat.explanation}
-              </h6>
+              <h6 className="explanation">{stat.explanation}</h6>
             )}
             <StatisticsTable
               headers={stat.headers}

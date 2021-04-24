@@ -1,6 +1,6 @@
 import { Collapse } from "antd";
 import { Link } from "react-router-dom";
-import { StatisticsGroup, StatisticsItem } from "../model/StatisticItem";
+import { StatisticsGroup } from "../model/StatisticItem";
 import "./StatisticsList.css";
 
 const { Panel } = Collapse;

@@ -8,6 +8,7 @@ public class ControlItemDTO {
     private String title;
     private String path;
 
+    // Used just for grouping, but it show not be shown.
     @JsonIgnore
     private String group;
 }

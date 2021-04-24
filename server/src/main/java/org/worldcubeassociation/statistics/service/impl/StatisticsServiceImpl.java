@@ -32,6 +32,7 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -163,7 +164,13 @@ public class StatisticsServiceImpl implements StatisticsService {
 
         return controlList.stream().collect(Collectors.groupingBy(it -> it.getGroup(), Collectors.toList())).entrySet()
                 .stream()
-                .map((k) -> StatisticsGroupDTO.builder().group(k.getKey()).statistics(k.getValue()).build())
+                .map((k) -> StatisticsGroupDTO.builder().group(k.getKey())
+                        .statistics(k.getValue()
+                                // Sort inner statistics based on title
+                                .stream().sorted(Comparator.comparing(ControlItemDTO::getTitle))
+                                .collect(Collectors.toList())).build())
+                // Sorts groups based on group name
+                .sorted(Comparator.comparing(StatisticsGroupDTO::getGroup))
                 .collect(Collectors.toList());
     }
 
