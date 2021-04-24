@@ -1,6 +1,12 @@
 #query-input {
   font-family: monospace;
   font-size: 150%;
+  margin-bottom: 20px;
+}
+
+#database-query-wrapper {
+  padding: 0 20px;
+  text-align: center;
 }
 
 .ant-pagination-item a {

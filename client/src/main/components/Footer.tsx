@@ -3,12 +3,13 @@ import {
   InstagramOutlined,
   YoutubeOutlined,
 } from "@ant-design/icons";
-import { Col, Row } from "antd";
+import { Col, Divider, Row } from "antd";
 import "./Footer.css";
 
 const Footer = () => {
   return (
     <div id="footer">
+      <Divider />
       <footer>
         <Row justify="center">
           <Col span={6}>
