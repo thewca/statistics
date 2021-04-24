@@ -1,4 +1,5 @@
 import { Table } from "antd";
+import "./StatisticsTable.css";
 
 interface StatisticsTableProps {
   headers: string[];
@@ -49,7 +50,16 @@ const StatisticsTable = ({
       },
     })
   );
-  return <Table columns={columns} dataSource={dataSource} pagination={false} />;
+  return (
+    <Table
+      columns={columns}
+      dataSource={dataSource}
+      pagination={false}
+      bordered
+      id="results-table"
+      rowKey="0"
+    />
+  );
 };
 
 export default StatisticsTable;

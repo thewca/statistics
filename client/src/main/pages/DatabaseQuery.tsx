@@ -75,7 +75,10 @@ function DatabaseQuery() {
     let finalQuery = "" + query;
     replaceList.forEach(
       (replaceItem) =>
-        (finalQuery = finalQuery.replaceAll(replaceItem.key, replaceItem.value))
+        (finalQuery = finalQuery.replace(
+          new RegExp(replaceItem.key, "g"),
+          replaceItem.value
+        ))
     );
 
     setLoading(true);
@@ -114,9 +117,8 @@ function DatabaseQuery() {
   return (
     <div id="database-query-wrapper">
       <h1 className="page-title">Database Query</h1>
-      <Form>
+      <Form onFinish={() => handleSubmit(page, pageSize)}>
         <Form.Item
-          name="query-input"
           rules={[{ required: true, message: "Please, provide a query" }]}
         >
           <TextArea
@@ -146,7 +148,6 @@ function DatabaseQuery() {
           size="large"
           disabled={!query}
           title={!query ? "You need to provide an SQL query" : ""}
-          onClick={() => handleSubmit(page, pageSize)}
         >
           Submit
         </Button>
