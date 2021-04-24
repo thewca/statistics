@@ -1,6 +1,6 @@
 queries:
   - keys:
-      - Event
+      - Person
     showPositions: false
     headers:
       - Person

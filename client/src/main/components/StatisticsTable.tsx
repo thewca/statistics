@@ -39,7 +39,6 @@ const StatisticsTable = ({
   let columns = (showPositions ? ["#", ...headers] : headers).map(
     (title, i) => ({
       title,
-      key: i,
       dataIndex: i,
       render: (item: string) => {
         return allowInnerHTML ? (
