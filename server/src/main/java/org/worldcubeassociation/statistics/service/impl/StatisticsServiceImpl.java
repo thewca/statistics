@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.worldcubeassociation.statistics.dto.ControlItemDTO;
 import org.worldcubeassociation.statistics.dto.DatabaseQueryBaseDTO;
 import org.worldcubeassociation.statistics.dto.StatisticsDTO;
+import org.worldcubeassociation.statistics.dto.StatisticsGroupDTO;
 import org.worldcubeassociation.statistics.dto.StatisticsGroupRequestDTO;
 import org.worldcubeassociation.statistics.dto.StatisticsGroupResponseDTO;
 import org.worldcubeassociation.statistics.dto.StatisticsRequestDTO;
@@ -31,7 +32,6 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -95,6 +95,7 @@ public class StatisticsServiceImpl implements StatisticsService {
                         Optional.ofNullable(statisticsRequestDTO.getDisplayMode()).orElse(DisplayModeEnum.DEFAULT));
         statisticsDTO.setExplanation(statisticsRequestDTO.getExplanation());
         statisticsDTO.setTitle(statisticsRequestDTO.getTitle());
+        statisticsDTO.setGroup(statisticsRequestDTO.getGroup());
 
         return create(statisticsDTO);
     }
@@ -138,7 +139,7 @@ public class StatisticsServiceImpl implements StatisticsService {
     }
 
     @Override
-    public List<ControlItemDTO> list() throws IOException {
+    public List<StatisticsGroupDTO> list() throws IOException {
         File controlFile = getControlFile();
 
         List<ControlItemDTO> controlList = new ArrayList<>();
@@ -156,13 +157,21 @@ public class StatisticsServiceImpl implements StatisticsService {
             ControlItemDTO controlItemDTO = new ControlItemDTO();
             controlItemDTO.setPath(stat.getPath());
             controlItemDTO.setTitle(stat.getTitle());
+            controlItemDTO.setGroup(stat.getGroup());
 
             controlList.add(controlItemDTO);
         }
 
-        Collections.sort(controlList, Comparator.comparing(ControlItemDTO::getTitle));
-
-        return controlList;
+        return controlList.stream().collect(Collectors.groupingBy(it -> it.getGroup(), Collectors.toList())).entrySet()
+                .stream()
+                .map((k) -> StatisticsGroupDTO.builder().group(k.getKey())
+                        .statistics(k.getValue()
+                                // Sort inner statistics based on title
+                                .stream().sorted(Comparator.comparing(ControlItemDTO::getTitle))
+                                .collect(Collectors.toList())).build())
+                // Sorts groups based on group name
+                .sorted(Comparator.comparing(StatisticsGroupDTO::getGroup))
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -188,6 +197,7 @@ public class StatisticsServiceImpl implements StatisticsService {
                 .toLowerCase();
 
         statisticsResponseDTO.setPath(path);
+        statisticsResponseDTO.setGroup(statisticsDTO.getGroup());
 
         statisticsDTO.getStatistics().forEach(stat -> {
             Optional.ofNullable(stat.getSqlQueryCustom()).ifPresent(q -> stat.setSqlQueryCustom(
@@ -245,7 +255,7 @@ public class StatisticsServiceImpl implements StatisticsService {
 
     private void updateControlList() throws IOException {
         log.info("Update control list");
-        List<ControlItemDTO> controlList = list();
+        List<StatisticsGroupDTO> controlList = list();
         File controlFile = getControlFile();
 
         // Creates folder structure just in case

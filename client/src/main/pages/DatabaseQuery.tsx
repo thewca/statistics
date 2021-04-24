@@ -1,10 +1,12 @@
-import { Button, Input, message, Pagination, Skeleton } from "antd";
+import { Button, Form, Input, message, Pagination, Skeleton } from "antd";
 import { useEffect, useState } from "react";
 import statisticsApi from "../api/statistics.api";
 import DatabaseQueryOptions from "../components/DatabaseQueryOptions";
 import StatisticsTable from "../components/StatisticsTable";
 import { getQueryParameter, setQueryParameter } from "../util/query.param.util";
 import "./DatabaseQuery.css";
+
+const { TextArea } = Input;
 
 const SQL_QUERY = "sqlQuery";
 
@@ -73,7 +75,10 @@ function DatabaseQuery() {
     let finalQuery = "" + query;
     replaceList.forEach(
       (replaceItem) =>
-        (finalQuery = finalQuery.replaceAll(replaceItem.key, replaceItem.value))
+        (finalQuery = finalQuery.replace(
+          new RegExp(replaceItem.key, "g"),
+          replaceItem.value
+        ))
     );
 
     setLoading(true);
@@ -110,79 +115,71 @@ function DatabaseQuery() {
   };
 
   return (
-    <div className="container">
+    <div id="database-query-wrapper">
       <h1 className="page-title">Database Query</h1>
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          handleSubmit(page, pageSize);
-        }}
-      >
-        <div className="form-group">
-          <textarea
-            className="form-control my-3 shadow"
+      <Form onFinish={() => handleSubmit(page, pageSize)}>
+        <Form.Item
+          rules={[{ required: true, message: "Please, provide a query" }]}
+        >
+          <TextArea
             onChange={(evt) => setQuery(evt.target.value)}
             value={query}
             placeholder="Type your query here"
             rows={10}
             id="query-input"
           />
-          {replaceList.map((replaceItem) => (
-            <Input
-              required
-              className="replace-item"
-              key={replaceItem.key}
-              // Substring for removing the :
-              addonBefore={replaceItem.key.substring(1)}
-              onChange={(evt) =>
-                handleReplaceChange(evt.target.value, replaceItem.key)
-              }
-            />
-          ))}
-          <div className="text-center">
-            <Button
-              htmlType="submit"
-              type="primary"
-              shape="round"
-              size="large"
-              disabled={!query}
-              title={!query ? "You need to provide an SQL query" : ""}
-            >
-              Submit
-            </Button>
-          </div>
-        </div>
-      </form>
+        </Form.Item>
+        {replaceList.map((replaceItem) => (
+          <Input
+            required
+            className="replace-item"
+            key={replaceItem.key}
+            // Substring for removing the :
+            addonBefore={replaceItem.key.substring(1)}
+            onChange={(evt) =>
+              handleReplaceChange(evt.target.value, replaceItem.key)
+            }
+          />
+        ))}
+        <Button
+          htmlType="submit"
+          type="primary"
+          shape="round"
+          size="large"
+          disabled={!query}
+          title={!query ? "You need to provide an SQL query" : ""}
+        >
+          Submit
+        </Button>
+      </Form>
       {noResult && <div className="alert alert-info">No results to show</div>}
 
       {totalElements > 0 && (
         <>
-          <div className="my-3 text-center">
-            <Button
-              type="primary"
-              shape="round"
-              size="small"
-              className="options-button"
-              onClick={toggleModal}
-            >
-              Options
-            </Button>
-            <DatabaseQueryOptions
-              visible={modalOpen}
-              onCancel={toggleModal}
-              headers={headers}
-              showPositions={showPositions}
-              positionTieBreakerIndex={positionTieBreakerIndex}
-              setShowPositions={setShowPositions}
-              setPositionTieBreakerIndex={setPositionTieBreakerIndex}
-            />
-            <Pagination
-              defaultPageSize={pageSize}
-              current={page}
-              total={totalElements}
-              onChange={handlePaginationChange}
-            />
-          </div>
+          <Button
+            type="primary"
+            shape="round"
+            size="small"
+            className="options-button"
+            onClick={toggleModal}
+          >
+            Options
+          </Button>
+          <DatabaseQueryOptions
+            visible={modalOpen}
+            onCancel={toggleModal}
+            headers={headers}
+            showPositions={showPositions}
+            positionTieBreakerIndex={positionTieBreakerIndex}
+            setShowPositions={setShowPositions}
+            setPositionTieBreakerIndex={setPositionTieBreakerIndex}
+          />
+          <Pagination
+            defaultPageSize={pageSize}
+            current={page}
+            total={totalElements}
+            onChange={handlePaginationChange}
+          />
         </>
       )}
       {loading && <Skeleton active />}

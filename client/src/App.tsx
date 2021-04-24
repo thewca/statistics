@@ -5,7 +5,6 @@ import {
   SolutionOutlined,
 } from "@ant-design/icons";
 import { message } from "antd";
-import "bootstrap/dist/css/bootstrap.min.css";
 import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import statisticsApi from "./main/api/statistics.api";
@@ -13,19 +12,20 @@ import Footer from "./main/components/Footer";
 import StatisticsDisplay from "./main/components/StatisticsDisplay";
 import Topbar from "./main/components/Topbar";
 import { LinkItem } from "./main/model/LinkItem";
-import { StatisticsItem } from "./main/model/StatisticItem";
+import { StatisticsGroup } from "./main/model/StatisticItem";
 import About from "./main/pages/About";
 import DatabaseQuery from "./main/pages/DatabaseQuery";
 import Home from "./main/pages/Home";
 import NotFound from "./main/pages/NotFound";
 import StatisticsList from "./main/pages/StatisticsList";
+import "./App.css";
 
 function App() {
-  const [statisticsList, setStatisticsList] = useState<StatisticsItem[]>([]);
+  const [statisticsGroups, setStatisticsGroups] = useState<StatisticsGroup[]>();
   const getStatisticsList = () => {
     statisticsApi
-      .getStatisticsList()
-      .then((response) => setStatisticsList(response.data))
+      .getStatisticsGroups()
+      .then((response) => setStatisticsGroups(response.data))
       .catch(() => message.error("Error fetching statistics list"));
   };
   useEffect(getStatisticsList, []);
@@ -43,7 +43,7 @@ function App() {
       href: "/statistics-list",
       exact: true,
       icon: <OrderedListOutlined />,
-      component: <StatisticsList statisticsList={statisticsList} />,
+      component: <StatisticsList statisticsGroups={statisticsGroups} />,
     },
     {
       name: "Database Query",
@@ -64,21 +64,23 @@ function App() {
   return (
     <Router>
       <div id="page-container">
-        <Topbar links={links} statisticsList={statisticsList} />
-        <Switch>
-          {links.map((link) => (
-            <Route key={link.href} path={link.href} exact={link.exact}>
-              {link.component}
+        <Topbar links={links} statisticsGroups={statisticsGroups} />
+        <div id="content-wrapper">
+          <Switch>
+            {links.map((link) => (
+              <Route key={link.href} path={link.href} exact={link.exact}>
+                {link.component}
+              </Route>
+            ))}
+            <Route
+              path="/statistics-list/:pathId"
+              component={StatisticsDisplay}
+            />
+            <Route path="*">
+              <NotFound />
             </Route>
-          ))}
-          <Route
-            path="/statistics-list/:pathId"
-            component={StatisticsDisplay}
-          />
-          <Route path="*">
-            <NotFound />
-          </Route>
-        </Switch>
+          </Switch>
+        </div>
         <Footer />
       </div>
     </Router>

@@ -70,7 +70,7 @@ const DatabaseQueryOptions = ({
               allowClear
             >
               {headers.map((header, i) => (
-                <Option value={i}>{`${i + 1}. ${header}`}</Option>
+                <Option key={i} value={i}>{`${i + 1}. ${header}`}</Option>
               ))}
             </Select>
           </Form.Item>

@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.worldcubeassociation.statistics.dto.ControlItemDTO;
 import org.worldcubeassociation.statistics.dto.StatisticsDTO;
+import org.worldcubeassociation.statistics.dto.StatisticsGroupDTO;
 import org.worldcubeassociation.statistics.dto.StatisticsRequestDTO;
 import org.worldcubeassociation.statistics.dto.StatisticsResponseDTO;
 
@@ -38,7 +38,7 @@ public interface StatisticsController {
     void generateFromSql(@PathVariable String pathId) throws IOException;
 
     @GetMapping("list")
-    List<ControlItemDTO> list() throws IOException;
+    List<StatisticsGroupDTO> list() throws IOException;
 
     @GetMapping("list/{pathId}")
     StatisticsResponseDTO getStatistic(@PathVariable String pathId) throws IOException;

@@ -10,6 +10,8 @@ from misc.python.util.html_util import get_competitor_html_link
 from misc.python.util.log_util import log
 from misc.python.util.statistics_api_util import create_statistics
 
+title = "Sum of all ranks"
+
 LIMIT = 10
 
 events_query = """
@@ -126,7 +128,8 @@ def sum_of_all_ranks():
     cursor = cnx.cursor()
 
     statistics = {}
-    statistics["title"] = "Sum of all ranks"
+    statistics["title"] = title
+    statistics["group"] = "Competitors"
     statistics["statistics"] = []
 
     for result_type in ["Average", "Single"]:
@@ -204,7 +207,7 @@ def sum_of_all_ranks():
 
 
 def main():
-    log.info(" ========== Sum of all ranks ==========")
+    log.info(" ========== %s ==========" % title)
     statistics = sum_of_all_ranks()
     create_statistics(statistics)
 

@@ -11,6 +11,8 @@ from misc.python.util.log_util import log
 from misc.python.util.statistics_api_util import create_statistics
 from misc.python.util.time_util import time_format
 
+title = "5bld became faster than 4bld"
+
 
 class Competitor(Comp):
     def __init__(self, wca_id, country_id, name):
@@ -93,7 +95,8 @@ def compare_results(ev1, ev2):
 
     out = {}
     out["explanation"] = "In case of multiple first results (eg. ao3), best one is taken."
-    out["title"] = "5BLD become faster than 4BLD"
+    out["title"] = title
+    out["group"] = "Competitors"
     headers = ["Days", "Name", "First %s result" %
                ev1, "Competition", "First faster %s result" % ev2, "Competition"]
     out["statistics"] = [{"keys": [], "content": table,
@@ -102,7 +105,7 @@ def compare_results(ev1, ev2):
 
 
 def main():
-    log.info(" ========== 5bld became faster than 4bld ==========")
+    log.info(" ========== %s ==========" % title)
 
     ev1 = "444bf"
     ev2 = "555bf"

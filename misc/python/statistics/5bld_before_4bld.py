@@ -10,6 +10,8 @@ from misc.python.util.log_util import log
 from misc.python.util.statistics_api_util import create_statistics
 from misc.python.util.time_util import time_format
 
+title = "Competitors who got 5BLD before 4BLD"
+
 query = """select
 	personId,
 	personName,
@@ -91,7 +93,8 @@ def compare_results(ev1, ev2):
     headers = ["Days", "Name", "First result %s" %
                ev1, "Competition", "First result %s" % ev2, "Competition"]
     out = {}
-    out["title"] = "Competitors who got 5BLD before 4BLD"
+    out["title"] = title
+    out["group"] = "Events"
     out["explanation"] = "In case of multiple first results (eg. ao3), best one is taken."
     out["statistics"] = [{"keys": [], "content": table,
                           "headers": headers, "showPositions": True, "positionTieBreakerIndex": 0}]
@@ -102,6 +105,7 @@ def compare_results(ev1, ev2):
 
 
 def main():
+    log.info(" ========== %s ==========" % title)
 
     ev1 = "555bf"
     ev2 = "444bf"

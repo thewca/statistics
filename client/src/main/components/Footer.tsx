@@ -3,15 +3,17 @@ import {
   InstagramOutlined,
   YoutubeOutlined,
 } from "@ant-design/icons";
+import { Col, Divider, Row } from "antd";
 import "./Footer.css";
 
 const Footer = () => {
   return (
-    <div id="footer" className="container-fluid text-muted">
-      <footer className="container border-top">
-        <div className="row text-small mt-4">
-          <div className="col-6 col-md">
-            <h5>Links</h5>
+    <div id="footer">
+      <Divider />
+      <footer>
+        <Row justify="center">
+          <Col span={6}>
+            <h3 className="footer-title">Links</h3>
             <ul className="list-unstyled">
               <li>
                 <a href="https://www.worldcubeassociation.org/">
@@ -22,9 +24,9 @@ const Footer = () => {
                 <a href="https://forum.worldcubeassociation.org/">WCA Forum</a>
               </li>
             </ul>
-          </div>
-          <div className="col-6 col-md">
-            <h5>Media</h5>
+          </Col>
+          <Col span={6}>
+            <h3 className="footer-title">Media</h3>
             <ul className="list-unstyled">
               <li>
                 <a href="https://www.facebook.com/WorldCubeAssociation">
@@ -42,8 +44,8 @@ const Footer = () => {
                 </a>
               </li>
             </ul>
-          </div>
-        </div>
+          </Col>
+        </Row>
       </footer>
     </div>
   );

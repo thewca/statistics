@@ -7,6 +7,8 @@ from misc.python.util.event_util import get_current_events
 from misc.python.util.log_util import log
 from misc.python.util.statistics_api_util import create_statistics
 
+title = "Best podiums"
+
 podium_length = 3
 
 query = """
@@ -46,7 +48,8 @@ query = """
 
 def best_podiums():
     statistics = {}
-    statistics["title"] = "Best podiums"
+    statistics["title"] = title
+    statistics["group"] = "Results"
     statistics["statistics"] = []
     statistics["displayMode"] = "SELECTOR"
 
@@ -93,7 +96,7 @@ def best_podiums():
 
 
 def main():
-    log.info(" ========== Ranges ==========")
+    log.info(" ========== %s ==========" % title)
 
     statistics = best_podiums()
     create_statistics(statistics)

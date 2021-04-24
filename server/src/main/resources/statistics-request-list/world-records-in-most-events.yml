@@ -239,3 +239,4 @@ queries:
       where
           c.id = ':COMPETITION_ID'
 title: World records in most events
+group: Competitors
