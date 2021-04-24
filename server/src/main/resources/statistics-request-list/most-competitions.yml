@@ -59,3 +59,4 @@ queries:
       LIMIT
           10
 title: Most competitions
+group: Competitor data

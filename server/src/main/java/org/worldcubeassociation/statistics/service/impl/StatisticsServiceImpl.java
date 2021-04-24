@@ -94,6 +94,7 @@ public class StatisticsServiceImpl implements StatisticsService {
                         Optional.ofNullable(statisticsRequestDTO.getDisplayMode()).orElse(DisplayModeEnum.DEFAULT));
         statisticsDTO.setExplanation(statisticsRequestDTO.getExplanation());
         statisticsDTO.setTitle(statisticsRequestDTO.getTitle());
+        statisticsDTO.setGroup(statisticsRequestDTO.getGroup());
 
         return create(statisticsDTO);
     }
@@ -155,6 +156,7 @@ public class StatisticsServiceImpl implements StatisticsService {
             ControlItemDTO controlItemDTO = new ControlItemDTO();
             controlItemDTO.setPath(stat.getPath());
             controlItemDTO.setTitle(stat.getTitle());
+            controlItemDTO.setGroup(stat.getGroup());
 
             controlList.add(controlItemDTO);
         }
@@ -188,6 +190,7 @@ public class StatisticsServiceImpl implements StatisticsService {
                 .toLowerCase();
 
         statisticsResponseDTO.setPath(path);
+        statisticsResponseDTO.setGroup(statisticsDTO.getGroup());
 
         statisticsDTO.getStatistics().forEach(stat -> {
             Optional.ofNullable(stat.getSqlQueryCustom()).ifPresent(q -> stat.setSqlQueryCustom(

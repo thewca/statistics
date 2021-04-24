@@ -66,3 +66,4 @@ queries:
       LIMIT
           10
 title: Oldest standing world records
+group: Events

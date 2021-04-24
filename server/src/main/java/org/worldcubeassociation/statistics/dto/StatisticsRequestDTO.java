@@ -37,4 +37,8 @@ public class StatisticsRequestDTO {
                     + "'SELECTOR' to group them in a selector.",
             example = "DEFAULT")
     private DisplayModeEnum displayMode;
+
+    @NotBlank
+    @ApiModelProperty(value = "Group statistics for better searching/navigating")
+    private String group;
 }
