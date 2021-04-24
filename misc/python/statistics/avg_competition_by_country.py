@@ -68,10 +68,11 @@ def avg_competitions():
     cursor.execute(final_query)
 
     table = cursor.fetchall()
-    log.info("Foun %s countries" % len(table))
+    log.info("Found %s countries" % len(table))
 
     out = {}
     out["title"] = title
+    out["group"] = "Countries"
     headers = ["Avg", "Country", *range(min_year, max_year+1)]
 
     out["statistics"] = [

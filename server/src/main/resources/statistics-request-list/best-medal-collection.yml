@@ -96,4 +96,4 @@ queries:
           Golds desc
       limit 10
 title: Best medal collection
-group: Competitor data
+group: Competitors

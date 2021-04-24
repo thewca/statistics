@@ -129,6 +129,7 @@ def sum_of_all_ranks():
 
     statistics = {}
     statistics["title"] = title
+    statistics["group"] = "Competitors"
     statistics["statistics"] = []
 
     for result_type in ["Average", "Single"]:

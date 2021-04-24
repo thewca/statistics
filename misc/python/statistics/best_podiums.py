@@ -49,6 +49,7 @@ query = """
 def best_podiums():
     statistics = {}
     statistics["title"] = title
+    statistics["group"] = "Results"
     statistics["statistics"] = []
     statistics["displayMode"] = "SELECTOR"
 
