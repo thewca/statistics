@@ -182,7 +182,7 @@ const StatisticsDisplay = () => {
       )}
       {!!filteredStatistics &&
         filteredStatistics.map((stat, i) => (
-          <div key={i}>
+          <div key={i} className="statistics-item">
             {showKeys(stat, statistics?.displayMode)}
             {!!stat.explanation && (
               <h6 className="explanation">{stat.explanation}</h6>

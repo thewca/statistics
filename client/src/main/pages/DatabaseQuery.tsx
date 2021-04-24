@@ -174,12 +174,14 @@ function DatabaseQuery() {
             setShowPositions={setShowPositions}
             setPositionTieBreakerIndex={setPositionTieBreakerIndex}
           />
-          <Pagination
-            defaultPageSize={pageSize}
-            current={page}
-            total={totalElements}
-            onChange={handlePaginationChange}
-          />
+          {totalElements > pageSize && (
+            <Pagination
+              defaultPageSize={pageSize}
+              current={page}
+              total={totalElements}
+              onChange={handlePaginationChange}
+            />
+          )}
         </>
       )}
       {loading && <Skeleton active />}

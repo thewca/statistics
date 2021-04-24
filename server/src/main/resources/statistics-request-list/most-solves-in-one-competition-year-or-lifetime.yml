@@ -1,0 +1,338 @@
+queries:
+  - keys:
+      - Competition
+    showPositions: false
+    headers:
+      - Person
+      - Competition
+      - Solves / Attemps
+    sqlQuery: |-
+      select
+          concat(
+              '<a href="https://www.worldcubeassociation.org/persons/',
+              personId,
+              '">',
+              personName,
+              '</a>'
+          ),
+          concat(
+              '<a href="https://www.worldcubeassociation.org/competitions/',
+              competitionId,
+              '">',
+              competitionId,
+              '</a>'
+          ),
+          concat(solves, ' / ', attempts)
+      from
+          (
+              SELECT
+                  personId,
+                  personName,
+                  competitionId,
+                  sum(
+                      IF(value1 > 0, 1, 0) + IF(value2 > 0, 1, 0) + IF(value3 > 0, 1, 0) + IF(value4 > 0, 1, 0) + IF(value5 > 0, 1, 0)
+                  ) solves,
+                  sum(
+                      IF(
+                          value1 != -2
+                          and value1 != 0,
+                          1,
+                          0
+                      ) + IF(
+                          value2 != -2
+                          and value2 != 0,
+                          1,
+                          0
+                      ) + IF(
+                          value3 != -2
+                          and value3 != 0,
+                          1,
+                          0
+                      ) + IF(
+                          value4 != -2
+                          and value4 != 0,
+                          1,
+                          0
+                      ) + IF(
+                          value5 != -2
+                          and value5 != 0,
+                          1,
+                          0
+                      )
+                  ) attempts
+              FROM
+                  Results
+              GROUP BY
+                  personId,
+                  personName,
+                  competitionId
+              ORDER BY
+                  solves DESC,
+                  attempts
+              LIMIT
+                  10
+          ) result
+    sqlQueryCustom: |-
+      select
+          competitionId whereId,
+          sum(
+              IF(value1 > 0, 1, 0) + IF(value2 > 0, 1, 0) + IF(value3 > 0, 1, 0) + IF(value4 > 0, 1, 0) + IF(value5 > 0, 1, 0)
+          ) solves,
+          sum(
+              IF(
+                  value1 != -2
+                  and value1 != 0,
+                  1,
+                  0
+              ) + IF(
+                  value2 != -2
+                  and value2 != 0,
+                  1,
+                  0
+              ) + IF(
+                  value3 != -2
+                  and value3 != 0,
+                  1,
+                  0
+              ) + IF(
+                  value4 != -2
+                  and value4 != 0,
+                  1,
+                  0
+              ) + IF(
+                  value5 != -2
+                  and value5 != 0,
+                  1,
+                  0
+              )
+          ) attempts
+      FROM
+          Results r
+      where
+          personId = ':WCA_ID'
+      GROUP BY
+          personId,
+          competitionId
+      order by
+          solves desc,
+          attempts
+  - keys:
+      - Year
+    headers:
+      - Person
+      - Year
+      - Solves / Attemps
+    sqlQuery: |-
+      select
+          concat(
+              '<a href="https://www.worldcubeassociation.org/persons/',
+              personId,
+              '">',
+              personName,
+              '</a>'
+          ),
+          year,
+          concat(solves, ' / ', attempts)
+      from
+          (
+              SELECT
+                  personId,
+                  personName,
+                  year,
+                  sum(
+                      IF(value1 > 0, 1, 0) + IF(value2 > 0, 1, 0) + IF(value3 > 0, 1, 0) + IF(value4 > 0, 1, 0) + IF(value5 > 0, 1, 0)
+                  ) solves,
+                  sum(
+                      IF(
+                          value1 != -2
+                          and value1 != 0,
+                          1,
+                          0
+                      ) + IF(
+                          value2 != -2
+                          and value2 != 0,
+                          1,
+                          0
+                      ) + IF(
+                          value3 != -2
+                          and value3 != 0,
+                          1,
+                          0
+                      ) + IF(
+                          value4 != -2
+                          and value4 != 0,
+                          1,
+                          0
+                      ) + IF(
+                          value5 != -2
+                          and value5 != 0,
+                          1,
+                          0
+                      )
+                  ) attempts
+              FROM
+                  Results r
+                  inner join Competitions competition on competition.id = r.competitionId
+              GROUP BY
+                  personId,
+                  personName,
+                  year
+              ORDER BY
+                  solves DESC,
+                  attempts
+              LIMIT
+                  10
+          ) result
+    sqlQueryCustom: |-
+      SELECT
+          personName,
+          year whereId,
+          sum(
+              IF(value1 > 0, 1, 0) + IF(value2 > 0, 1, 0) + IF(value3 > 0, 1, 0) + IF(value4 > 0, 1, 0) + IF(value5 > 0, 1, 0)
+          ) solves,
+          sum(
+              IF(
+                  value1 != -2
+                  and value1 != 0,
+                  1,
+                  0
+              ) + IF(
+                  value2 != -2
+                  and value2 != 0,
+                  1,
+                  0
+              ) + IF(
+                  value3 != -2
+                  and value3 != 0,
+                  1,
+                  0
+              ) + IF(
+                  value4 != -2
+                  and value4 != 0,
+                  1,
+                  0
+              ) + IF(
+                  value5 != -2
+                  and value5 != 0,
+                  1,
+                  0
+              )
+          ) attempts
+      FROM
+          Results,
+          Competitions competition
+      WHERE
+          competition.id = competitionId
+          and personId = ':WCA_ID'
+      GROUP BY
+          personId,
+          personName,
+          year
+      ORDER BY
+          solves DESC,
+          attempts
+  - keys:
+      - Lifetime
+    headers:
+      - Person
+      - Solves / Attempts
+    sqlQuery: |-
+      select
+          concat(
+              '<a href="https://www.worldcubeassociation.org/persons/',
+              personId,
+              '">',
+              personName,
+              '</a>'
+          ),
+          concat(solves, ' / ', attempts)
+      from
+          (
+              SELECT
+                  personId,
+                  personName,
+                  sum(
+                      IF(value1 > 0, 1, 0) + IF(value2 > 0, 1, 0) + IF(value3 > 0, 1, 0) + IF(value4 > 0, 1, 0) + IF(value5 > 0, 1, 0)
+                  ) solves,
+                  sum(
+                      IF(
+                          value1 != -2
+                          and value1 != 0,
+                          1,
+                          0
+                      ) + IF(
+                          value2 != -2
+                          and value2 != 0,
+                          1,
+                          0
+                      ) + IF(
+                          value3 != -2
+                          and value3 != 0,
+                          1,
+                          0
+                      ) + IF(
+                          value4 != -2
+                          and value4 != 0,
+                          1,
+                          0
+                      ) + IF(
+                          value5 != -2
+                          and value5 != 0,
+                          1,
+                          0
+                      )
+                  ) attempts
+              FROM
+                  Results
+              GROUP BY
+                  personId,
+                  personName
+              ORDER BY
+                  solves DESC,
+                  attempts
+              LIMIT
+                  10
+          ) result
+    sqlQueryCustom: |-
+      select
+          personName Name,
+          sum(
+              IF(value1 > 0, 1, 0) + IF(value2 > 0, 1, 0) + IF(value3 > 0, 1, 0) + IF(value4 > 0, 1, 0) + IF(value5 > 0, 1, 0)
+          ) Solves,
+          sum(
+              IF(
+                  value1 != -2
+                  and value1 != 0,
+                  1,
+                  0
+              ) + IF(
+                  value2 != -2
+                  and value2 != 0,
+                  1,
+                  0
+              ) + IF(
+                  value3 != -2
+                  and value3 != 0,
+                  1,
+                  0
+              ) + IF(
+                  value4 != -2
+                  and value4 != 0,
+                  1,
+                  0
+              ) + IF(
+                  value5 != -2
+                  and value5 != 0,
+                  1,
+                  0
+              )
+          ) Attempts
+      FROM
+          Results
+      where
+          personId = ':WCA_ID'
+      group by
+          personId,
+          personName
+title: Most solves in one competition, year, or lifetime
+group: Results
