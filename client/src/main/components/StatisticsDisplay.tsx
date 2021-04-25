@@ -1,5 +1,5 @@
 import { CompassOutlined } from "@ant-design/icons";
-import { message, Popover, Select } from "antd";
+import { Col, message, Popover, Row, Select } from "antd";
 import { useCallback, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import statisticsApi from "../api/statistics.api";
@@ -167,26 +167,38 @@ const StatisticsDisplay = () => {
   return (
     <div className="container">
       <h1 className="page-title">{statistics?.title}</h1>
-      {!!statistics?.explanation && (
-        <h5 className="explanation">{statistics.explanation}</h5>
-      )}
-      {["SELECTOR", "GROUPED"].includes(statistics?.displayMode || "") && (
-        <div id="display-mode-wrapper">
-          <Select
-            value={selectedKeys}
-            onChange={handleChange}
-            options={getOptions(statistics)}
-            style={{ width: "50%" }}
-          />
-        </div>
-      )}
+
+      <Row>
+        <Col span={8} />
+        <Col span={8}>
+          {["SELECTOR", "GROUPED"].includes(statistics?.displayMode || "") && (
+            <div id="display-mode-wrapper">
+              <Select
+                value={selectedKeys}
+                onChange={handleChange}
+                options={getOptions(statistics)}
+                style={{ width: "50%" }}
+              />
+            </div>
+          )}
+        </Col>
+        {!!statistics?.explanation && (
+          <Col span={8}>
+            <h4 className="explanation">{statistics.explanation}</h4>
+          </Col>
+        )}
+      </Row>
       {!!filteredStatistics &&
         filteredStatistics.map((stat, i) => (
           <div key={i} className="statistics-item">
-            {showKeys(stat, statistics?.displayMode)}
-            {!!stat.explanation && (
-              <h6 className="explanation">{stat.explanation}</h6>
-            )}
+            <Row>
+              <Col span={12}>{showKeys(stat, statistics?.displayMode)}</Col>
+              {!!stat.explanation && (
+                <Col span={12}>
+                  <h3 className="explanation">{stat.explanation}</h3>
+                </Col>
+              )}
+            </Row>
             <StatisticsTable
               headers={stat.headers}
               content={stat.content}

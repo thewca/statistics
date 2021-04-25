@@ -1,4 +1,3 @@
-import { Table } from "antd";
 import "./StatisticsTable.css";
 
 interface StatisticsTableProps {
@@ -20,45 +19,47 @@ const StatisticsTable = ({
   showPositions,
   positionTieBreakerIndex,
 }: StatisticsTableProps) => {
-  // Destructure list of strings and make it into object bu assgning [a, b] to {0:a, 1:b}
-  // Those numbers are used in the table as dataIndex
-  let dataSource = content.map((it, pos) =>
-    showPositions
-      ? {
-          ...[
-            positionTieBreakerIndex == null ||
-            pos === 0 ||
-            content[pos][positionTieBreakerIndex] !==
-              content[pos - 1][positionTieBreakerIndex]
-              ? (page - 1) * pageSize + pos + 1
-              : "-",
-            ...it,
-          ],
-        }
-      : { ...it }
-  );
-  let columns = (showPositions ? ["#", ...headers] : headers).map(
-    (title, i) => ({
-      title,
-      dataIndex: i,
-      render: (item: string) => {
-        return allowInnerHTML ? (
-          <span dangerouslySetInnerHTML={{ __html: item }}></span>
-        ) : (
-          item
-        );
-      },
-    })
-  );
   return (
-    <Table
-      columns={columns}
-      dataSource={dataSource}
-      pagination={false}
-      bordered
-      id="results-table"
-      rowKey="0"
-    />
+    <div id="results-table">
+      <table>
+        <thead id="table-header">
+          <tr>
+            {showPositions && <th scope="col">#</th>}
+            {headers.map((header, i) => (
+              <th key={i} scope="col">
+                {header}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody className="tbody">
+          {content.map((result: string[], i) => (
+            <tr key={i}>
+              {showPositions && (
+                <th scope="row" className="text-center">
+                  {i === 0 ||
+                  positionTieBreakerIndex == null ||
+                  content[i][positionTieBreakerIndex] !==
+                    content[i - 1][positionTieBreakerIndex]
+                    ? (page - 1) * pageSize + i + 1
+                    : "-"}
+                </th>
+              )}
+              {result.map((entry, j) => (
+                <td key={j} className="text-center">
+                  {/* We allow rendering HTML (eg.: for links) in the statistics (not in the user's query) */}
+                  {allowInnerHTML ? (
+                    <span dangerouslySetInnerHTML={{ __html: entry }} />
+                  ) : (
+                    entry
+                  )}
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 };
 
