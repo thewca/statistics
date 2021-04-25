@@ -119,11 +119,7 @@ const StatisticsDisplay = () => {
       keys = statisticsDetail.keys.join(" > ");
     }
 
-    return (
-      <span className="tags">
-        {keys} {getIcon(statisticsDetail)}
-      </span>
-    );
+    return <span className="tags">{keys}</span>;
   };
 
   const handleChange = (jointKeys: string) => {
@@ -194,7 +190,10 @@ const StatisticsDisplay = () => {
             <Row>
               <Col span={8} />
               <Col span={8} style={{ textAlign: "center" }}>
-                {showKeys(stat, statistics?.displayMode)}
+                <span>
+                  {showKeys(stat, statistics?.displayMode)}
+                  {getIcon(stat)}
+                </span>
               </Col>
               {!!stat.explanation && (
                 <Col span={8}>

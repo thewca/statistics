@@ -42,6 +42,58 @@ where
     eventId = %(event_id)s
     and c.start_date >= date(%(min_date)s)"""
 
+custom_query = """select
+    personName,
+    format(solves / attempts, 2) Rate,
+    concat(solves, ' / ', attempts) Successes
+from
+    (
+        select
+            personName,
+            sum(
+                IF(value1 > 0, 1, 0) + IF(value2 > 0, 1, 0) + IF(value3 > 0, 1, 0) + IF(value4 > 0, 1, 0) + IF(value5 > 0, 1, 0)
+            ) solves,
+            sum(
+                IF(
+                    value1 != -2
+                    and value1 != 0,
+                    1,
+                    0
+                ) + IF(
+                    value2 != -2
+                    and value2 != 0,
+                    1,
+                    0
+                ) + IF(
+                    value3 != -2
+                    and value3 != 0,
+                    1,
+                    0
+                ) + IF(
+                    value4 != -2
+                    and value4 != 0,
+                    1,
+                    0
+                ) + IF(
+                    value5 != -2
+                    and value5 != 0,
+                    1,
+                    0
+                )
+            ) attempts
+        from
+            Results r
+            inner join Competitions c on r.competitionId = c.id
+        where
+            c.start_date >= date('%(min_date)s')
+            and personId = ':WCA_ID'
+            and eventId = '%(event_id)s'
+        group by
+            personId,
+            personName
+    ) result
+"""
+
 
 def recent_success():
 
@@ -120,7 +172,7 @@ def recent_success():
             prev = rate
 
         out["statistics"].append({"keys": [event.name], "content": table,
-                                  "headers": headers, "showPositions": True, "positionTieBreakerIndex": 2})
+                                  "headers": headers, "showPositions": True, "positionTieBreakerIndex": 2, "sqlQueryCustom": custom_query % {"event_id": event_id, "min_date": min_date}})
     cnx.close()
 
     return out
