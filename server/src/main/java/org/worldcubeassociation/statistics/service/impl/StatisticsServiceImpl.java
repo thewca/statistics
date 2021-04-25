@@ -112,15 +112,15 @@ public class StatisticsServiceImpl implements StatisticsService {
     }
 
     @Override
-    public void generateFromSql(String pathId) throws IOException {
-        log.info("Generate statistics with path {}", pathId);
+    public void generateFromSql(String filename) throws IOException {
+        log.info("Generate statistics with path {}", filename);
 
         List<Resource> resources =
                 Arrays.asList(ResourcePatternUtils.getResourcePatternResolver(resourceLoader)
-                        .getResources(String.format("classpath:statistics-request-list/%s.yml", pathId)));
+                        .getResources(String.format("classpath:statistics-request-list/%s.yml", filename)));
 
         if (resources.isEmpty()) {
-            throw new NotFoundException(String.format("Resource %s not found", pathId));
+            throw new NotFoundException(String.format("Resource %s not found", filename));
         }
 
         resourcesToStatistics(resources);

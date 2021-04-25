@@ -6,36 +6,59 @@ queries:
       - Person
       - Competitions
     sqlQuery: |-
-      SELECT
-          personId,
-          count(DISTINCT competitionId) numberOfCompetitions
-      FROM
-          Results
-      GROUP BY
-          personId
-      ORDER BY
-          numberOfCompetitions DESC,
-          personId
-      LIMIT
-          10
+      select
+          concat(
+              '<a href="https://www.worldcubeassociation.org/persons/',
+              personId,
+              '">',
+              p.name,
+              '</a>'
+          ),
+          numberOfCompetitions
+      from
+          Persons p
+          inner join (
+              SELECT
+                  personId,
+                  count(DISTINCT competitionId) numberOfCompetitions
+              FROM
+                  Results
+              GROUP BY
+                  personId
+              ORDER BY
+                  numberOfCompetitions DESC,
+                  personId
+              LIMIT
+                  10
+          ) c on c.personId = p.id
+    sqlQueryCustom: |-
+      select
+      	personName Name, count(distinct competitionId) Competitions
+      from
+      	Results
+      where
+      	personId = ':WCA_ID'
+      group by personId, personName
   - keys:
       - Event
     headers:
       - Event
       - Competitions
+    explanation: Number of competitions that held that active event.
     sqlQuery: |-
       SELECT
-          eventId,
-          count(DISTINCT competitionId) numberOfCompetitions
+          e.name,
+          count(DISTINCT ce.competition_id) numberOfCompetitions
       FROM
-          Results
+          competition_events ce
+          inner join Events e on e.id = ce.event_id
+      where
+          e.`rank` < 900
       GROUP BY
-          eventId
+          e.name
       ORDER BY
           numberOfCompetitions DESC,
-          eventId
-      LIMIT
-          10
+          e.name
   - keys:
       - Country
     showPositions: false
@@ -58,5 +81,17 @@ queries:
           countryId
       LIMIT
           10
+    sqlQueryCustom: |-
+      SELECT
+          countryId,
+          count(*) numberOfCompetitions
+      FROM
+          Competitions c
+      WHERE
+          showAtAll
+          AND datediff(c.start_date, curdate()) < 0
+          and countryId = ':COUNTRY_ID'
+      GROUP BY
+          countryId
 title: Most competitions
 group: Competitors

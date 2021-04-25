@@ -28,8 +28,8 @@ public class StatisticsControllerImpl implements StatisticsController {
     }
 
     @Override
-    public void generateFromSql(String pathId) throws IOException {
-        statisticsService.generateFromSql(pathId);
+    public void generateFromSql(String filename) throws IOException {
+        statisticsService.generateFromSql(filename);
     }
 
     @Override
