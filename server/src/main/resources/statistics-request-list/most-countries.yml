@@ -2,14 +2,19 @@ queries:
   - keys:
       - Person
     showPositions: false
+    explanation: Different countries in which a competitor has competed
     headers:
       - Person
-      - ID
       - Countries
     sqlQuery: |-
       SELECT
-          person.name,
-          personId,
+          concat(
+              '<a href="https://www.worldcubeassociation.org/persons/',
+              personId,
+              '">',
+              person.name,
+              '</a>'
+          ),
           COUNT(competition_countries_by_person.countryId) numberOfCountries
       FROM
           (
@@ -32,47 +37,80 @@ queries:
           person.name
       LIMIT
           10
+    sqlQueryCustom: |-
+      select
+          r.personId,
+          count(distinct c.countryId) Countries
+      from
+          Results r
+          inner join Competitions c on r.competitionId = c.id
+      where
+          personId = ':WCA_ID'
+          and c.countryId NOT REGEXP '^X[A-Z]{1}$'
   - keys:
       - Event
     headers:
       - Event
       - Countries
+    explanation: Different countries that hosted a competition with a particular event
     sqlQuery: |-
       select
-          ce.event_id,
+          e.name,
           count(distinct c.countryId) qt
       from
           competition_events ce
           inner join Competitions c on ce.competition_id = c.id
+          inner join Events e on ce.event_id = e.id
       where
           c.countryId NOT REGEXP '^X[A-Z]{1}$'
+          and e.`rank` < 900
       group by
           ce.event_id
       order by
           qt desc,
           ce.event_id
-      limit
-          10
   - keys:
       - Competition
     showPositions: false
     headers:
       - Competition
       - Countries
+    explanation: Different nationalities competing in a competition
     sqlQuery: |-
-      SELECT
-          competitionId,
-          count(DISTINCT result.countryId) numberOfCountries
-      FROM
-          Results result
-      WHERE
-          result.countryId NOT REGEXP '^X[A-Z]{1}$'
-      GROUP BY
-          competitionId
-      ORDER BY
-          numberOfCountries DESC,
-          competitionId
-      LIMIT
-          10
+      select
+          concat(
+              '<a href="https://www.worldcubeassociation.org/competitions/',
+              competitionId,
+              '">',
+              c.name,
+              '</a>'
+          ),
+          Countries
+      from
+          (
+              SELECT
+                  competitionId,
+                  count(DISTINCT result.countryId) Countries
+              FROM
+                  Results result
+              WHERE
+                  result.countryId NOT REGEXP '^X[A-Z]{1}$'
+              GROUP BY
+                  competitionId
+              ORDER BY
+                  Countries DESC,
+                  competitionId
+              LIMIT
+                  10
+          ) r
+          inner join Competitions c on r.competitionId = c.id
+    sqlQueryCustom: |-
+      select
+      	competitionId,
+      	count(distinct r.countryId) Countries
+      from
+      	Results r
+      where
+      	competitionId = ':COMPETITION_ID'
 title: Most countries
 group: Competitors

@@ -154,7 +154,7 @@ function DatabaseQuery() {
           type="primary"
           shape="round"
           size="large"
-          disabled={!query}
+          disabled={!query || loading}
           title={!query ? "You need to provide an SQL query" : ""}
         >
           Submit
