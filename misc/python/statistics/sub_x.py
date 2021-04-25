@@ -77,7 +77,8 @@ where
     eventId = '%(event_id)s'
     and personId = ':WCA_ID'
 group by
-    personId, personName
+    personId,
+    personName
 """
 
 

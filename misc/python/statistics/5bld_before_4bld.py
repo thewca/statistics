@@ -31,6 +31,48 @@ where
 order by
 	c.start_date"""
 
+# TODO this query is very expensive, we are not shipping it until we can restrict queries to logged users so we can prevent multiple runs
+query_custom = """select
+    name,
+    id,
+    days
+from
+    (
+        select
+            name,
+            id,
+            datediff(
+                (
+                    select
+                        min(start_date)
+                    from
+                        Results r
+                        inner join Competitions c on r.competitionId = c.id
+                    where
+                        r.personId = p.id
+                        and eventId = ':SECOND_EVENT_ID'
+                        and best > 0
+                ),
+                (
+                    select
+                        min(start_date)
+                    from
+                        Results r
+                        inner join Competitions c on r.competitionId = c.id
+                    where
+                        r.personId = p.id
+                        and eventId = ':FIRST_EVENT_ID'
+                        and best > 0
+                )
+            ) days
+        from
+            Persons p
+    ) result
+where
+    days > 0
+order by
+    days"""
+
 
 def compare_results(ev1, ev2):
     """Checks if a competitor got ev1 before ev2, expect for 333mbf and 333mbo, due to time encode."""
