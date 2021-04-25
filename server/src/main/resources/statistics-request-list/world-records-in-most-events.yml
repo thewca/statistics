@@ -10,7 +10,13 @@ queries:
     explanation: Current events, all time records
     sqlQuery: |-
       select
-          personName,
+          concat(
+              '<a href="https://www.worldcubeassociation.org/persons/',
+              personId,
+              '">',
+              personName,
+              '</a>'
+          ),
           worldRecordEvents,
           events
       from
@@ -19,7 +25,7 @@ queries:
                   personId,
                   personName,
                   count(distinct eventId) worldRecordEvents,
-                  group_concat(distinct r.eventId separator ', ') events
+                  group_concat(distinct e.name separator ', ') events
               from
                   Results r
                   inner join Events e on r.eventId = e.id
@@ -65,24 +71,39 @@ queries:
           )
     sqlQueryCustom: |-
       select
-      	name,
-      	(
-      	select
-      		count(distinct eventId)
-      	from
-      		Results r
-      	inner join Events e on
-      		r.eventId = e.id
-      	where
-      		r.personId = p.id
-      		and e.`rank` < 900
-      		-- Active events
-      		and (regionalAverageRecord = 'WR'
-      		or regionalSingleRecord = 'WR')) events
+          name,
+          (
+              select
+                  count(distinct eventId)
+              from
+                  Results r
+                  inner join Events e on r.eventId = e.id
+              where
+                  r.personId = p.id
+                  and e.`rank` < 900 -- Active events
+                  and (
+                      regionalAverageRecord = 'WR'
+                      or regionalSingleRecord = 'WR'
+                  )
+          ) Records,
+          (
+              select
+                  group_concat(distinct e.name separator ', ')
+              from
+                  Results r
+                  inner join Events e on r.eventId = e.id
+              where
+                  r.personId = p.id
+                  and e.`rank` < 900 -- Active events
+                  and (
+                      regionalAverageRecord = 'WR'
+                      or regionalSingleRecord = 'WR'
+                  )
+          ) Events
       from
-      	Persons p
+          Persons p
       where
-      	p.id = ':WCA_ID'
+          p.id = ':WCA_ID'
   - keys:
       - Countries
     showPositions: true
@@ -102,7 +123,7 @@ queries:
               select
                   countryId,
                   count(distinct eventId) qt,
-                  group_concat(distinct r.eventId separator ', ') events
+                  group_concat(distinct e.name separator ', ') events
               from
                   Results r
                   inner join Events e on r.eventId = e.id
@@ -158,11 +179,25 @@ queries:
                       or r.regionalSingleRecord = 'WR'
                   )
                   and e.`rank` < 900
+          ) Records,
+          (
+              select
+                  group_concat(distinct e.name separator ', ')
+              from
+                  Results r
+                  inner join Events e on r.eventId = e.id
+              where
+                  r.countryId = c.id
+                  and (
+                      r.regionalAverageRecord = 'WR'
+                      or r.regionalSingleRecord = 'WR'
+                  )
+                  and e.`rank` < 900
           ) events
       from
           Countries c
       where
-          id = ':COUNTRY'
+          id = ':COUNTRY_ID'
   - keys:
       - Competitions
     showPositions: true
@@ -174,25 +209,34 @@ queries:
     explanation: All time events
     sqlQuery: |-
       select
-          name,
+          concat(
+              '<a href="https://www.worldcubeassociation.org/competitions/',
+              id,
+              '">',
+              name,
+              '</a>'
+          ),
           qt,
           events
       from
           (
               select
                   c.name,
+                  c.id,
                   count(distinct eventId) qt,
-                  group_concat(distinct r.eventId separator ', ') events
+                  group_concat(distinct e.name separator ', ') events
               from
                   Results r
                   inner join Competitions c on r.competitionId = c.id
+                  inner join Events e on r.eventId = e.id
               where
                   (
                       regionalAverageRecord = 'WR'
                       or regionalSingleRecord = 'WR'
                   )
               group by
-                  name
+                  name,
+                  c.id
               order by
                   qt desc
           ) results
@@ -233,7 +277,20 @@ queries:
                       r.regionalAverageRecord = 'WR'
                       or r.regionalSingleRecord = 'WR'
                   )
-          ) records
+          ) Records,
+          (
+              select
+                  group_concat(distinct e.name separator ', ')
+              from
+                  Results r
+                  inner join Events e on r.eventId = e.id
+              where
+                  r.competitionId = c.id
+                  and (
+                      r.regionalAverageRecord = 'WR'
+                      or r.regionalSingleRecord = 'WR'
+                  )
+          ) Events
       from
           Competitions c
       where

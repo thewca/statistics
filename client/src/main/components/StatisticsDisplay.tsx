@@ -192,9 +192,12 @@ const StatisticsDisplay = () => {
         filteredStatistics.map((stat, i) => (
           <div key={i} className="statistics-item">
             <Row>
-              <Col span={12}>{showKeys(stat, statistics?.displayMode)}</Col>
+              <Col span={8} />
+              <Col span={8} style={{ textAlign: "center" }}>
+                {showKeys(stat, statistics?.displayMode)}
+              </Col>
               {!!stat.explanation && (
-                <Col span={12}>
+                <Col span={8}>
                   <h3 className="explanation">{stat.explanation}</h3>
                 </Col>
               )}
