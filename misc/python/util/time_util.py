@@ -1,7 +1,7 @@
 def time_format(cents, event=None, type=None):
     if event == "333fm":
         if type == "average":
-            return "%.2f" % (cents/100)
+            return "%.2f" % (cents)
         return cents
 
     cents = int(cents)

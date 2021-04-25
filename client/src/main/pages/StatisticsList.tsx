@@ -11,7 +11,7 @@ interface StatisticsListProps {
 }
 
 const StatisticsList = ({ statisticsGroups }: StatisticsListProps) => {
-  const [completeList, setCompleteList] = useState(true);
+  const [completeList, setCompleteList] = useState(false);
   let dataSource = statisticsGroups
     ?.flatMap((it) => it.statistics)
     .sort((a, b) => (a.title < b.title ? -1 : 1));

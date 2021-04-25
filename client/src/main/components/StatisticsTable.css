@@ -1,3 +1,24 @@
 #results-table {
   overflow-x: auto;
+  align-items: center;
+  text-align: center;
+}
+
+#table-header th {
+  background-color: #001529;
+  font-weight: bold;
+  color: #fff;
+  font-size: 120%;
+}
+
+tbody td,
+tbody th,
+th {
+  padding: 10px 30px;
+  border: 1px solid #001529;
+}
+
+table {
+  margin-left: auto;
+  margin-right: auto;
 }

@@ -10,8 +10,9 @@
 }
 
 .explanation {
-  /* text-right mr-5 mt-4 text-muted */
-  text-align: right;
-  margin: 10px;
   color: #6c757d;
+}
+
+.statistics-item {
+  margin-top: 30px;
 }

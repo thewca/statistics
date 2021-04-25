@@ -33,9 +33,9 @@ public interface StatisticsController {
     @ApiOperation("Convert all sql queries in the resource folder to statistics")
     void generateAllFromSql() throws IOException;
 
-    @PostMapping("generate-from-sql/{pathId}")
+    @PostMapping("generate-from-sql/{filename}")
     @ApiOperation("Convert specific sql queries in the resource folder to statistics")
-    void generateFromSql(@PathVariable String pathId) throws IOException;
+    void generateFromSql(@PathVariable String filename) throws IOException;
 
     @GetMapping("list")
     List<StatisticsGroupDTO> list() throws IOException;

@@ -1,4 +1,12 @@
-import { Button, Form, Input, message, Pagination, Skeleton } from "antd";
+import {
+  Alert,
+  Button,
+  Form,
+  Input,
+  message,
+  Pagination,
+  Skeleton,
+} from "antd";
 import { useEffect, useState } from "react";
 import statisticsApi from "../api/statistics.api";
 import DatabaseQueryOptions from "../components/DatabaseQueryOptions";
@@ -146,13 +154,13 @@ function DatabaseQuery() {
           type="primary"
           shape="round"
           size="large"
-          disabled={!query}
+          disabled={!query || loading}
           title={!query ? "You need to provide an SQL query" : ""}
         >
           Submit
         </Button>
       </Form>
-      {noResult && <div className="alert alert-info">No results to show</div>}
+      {noResult && <Alert type="info" message="No results to show" />}
 
       {totalElements > 0 && (
         <>
@@ -174,12 +182,14 @@ function DatabaseQuery() {
             setShowPositions={setShowPositions}
             setPositionTieBreakerIndex={setPositionTieBreakerIndex}
           />
-          <Pagination
-            defaultPageSize={pageSize}
-            current={page}
-            total={totalElements}
-            onChange={handlePaginationChange}
-          />
+          {totalElements > pageSize && (
+            <Pagination
+              defaultPageSize={pageSize}
+              current={page}
+              total={totalElements}
+              onChange={handlePaginationChange}
+            />
+          )}
         </>
       )}
       {loading && <Skeleton active />}

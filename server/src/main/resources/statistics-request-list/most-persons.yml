@@ -1,7 +1,8 @@
 queries:
   - keys:
-      - Evemt
+      - Event
     showPositions: false
+    explanation: Number of competitors that have competed in each event
     headers:
       - Event
       - Persons
@@ -24,23 +25,44 @@ queries:
     headers:
       - Competition
       - Persons
+    explanation: Competitions with most competitors
     sqlQuery: |-
       select
-          c.name,
+          concat(
+              '<a href="https://www.worldcubeassociation.org/competitions/',
+              c.id,
+              '">',
+              c.name,
+              '</a>'
+          ),
           count(distinct personId) qt
       from
           Results r
           inner join Competitions c on r.competitionId = c.id
       group by
-          c.name
+          c.name,
+          c.id
       order by
           qt desc,
           c.name
       limit
           10
+    sqlQueryCustom: |-
+      select
+          c.name Competition,
+          count(distinct personId) Competitors
+      from
+          Results r
+          inner join Competitions c on r.competitionId = c.id
+      where
+          c.id = ':COMPETITION_ID'
+      group by
+          c.name,
+          c.id
   - keys:
       - Country
     showPositions: false
+    explanation: Number of competitors of each nationality
     headers:
       - Country
       - Persons
@@ -57,5 +79,15 @@ queries:
           countryId
       LIMIT
           10
+    sqlQueryCustom: |-
+      SELECT
+          countryId,
+          count(DISTINCT personId) numberOfPersons
+      FROM
+          Results
+      where
+          countryId = ':COUNTRY_ID'
+      GROUP BY
+          countryId
 title: Most persons
 group: Competitors

@@ -41,6 +41,46 @@ where
 	eventId = '%s'
 """
 
+query_custom = """select
+    personName,
+    sum(
+        IF(
+            value1 > 0
+            and value1 < %(sub_x)s,
+            1,
+            0
+        ) + IF(
+            value2 > 0
+            and value2 < %(sub_x)s,
+            1,
+            0
+        ) + IF(
+            value3 > 0
+            and value3 < %(sub_x)s,
+            1,
+            0
+        ) + IF(
+            value4 > 0
+            and value4 < %(sub_x)s,
+            1,
+            0
+        ) + IF(
+            value5 > 0
+            and value5 < %(sub_x)s,
+            1,
+            0
+        )
+    ) Solves
+from
+    Results r
+where
+    eventId = '%(event_id)s'
+    and personId = ':WCA_ID'
+group by
+    personId,
+    personName
+"""
+
 
 class Competitor(Comp):
     count = None
@@ -158,7 +198,7 @@ def sub_x():
             index = i+wr_index+1
             current_sub = index if event == "333fm" else index*100
             statistics["statistics"].append(
-                {"keys": [current_event.name, "Sub %s" % time_format(current_sub, event)], "content": stat, "headers": headers, "showPositions": True, "positionTieBreakerIndex": 0})
+                {"keys": [current_event.name, "Sub %s" % time_format(current_sub, event)], "content": stat, "headers": headers, "showPositions": True, "positionTieBreakerIndex": 0, "sqlQueryCustom": query_custom % {"event_id": event, "sub_x": (1+i+wr_single//100)*100 if event != '333fm' else (1+i+wr_single)}})
 
     cnx.close()
     return statistics
