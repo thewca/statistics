@@ -173,7 +173,7 @@ const StatisticsDisplay = () => {
                 value={selectedKeys}
                 onChange={handleChange}
                 options={getOptions(statistics)}
-                style={{ width: "50%" }}
+                style={{ width: "80%" }}
               />
             </div>
           )}

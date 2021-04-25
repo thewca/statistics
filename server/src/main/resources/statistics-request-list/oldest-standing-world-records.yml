@@ -7,7 +7,6 @@ queries:
       - Type
       - Days
       - Result
-      - ID
       - Person
       - Competition
     sqlQuery: |-
@@ -16,9 +15,20 @@ queries:
           type,
           datediff(curdate(), c.start_date) days,
           value,
-          personId,
-          p.name,
-          competitionId
+          concat(
+              '<a href="https://www.worldcubeassociation.org/persons/',
+              personId,
+              '">',
+              p.name,
+              '</a>'
+          ),
+          concat(
+              '<a href="https://www.worldcubeassociation.org/competitions/',
+              competitionId,
+              '">',
+              c.name,
+              '</a>'
+          )
       FROM
           (
               SELECT
