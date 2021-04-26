@@ -7,6 +7,9 @@
 
 export_file_zip="wca-developer-database-dump.zip"
 export_file_sql="wca-developer-database-dump.sql"
+temp_database="wca_development_temp"
+new_database="wca_development"
+mysqlconn="sudo mysql"
 
 download=true
 
@@ -43,6 +46,19 @@ unzip "$export_file_zip"
 
 echo "Executing the .sql"
 echo "This can take a few hours"
-sudo mysql -e "create database if not exists wca_development; USE wca_development; SOURCE $export_file_sql;"
+$mysqlconn -e "create database if not exists $temp_database; USE $temp_database; SOURCE $export_file_sql;"
+
+echo "Rename databases"
+
+$mysqlconn -e "drop database if exists $new_database; CREATE DATABASE $new_database"
+params=$($mysqlconn -N -e "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE table_schema='$temp_database'")
+
+for name in $params; do
+      $mysqlconn -e "RENAME TABLE $temp_database.$name to $new_database.$name";
+      echo "Renamed $temp_database.$name to $new_database.$name";
+done;
+
+$mysqlconn -e "DROP DATABASE $temp_database"
 
 echo "Complete"
+
