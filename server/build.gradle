@@ -28,6 +28,7 @@ dependencies {
 
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: '2.3.4.RELEASE'
     compile group: 'org.springframework.boot', name: 'spring-boot-starter', version: '2.3.4.RELEASE'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-jdbc', version: '2.3.4.RELEASE'
     compile group: 'mysql', name: 'mysql-connector-java', version: '8.0.21'

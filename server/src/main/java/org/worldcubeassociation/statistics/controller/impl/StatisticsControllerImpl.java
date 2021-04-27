@@ -7,6 +7,7 @@ import org.worldcubeassociation.statistics.dto.StatisticsDTO;
 import org.worldcubeassociation.statistics.dto.StatisticsGroupDTO;
 import org.worldcubeassociation.statistics.dto.StatisticsRequestDTO;
 import org.worldcubeassociation.statistics.dto.StatisticsResponseDTO;
+import org.worldcubeassociation.statistics.model.Statistics;
 import org.worldcubeassociation.statistics.service.StatisticsService;
 
 import java.io.IOException;
@@ -51,5 +52,10 @@ public class StatisticsControllerImpl implements StatisticsController {
     @Override
     public void deleteAll() throws IOException {
         statisticsService.deleteAll();
+    }
+
+    @Override
+    public List<Statistics> findAll(){
+        return statisticsService.findAll();
     }
 }

@@ -12,6 +12,7 @@ import org.worldcubeassociation.statistics.dto.StatisticsDTO;
 import org.worldcubeassociation.statistics.dto.StatisticsGroupDTO;
 import org.worldcubeassociation.statistics.dto.StatisticsRequestDTO;
 import org.worldcubeassociation.statistics.dto.StatisticsResponseDTO;
+import org.worldcubeassociation.statistics.model.Statistics;
 
 import java.io.IOException;
 import java.util.List;
@@ -55,4 +56,6 @@ public interface StatisticsController {
             "Deletes all generated statistics")
     void deleteAll() throws IOException;
 
+    @GetMapping("findall")
+    List<Statistics> findAll();
 }

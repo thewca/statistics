@@ -21,6 +21,8 @@ import org.worldcubeassociation.statistics.dto.StatisticsResponseDTO;
 import org.worldcubeassociation.statistics.enums.DisplayModeEnum;
 import org.worldcubeassociation.statistics.exception.InvalidParameterException;
 import org.worldcubeassociation.statistics.exception.NotFoundException;
+import org.worldcubeassociation.statistics.model.Statistics;
+import org.worldcubeassociation.statistics.repository.StatisticsRepository;
 import org.worldcubeassociation.statistics.service.DatabaseQueryService;
 import org.worldcubeassociation.statistics.service.StatisticsService;
 import org.yaml.snakeyaml.Yaml;
@@ -45,6 +47,9 @@ public class StatisticsServiceImpl implements StatisticsService {
 
     @Autowired
     private ResourceLoader resourceLoader;
+
+    @Autowired
+    private StatisticsRepository statisticsRepository;
 
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
@@ -216,6 +221,11 @@ public class StatisticsServiceImpl implements StatisticsService {
         log.info("Deleted");
 
         updateControlList();
+    }
+
+    @Override
+    public List<Statistics> findAll() {
+        return statisticsRepository.findAll();
     }
 
     private File getControlFile() {
