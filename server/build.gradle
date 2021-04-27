@@ -43,4 +43,8 @@ dependencies {
 
     implementation 'org.yaml:snakeyaml:1.28'
 
+    implementation group: 'com.vladmihalcea', name: 'hibernate-types-5', version: '2.10.4'
+
+
+
 }
