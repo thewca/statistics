@@ -5,7 +5,8 @@ version: 1.0.0
 spring:
   profiles:
     active: local
-
+  jpa:
+    open-in-view: true
 server:
   port: 8080
   error:
