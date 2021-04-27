@@ -45,6 +45,7 @@ dependencies {
 
     implementation group: 'com.vladmihalcea', name: 'hibernate-types-5', version: '2.10.4'
 
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: '2.4.5'
 
 
 }
