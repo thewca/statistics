@@ -36,6 +36,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import javax.validation.Valid;
 
 @Slf4j
 @Service
@@ -179,7 +180,7 @@ public class StatisticsServiceImpl implements StatisticsService {
     }
 
     @Override
-    public StatisticsResponseDTO create(StatisticsDTO statisticsDTO) {
+    public StatisticsResponseDTO create(@Valid StatisticsDTO statisticsDTO) {
         log.info("Create statistics from {}", statisticsDTO);
 
         statisticsDTO
