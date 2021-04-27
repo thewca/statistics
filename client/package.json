@@ -22,8 +22,8 @@
     "web-vitals": "^1.0.1"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "export REACT_APP_DATE_VERSION=$(date -u +'%Y%m%d%H%M%S') && export REACT_APP_VERSION=$(git rev-parse --short HEAD) && react-scripts start",
+    "build": "export REACT_APP_DATE_VERSION=$(date -u +'%Y%m%d%H%M%S') && export REACT_APP_VERSION=$(git rev-parse --short HEAD) && react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
