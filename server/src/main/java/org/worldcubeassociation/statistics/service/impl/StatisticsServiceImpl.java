@@ -111,6 +111,7 @@ public class StatisticsServiceImpl implements StatisticsService {
                         .getResources("classpath:statistics-request-list/*.yml"));
 
         resourcesToStatistics(resources);
+        log.info("Generated");
     }
 
     @Override
