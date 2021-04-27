@@ -252,13 +252,23 @@ public class StatisticsServiceImpl implements StatisticsService {
     }
 
     private void createLocalFile(StatisticsResponseDTO statisticsResponseDTO, String path) throws IOException {
-        log.info("Create local file");
-        String fileName = String.format("statistics-list/%s.json", path);
-        File file = new File(fileName);
-        file.getParentFile().mkdirs();
-        file.createNewFile();
-        MAPPER.writeValue(file, statisticsResponseDTO);
-        log.info("Local file created");
+//        log.info("Create local file");
+//        String fileName = String.format("statistics-list/%s.json", path);
+//        File file = new File(fileName);
+//        file.getParentFile().mkdirs();
+//        file.createNewFile();
+//        MAPPER.writeValue(file, statisticsResponseDTO);
+//        log.info("Local file created");
+
+        Statistics statistics = new Statistics();
+        statistics.setStatistics(statisticsResponseDTO.getStatistics());
+        statistics.setExplanation(statisticsResponseDTO.getExplanation());
+        statistics.setGroupName(statisticsResponseDTO.getGroup());
+        statistics.setPath(statisticsResponseDTO.getPath());
+        statistics.setTitle(statisticsResponseDTO.getTitle());
+        statistics.setDisplayMode(statisticsResponseDTO.getDisplayMode());
+
+        statisticsRepository.save(statistics);
     }
 
     private void updateControlList() throws IOException {

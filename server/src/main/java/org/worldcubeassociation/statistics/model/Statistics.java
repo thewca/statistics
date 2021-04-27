@@ -9,6 +9,8 @@ import org.worldcubeassociation.statistics.enums.DisplayModeEnum;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
 
 @Data
@@ -22,10 +24,12 @@ public class Statistics extends BaseEntity {
 
     private String explanation;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "display_mode")
     private DisplayModeEnum displayMode;
 
-    private String group;
+    @Column(name = "group_name")
+    private String groupName;
 
     @Type(type = "json")
     @Column(columnDefinition = "json")

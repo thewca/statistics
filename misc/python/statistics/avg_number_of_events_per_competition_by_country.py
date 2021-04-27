@@ -66,4 +66,5 @@ def main():
     create_statistics(stat)
 
 
-main()
+if __name__ == "__main__":
+    main()
