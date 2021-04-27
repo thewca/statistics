@@ -72,10 +72,8 @@ public class StatisticsServiceImpl implements StatisticsService {
             statisticsGroupResponseDTO.setShowPositions(query.getShowPositions());
             statisticsGroupResponseDTO.setPositionTieBreakerIndex(query.getPositionTieBreakerIndex());
             statisticsGroupResponseDTO.setExplanation(query.getExplanation());
+            statisticsGroupResponseDTO.setSqlQueryCustom(query.getSqlQueryCustom());
             statisticsDTO.getStatistics().add(statisticsGroupResponseDTO);
-
-            Optional.ofNullable(query.getSqlQueryCustom()).ifPresent(
-                    q -> statisticsGroupResponseDTO.setSqlQueryCustom(q));
 
             statisticsGroupResponseDTO.setHeaders(
                     // First option is the headers provided in this key
