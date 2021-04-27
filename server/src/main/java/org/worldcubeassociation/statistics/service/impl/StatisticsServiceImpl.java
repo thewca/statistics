@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
@@ -27,7 +26,6 @@ import org.worldcubeassociation.statistics.service.DatabaseQueryService;
 import org.worldcubeassociation.statistics.service.StatisticsService;
 import org.yaml.snakeyaml.Yaml;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URLEncoder;
@@ -60,7 +58,7 @@ public class StatisticsServiceImpl implements StatisticsService {
     }
 
     @Override
-    public StatisticsResponseDTO sqlToStatistics(StatisticsRequestDTO statisticsRequestDTO) throws IOException {
+    public StatisticsResponseDTO sqlToStatistics(StatisticsRequestDTO statisticsRequestDTO) {
         log.info("SQL to statistics for {}", statisticsRequestDTO);
 
         validateRequest(statisticsRequestDTO);
@@ -116,7 +114,7 @@ public class StatisticsServiceImpl implements StatisticsService {
 
     @Override
     public void generateFromSql(String filename) throws IOException {
-        log.info("Generate statistics with path {}", filename);
+        log.info("Generate statistics from the file {}", filename);
 
         List<Resource> resources =
                 Arrays.asList(ResourcePatternUtils.getResourcePatternResolver(resourceLoader)
@@ -142,30 +140,26 @@ public class StatisticsServiceImpl implements StatisticsService {
     }
 
     @Override
-    public List<StatisticsGroupDTO> list() throws IOException {
-        File controlFile = getControlFile();
+    public List<StatisticsGroupDTO> list() {
+        /* It would be better if we could write a query to retrieve the items ordered already, but mysql does not
+        support it
+        https://dev.mysql.com/doc/refman/8.0/en/aggregate-functions.html#function_json-arrayagg
+        Something like
 
-        List<ControlItemDTO> controlList = new ArrayList<>();
+        select
+            group_name,
+            json_arrayagg(json_object('title', title, 'path', path)) statistics -- This part is not ordered
+        from
+            statistics
+        group by
+            group_name
+        order by
+            group_name */
 
-        File folder = controlFile.getParentFile();
-        List<String> statistics =
-                Arrays.stream(Optional.ofNullable(folder.list()).orElse(new String[]{}))
-                        .filter(name -> !controlFile.getName().endsWith(name)).collect(
-                        Collectors.toList());
+        List<ControlItemDTO> controlList = statisticsRepository.list();
 
-        for (String fileName : statistics) {
-            File file = new File("statistics-list/" + fileName);
-            StatisticsResponseDTO stat = MAPPER.readValue(file, StatisticsResponseDTO.class);
-
-            ControlItemDTO controlItemDTO = new ControlItemDTO();
-            controlItemDTO.setPath(stat.getPath());
-            controlItemDTO.setTitle(stat.getTitle());
-            controlItemDTO.setGroup(stat.getGroup());
-
-            controlList.add(controlItemDTO);
-        }
-
-        return controlList.stream().collect(Collectors.groupingBy(it -> it.getGroup(), Collectors.toList())).entrySet()
+        return controlList.stream().collect(Collectors.groupingBy(it -> it.getGroupName(), Collectors.toList()))
+                .entrySet()
                 .stream()
                 .map((k) -> StatisticsGroupDTO.builder().group(k.getKey())
                         .statistics(k.getValue()
@@ -178,16 +172,14 @@ public class StatisticsServiceImpl implements StatisticsService {
     }
 
     @Override
-    public StatisticsResponseDTO getStatistic(String pathId) throws IOException {
-        File file = new File(String.format("statistics-list/%s.json", pathId));
-        if (!file.exists()) {
-            throw new NotFoundException(String.format("Statistic %s does not exists", pathId));
-        }
-        return MAPPER.readValue(file, StatisticsResponseDTO.class);
+    public StatisticsDTO getStatistic(String path) {
+        return statisticsRepository.findById(path)
+                .orElseThrow(() -> new NotFoundException(String.format("Statistic %s does not exists", path)))
+                .convert();
     }
 
     @Override
-    public StatisticsResponseDTO create(StatisticsDTO statisticsDTO) throws IOException {
+    public StatisticsResponseDTO create(StatisticsDTO statisticsDTO) {
         log.info("Create statistics from {}", statisticsDTO);
 
         statisticsDTO
@@ -207,29 +199,21 @@ public class StatisticsServiceImpl implements StatisticsService {
                     URLEncoder.encode(q, StandardCharsets.UTF_8)));
         });
 
-        createLocalFile(statisticsResponseDTO, path);
+        saveStatistics(statisticsResponseDTO).convert();
 
-        updateControlList();
         return statisticsResponseDTO;
     }
 
     @Override
-    public void deleteAll() throws IOException {
+    public void deleteAll() {
         log.info("Delete all statistics");
-        File file = new File("statistics-list");
-        FileUtils.deleteDirectory(file);
+        statisticsRepository.deleteAll();
         log.info("Deleted");
-
-        updateControlList();
     }
 
     @Override
     public List<Statistics> findAll() {
         return statisticsRepository.findAll();
-    }
-
-    private File getControlFile() {
-        return new File("statistics-list/_control-list_.json");
     }
 
     private void validateRequest(StatisticsRequestDTO statisticsRequestDTO) {
@@ -251,15 +235,7 @@ public class StatisticsServiceImpl implements StatisticsService {
         log.info("Validated");
     }
 
-    private void createLocalFile(StatisticsResponseDTO statisticsResponseDTO, String path) throws IOException {
-//        log.info("Create local file");
-//        String fileName = String.format("statistics-list/%s.json", path);
-//        File file = new File(fileName);
-//        file.getParentFile().mkdirs();
-//        file.createNewFile();
-//        MAPPER.writeValue(file, statisticsResponseDTO);
-//        log.info("Local file created");
-
+    private Statistics saveStatistics(StatisticsResponseDTO statisticsResponseDTO) {
         Statistics statistics = new Statistics();
         statistics.setStatistics(statisticsResponseDTO.getStatistics());
         statistics.setExplanation(statisticsResponseDTO.getExplanation());
@@ -268,19 +244,6 @@ public class StatisticsServiceImpl implements StatisticsService {
         statistics.setTitle(statisticsResponseDTO.getTitle());
         statistics.setDisplayMode(statisticsResponseDTO.getDisplayMode());
 
-        statisticsRepository.save(statistics);
-    }
-
-    private void updateControlList() throws IOException {
-        log.info("Update control list");
-        List<StatisticsGroupDTO> controlList = list();
-        File controlFile = getControlFile();
-
-        // Creates folder structure just in case
-        controlFile.getParentFile().mkdirs();
-        controlFile.createNewFile();
-
-        MAPPER.writeValue(controlFile, controlList);
-        log.info("List updated");
+        return statisticsRepository.save(statistics);
     }
 }

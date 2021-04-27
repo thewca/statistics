@@ -19,7 +19,7 @@ public interface StatisticsService {
 
     List<StatisticsGroupDTO> list() throws IOException;
 
-    StatisticsResponseDTO getStatistic(String pathId) throws IOException;
+    StatisticsDTO getStatistic(String pathId) throws IOException;
 
     StatisticsResponseDTO create(@Valid StatisticsDTO statisticsDTO) throws IOException;
 

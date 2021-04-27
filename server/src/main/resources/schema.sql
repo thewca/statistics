@@ -1,7 +1,7 @@
 use wca_development;
 
 create table if not exists statistics (
-    path varchar(50),
+    path varchar(100),
     title varchar(100) not null,
     explanation varchar(200),
     display_mode varchar(20) not null,

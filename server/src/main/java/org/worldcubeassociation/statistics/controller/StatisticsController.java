@@ -42,7 +42,7 @@ public interface StatisticsController {
     List<StatisticsGroupDTO> list() throws IOException;
 
     @GetMapping("list/{pathId}")
-    StatisticsResponseDTO getStatistic(@PathVariable String pathId) throws IOException;
+    StatisticsDTO getStatistic(@PathVariable String pathId) throws IOException;
 
     @PostMapping("create")
     @ApiOperation(

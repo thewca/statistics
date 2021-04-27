@@ -12,6 +12,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.worldcubeassociation.statistics.api.WCAApi;
+import org.worldcubeassociation.statistics.dto.StatisticsDTO;
 import org.worldcubeassociation.statistics.dto.StatisticsGroupResponseDTO;
 import org.worldcubeassociation.statistics.dto.StatisticsResponseDTO;
 import org.worldcubeassociation.statistics.enums.DisplayModeEnum;
@@ -62,7 +63,7 @@ public class StatisticsServiceImplTest {
 
         MAPPER.writeValue(file, expectedResponse);
 
-        StatisticsResponseDTO response = service.getStatistic(path);
+        StatisticsDTO response = service.getStatistic(path);
 
         assertEquals(expectedResponse, response);
 

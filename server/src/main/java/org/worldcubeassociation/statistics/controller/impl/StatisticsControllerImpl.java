@@ -39,7 +39,7 @@ public class StatisticsControllerImpl implements StatisticsController {
     }
 
     @Override
-    public StatisticsResponseDTO getStatistic(String pathId) throws IOException {
+    public StatisticsDTO getStatistic(String pathId) throws IOException {
         return statisticsService.getStatistic(pathId);
     }
 
@@ -55,7 +55,7 @@ public class StatisticsControllerImpl implements StatisticsController {
     }
 
     @Override
-    public List<Statistics> findAll(){
+    public List<Statistics> findAll() {
         return statisticsService.findAll();
     }
 }
