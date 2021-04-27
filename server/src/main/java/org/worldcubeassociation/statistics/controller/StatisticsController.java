@@ -12,7 +12,6 @@ import org.worldcubeassociation.statistics.dto.StatisticsDTO;
 import org.worldcubeassociation.statistics.dto.StatisticsGroupDTO;
 import org.worldcubeassociation.statistics.dto.StatisticsRequestDTO;
 import org.worldcubeassociation.statistics.dto.StatisticsResponseDTO;
-import org.worldcubeassociation.statistics.model.Statistics;
 
 import java.io.IOException;
 import java.util.List;
@@ -39,23 +38,19 @@ public interface StatisticsController {
     void generateFromSql(@PathVariable String filename) throws IOException;
 
     @GetMapping("list")
-    List<StatisticsGroupDTO> list() throws IOException;
+    List<StatisticsGroupDTO> list();
 
     @GetMapping("list/{pathId}")
-    StatisticsDTO getStatistic(@PathVariable String pathId) throws IOException;
+    StatisticsDTO getStatistic(@PathVariable String pathId);
 
     @PostMapping("create")
     @ApiOperation(
             "This method allows you to create a new statistics in any language you like. Just post a valid payload "
                     + "and it will be available.")
-    StatisticsResponseDTO createStatistics(@Valid @RequestBody StatisticsDTO statisticsDTO)
-            throws IOException;
+    StatisticsResponseDTO createStatistics(@Valid @RequestBody StatisticsDTO statisticsDTO);
 
     @DeleteMapping
     @ApiOperation(
             "Deletes all generated statistics")
-    void deleteAll() throws IOException;
-
-    @GetMapping("findall")
-    List<Statistics> findAll();
+    void deleteAll();
 }

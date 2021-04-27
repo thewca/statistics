@@ -213,11 +213,6 @@ public class StatisticsServiceImpl implements StatisticsService {
         log.info("Deleted");
     }
 
-    @Override
-    public List<Statistics> findAll() {
-        return statisticsRepository.findAll();
-    }
-
     private void validateRequest(StatisticsRequestDTO statisticsRequestDTO) {
         List<StatisticsGroupRequestDTO> queries = statisticsRequestDTO.getQueries();
         for (StatisticsGroupRequestDTO query : queries) {

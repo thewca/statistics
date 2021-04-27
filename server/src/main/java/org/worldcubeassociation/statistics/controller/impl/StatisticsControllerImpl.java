@@ -7,7 +7,6 @@ import org.worldcubeassociation.statistics.dto.StatisticsDTO;
 import org.worldcubeassociation.statistics.dto.StatisticsGroupDTO;
 import org.worldcubeassociation.statistics.dto.StatisticsRequestDTO;
 import org.worldcubeassociation.statistics.dto.StatisticsResponseDTO;
-import org.worldcubeassociation.statistics.model.Statistics;
 import org.worldcubeassociation.statistics.service.StatisticsService;
 
 import java.io.IOException;
@@ -34,28 +33,22 @@ public class StatisticsControllerImpl implements StatisticsController {
     }
 
     @Override
-    public List<StatisticsGroupDTO> list() throws IOException {
+    public List<StatisticsGroupDTO> list() {
         return statisticsService.list();
     }
 
     @Override
-    public StatisticsDTO getStatistic(String pathId) throws IOException {
+    public StatisticsDTO getStatistic(String pathId) {
         return statisticsService.getStatistic(pathId);
     }
 
     @Override
-    public StatisticsResponseDTO createStatistics(@Valid StatisticsDTO statisticsDTO)
-            throws IOException {
+    public StatisticsResponseDTO createStatistics(@Valid StatisticsDTO statisticsDTO) {
         return statisticsService.create(statisticsDTO);
     }
 
     @Override
-    public void deleteAll() throws IOException {
+    public void deleteAll() {
         statisticsService.deleteAll();
-    }
-
-    @Override
-    public List<Statistics> findAll() {
-        return statisticsService.findAll();
     }
 }
