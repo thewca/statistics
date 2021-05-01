@@ -9,6 +9,6 @@ import java.util.List;
 
 public interface StatisticsRepository extends JpaRepository<Statistics, String> {
 
-    @Query(value = "select new org.worldcubeassociation.statistics.dto.ControlItemDTO(path, title, groupName) from Statistics")
+    @Query("select new org.worldcubeassociation.statistics.dto.ControlItemDTO(path, title, groupName) from Statistics")
     List<ControlItemDTO> list();
 }

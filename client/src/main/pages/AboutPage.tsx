@@ -8,8 +8,12 @@ const AboutPage = () => {
         WCA Statistics is a collection of interesting analysis over the WCA's
         database.
       </p>
-      <p>Version: {process.env.REACT_APP_VERSION}</p>
-      <p>Date: {process.env.REACT_APP_DATE_VERSION}</p>
+      <p>
+        <strong>Version:</strong> {process.env.REACT_APP_VERSION}
+      </p>
+      <p>
+        <strong>Date:</strong> {process.env.REACT_APP_DATE_VERSION}
+      </p>
     </div>
   );
 };
