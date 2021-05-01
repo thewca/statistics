@@ -28,6 +28,7 @@ public class StatisticsDTO {
     @NotNull
     private List<@Valid StatisticsGroupResponseDTO> statistics;
 
+    @NotNull
     @ApiModelProperty(
             value = "In case of grouped statistics, you can select DEFAULT to display all of them in the frontend or "
                     + "'SELECTOR' to group them in a selector.",

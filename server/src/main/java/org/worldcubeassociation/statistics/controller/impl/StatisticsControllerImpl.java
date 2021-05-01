@@ -4,13 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 import org.worldcubeassociation.statistics.controller.StatisticsController;
 import org.worldcubeassociation.statistics.dto.StatisticsDTO;
-import org.worldcubeassociation.statistics.dto.StatisticsGroupDTO;
+import org.worldcubeassociation.statistics.dto.StatisticsListDTO;
 import org.worldcubeassociation.statistics.dto.StatisticsRequestDTO;
 import org.worldcubeassociation.statistics.dto.StatisticsResponseDTO;
 import org.worldcubeassociation.statistics.service.StatisticsService;
 
 import java.io.IOException;
-import java.util.List;
 import javax.validation.Valid;
 
 @RestController
@@ -33,23 +32,22 @@ public class StatisticsControllerImpl implements StatisticsController {
     }
 
     @Override
-    public List<StatisticsGroupDTO> list() throws IOException {
+    public StatisticsListDTO list() {
         return statisticsService.list();
     }
 
     @Override
-    public StatisticsResponseDTO getStatistic(String pathId) throws IOException {
+    public StatisticsDTO getStatistic(String pathId) {
         return statisticsService.getStatistic(pathId);
     }
 
     @Override
-    public StatisticsResponseDTO createStatistics(@Valid StatisticsDTO statisticsDTO)
-            throws IOException {
+    public StatisticsResponseDTO createStatistics(@Valid StatisticsDTO statisticsDTO) {
         return statisticsService.create(statisticsDTO);
     }
 
     @Override
-    public void deleteAll() throws IOException {
+    public void deleteAll() {
         statisticsService.deleteAll();
     }
 }

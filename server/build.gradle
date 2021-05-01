@@ -28,6 +28,7 @@ dependencies {
 
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: '2.3.4.RELEASE'
     compile group: 'org.springframework.boot', name: 'spring-boot-starter', version: '2.3.4.RELEASE'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-jdbc', version: '2.3.4.RELEASE'
     compile group: 'mysql', name: 'mysql-connector-java', version: '8.0.21'
@@ -41,5 +42,10 @@ dependencies {
     implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.12.0'
 
     implementation 'org.yaml:snakeyaml:1.28'
+
+    implementation group: 'com.vladmihalcea', name: 'hibernate-types-5', version: '2.10.4'
+
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: '2.4.5'
+
 
 }

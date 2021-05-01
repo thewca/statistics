@@ -73,6 +73,7 @@ def avg_competitions():
     out = {}
     out["title"] = title
     out["group"] = "Countries"
+    out["displayMode"] = "DEFAULT"
     headers = ["Avg", "Country", *range(min_year, max_year+1)]
 
     out["statistics"] = [
@@ -88,4 +89,5 @@ def main():
     create_statistics(stat)
 
 
-main()
+if __name__ == "__main__":
+    main()

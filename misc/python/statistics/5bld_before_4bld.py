@@ -137,6 +137,7 @@ def compare_results(ev1, ev2):
     out = {}
     out["title"] = title
     out["group"] = "Events"
+    out["displayMode"] = "DEFAULT"
     out["explanation"] = "In case of multiple first results (eg. ao3), best one is taken."
     out["statistics"] = [{"keys": [], "content": table,
                           "headers": headers, "showPositions": True, "positionTieBreakerIndex": 0}]
@@ -157,4 +158,5 @@ def main():
     create_statistics(data)
 
 
-main()
+if __name__ == "__main__":
+    main()

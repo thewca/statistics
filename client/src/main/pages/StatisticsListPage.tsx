@@ -1,18 +1,18 @@
-import { Collapse, List, Switch } from "antd";
+import { Badge, Collapse, List, Switch } from "antd";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { StatisticsGroup } from "../model/StatisticItem";
-import "./StatisticsList.css";
+import { StatisticsList } from "../model/StatisticsList";
+import "./StatisticsListPage.css";
 
 const { Panel } = Collapse;
 
-interface StatisticsListProps {
-  statisticsGroups?: StatisticsGroup[];
+interface StatisticsListPageProps {
+  statisticsList?: StatisticsList;
 }
 
-const StatisticsList = ({ statisticsGroups }: StatisticsListProps) => {
+const StatisticsListPage = ({ statisticsList }: StatisticsListPageProps) => {
   const [completeList, setCompleteList] = useState(false);
-  let dataSource = statisticsGroups
+  let dataSource = statisticsList?.list
     ?.flatMap((it) => it.statistics)
     .sort((a, b) => (a.title < b.title ? -1 : 1));
   return (
@@ -25,17 +25,28 @@ const StatisticsList = ({ statisticsGroups }: StatisticsListProps) => {
           checkedChildren="Complete list"
           unCheckedChildren="Grouped list"
         />
+        {completeList && (
+          <Badge count={statisticsList?.totalSize} className="badge-count" />
+        )}
       </div>
 
       {!completeList && (
         <Collapse
-          defaultActiveKey={statisticsGroups?.map((stat) => stat.group)}
+          defaultActiveKey={statisticsList?.list?.map((stat) => stat.group)}
         >
-          {(statisticsGroups?.length || 0) > 0 &&
-            statisticsGroups?.map((statisticsGroup, i) => (
+          {(statisticsList?.list.length || 0) > 0 &&
+            statisticsList?.list.map((statisticsGroup, i) => (
               <Panel
                 key={statisticsGroup.group}
-                header={statisticsGroup.group}
+                header={
+                  <>
+                    {statisticsGroup.group}{" "}
+                    <Badge
+                      count={statisticsGroup.size}
+                      className="badge-count"
+                    />
+                  </>
+                }
                 className="list-item"
               >
                 <ul>
@@ -66,4 +77,4 @@ const StatisticsList = ({ statisticsGroups }: StatisticsListProps) => {
   );
 };
 
-export default StatisticsList;
+export default StatisticsListPage;

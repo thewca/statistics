@@ -1,4 +1,4 @@
-# python3 -m misc.python.statistics.5bld_became_faster_than_4bld
+# python3 -m misc.python.statistics.days_5bld_become_faster_than_4bld
 
 
 import bisect
@@ -96,6 +96,7 @@ def compare_results(ev1, ev2):
     out = {}
     out["explanation"] = "In case of multiple first results (eg. ao3), best one is taken."
     out["title"] = title
+    out["displayMode"] = "DEFAULT"
     out["group"] = "Competitors"
     headers = ["Days", "Name", "First %s result" %
                ev1, "Competition", "First faster %s result" % ev2, "Competition"]
@@ -115,4 +116,5 @@ def main():
     create_statistics(out)
 
 
-main()
+if __name__ == "__main__":
+    main()

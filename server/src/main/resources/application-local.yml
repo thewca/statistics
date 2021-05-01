@@ -6,7 +6,12 @@ spring:
     url: jdbc:mysql://localhost:3306/wca_development
     username: root
     password:
-
+    initialization-mode: always # Creates database using schema.sql
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
 api:
   wca:
     baseurl: https://staging.worldcubeassociation.org

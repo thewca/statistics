@@ -2,6 +2,7 @@ package org.worldcubeassociation.statistics.service;
 
 import org.worldcubeassociation.statistics.dto.StatisticsDTO;
 import org.worldcubeassociation.statistics.dto.StatisticsGroupDTO;
+import org.worldcubeassociation.statistics.dto.StatisticsListDTO;
 import org.worldcubeassociation.statistics.dto.StatisticsRequestDTO;
 import org.worldcubeassociation.statistics.dto.StatisticsResponseDTO;
 
@@ -16,11 +17,11 @@ public interface StatisticsService {
 
     void generateFromSql(String filename) throws IOException;
 
-    List<StatisticsGroupDTO> list() throws IOException;
+    StatisticsListDTO list();
 
-    StatisticsResponseDTO getStatistic(String pathId) throws IOException;
+    StatisticsDTO getStatistic(String pathId);
 
-    StatisticsResponseDTO create(@Valid StatisticsDTO statisticsDTO) throws IOException;
+    StatisticsResponseDTO create(@Valid StatisticsDTO statisticsDTO);
 
-    void deleteAll() throws IOException;
+    void deleteAll();
 }

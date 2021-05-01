@@ -12,7 +12,7 @@ import statisticsApi from "../api/statistics.api";
 import DatabaseQueryOptions from "../components/DatabaseQueryOptions";
 import StatisticsTable from "../components/StatisticsTable";
 import { getQueryParameter, setQueryParameter } from "../util/query.param.util";
-import "./DatabaseQuery.css";
+import "./DatabaseQueryPage.css";
 
 const { TextArea } = Input;
 
@@ -23,7 +23,7 @@ interface ReplaceItem {
   value: string;
 }
 
-function DatabaseQuery() {
+const DatabaseQueryPage = () => {
   const [query, setQuery] = useState(getQueryParameter(SQL_QUERY) || "");
   const [queryResults, setQueryResults] = useState<string[][]>([]);
   const [headers, setHeaders] = useState<string[]>([]);
@@ -206,6 +206,6 @@ function DatabaseQuery() {
       )}
     </div>
   );
-}
+};
 
-export default DatabaseQuery;
+export default DatabaseQueryPage;

@@ -8,6 +8,7 @@ import lombok.EqualsAndHashCode;
 import java.util.List;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -27,6 +28,7 @@ public class StatisticsGroupResponseDTO extends StatisticsGroupBaseDTO {
     private String sqlQueryCustom;
 
     @NotNull
+    @Size(max = 100) // Competitions has over 60 columns
     @ApiModelProperty(value = "Custom table headers. If none is provided, it will default to the SQL columns response.",
             example = "[\"Country\",\"Competitions\"]")
     private List<String> headers;
@@ -36,6 +38,7 @@ public class StatisticsGroupResponseDTO extends StatisticsGroupBaseDTO {
     private Boolean showPositions;
 
     @NotNull
+    @Size(max = 300) // Almost 200 countries, so maybe 300 makes sense
     @ApiModelProperty("Grouped statistics content")
     private List<@NotNull List<@NotNull String>> content;
 }

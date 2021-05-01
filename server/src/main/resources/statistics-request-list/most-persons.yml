@@ -35,18 +35,23 @@ queries:
               c.name,
               '</a>'
           ),
-          count(distinct personId) qt
+          qt
       from
-          Results r
-          inner join Competitions c on r.competitionId = c.id
-      group by
-          c.name,
-          c.id
-      order by
-          qt desc,
-          c.name
-      limit
-          10
+          (
+              select
+                  competitionId,
+                  count(distinct personId) qt
+              from
+                  Results r
+              group by
+                  competitionId
+              order by
+                  qt desc,
+                  competitionId
+              limit
+                  10
+          ) result
+          inner join Competitions c on result.competitionId = c.id
     sqlQueryCustom: |-
       select
           c.name Competition,

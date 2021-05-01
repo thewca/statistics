@@ -5,9 +5,15 @@ version: 1.0.0
 spring:
   profiles:
     active: local
-
+  jpa:
+    open-in-view: true
 server:
   port: 8080
   error:
     include-message: always
     include-binding-errors: always
+
+management:
+  endpoint:
+    health:
+      show-details: always
