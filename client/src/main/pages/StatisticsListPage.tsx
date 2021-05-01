@@ -1,4 +1,4 @@
-import { Collapse, List, Switch } from "antd";
+import { Badge, Collapse, List, Switch } from "antd";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { StatisticsList } from "../model/StatisticsList";
@@ -12,7 +12,9 @@ interface StatisticsListPageProps {
 
 const StatisticsListPage = ({ statisticsList }: StatisticsListPageProps) => {
   const [completeList, setCompleteList] = useState(false);
-  let dataSource = statisticsList?.list?.flatMap((it) => it.statistics);
+  let dataSource = statisticsList?.list
+    ?.flatMap((it) => it.statistics)
+    .sort((a, b) => (a.title < b.title ? -1 : 1));
   return (
     <>
       <h1 className="page-title">Statistics List</h1>
@@ -23,6 +25,9 @@ const StatisticsListPage = ({ statisticsList }: StatisticsListPageProps) => {
           checkedChildren="Complete list"
           unCheckedChildren="Grouped list"
         />
+        {completeList && (
+          <Badge count={statisticsList?.totalSize} className="badge-count" />
+        )}
       </div>
 
       {!completeList && (
@@ -33,7 +38,15 @@ const StatisticsListPage = ({ statisticsList }: StatisticsListPageProps) => {
             statisticsList?.list.map((statisticsGroup, i) => (
               <Panel
                 key={statisticsGroup.group}
-                header={statisticsGroup.group}
+                header={
+                  <>
+                    {statisticsGroup.group}{" "}
+                    <Badge
+                      count={statisticsGroup.size}
+                      className="badge-count"
+                    />
+                  </>
+                }
                 className="list-item"
               >
                 <ul>
