@@ -1,5 +1,7 @@
 # Log
-server/log*
+log/*
+server/log/*
+*statistics-list/*
 
 # SQL export
 wca-developer-database-dump.sql

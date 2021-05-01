@@ -66,6 +66,6 @@ An address should be logged. Probably http://localhost:8000/swagger-ui.html#/, i
 
 - Run the image
 
-`docker run -d -p 8080:8080 --name statistics-server {user}/statistics-server:latest`
+`docker run -d -p 8080:8080 --network=host --name statistics-server {user}/statistics-server:latest`
 
 The `-d` part means "detached", so you'll have to stop by killing the process running on port 8080.

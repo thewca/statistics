@@ -131,6 +131,7 @@ def sum_of_all_ranks():
     statistics["title"] = title
     statistics["group"] = "Competitors"
     statistics["statistics"] = []
+    statistics["displayMode"] = "DEFAULT"
 
     for result_type in ["Average", "Single"]:
 

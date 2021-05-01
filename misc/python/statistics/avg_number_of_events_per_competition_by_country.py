@@ -50,6 +50,7 @@ def avg_events():
     out = {}
     out["title"] = title
     out["group"] = "Events"
+    out["displayMode"] = "DEFAULT"
     headers = ["Avg", "Country"]
     out["statistics"] = [
         {"keys": [], "content": content, "headers": headers, "showPositions": True, "positionTieBreakerIndex": 0}]

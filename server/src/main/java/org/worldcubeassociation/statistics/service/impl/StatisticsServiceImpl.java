@@ -187,7 +187,7 @@ public class StatisticsServiceImpl implements StatisticsService {
         statisticsDTO
                 .setDisplayMode(Optional.ofNullable(statisticsDTO.getDisplayMode()).orElse(DisplayModeEnum.DEFAULT));
 
-        StatisticsResponseDTO statisticsResponseDTO = new StatisticsResponseDTO(statisticsDTO);
+        StatisticsResponseDTO statisticsResponseDTO = MAPPER.convertValue(statisticsDTO, StatisticsResponseDTO.class);
 
         String path = String.join("-",
                 StringUtils.stripAccents(statisticsDTO.getTitle().replaceAll("[^a-zA-Z0-9 ]", "")).split(" "))

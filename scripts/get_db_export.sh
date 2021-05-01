@@ -46,19 +46,18 @@ unzip "$export_file_zip"
 
 echo "Executing the .sql"
 echo "This can take a few hours"
-$mysqlconn -e "create database if not exists $temp_database; USE $temp_database; SOURCE $export_file_sql;"
+$mysqlconn -e "create database if not exists $temp_database; use $temp_database; source $export_file_sql;"
 
 echo "Rename databases"
 
-$mysqlconn -e "drop database if exists $new_database; CREATE DATABASE $new_database"
-params=$($mysqlconn -N -e "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE table_schema='$temp_database'")
+$mysqlconn -e "create database if not exists $new_database;"
+params=$($mysqlconn -N -e "select table_name from information_schema.tables where table_schema='$temp_database'")
 
 for name in $params; do
-      $mysqlconn -e "RENAME TABLE $temp_database.$name to $new_database.$name";
+      $mysqlconn -e "drop table if exists $new_database.$name; rename table $temp_database.$name to $new_database.$name;";
       echo "Renamed $temp_database.$name to $new_database.$name";
 done;
 
-$mysqlconn -e "DROP DATABASE $temp_database"
+$mysqlconn -e "drop database $temp_database"
 
 echo "Complete"
-
