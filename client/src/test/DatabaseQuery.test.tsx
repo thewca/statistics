@@ -3,7 +3,7 @@ import React from "react";
 import { render, unmountComponentAtNode } from "react-dom";
 import { act } from "react-dom/test-utils";
 import statisticsApi from "../main/api/statistics.api";
-import DatabaseQuery from "../main/pages/DatabaseQuery";
+import DatabaseQueryPage from "../main/pages/DatabaseQueryPage";
 import { defaultQueryResponse } from "./DatabaseQuery.test.mock";
 
 let container = document.createElement("div");
@@ -65,7 +65,7 @@ where
   await act(async () => {
     render(
       <React.StrictMode>
-        <DatabaseQuery />
+        <DatabaseQueryPage />
       </React.StrictMode>,
       container
     );

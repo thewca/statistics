@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import wcaApi from "../api/wca.api";
 import logo from "../assets/wca_logo.svg";
 import { LinkItem } from "../model/LinkItem";
-import { StatisticsGroup } from "../model/StatisticItem";
+import StatisticsGroup from "../model/StatisticsGroup";
 import "./Topbar.css";
 
 interface TopbarProps {

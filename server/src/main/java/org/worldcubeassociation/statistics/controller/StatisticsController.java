@@ -9,12 +9,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.worldcubeassociation.statistics.dto.StatisticsDTO;
-import org.worldcubeassociation.statistics.dto.StatisticsGroupDTO;
+import org.worldcubeassociation.statistics.dto.StatisticsListDTO;
 import org.worldcubeassociation.statistics.dto.StatisticsRequestDTO;
 import org.worldcubeassociation.statistics.dto.StatisticsResponseDTO;
 
 import java.io.IOException;
-import java.util.List;
 import javax.validation.Valid;
 
 @RequestMapping("statistics")
@@ -38,7 +37,7 @@ public interface StatisticsController {
     void generateFromSql(@PathVariable String filename) throws IOException;
 
     @GetMapping("list")
-    List<StatisticsGroupDTO> list();
+    StatisticsListDTO list();
 
     @GetMapping("list/{pathId}")
     StatisticsDTO getStatistic(@PathVariable String pathId);

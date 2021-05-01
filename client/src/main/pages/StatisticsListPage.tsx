@@ -1,20 +1,18 @@
 import { Collapse, List, Switch } from "antd";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { StatisticsGroup } from "../model/StatisticItem";
-import "./StatisticsList.css";
+import { StatisticsList } from "../model/StatisticsList";
+import "./StatisticsListPage.css";
 
 const { Panel } = Collapse;
 
-interface StatisticsListProps {
-  statisticsGroups?: StatisticsGroup[];
+interface StatisticsListPageProps {
+  statisticsList?: StatisticsList;
 }
 
-const StatisticsList = ({ statisticsGroups }: StatisticsListProps) => {
+const StatisticsListPage = ({ statisticsList }: StatisticsListPageProps) => {
   const [completeList, setCompleteList] = useState(false);
-  let dataSource = statisticsGroups
-    ?.flatMap((it) => it.statistics)
-    .sort((a, b) => (a.title < b.title ? -1 : 1));
+  let dataSource = statisticsList?.list?.flatMap((it) => it.statistics);
   return (
     <>
       <h1 className="page-title">Statistics List</h1>
@@ -29,10 +27,10 @@ const StatisticsList = ({ statisticsGroups }: StatisticsListProps) => {
 
       {!completeList && (
         <Collapse
-          defaultActiveKey={statisticsGroups?.map((stat) => stat.group)}
+          defaultActiveKey={statisticsList?.list?.map((stat) => stat.group)}
         >
-          {(statisticsGroups?.length || 0) > 0 &&
-            statisticsGroups?.map((statisticsGroup, i) => (
+          {(statisticsList?.list.length || 0) > 0 &&
+            statisticsList?.list.map((statisticsGroup, i) => (
               <Panel
                 key={statisticsGroup.group}
                 header={statisticsGroup.group}
@@ -66,4 +64,4 @@ const StatisticsList = ({ statisticsGroups }: StatisticsListProps) => {
   );
 };
 
-export default StatisticsList;
+export default StatisticsListPage;

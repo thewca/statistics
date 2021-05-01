@@ -1,6 +1,6 @@
-import "./About.css";
+import "./AboutPage.css";
 
-const About = () => {
+const AboutPage = () => {
   return (
     <div className="container">
       <h1 className="page-title">About</h1>
@@ -14,4 +14,4 @@ const About = () => {
   );
 };
 
-export default About;
+export default AboutPage;

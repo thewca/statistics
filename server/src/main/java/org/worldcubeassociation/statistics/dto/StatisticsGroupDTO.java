@@ -14,4 +14,9 @@ public class StatisticsGroupDTO {
 
     @ApiModelProperty("Statistics that belongs to this group")
     private List<ControlItemDTO> statistics;
+
+    @ApiModelProperty("Number of statistics in the current group")
+    public Integer getSize() {
+        return statistics.size();
+    }
 }

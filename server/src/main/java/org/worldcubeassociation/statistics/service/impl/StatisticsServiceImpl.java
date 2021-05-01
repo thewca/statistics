@@ -15,6 +15,7 @@ import org.worldcubeassociation.statistics.dto.StatisticsDTO;
 import org.worldcubeassociation.statistics.dto.StatisticsGroupDTO;
 import org.worldcubeassociation.statistics.dto.StatisticsGroupRequestDTO;
 import org.worldcubeassociation.statistics.dto.StatisticsGroupResponseDTO;
+import org.worldcubeassociation.statistics.dto.StatisticsListDTO;
 import org.worldcubeassociation.statistics.dto.StatisticsRequestDTO;
 import org.worldcubeassociation.statistics.dto.StatisticsResponseDTO;
 import org.worldcubeassociation.statistics.enums.DisplayModeEnum;
@@ -142,7 +143,7 @@ public class StatisticsServiceImpl implements StatisticsService {
     }
 
     @Override
-    public List<StatisticsGroupDTO> list() {
+    public StatisticsListDTO list() {
         /* It would be better if we could write a query to retrieve the items ordered already, but mysql does not
         support it
         https://dev.mysql.com/doc/refman/8.0/en/aggregate-functions.html#function_json-arrayagg
@@ -160,17 +161,23 @@ public class StatisticsServiceImpl implements StatisticsService {
 
         List<ControlItemDTO> controlList = statisticsRepository.list();
 
-        return controlList.stream().collect(Collectors.groupingBy(it -> it.getGroupName(), Collectors.toList()))
-                .entrySet()
-                .stream()
-                .map((k) -> StatisticsGroupDTO.builder().group(k.getKey())
-                        .statistics(k.getValue()
-                                // Sort inner statistics based on title
-                                .stream().sorted(Comparator.comparing(ControlItemDTO::getTitle))
-                                .collect(Collectors.toList())).build())
-                // Sorts groups based on group name
-                .sorted(Comparator.comparing(StatisticsGroupDTO::getGroup))
-                .collect(Collectors.toList());
+        List<StatisticsGroupDTO> list =
+                controlList.stream().collect(Collectors.groupingBy(it -> it.getGroupName(), Collectors.toList()))
+                        .entrySet()
+                        .stream()
+                        .map((k) -> StatisticsGroupDTO.builder().group(k.getKey())
+                                .statistics(k.getValue()
+                                        // Sort inner statistics based on title
+                                        .stream().sorted(Comparator.comparing(ControlItemDTO::getTitle))
+                                        .collect(Collectors.toList())).build())
+                        // Sorts groups based on group name
+                        .sorted(Comparator.comparing(StatisticsGroupDTO::getGroup))
+                        .collect(Collectors.toList());
+
+        StatisticsListDTO statisticsListDTO = new StatisticsListDTO();
+        statisticsListDTO.setList(list);
+
+        return statisticsListDTO;
     }
 
     @Override

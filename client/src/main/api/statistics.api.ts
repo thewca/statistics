@@ -1,7 +1,7 @@
 import Axios from "axios";
 import { QueryDatabaseResponse } from "../model/QueryDatabase";
 import { Statistics } from "../model/Statistic";
-import { StatisticsGroup } from "../model/StatisticItem";
+import { StatisticsList } from "../model/StatisticsList";
 import { UserInfo } from "../model/UserInfo";
 
 export class StatisticsApi {
@@ -30,7 +30,7 @@ export class StatisticsApi {
     });
 
   getStatisticsGroups = () =>
-    Axios.get<StatisticsGroup[]>(this.BASE_URL + "/statistics/list");
+    Axios.get<StatisticsList>(this.BASE_URL + "/statistics/list");
 
   getStatistic = (pathId: string) =>
     Axios.get<Statistics>(this.BASE_URL + "/statistics/list/" + pathId);
