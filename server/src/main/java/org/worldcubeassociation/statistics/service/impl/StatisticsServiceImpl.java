@@ -182,9 +182,9 @@ public class StatisticsServiceImpl implements StatisticsService {
 
     @Override
     public StatisticsDTO getStatistic(String path) {
-        return statisticsRepository.findById(path)
-                .orElseThrow(() -> new NotFoundException(String.format("Statistic %s does not exists", path)))
-                .convert();
+        return MAPPER.convertValue(statisticsRepository.findById(path)
+                        .orElseThrow(() -> new NotFoundException(String.format("Statistic %s does not exists", path))),
+                StatisticsDTO.class);
     }
 
     @Override
@@ -208,7 +208,7 @@ public class StatisticsServiceImpl implements StatisticsService {
                     URLEncoder.encode(q, StandardCharsets.UTF_8)));
         });
 
-        saveStatistics(statisticsResponseDTO).convert();
+        saveStatistics(statisticsResponseDTO);
 
         return statisticsResponseDTO;
     }
