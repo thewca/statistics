@@ -55,10 +55,6 @@ public class StatisticsServiceImpl implements StatisticsService {
 
     private static final Yaml YAML = new Yaml();
 
-//    static {
-//        MAPPER.enable(SerializationFeature.INDENT_OUTPUT);
-//    }
-
     @Override
     public StatisticsResponseDTO sqlToStatistics(StatisticsRequestDTO statisticsRequestDTO) {
         log.info("SQL to statistics for {}", statisticsRequestDTO);
