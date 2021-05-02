@@ -29,8 +29,10 @@ export class StatisticsApi {
       params: { accessToken, tokenType },
     });
 
-  getStatisticsGroups = () =>
-    Axios.get<StatisticsList>(this.BASE_URL + "/statistics/list");
+  getStatisticsGroups = (term?: string) =>
+    Axios.get<StatisticsList>(this.BASE_URL + "/statistics/list", {
+      params: { term },
+    });
 
   getStatistic = (pathId: string) =>
     Axios.get<Statistics>(this.BASE_URL + "/statistics/list/" + pathId);

@@ -1,6 +1,17 @@
-import { Badge, Col, Collapse, Form, Input, List, Row, Switch } from "antd";
+import {
+  Badge,
+  Col,
+  Collapse,
+  Form,
+  Input,
+  List,
+  Row,
+  Switch,
+  Tag,
+} from "antd";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import statisticsApi from "../api/statistics.api";
 import { StatisticsList } from "../model/StatisticsList";
 import "./StatisticsListPage.css";
 
@@ -11,11 +22,26 @@ interface StatisticsListPageProps {
 }
 
 const StatisticsListPage = ({ statisticsList }: StatisticsListPageProps) => {
-  const [search, setSearch] = useState("");
+  const [term, setTerm] = useState("");
+  const [searchedList, setSearchedList] = useState(statisticsList);
   const [completeList, setCompleteList] = useState(false);
-  let dataSource = statisticsList?.list
+  const [lastSearchedTerm, setLastSearchedTerm] = useState<string>();
+  let dataSource = searchedList?.list
     ?.flatMap((it) => it.statistics)
     .sort((a, b) => (a.title < b.title ? -1 : 1));
+
+  const handleSearch = (term: string) => {
+    statisticsApi.getStatisticsGroups(term).then((response) => {
+      setSearchedList(response.data);
+      setLastSearchedTerm(term);
+    });
+  };
+
+  const handleTermChange = (newTerm: string) => {
+    setTerm(newTerm);
+    setSearchedList(statisticsList);
+    setLastSearchedTerm(undefined);
+  };
   return (
     <>
       <h1 className="page-title">Statistics List</h1>
@@ -30,10 +56,7 @@ const StatisticsListPage = ({ statisticsList }: StatisticsListPageProps) => {
               unCheckedChildren="Grouped list"
             />
             {completeList && (
-              <Badge
-                count={statisticsList?.totalSize}
-                className="badge-count"
-              />
+              <Badge count={searchedList?.totalSize} className="badge-count" />
             )}
           </div>
         </Col>
@@ -47,20 +70,26 @@ const StatisticsListPage = ({ statisticsList }: StatisticsListPageProps) => {
               }
             >
               <Input.Search
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
+                value={term}
+                onChange={(e) => handleTermChange(e.target.value)}
+                onPressEnter={() => handleSearch(term)}
               />
             </Form.Item>
           </Form>
         </Col>
       </Row>
 
+      {!!lastSearchedTerm && (
+        <Tag>
+          Showing results for <strong>{lastSearchedTerm}</strong>
+        </Tag>
+      )}
       {!completeList && (
         <Collapse
-          defaultActiveKey={statisticsList?.list?.map((stat) => stat.group)}
+          defaultActiveKey={searchedList?.list?.map((stat) => stat.group)}
         >
-          {(statisticsList?.list.length || 0) > 0 &&
-            statisticsList?.list.map((statisticsGroup, i) => (
+          {(searchedList?.list.length || 0) > 0 &&
+            searchedList?.list.map((statisticsGroup, i) => (
               <Panel
                 key={statisticsGroup.group}
                 header={

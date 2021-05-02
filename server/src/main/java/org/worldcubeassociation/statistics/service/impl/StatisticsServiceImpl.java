@@ -143,7 +143,7 @@ public class StatisticsServiceImpl implements StatisticsService {
     }
 
     @Override
-    public StatisticsListDTO list() {
+    public StatisticsListDTO list(String term) {
         /* It would be better if we could write a query to retrieve the items ordered already, but mysql does not
         support it
         https://dev.mysql.com/doc/refman/8.0/en/aggregate-functions.html#function_json-arrayagg
@@ -159,7 +159,7 @@ public class StatisticsServiceImpl implements StatisticsService {
         order by
             group_name */
 
-        List<ControlItemDTO> controlList = statisticsRepository.list();
+        List<ControlItemDTO> controlList = statisticsRepository.list(term);
 
         List<StatisticsGroupDTO> list =
                 controlList.stream().collect(Collectors.groupingBy(it -> it.getGroupName(), Collectors.toList()))

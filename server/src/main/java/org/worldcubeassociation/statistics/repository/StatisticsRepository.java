@@ -9,6 +9,7 @@ import java.util.List;
 
 public interface StatisticsRepository extends JpaRepository<Statistics, String> {
 
-    @Query("select new org.worldcubeassociation.statistics.dto.ControlItemDTO(path, title, groupName) from Statistics")
-    List<ControlItemDTO> list();
+    @Query("select new org.worldcubeassociation.statistics.dto.ControlItemDTO(path, title, groupName) from Statistics"
+            + " where :term is null or :term = '' or lower(statistics) like concat('%', lower(:term), '%')")
+    List<ControlItemDTO> list(String term);
 }

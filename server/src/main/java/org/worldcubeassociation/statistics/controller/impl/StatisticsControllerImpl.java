@@ -32,8 +32,8 @@ public class StatisticsControllerImpl implements StatisticsController {
     }
 
     @Override
-    public StatisticsListDTO list() {
-        return statisticsService.list();
+    public StatisticsListDTO list(String term) {
+        return statisticsService.list(term);
     }
 
     @Override
