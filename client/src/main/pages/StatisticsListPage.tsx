@@ -1,5 +1,4 @@
 import {
-  Alert,
   Badge,
   Col,
   Collapse,
@@ -10,11 +9,12 @@ import {
   Switch,
   Tag,
 } from "antd";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import statisticsApi from "../api/statistics.api";
 import NoContent from "../components/NoContent";
 import { StatisticsList } from "../model/StatisticsList";
+import { getQueryParameter, setQueryParameter } from "../util/query.param.util";
 import "./StatisticsListPage.css";
 
 const { Panel } = Collapse;
@@ -24,26 +24,41 @@ interface StatisticsListPageProps {
 }
 
 const StatisticsListPage = ({ statisticsList }: StatisticsListPageProps) => {
-  const [term, setTerm] = useState("");
-  const [searchedList, setSearchedList] = useState(statisticsList);
+  // Searched list is a copy that gets refreshed on term change (to the fetched list)
+  // or holds the searched list filtered by term
+  const [term, setTerm] = useState(getQueryParameter("term") || "");
+  const [searchedList, setSearchedList] = useState<StatisticsList>();
   const [completeList, setCompleteList] = useState(false);
   const [lastSearchedTerm, setLastSearchedTerm] = useState<string>();
+
   let dataSource = searchedList?.list
     ?.flatMap((it) => it.statistics)
     .sort((a, b) => (a.title < b.title ? -1 : 1));
 
   const handleSearch = (term: string) => {
+    setQueryParameter("term", term);
     statisticsApi.getStatisticsGroups(term).then((response) => {
       setSearchedList(response.data);
       setLastSearchedTerm(term);
     });
   };
 
-  const handleTermChange = (newTerm: string) => {
-    setTerm(newTerm);
-    setSearchedList(statisticsList);
-    setLastSearchedTerm(undefined);
-  };
+  // First run, if there is a search param
+  useEffect(() => {
+    let initialTerm = getQueryParameter("term");
+    if (!!initialTerm) {
+      handleSearch(initialTerm);
+    }
+  }, []);
+
+  useEffect(() => {
+    // If there is a term, we let it to handle search
+    let initialTerm = getQueryParameter("term");
+    if (!initialTerm) {
+      setSearchedList(statisticsList);
+    }
+  }, [statisticsList]);
+
   return (
     <>
       <h1 className="page-title">Statistics List</h1>
@@ -73,7 +88,7 @@ const StatisticsListPage = ({ statisticsList }: StatisticsListPageProps) => {
             >
               <Input.Search
                 value={term}
-                onChange={(e) => handleTermChange(e.target.value)}
+                onChange={(e) => setTerm(e.target.value)}
                 onPressEnter={() => handleSearch(term)}
               />
             </Form.Item>
