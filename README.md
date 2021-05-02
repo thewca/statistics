@@ -37,3 +37,13 @@ First, you'll need to start the server, then you can execute
 chmod +x scripts/generate_all_statistics.sh
 ./scripts/generate_all_statistics.sh
 ```
+
+## Deploy
+
+Frontend
+
+```
+cd client
+PUBLIC_URL="{OMMITED FOR NOW}" REACT_APP_BASE_URL="{OMMITED FOR NOW}" yarn build
+
+```

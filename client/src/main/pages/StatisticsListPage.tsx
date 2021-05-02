@@ -1,5 +1,5 @@
-import { Badge, Collapse, List, Switch } from "antd";
-import { useState } from "react";
+import { Badge, Col, Collapse, Form, Input, List, Row, Switch } from "antd";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { StatisticsList } from "../model/StatisticsList";
 import "./StatisticsListPage.css";
@@ -11,6 +11,7 @@ interface StatisticsListPageProps {
 }
 
 const StatisticsListPage = ({ statisticsList }: StatisticsListPageProps) => {
+  const [search, setSearch] = useState("");
   const [completeList, setCompleteList] = useState(false);
   let dataSource = statisticsList?.list
     ?.flatMap((it) => it.statistics)
@@ -18,17 +19,41 @@ const StatisticsListPage = ({ statisticsList }: StatisticsListPageProps) => {
   return (
     <>
       <h1 className="page-title">Statistics List</h1>
-      <div id="switch">
-        <Switch
-          checked={completeList}
-          onChange={setCompleteList}
-          checkedChildren="Complete list"
-          unCheckedChildren="Grouped list"
-        />
-        {completeList && (
-          <Badge count={statisticsList?.totalSize} className="badge-count" />
-        )}
-      </div>
+
+      <Row>
+        <Col span={18}>
+          <div id="switch">
+            <Switch
+              checked={completeList}
+              onChange={setCompleteList}
+              checkedChildren="Complete list"
+              unCheckedChildren="Grouped list"
+            />
+            {completeList && (
+              <Badge
+                count={statisticsList?.totalSize}
+                className="badge-count"
+              />
+            )}
+          </div>
+        </Col>
+        <Col span={6}>
+          <Form>
+            <Form.Item
+              label={
+                <>
+                  <strong>Search in statistics</strong>
+                </>
+              }
+            >
+              <Input.Search
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+              />
+            </Form.Item>
+          </Form>
+        </Col>
+      </Row>
 
       {!completeList && (
         <Collapse
