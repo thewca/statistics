@@ -6,6 +6,7 @@ import org.hibernate.annotations.Type;
 import org.worldcubeassociation.statistics.dto.StatisticsGroupResponseDTO;
 import org.worldcubeassociation.statistics.enums.DisplayModeEnum;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -34,4 +35,7 @@ public class Statistics extends BaseEntity {
     @Type(type = "json")
     @Column(columnDefinition = "json")
     private List<StatisticsGroupResponseDTO> statistics;
+
+    @Column(name = "last_modified")
+    private LocalDateTime lastModified;
 }

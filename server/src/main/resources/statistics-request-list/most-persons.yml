@@ -95,4 +95,4 @@ queries:
       GROUP BY
           countryId
 title: Most persons
-group: Competitors
+groupName: Competitors

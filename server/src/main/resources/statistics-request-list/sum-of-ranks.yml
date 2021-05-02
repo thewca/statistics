@@ -234,4 +234,4 @@ queries:
           Sum asc
       limit 10
 title: Sum of 3x3/4x4/5x5 ranks
-group: Competitors
+groupName: Competitors

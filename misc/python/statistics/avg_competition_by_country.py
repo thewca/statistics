@@ -72,7 +72,7 @@ def avg_competitions():
 
     out = {}
     out["title"] = title
-    out["group"] = "Countries"
+    out["groupName"] = "Countries"
     out["displayMode"] = "DEFAULT"
     headers = ["Avg", "Country", *range(min_year, max_year+1)]
 

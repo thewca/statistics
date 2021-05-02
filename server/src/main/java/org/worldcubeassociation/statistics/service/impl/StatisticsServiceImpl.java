@@ -1,7 +1,6 @@
 package org.worldcubeassociation.statistics.service.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,9 +54,9 @@ public class StatisticsServiceImpl implements StatisticsService {
 
     private static final Yaml YAML = new Yaml();
 
-    static {
-        MAPPER.enable(SerializationFeature.INDENT_OUTPUT);
-    }
+//    static {
+//        MAPPER.enable(SerializationFeature.INDENT_OUTPUT);
+//    }
 
     @Override
     public StatisticsResponseDTO sqlToStatistics(StatisticsRequestDTO statisticsRequestDTO) {
@@ -98,7 +97,7 @@ public class StatisticsServiceImpl implements StatisticsService {
                         Optional.ofNullable(statisticsRequestDTO.getDisplayMode()).orElse(DisplayModeEnum.DEFAULT));
         statisticsDTO.setExplanation(statisticsRequestDTO.getExplanation());
         statisticsDTO.setTitle(statisticsRequestDTO.getTitle());
-        statisticsDTO.setGroup(statisticsRequestDTO.getGroup());
+        statisticsDTO.setGroupName(statisticsRequestDTO.getGroupName());
 
         return create(statisticsDTO);
     }
@@ -181,10 +180,18 @@ public class StatisticsServiceImpl implements StatisticsService {
     }
 
     @Override
-    public StatisticsDTO getStatistic(String path) {
-        return MAPPER.convertValue(statisticsRepository.findById(path)
-                        .orElseThrow(() -> new NotFoundException(String.format("Statistic %s does not exists", path))),
-                StatisticsDTO.class);
+    public StatisticsResponseDTO getStatistic(String path) {
+        Statistics statistics = statisticsRepository.findById(path)
+                .orElseThrow(() -> new NotFoundException(String.format("Statistic %s does not exists", path)));
+        StatisticsResponseDTO statisticsResponseDTO = new StatisticsResponseDTO();
+        statisticsResponseDTO.setStatistics(statistics.getStatistics());
+        statisticsResponseDTO.setExplanation(statistics.getExplanation());
+        statisticsResponseDTO.setDisplayMode(statistics.getDisplayMode());
+        statisticsResponseDTO.setPath(statistics.getPath());
+        statisticsResponseDTO.setLastModified(statistics.getLastModified());
+        statisticsResponseDTO.setTitle(statistics.getTitle());
+        statisticsResponseDTO.setGroupName(statistics.getGroupName());
+        return statisticsResponseDTO;
     }
 
     @Override
@@ -201,7 +208,7 @@ public class StatisticsServiceImpl implements StatisticsService {
                 .toLowerCase();
 
         statisticsResponseDTO.setPath(path);
-        statisticsResponseDTO.setGroup(statisticsDTO.getGroup());
+        statisticsResponseDTO.setGroupName(statisticsDTO.getGroupName());
 
         statisticsDTO.getStatistics().forEach(stat -> {
             Optional.ofNullable(stat.getSqlQueryCustom()).ifPresent(q -> stat.setSqlQueryCustom(
@@ -243,7 +250,7 @@ public class StatisticsServiceImpl implements StatisticsService {
         Statistics statistics = new Statistics();
         statistics.setStatistics(statisticsResponseDTO.getStatistics());
         statistics.setExplanation(statisticsResponseDTO.getExplanation());
-        statistics.setGroupName(statisticsResponseDTO.getGroup());
+        statistics.setGroupName(statisticsResponseDTO.getGroupName());
         statistics.setPath(statisticsResponseDTO.getPath());
         statistics.setTitle(statisticsResponseDTO.getTitle());
         statistics.setDisplayMode(statisticsResponseDTO.getDisplayMode());

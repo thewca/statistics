@@ -7,5 +7,6 @@ create table if not exists statistics (
     display_mode varchar(20) not null,
     group_name varchar(20) not null,
     statistics json not null,
+    last_modified date,
     primary key (path)
 );

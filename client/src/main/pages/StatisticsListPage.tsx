@@ -43,19 +43,13 @@ const StatisticsListPage = ({ statisticsList }: StatisticsListPageProps) => {
     });
   };
 
-  // First run, if there is a search param
-  useEffect(() => {
-    let initialTerm = getQueryParameter("term");
-    if (!!initialTerm) {
-      handleSearch(initialTerm);
-    }
-  }, []);
-
   useEffect(() => {
     // If there is a term, we let it to handle search
     let initialTerm = getQueryParameter("term");
     if (!initialTerm) {
       setSearchedList(statisticsList);
+    } else {
+      handleSearch(initialTerm);
     }
   }, [statisticsList]);
 

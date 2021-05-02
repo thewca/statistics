@@ -129,7 +129,7 @@ def sum_of_all_ranks():
 
     statistics = {}
     statistics["title"] = title
-    statistics["group"] = "Competitors"
+    statistics["groupName"] = "Competitors"
     statistics["statistics"] = []
     statistics["displayMode"] = "DEFAULT"
 

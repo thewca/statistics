@@ -94,4 +94,4 @@ queries:
       GROUP BY
           countryId
 title: Most competitions
-group: Competitors
+groupName: Competitors

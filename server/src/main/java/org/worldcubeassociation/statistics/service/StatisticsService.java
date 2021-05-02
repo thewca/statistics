@@ -17,7 +17,7 @@ public interface StatisticsService {
 
     StatisticsListDTO list(String term);
 
-    StatisticsDTO getStatistic(String pathId);
+    StatisticsResponseDTO getStatistic(String pathId);
 
     StatisticsResponseDTO create(@Valid StatisticsDTO statisticsDTO);
 

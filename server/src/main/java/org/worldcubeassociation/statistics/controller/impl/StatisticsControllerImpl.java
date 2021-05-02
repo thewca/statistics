@@ -37,7 +37,7 @@ public class StatisticsControllerImpl implements StatisticsController {
     }
 
     @Override
-    public StatisticsDTO getStatistic(String pathId) {
+    public StatisticsResponseDTO getStatistic(String pathId) {
         return statisticsService.getStatistic(pathId);
     }
 

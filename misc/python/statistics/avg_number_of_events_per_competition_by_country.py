@@ -49,7 +49,7 @@ def avg_events():
 
     out = {}
     out["title"] = title
-    out["group"] = "Events"
+    out["groupName"] = "Events"
     out["displayMode"] = "DEFAULT"
     headers = ["Avg", "Country"]
     out["statistics"] = [

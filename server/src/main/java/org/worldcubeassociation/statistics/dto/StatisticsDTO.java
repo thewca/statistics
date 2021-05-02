@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.worldcubeassociation.statistics.enums.DisplayModeEnum;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
@@ -37,5 +38,8 @@ public class StatisticsDTO {
 
     @NotBlank
     @ApiModelProperty(value = "Group statistics for better searching/navigating")
-    private String group;
+    private String groupName;
+
+    @ApiModelProperty("Last time the current statistics was modified")
+    private LocalDateTime lastModified;
 }

@@ -40,7 +40,7 @@ public interface StatisticsController {
     StatisticsListDTO list(String term);
 
     @GetMapping("list/{pathId}")
-    StatisticsDTO getStatistic(@PathVariable String pathId);
+    StatisticsResponseDTO getStatistic(@PathVariable String pathId);
 
     @PostMapping("create")
     @ApiOperation(
