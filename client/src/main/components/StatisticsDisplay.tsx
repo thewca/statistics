@@ -178,11 +178,15 @@ const StatisticsDisplay = () => {
             </div>
           )}
         </Col>
-        {!!statistics?.explanation && (
-          <Col span={8}>
+
+        <Col span={8}>
+          {!!statistics?.explanation && (
             <h4 className="explanation">{statistics.explanation}</h4>
-          </Col>
-        )}
+          )}
+          <h4 className="explanation">
+            Computed at: {statistics?.lastModified}
+          </h4>
+        </Col>
       </Row>
       {!!filteredStatistics &&
         filteredStatistics.map((stat, i) => (

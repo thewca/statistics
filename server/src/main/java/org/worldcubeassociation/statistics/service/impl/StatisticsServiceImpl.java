@@ -30,6 +30,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -254,6 +255,7 @@ public class StatisticsServiceImpl implements StatisticsService {
         statistics.setPath(statisticsResponseDTO.getPath());
         statistics.setTitle(statisticsResponseDTO.getTitle());
         statistics.setDisplayMode(statisticsResponseDTO.getDisplayMode());
+        statistics.setLastModified(LocalDateTime.now());
 
         return statisticsRepository.save(statistics);
     }
