@@ -1,4 +1,5 @@
 import {
+  Alert,
   Badge,
   Col,
   Collapse,
@@ -12,6 +13,7 @@ import {
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import statisticsApi from "../api/statistics.api";
+import NoContent from "../components/NoContent";
 import { StatisticsList } from "../model/StatisticsList";
 import "./StatisticsListPage.css";
 
@@ -84,7 +86,7 @@ const StatisticsListPage = ({ statisticsList }: StatisticsListPageProps) => {
           Showing results for <strong>{lastSearchedTerm}</strong>
         </Tag>
       )}
-      {!completeList && (
+      {!completeList && !!searchedList?.totalSize && (
         <Collapse
           defaultActiveKey={searchedList?.list?.map((stat) => stat.group)}
         >
@@ -116,7 +118,7 @@ const StatisticsListPage = ({ statisticsList }: StatisticsListPageProps) => {
             ))}
         </Collapse>
       )}
-      {completeList && (
+      {completeList && !!searchedList?.totalSize && (
         <List
           dataSource={dataSource}
           bordered
@@ -127,6 +129,7 @@ const StatisticsListPage = ({ statisticsList }: StatisticsListPageProps) => {
           )}
         />
       )}
+      {!searchedList?.totalSize && <NoContent />}
     </>
   );
 };
