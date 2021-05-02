@@ -14,35 +14,38 @@ mysqlconn="sudo mysql"
 download=true
 
 # First we check if the file exists.
-if [ -f $export_file_zip ]; then
+if [ -f $export_file_sql ]; then
     one_week=$(date -d 'now - 7 days' +%s) # export older than 1 week is suggested to be replaced
-    date_of_export=$(date -r "$export_file_zip" +%s)
+    date_of_export=$(date -r "$export_file_sql" +%s)
 
     if (( date_of_export <= one_week )); then # Here we check how old the export is.
-        echo "$export_file_zip is older than 7 days."
+        echo "$export_file_sql is older than 7 days."
         echo "Cleaning old data."
         
-        rm $export_file_zip;
+        rm $export_file_sql;
         download=true;
         
     else
         download=false
-        echo "$export_file_zip is up to date."
+        echo "$export_file_sql is up to date."
     fi
 fi
 
 if [ "$download" = true ]; then
     echo "Downloading the latest export."
     wget -q https://www.worldcubeassociation.org/wst/wca-developer-database-dump.zip
-fi
 
-if [ -f $export_file_sql ]; then
-    echo "There's already a sql in this folder. Deleting."
-    rm $export_file_sql;
-fi
+    if [ -f $export_file_sql ]; then
+        echo "There's already a sql in this folder. Deleting."
+        rm $export_file_sql;
+    fi
 
-echo "Extracting $export_file_zip"
-unzip "$export_file_zip"
+    echo "Extracting $export_file_zip"
+    unzip "$export_file_zip"
+
+    echo "Remove the zip file"
+    rm $export_file_zip
+fi
 
 echo "Executing the .sql"
 echo "This can take a few hours"
