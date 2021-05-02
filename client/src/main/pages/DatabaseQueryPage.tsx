@@ -1,15 +1,8 @@
-import {
-  Alert,
-  Button,
-  Form,
-  Input,
-  message,
-  Pagination,
-  Skeleton,
-} from "antd";
-import { useEffect, useState } from "react";
+import { Button, Form, Input, message, Pagination, Skeleton } from "antd";
+import React, { useEffect, useState } from "react";
 import statisticsApi from "../api/statistics.api";
 import DatabaseQueryOptions from "../components/DatabaseQueryOptions";
+import NoContent from "../components/NoContent";
 import StatisticsTable from "../components/StatisticsTable";
 import { getQueryParameter, setQueryParameter } from "../util/query.param.util";
 import "./DatabaseQueryPage.css";
@@ -160,7 +153,7 @@ const DatabaseQueryPage = () => {
           Submit
         </Button>
       </Form>
-      {noResult && <Alert type="info" message="No results to show" />}
+      {noResult && <NoContent />}
 
       {totalElements > 0 && (
         <>

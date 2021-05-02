@@ -5,7 +5,9 @@ import io.swagger.annotations.ApiParam;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.time.LocalDateTime;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -14,4 +16,8 @@ public class StatisticsResponseDTO extends StatisticsDTO {
     @NotBlank
     @ApiParam(value = "Path to the current statistics", example = "countries-with-most-competitions")
     private String path;
+
+    @NotNull
+    @ApiParam("Statistics computed at")
+    private LocalDateTime lastModified;
 }

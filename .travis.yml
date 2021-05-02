@@ -5,6 +5,19 @@ jobs:
       script:
         - cd server
         - ./gradlew build
+      after_success:
+        script:
+          - eval "$(ssh-agent -s)" #start the ssh agent
+          - echo "$key_pair" > key_pair.pem
+          - chmod 400 key_pair.pem
+          - ssh -i "key_pair.pem" "$ec2_instance"
+          - cd statistics
+          - git pull
+          - nohup ./scripts/cron.sh &
+          - exit
+          - rm key_pair.pem
+        on:
+          branch: main
 
     - language: node_js
       node_js: 14

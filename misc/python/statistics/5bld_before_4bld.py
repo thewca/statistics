@@ -136,7 +136,7 @@ def compare_results(ev1, ev2):
                ev1, "Competition", "First result %s" % ev2, "Competition"]
     out = {}
     out["title"] = title
-    out["group"] = "Events"
+    out["groupName"] = "Events"
     out["displayMode"] = "DEFAULT"
     out["explanation"] = "In case of multiple first results (eg. ao3), best one is taken."
     out["statistics"] = [{"keys": [], "content": table,

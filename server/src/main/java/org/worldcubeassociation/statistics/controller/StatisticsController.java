@@ -37,10 +37,10 @@ public interface StatisticsController {
     void generateFromSql(@PathVariable String filename) throws IOException;
 
     @GetMapping("list")
-    StatisticsListDTO list();
+    StatisticsListDTO list(String term);
 
     @GetMapping("list/{pathId}")
-    StatisticsDTO getStatistic(@PathVariable String pathId);
+    StatisticsResponseDTO getStatistic(@PathVariable String pathId);
 
     @PostMapping("create")
     @ApiOperation(

@@ -335,4 +335,4 @@ queries:
           personId,
           personName
 title: Most solves in one competition, year, or lifetime
-group: Results
+groupName: Results

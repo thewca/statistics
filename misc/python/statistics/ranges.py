@@ -57,7 +57,7 @@ def ranges():
 
     out = {}
     out["title"] = title
-    out["group"] = "Results"
+    out["groupName"] = "Results"
     out["displayMode"] = "SELECTOR"
     headers = ["Person", "Range Size",
                "Country", "Range Start", "Range End"]

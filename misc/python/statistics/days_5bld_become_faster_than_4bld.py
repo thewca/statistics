@@ -97,7 +97,7 @@ def compare_results(ev1, ev2):
     out["explanation"] = "In case of multiple first results (eg. ao3), best one is taken."
     out["title"] = title
     out["displayMode"] = "DEFAULT"
-    out["group"] = "Competitors"
+    out["groupName"] = "Competitors"
     headers = ["Days", "Name", "First %s result" %
                ev1, "Competition", "First faster %s result" % ev2, "Competition"]
     out["statistics"] = [{"keys": [], "content": table,

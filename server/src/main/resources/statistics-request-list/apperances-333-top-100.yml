@@ -129,4 +129,4 @@ queries:
       order by
           Apperances desc
 title: Appearances in 3x3x3 Cube top 100 results
-group: Events
+groupName: Events

@@ -32,12 +32,12 @@ public class StatisticsControllerImpl implements StatisticsController {
     }
 
     @Override
-    public StatisticsListDTO list() {
-        return statisticsService.list();
+    public StatisticsListDTO list(String term) {
+        return statisticsService.list(term);
     }
 
     @Override
-    public StatisticsDTO getStatistic(String pathId) {
+    public StatisticsResponseDTO getStatistic(String pathId) {
         return statisticsService.getStatistic(pathId);
     }
 

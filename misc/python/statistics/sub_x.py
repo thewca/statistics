@@ -130,7 +130,7 @@ def sub_x():
 
     statistics = {}
     statistics["title"] = title
-    statistics["group"] = "Results"
+    statistics["groupName"] = "Results"
     statistics["statistics"] = []
     headers = ["Count", "Name", "Country"]
     statistics["displayMode"] = "GROUPED"

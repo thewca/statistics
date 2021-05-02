@@ -107,7 +107,7 @@ def recent_success():
     out["title"] = title
     out["explanation"] = "Since %s, minimum %s successes" % (
         min_date, MIN_SOLVES)
-    out["group"] = "Results"
+    out["groupName"] = "Results"
     out["displayMode"] = "SELECTOR"
     headers = ["Person", "Country", "Rate",
                "Success / Attempts", "Best", "Worst", "Average"]

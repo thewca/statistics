@@ -12,3 +12,6 @@ WCA_export*
 
 # Python
 *__pycache__*
+
+*.pem
+nohup.out

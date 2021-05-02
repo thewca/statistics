@@ -31,7 +31,8 @@ export const deleteParameter = (...names: string[]) => {
 
 const updateUrl = (searchParams: URLSearchParams) => {
   let currentLocationWithoutQuery = window.location.href.split("?")[0];
-  let url = currentLocationWithoutQuery + "?" + searchParams.toString();
+  let params = searchParams.toString();
+  let url = currentLocationWithoutQuery + (!!params ? "?" + params : "");
   window.history.replaceState(null, "", url);
 };
 

@@ -3,10 +3,10 @@ package org.worldcubeassociation.statistics.model;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.Type;
-import org.worldcubeassociation.statistics.dto.StatisticsDTO;
 import org.worldcubeassociation.statistics.dto.StatisticsGroupResponseDTO;
 import org.worldcubeassociation.statistics.enums.DisplayModeEnum;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -36,14 +36,6 @@ public class Statistics extends BaseEntity {
     @Column(columnDefinition = "json")
     private List<StatisticsGroupResponseDTO> statistics;
 
-    public StatisticsDTO convert() {
-        StatisticsDTO statisticsDTO = new StatisticsDTO();
-        statisticsDTO.setStatistics(statistics);
-        statisticsDTO.setGroup(groupName);
-        statisticsDTO.setExplanation(explanation);
-        statisticsDTO.setDisplayMode(displayMode);
-        statisticsDTO.setTitle(title);
-
-        return statisticsDTO;
-    }
+    @Column(name = "last_modified")
+    private LocalDateTime lastModified;
 }

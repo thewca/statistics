@@ -37,5 +37,5 @@ public class StatisticsDTO {
 
     @NotBlank
     @ApiModelProperty(value = "Group statistics for better searching/navigating")
-    private String group;
+    private String groupName;
 }

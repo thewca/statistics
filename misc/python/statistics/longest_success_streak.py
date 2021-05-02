@@ -54,7 +54,7 @@ def longest_streaks():
 
     out = {}
     out["title"] = title
-    out["group"] = "Results"
+    out["groupName"] = "Results"
     out["displayMode"] = "SELECTOR"
     headers = ["Streak", "Person",
                "Country", "Streak Start", "Streak End"]

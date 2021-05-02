@@ -132,4 +132,4 @@ queries:
           Golds desc
       limit 10
 title: Best medal collection
-group: Competitors
+groupName: Competitors
