@@ -19,88 +19,132 @@ where
     and event_id = %(event_id)s"""
 
 query_next_results = """select
-    person_id,
-    min_best best,
+    personId,
+    single,
+    average,
     (
         select
             competitionId
         from
-            Results r
-            inner join Competitions c on r.competitionId = c.id
+            Results results
+            inner join Competitions competitions on results.competitionId = competitions.id
         where
-            r.eventId = '%(event_id)s'
-            and r.%(result_type)s = min_best
-            and r.personId = personId
-            and c.start_date = date('%(date)s')
+            results.eventId = %(event_id)s
+            and results.personId = today.personId
+            and competitions.start_date = %(date)s
+            and (
+                results.best = today.single
+                or results.average = today.average
+            )
         limit
             1
-    ) competition_id
+    ) competition
 from
     (
         select
-            personId person_id,
-            min(average) min_best
+            personId,
+            min(
+                case
+                    when best > 0 then best
+                    else null
+                end
+            ) single,
+            min(
+                case
+                    when average > 0 then average
+                    else null
+                end
+            ) average
         from
             Results r
             inner join Competitions c on r.competitionId = c.id
         where
-            %(result_type)s > 0
-            and eventId = '%(event_id)s'
-            and c.start_date = date('%(date)s')
+            eventId = %(event_id)s
+            and c.start_date = %(date)s
         group by
             personId
-    ) min_results"""
+    ) today
+where
+    single is not null"""
 
 
 class Competitor(Comp):
-    def __init__(self, wca_id, best, competition_id, min_date):
+    def __init__(self, wca_id, single, average, competition_id):
         super().__init__(wca_id)
-        self.best = best
+        self.single = single
+        self.average = average
         self.competition_id = competition_id
-        self.min_date = min_date
-        self.best_rank = None
 
     def __repr__(self) -> str:
-        return "Competitor[wca_id=%s, best=%s, competition_id=%s, best_rank=%s, best_rank_start=%s, best_rank_end=%s]" % (self.wca_id, self.best, self.competition_id, self.best_rank, self.best_rank_start, self.best_rank_end)
+        attrs = vars(self)
+        return ', '.join("%s: %s" % item for item in attrs.items())
 
 
-def summarize_results(today, today_competitors, all_time_competitors, all_time_bests):
+def summarize_results(today, today_competitors, all_time_competitors, all_time_singles, all_time_averages):
     # Assign today's best result
     for competitor in today_competitors:
         index = bisect_left(all_time_competitors, competitor)
         if index == len(all_time_competitors) or all_time_competitors[index] != competitor:
             # Person is competing for the first time
             all_time_competitors.insert(index, competitor)
-            insort_left(all_time_bests, competitor.best)
 
-        old_best = all_time_competitors[index].best
-        if not old_best:
-            all_time_competitors[index].best = competitor.best
-            insort_left(all_time_bests, competitor.best)
-        elif competitor.best < old_best:
+            all_time_competitors[index].best_single_rank = None
+            all_time_competitors[index].best_average_rank = None
+
+            insort_left(all_time_singles, competitor.single)
+            if competitor.average:
+                insort_left(all_time_averages, competitor.average)
+
+        # old_single is always defined
+        old_single = all_time_competitors[index].single
+        if competitor.single < old_single:
             # In this case, competitor broke a PR
             # We can remove 1 result from the old an include a new best
 
-            old_index = bisect_left(all_time_bests, old_best)
-            del all_time_bests[old_index]
+            old_index = bisect_left(all_time_singles, old_single)
+            del all_time_singles[old_index]
 
-            insort_left(all_time_bests, competitor.best)
+            insort_left(all_time_singles, competitor.single)
 
-            all_time_competitors[index].competition_id = competitor.competition_id
-            all_time_competitors[index].min_date = today
-            all_time_competitors[index].best = competitor.best
-            all_time_competitors[index].best_rank_start = today
-            all_time_competitors[index].best_rank_end = None
+            all_time_competitors[index].single = competitor.single
+            all_time_competitors[index].single_competition_id = competitor.competition_id
+            all_time_competitors[index].single_min_date = today
+            all_time_competitors[index].single_rank_start = today
+            all_time_competitors[index].single_rank_end = None
+
+        if competitor.average:
+
+            old_average = all_time_competitors[index].average
+            if not old_average or competitor.average < old_average:
+                # In this case, competitor broke a PR
+                # We can remove 1 result from the old an include a new best
+
+                if old_average:
+                    old_index = bisect_left(all_time_averages, old_average)
+                    del all_time_averages[old_index]
+
+                insort_left(all_time_averages, competitor.average)
+
+                all_time_competitors[index].average = competitor.average
+                all_time_competitors[index].average_competition_id = competitor.competition_id
+                all_time_competitors[index].average_min_date = today
+                all_time_competitors[index].average_rank_start = today
+                all_time_competitors[index].average_rank_end = None
 
     for competitor in all_time_competitors:
-        current_best_rank = bisect_left(all_time_bests, competitor.best)
-        if competitor.best_rank == None or current_best_rank < competitor.best_rank:
-            competitor.best_rank = current_best_rank
-            competitor.best_rank_best = competitor.best
-            competitor.best_rank_end = None
+        current_best_rank = bisect_left(all_time_singles, competitor.single)
+        if competitor.best_single_rank == None or current_best_rank < competitor.best_single_rank:
+            competitor.best_single_rank = current_best_rank
+            competitor.best_rank_single = competitor.single
+            competitor.best_rank_single_end = None
 
-        if current_best_rank > competitor.best_rank and not competitor.best_rank_end:
-            competitor.best_rank_end = today - timedelta(days=1)
+        if competitor.average:
+            current_best_rank = bisect_left(
+                all_time_averages, competitor.average)
+            if competitor.best_average_rank == None or current_best_rank < competitor.best_average_rank:
+                competitor.best_average_rank = current_best_rank
+                competitor.best_rank_average = competitor.average
+                competitor.best_rank_average_end = None
 
 
 def main():
@@ -109,7 +153,8 @@ def main():
     cnx = get_database_connection()
     cursor = cnx.cursor()
 
-    all_time_bests = []
+    all_time_singles = []
+    all_time_averages = []
 
     # Sorted by wca_id
     all_time_competitors = []
@@ -125,16 +170,16 @@ def main():
         current_date = cursor.fetchone()[0]
         if not current_date:
             break
-        cursor.execute(query_next_results % {
-                       "result_type": "average", "date": current_date, "event_id": event_id})
+        cursor.execute(query_next_results, {
+                       "date": current_date, "event_id": event_id})
         today_results = cursor.fetchall()
-        for wca_id, best, competition_id in today_results:
-            competitor = Competitor(wca_id, best, competition_id, current_date)
+        for wca_id, single, average, competition_id in today_results:
+            competitor = Competitor(wca_id, single, average, competition_id)
             today_competitors.append(competitor)
 
         # One last summarization for the last day
         summarize_results(current_date, today_competitors,
-                          all_time_competitors, all_time_bests)
+                          all_time_competitors, all_time_singles, all_time_averages)
 
     for competitor in all_time_competitors:
         if competitor.wca_id == '2015CAMP17':
