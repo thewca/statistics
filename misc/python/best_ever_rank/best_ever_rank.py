@@ -1,7 +1,7 @@
 # python3 -m misc.python.best_ever_rank.best_ever_rank
 
 from bisect import bisect_left, insort_left
-from datetime import date, datetime, timedelta
+from datetime import date, timedelta
 
 from misc.python.model.competitor import Competitor as Comp
 from misc.python.util.database_util import get_database_connection
@@ -90,6 +90,8 @@ def summarize_results(today, today_competitors, all_time_competitors, all_time_s
 
             all_time_competitors[index].best_single_rank = None
             all_time_competitors[index].best_average_rank = None
+            all_time_competitors[index].single_rank_end = None
+            all_time_competitors[index].average_rank_end = None
 
             insort_left(all_time_singles, competitor.single)
             if competitor.average:
@@ -136,7 +138,9 @@ def summarize_results(today, today_competitors, all_time_competitors, all_time_s
         if competitor.best_single_rank == None or current_best_rank < competitor.best_single_rank:
             competitor.best_single_rank = current_best_rank
             competitor.best_rank_single = competitor.single
-            competitor.best_rank_single_end = None
+            competitor.single_rank_end = None
+        elif current_best_rank > competitor.best_single_rank and not competitor.single_rank_end:
+            competitor.single_rank_end = today - timedelta(days=1)
 
         if competitor.average:
             current_best_rank = bisect_left(
@@ -144,7 +148,9 @@ def summarize_results(today, today_competitors, all_time_competitors, all_time_s
             if competitor.best_average_rank == None or current_best_rank < competitor.best_average_rank:
                 competitor.best_average_rank = current_best_rank
                 competitor.best_rank_average = competitor.average
-                competitor.best_rank_average_end = None
+                competitor.average_rank_end = None
+            elif current_best_rank > competitor.best_average_rank and not competitor.average_rank_end:
+                competitor.average_rank_end = today - timedelta(days=1)
 
 
 def main():
