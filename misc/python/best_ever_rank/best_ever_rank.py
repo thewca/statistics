@@ -68,12 +68,23 @@ where
     single is not null"""
 
 
+class Result:
+    def __init__(self, result, start, competition) -> None:
+        self.result = result
+        self.start = start
+        self.competition = competition
+        self.end = None
+        self.rank = None
+
+    def __repr__(self) -> str:
+        return "result=%s, rank=%s, start=%s, competition=%s, end=%s" % (self.result, self.rank, self.start, self.competition, self.end)
+
+
 class Competitor(Comp):
-    def __init__(self, wca_id, single, average, competition_id):
+    def __init__(self, wca_id, single, average, start, competition):
         super().__init__(wca_id)
-        self.single = single
-        self.average = average
-        self.competition_id = competition_id
+        self.single = Result(single, start, competition)
+        self.average = Result(average, start, competition)
 
     def __repr__(self) -> str:
         attrs = vars(self)
@@ -88,36 +99,31 @@ def summarize_results(today, today_competitors, all_time_competitors, all_time_s
             # Person is competing for the first time
             all_time_competitors.insert(index, competitor)
 
-            all_time_competitors[index].best_single_rank = None
-            all_time_competitors[index].best_average_rank = None
-            all_time_competitors[index].single_rank_end = None
-            all_time_competitors[index].average_rank_end = None
-
-            insort_left(all_time_singles, competitor.single)
-            if competitor.average:
-                insort_left(all_time_averages, competitor.average)
+            insort_left(all_time_singles, competitor.single.result)
+            if competitor.average.result:
+                insort_left(all_time_averages, competitor.average.result)
 
         # old_single is always defined
-        old_single = all_time_competitors[index].single
-        if competitor.single < old_single:
+        all_time_competitor = all_time_competitors[index]
+        old_single = all_time_competitor.single.result
+        if competitor.single.result < old_single:
             # In this case, competitor broke a PR
             # We can remove 1 result from the old an include a new best
 
             old_index = bisect_left(all_time_singles, old_single)
             del all_time_singles[old_index]
 
-            insort_left(all_time_singles, competitor.single)
+            insort_left(all_time_singles, competitor.single.result)
 
-            all_time_competitors[index].single = competitor.single
-            all_time_competitors[index].single_competition_id = competitor.competition_id
-            all_time_competitors[index].single_min_date = today
-            all_time_competitors[index].single_rank_start = today
-            all_time_competitors[index].single_rank_end = None
+            all_time_competitor.single.result = competitor.single.result
+            all_time_competitor.single.competition = competitor.single.competition
+            all_time_competitor.single.start = today
+            all_time_competitor.single.end = None
 
-        if competitor.average:
+        if competitor.average.result:
 
-            old_average = all_time_competitors[index].average
-            if not old_average or competitor.average < old_average:
+            old_average = all_time_competitor.average.result
+            if not old_average or competitor.average.result < old_average:
                 # In this case, competitor broke a PR
                 # We can remove 1 result from the old an include a new best
 
@@ -125,32 +131,32 @@ def summarize_results(today, today_competitors, all_time_competitors, all_time_s
                     old_index = bisect_left(all_time_averages, old_average)
                     del all_time_averages[old_index]
 
-                insort_left(all_time_averages, competitor.average)
+                insort_left(all_time_averages, competitor.average.result)
 
-                all_time_competitors[index].average = competitor.average
-                all_time_competitors[index].average_competition_id = competitor.competition_id
-                all_time_competitors[index].average_min_date = today
-                all_time_competitors[index].average_rank_start = today
-                all_time_competitors[index].average_rank_end = None
+                all_time_competitor.average.result = competitor.average.result
+                all_time_competitor.average.competition = competitor.average.competition
+                all_time_competitor.average.start = competitor.average.start
+                all_time_competitor.average.end = None
 
     for competitor in all_time_competitors:
-        current_best_rank = bisect_left(all_time_singles, competitor.single)
-        if competitor.best_single_rank == None or current_best_rank < competitor.best_single_rank:
-            competitor.best_single_rank = current_best_rank
-            competitor.best_rank_single = competitor.single
-            competitor.single_rank_end = None
-        elif current_best_rank > competitor.best_single_rank and not competitor.single_rank_end:
-            competitor.single_rank_end = today - timedelta(days=1)
+        current_best_rank = bisect_left(
+            all_time_singles, competitor.single.result)
+        if competitor.single.rank == None or current_best_rank < competitor.single.rank:
+            competitor.single.rank = current_best_rank
+            competitor.single.result = competitor.single.result
+            competitor.single.end = None
+        elif current_best_rank > competitor.single.rank and competitor.single.end == None:
+            competitor.single.end = today - timedelta(days=1)
 
-        if competitor.average:
+        if competitor.average.result:
             current_best_rank = bisect_left(
-                all_time_averages, competitor.average)
-            if competitor.best_average_rank == None or current_best_rank < competitor.best_average_rank:
-                competitor.best_average_rank = current_best_rank
-                competitor.best_rank_average = competitor.average
-                competitor.average_rank_end = None
-            elif current_best_rank > competitor.best_average_rank and not competitor.average_rank_end:
-                competitor.average_rank_end = today - timedelta(days=1)
+                all_time_averages, competitor.average.result)
+            if competitor.average.rank == None or current_best_rank < competitor.average.rank:
+                competitor.average.rank = current_best_rank
+                competitor.average.result = competitor.average.result
+                competitor.average.end = None
+            elif current_best_rank > competitor.average.rank and competitor.average.end == None:
+                competitor.average.end = today - timedelta(days=1)
 
 
 def main():
@@ -180,7 +186,8 @@ def main():
                        "date": current_date, "event_id": event_id})
         today_results = cursor.fetchall()
         for wca_id, single, average, competition_id in today_results:
-            competitor = Competitor(wca_id, single, average, competition_id)
+            competitor = Competitor(
+                wca_id, single, average, current_date, competition_id)
             today_competitors.append(competitor)
 
         # One last summarization for the last day
