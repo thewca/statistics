@@ -83,7 +83,7 @@ class Result:
         self.rank = None
 
     def __repr__(self) -> str:
-        return "result=%s, rank=%s, start=%s, competition=%s, end=%s" % (self.result, self.rank, self.start, self.competition, self.end)
+        return "{result=%s, rank=%s, start=%s, competition=%s, end=%s}" % (self.result, self.rank, self.start, self.competition, self.end)
 
 
 class Competitor(Comp):
@@ -104,7 +104,6 @@ class Competitor(Comp):
 class Region:
     def __init__(self, name) -> None:
         self.name = name
-        self.all_time_competitors: List(Competitor) = []
         self.all_time_singles = []
         self.all_time_averages = []
 
@@ -144,47 +143,44 @@ def update_averages(regions, competitor_region_name, old_average, new_average):
     insort_left(region.all_time_averages, new_average)
 
 
-def find_ranks(regions, today):
-    for region in regions:
-        for competitor in region.all_time_competitors:
+def find_ranks(all_time_competitors, worlds, continents, countries, today):
+    world = worlds[0]
+    for competitor in all_time_competitors:
+        current_best_rank = bisect_left(
+            world.all_time_singles, competitor.single.result)
+        if competitor.single.rank == None or current_best_rank < competitor.single.rank:
+            competitor.single.rank = current_best_rank
+            competitor.single.result = competitor.single.result
+            competitor.single.end = None
+        elif current_best_rank > competitor.single.rank and competitor.single.end == None:
+            competitor.single.end = today - timedelta(days=1)
+
+        if competitor.average.result:
             current_best_rank = bisect_left(
-                region.all_time_singles, competitor.single.result)
-            if competitor.single.rank == None or current_best_rank < competitor.single.rank:
-                competitor.single.rank = current_best_rank
-                competitor.single.result = competitor.single.result
-                competitor.single.end = None
-            elif current_best_rank > competitor.single.rank and competitor.single.end == None:
-                competitor.single.end = today - timedelta(days=1)
-
-            if competitor.average.result:
-                current_best_rank = bisect_left(
-                    region.all_time_averages, competitor.average.result)
-                if competitor.average.rank == None or current_best_rank < competitor.average.rank:
-                    competitor.average.rank = current_best_rank
-                    competitor.average.result = competitor.average.result
-                    competitor.average.end = None
-                elif current_best_rank > competitor.average.rank and competitor.average.end == None:
-                    competitor.average.end = today - timedelta(days=1)
+                world.all_time_averages, competitor.average.result)
+            if competitor.average.rank == None or current_best_rank < competitor.average.rank:
+                competitor.average.rank = current_best_rank
+                competitor.average.result = competitor.average.result
+                competitor.average.end = None
+            elif current_best_rank > competitor.average.rank and competitor.average.end == None:
+                competitor.average.end = today - timedelta(days=1)
 
 
-def summarize_results(today, today_competitors, worlds, continents, countries):
+def summarize_results(all_time_competitors, today_competitors, worlds, continents, countries, today):
     world = worlds[0]
 
     # Assign today's best result
     for competitor in today_competitors:
-        index = bisect_left(world.all_time_competitors, competitor)
-        if index == len(world.all_time_competitors) or world.all_time_competitors[index] != competitor:
+        index = bisect_left(all_time_competitors, competitor)
+        if index == len(all_time_competitors) or all_time_competitors[index] != competitor:
             # Person is competing for the first time
 
-            insort_left(world.all_time_competitors, competitor)
+            all_time_competitors.insert(index, competitor)
 
             continent = maybe_insort_and_return_region(
                 continents, competitor.continent)
-            insort_left(continent.all_time_competitors, competitor)
-
             country = maybe_insort_and_return_region(
                 countries, competitor.country)
-            insort_left(country.all_time_competitors, competitor)
 
             insort_left(world.all_time_singles, competitor.single.result)
             insort_left(continent.all_time_singles, competitor.single.result)
@@ -196,7 +192,7 @@ def summarize_results(today, today_competitors, worlds, continents, countries):
                 insort_left(country.all_time_averages,
                             competitor.average.result)
 
-        all_time_competitor = world.all_time_competitors[index]
+        all_time_competitor = all_time_competitors[index]
 
         # old_single is always defined
         old_single = all_time_competitor.single.result
@@ -230,20 +226,18 @@ def summarize_results(today, today_competitors, worlds, continents, countries):
 
                 all_time_competitor.average = competitor.average
 
-    find_ranks(worlds, today)
-    find_ranks(continents, today)
-    find_ranks(countries, today)
+    find_ranks(all_time_competitors, worlds, continents, countries, today)
 
 
 def main():
+    all_time_competitors = []
+    worlds = [Region("world")]
+    continents = []
+    countries = []
 
     log.info("Get database connection")
     cnx = get_database_connection()
     cursor = cnx.cursor()
-
-    worlds = [Region("world")]
-    continents = []
-    countries = []
 
     # Sorted by wca_id
     today_competitors = []
@@ -267,27 +261,10 @@ def main():
             today_competitors.append(competitor)
 
         # One last summarization for the last day
-        summarize_results(current_date, today_competitors,
-                          worlds, continents, countries)
+        summarize_results(all_time_competitors, today_competitors,
+                          worlds, continents, countries, current_date)
 
-    world = worlds[0]
-    for competitor in world.all_time_competitors:
-        if competitor.wca_id == '2015CAMP17':
-            print(competitor)
-            break
-
-    continent = Region("South America")
-    index = bisect_left(continents, continent)
-    continent = continents[index]
-    for competitor in continent.all_time_competitors:
-        if competitor.wca_id == '2015CAMP17':
-            print(competitor)
-            break
-
-    country = Region("Brazil")
-    index = bisect_left(countries, country)
-    country = countries[index]
-    for competitor in country.all_time_competitors:
+    for competitor in all_time_competitors:
         if competitor.wca_id == '2015CAMP17':
             print(competitor)
             break
