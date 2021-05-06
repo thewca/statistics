@@ -2,10 +2,11 @@
 
 from bisect import bisect_left, insort_left
 from datetime import date, timedelta
-from typing import List, Text
+import json
 
 from misc.python.model.competitor import Competitor as Comp
 from misc.python.util.database_util import get_database_connection
+from misc.python.util.event_util import get_current_events
 from misc.python.util.log_util import log
 
 # WIP
@@ -83,7 +84,7 @@ class Result:
         self.rank = None
 
     def __repr__(self) -> str:
-        return "{result=%s, rank=%s, start=%s, competition=%s, end=%s}" % (self.result, self.rank, self.start, self.competition, self.end)
+        return str(self.__dict__)
 
 
 class Competitor(Comp):
@@ -103,8 +104,23 @@ class Competitor(Comp):
         self.country = country
 
     def __repr__(self) -> str:
-        attrs = vars(self)
-        return '\n'.join("%s: %s" % item for item in attrs.items())
+        return str(self.__dict__)
+
+
+class AllEventsCompetitor(Comp):
+    def __init__(self, wca_id):
+        super().__init__(wca_id)
+        self.all_results = {}
+
+    def insert_result(self, event, competitor):
+        d = competitor.__dict__
+        self.wca_id = d.pop("wca_id")
+        self.continent = d.pop("continent")
+        self.country = d.pop("country")
+        self.all_results[event] = d
+
+    def __repr__(self) -> str:
+        return str(self.__dict__)
 
 
 class Region:
@@ -118,6 +134,9 @@ class Region:
 
     def __lt__(self, o):
         return self.name < o.name
+
+    def __repr__(self) -> str:
+        return str(self.__dict__)
 
 
 def maybe_insort_and_return_region(regions, region_name):
@@ -249,20 +268,17 @@ def summarize_results(all_time_competitors, today_competitors, worlds, continent
     find_ranks(all_time_competitors, worlds, continents, countries, today)
 
 
-def main():
-    all_time_competitors = []
+def get_ranks_by_event(event_id, cursor):
+    log.info(event_id)
+
     worlds = [Region("world")]
+
+    all_time_competitors = []
     continents = []
     countries = []
 
-    log.info("Get database connection")
-    cnx = get_database_connection()
-    cursor = cnx.cursor()
-
     # Sorted by wca_id
     today_competitors = []
-
-    event_id = '333fm'
 
     log.info("Read results")
     current_date = date(1970, 1, 1)
@@ -284,10 +300,44 @@ def main():
         summarize_results(all_time_competitors, today_competitors,
                           worlds, continents, countries, current_date)
 
-    for competitor in all_time_competitors:
+    return all_time_competitors
+
+
+# TODO remove mock
+class Ev:
+    def __init__(self, event_id) -> None:
+        self.event_id = event_id
+
+
+current_events = [Ev("555bf")]
+
+
+def main():
+    # current_events = get_current_events()
+
+    log.info("Get database connection")
+    cnx = get_database_connection()
+    cursor = cnx.cursor()
+
+    all_events_competitors = []
+
+    for current_event in current_events:
+        event_id = current_event.event_id
+        competitors = get_ranks_by_event(event_id, cursor)
+
+        for competitor_for_event in competitors:
+
+            competitor = AllEventsCompetitor(competitor_for_event.wca_id)
+            index = bisect_left(all_events_competitors, competitor)
+            if index == len(all_events_competitors) or all_events_competitors[index] != competitor:
+                all_events_competitors.insert(index, competitor)
+
+            competitor = all_events_competitors[index]
+            competitor.insert_result(event_id, competitor_for_event)
+
+    for competitor in all_events_competitors:
         if competitor.wca_id == '2015CAMP17':
             print(competitor)
-            break
 
     cnx.close()
 
