@@ -11,14 +11,15 @@ from misc.python.util.log_util import log
 
 # WIP
 
-query_date = """select
-    min(start_date)
+query_dates = """select
+    distinct c.start_date
 from
     Competitions c
     inner join competition_events e on e.competition_id = c.id
 where
-    start_date > %(date)s
-    and event_id = %(event_id)s"""
+    event_id = %(event_id)s
+order by
+    start_date"""
 
 query_next_results = """select
     personId,
@@ -281,13 +282,11 @@ def get_ranks_by_event(event_id, cursor):
     today_competitors = []
 
     log.info("Read results")
-    current_date = date(1970, 1, 1)
-    while True:
-        cursor.execute(
-            query_date, {"date": current_date, "event_id": event_id})
-        current_date = cursor.fetchone()[0]
-        if not current_date:
-            break
+    cursor.execute(query_dates, {"event_id": event_id})
+    dates = cursor.fetchall()
+    log.info("Found %s dates" % len(dates))
+    for row in dates:
+        current_date = row[0]
         cursor.execute(query_next_results, {
                        "date": current_date, "event_id": event_id})
         today_results = cursor.fetchall()
@@ -309,7 +308,7 @@ class Ev:
         self.event_id = event_id
 
 
-current_events = [Ev("555bf")]
+current_events = [Ev("333fm"), Ev("555bf")]
 
 
 def main():
