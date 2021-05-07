@@ -68,6 +68,8 @@ from
             and c.start_date = %(date)s
         group by
             personId
+        order by
+            personId
     ) today
     inner join Persons p on today.personId = p.id
     inner join Countries c on p.countryId = c.id
@@ -117,14 +119,15 @@ class Competitor(Comp):
 class AllEventsCompetitor(Comp):
     def __init__(self, wca_id):
         super().__init__(wca_id)
-        self.all_results = {}
+        self.all_results = []
 
     def insert_result(self, event, competitor):
         d = competitor.__dict__
         self.wca_id = d.pop("wca_id")
         self.continent = d.pop("continent")
         self.country = d.pop("country")
-        self.all_results[event] = d
+        d["event_id"] = event
+        self.all_results.append(d)
 
     def __repr__(self) -> str:
         return str(self.__dict__)
@@ -320,7 +323,7 @@ class Ev:
         self.event_id = event_id
 
 
-current_events = [Ev("555bf")]
+#current_events = [Ev("555bf")]
 
 
 def ComplexHandler(Obj):
@@ -338,6 +341,9 @@ def main():
     cursor = cnx.cursor()
 
     all_events_competitors = []
+
+#    current_events = get_current_events()
+    current_events = [Ev("333fm"), Ev("555bf")]
 
     for current_event in current_events:
         event_id = current_event.event_id
