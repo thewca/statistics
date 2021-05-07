@@ -48,6 +48,7 @@ from
     (
         select
             personId,
+            r.countryId,
             min(
                 case
                     when best > 0 then best
@@ -67,15 +68,35 @@ from
             eventId = %(event_id)s
             and c.start_date = %(date)s
         group by
-            personId
+            r.personId,
+            countryId
         order by
             personId
     ) today
-    inner join Persons p on today.personId = p.id
-    inner join Countries c on p.countryId = c.id
+    inner join Countries c on today.countryId = c.id
     inner join Continents ct on c.continentId = ct.id
 where
     single is not null"""
+
+insert_query = """insert into
+    best_ever_ranks (
+        person_id,
+        continent,
+        country_id,
+        best_ever_rank,
+        last_modified
+    )
+values
+    (
+        %(wca_id)s,
+        %(continent)s,
+        %(country_id)s,
+        %(best_ever_rank)s,
+        %(last_modified)s
+    ) on duplicate key
+update
+    best_ever_rank = %(best_ever_rank)s,
+    last_modified = %(last_modified)s"""
 
 
 class Result:
@@ -125,7 +146,7 @@ class AllEventsCompetitor(Comp):
         d = competitor.__dict__
         self.wca_id = d.pop("wca_id")
         self.continent = d.pop("continent")
-        self.country = d.pop("country")
+        self.country_id = d.pop("country")
         d["event_id"] = event
         self.all_results.append(d)
 
@@ -323,9 +344,6 @@ class Ev:
         self.event_id = event_id
 
 
-#current_events = [Ev("555bf")]
-
-
 def ComplexHandler(Obj):
     if hasattr(Obj, 'jsonable'):
         return Obj.jsonable()
@@ -343,7 +361,8 @@ def main():
     all_events_competitors = []
 
 #    current_events = get_current_events()
-    current_events = [Ev("333fm"), Ev("555bf")]
+    # current_events = [Ev("333fm"), Ev("555bf")]
+    current_events = [Ev("555bf")]
 
     for current_event in current_events:
         event_id = current_event.event_id
@@ -359,9 +378,19 @@ def main():
             competitor = all_events_competitors[index]
             competitor.insert_result(event_id, competitor_for_event)
 
+    log.info("Insert %s competitors into the database" %
+             len(all_events_competitors))
+    today = date.today()
     for competitor in all_events_competitors:
-        if competitor.wca_id == '2015CAMP17':
-            print(json.dumps(competitor, indent=2, default=ComplexHandler))
+        # if competitor.wca_id == '2015CAMP17':
+        #     print(json.dumps(competitor, default=ComplexHandler))
+        #     break
+        best_ever_rank = json.dumps(
+            competitor.all_results, default=ComplexHandler)
+        cursor.execute(insert_query, {"wca_id": competitor.wca_id, "continent": competitor.continent, "country_id": competitor.country_id,
+                                      "best_ever_rank": best_ever_rank, "last_modified": today})
+
+    cnx.commit()
 
     cnx.close()
 
