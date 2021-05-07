@@ -87,6 +87,9 @@ class Result:
     def __repr__(self) -> str:
         return str(self.__dict__)
 
+    def jsonable(self):
+        return self.__dict__
+
 
 class Competitor(Comp):
     world = "world"
@@ -107,6 +110,9 @@ class Competitor(Comp):
     def __repr__(self) -> str:
         return str(self.__dict__)
 
+    def jsonable(self):
+        return self.__dict__
+
 
 class AllEventsCompetitor(Comp):
     def __init__(self, wca_id):
@@ -123,6 +129,9 @@ class AllEventsCompetitor(Comp):
     def __repr__(self) -> str:
         return str(self.__dict__)
 
+    def jsonable(self):
+        return self.__dict__
+
 
 class Region:
     def __init__(self, name) -> None:
@@ -138,6 +147,9 @@ class Region:
 
     def __repr__(self) -> str:
         return str(self.__dict__)
+
+    def jsonable(self):
+        return self.__dict__
 
 
 def maybe_insort_and_return_region(regions, region_name):
@@ -308,7 +320,14 @@ class Ev:
         self.event_id = event_id
 
 
-current_events = [Ev("333fm"), Ev("555bf")]
+current_events = [Ev("555bf")]
+
+
+def ComplexHandler(Obj):
+    if hasattr(Obj, 'jsonable'):
+        return Obj.jsonable()
+    else:
+        return str(Obj)
 
 
 def main():
@@ -336,7 +355,7 @@ def main():
 
     for competitor in all_events_competitors:
         if competitor.wca_id == '2015CAMP17':
-            print(competitor)
+            print(json.dumps(competitor, indent=2, default=ComplexHandler))
 
     cnx.close()
 
