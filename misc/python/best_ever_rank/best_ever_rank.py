@@ -130,6 +130,9 @@ class Competitor(Comp):
         self.continent = continent
         self.country = country
 
+    def __eq__(self, o):
+        return self.wca_id == o.wca_id and self.continent == o.continent and self.country == o.country
+
     def __repr__(self) -> str:
         return str(self.__dict__)
 
@@ -200,7 +203,15 @@ def update_averages(regions, competitor_region_name, old_average, new_average):
 
     if old_average:
         old_index = bisect_left(region.all_time_averages, old_average)
-        del region.all_time_averages[old_index]
+        try:
+            del region.all_time_averages[old_index]
+        except:
+            print(competitor_region_name)
+            print(old_index)
+            print(len(region.all_time_averages))
+            print(old_average)
+            print(new_average)
+            raise "Error"
 
     insort_left(region.all_time_averages, new_average)
 
@@ -361,8 +372,8 @@ def main():
     all_events_competitors = []
 
 #    current_events = get_current_events()
-    # current_events = [Ev("333fm"), Ev("555bf")]
-    current_events = [Ev("555bf")]
+    current_events = [Ev("333fm"), Ev("555bf")]
+    # current_events = [Ev("555bf")]
 
     for current_event in current_events:
         event_id = current_event.event_id
