@@ -141,15 +141,14 @@ class Competitor(Comp):
 
 
 class AllEventsCompetitor(Comp):
-    def __init__(self, wca_id):
+    def __init__(self, wca_id, continent, country_id):
         super().__init__(wca_id)
+        self.continent = continent
+        self.country_id = country_id
         self.all_results = []
 
     def insert_result(self, event, competitor):
         d = competitor.__dict__
-        self.wca_id = d.pop("wca_id")
-        self.continent = d.pop("continent")
-        self.country_id = d.pop("country")
         d["event_id"] = event
         self.all_results.append(d)
 
@@ -158,6 +157,9 @@ class AllEventsCompetitor(Comp):
 
     def jsonable(self):
         return self.__dict__
+
+    def __eq__(self, o):
+        return self.wca_id == o.wca_id and self.continent == o.continent and self.country_id == o.country_id
 
 
 class Region:
@@ -381,7 +383,8 @@ def main():
 
         for competitor_for_event in competitors:
 
-            competitor = AllEventsCompetitor(competitor_for_event.wca_id)
+            competitor = AllEventsCompetitor(
+                competitor_for_event.wca_id, competitor_for_event.continent, competitor_for_event.country)
             index = bisect_left(all_events_competitors, competitor)
             if index == len(all_events_competitors) or all_events_competitors[index] != competitor:
                 all_events_competitors.insert(index, competitor)
