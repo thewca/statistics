@@ -373,8 +373,8 @@ def main():
 
     all_events_competitors = []
 
-#    current_events = get_current_events()
-    current_events = [Ev("333fm"), Ev("555bf")]
+    current_events = get_current_events()
+    # current_events = [Ev("333fm"), Ev("555bf")]
     # current_events = [Ev("555bf")]
 
     for current_event in current_events:
