@@ -1,15 +1,16 @@
 package org.worldcubeassociation.statistics.controller;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.worldcubeassociation.statistics.dto.besteverrank.BestEverRankDTO;
 
 import java.util.List;
 
-@FunctionalInterface
 @RequestMapping("best-ever-rank")
+@CrossOrigin(origins = "*", allowedHeaders = "*") // Enable this for testing
 public interface BestEverRanksController {
-    @PostMapping("{personId}")
+    @GetMapping("{personId}")
     List<BestEverRankDTO> get(@PathVariable String personId);
 }

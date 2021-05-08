@@ -1,0 +1,20 @@
+.ranks-wrapper {
+  overflow-x: auto;
+}
+
+.ranks-table th,
+.ranks-table td {
+  border: 1px solid black;
+  text-align: center;
+  font-size: 12px;
+  margin: auto;
+  padding: 5px;
+}
+
+.person-info {
+  text-align: center;
+}
+
+.person-info-wrapper {
+  align-items: center;
+}

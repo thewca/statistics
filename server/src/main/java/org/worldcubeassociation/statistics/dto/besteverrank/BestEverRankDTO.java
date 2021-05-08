@@ -15,5 +15,5 @@ public class BestEverRankDTO {
 
     private LocalDateTime lastModified;
 
-    private List<RankDTO> ranksDTO;
+    private List<RankDTO> ranks;
 }

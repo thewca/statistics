@@ -32,5 +32,5 @@ public class BestEverRank extends BaseEntity {
 
     @Type(type = "json")
     @Column(columnDefinition = "json", name = "best_ever_rank")
-    private List<RankDTO> ranksDTO;
+    private List<RankDTO> ranks;
 }
