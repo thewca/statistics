@@ -3,6 +3,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import statisticsApi from "../api/statistics.api";
 import BestEverRank from "../model/BestEverRank";
 import "./BestEverRanksPage.css";
+import "@cubing/icons";
 
 const BestEverRanksPage = () => {
   const [wcaId, setWcaId] = useState("2015CAMP17");
@@ -72,7 +73,10 @@ const BestEverRanksPage = () => {
               {personCountry.ranks.map((rank) => (
                 <React.Fragment key={rank.event_id}>
                   <tr>
-                    <th rowSpan={3}>{rank.event_id}</th>
+                    <th rowSpan={3}>
+                      <p>{rank.event_id}</p>
+                      <span className={`cubing-icon event-${rank.event_id}`} />
+                    </th>
                     <th>WR</th>
                     <td>{rank.best_world_single_rank.result || "-"}</td>
                     <td>{rank.best_world_single_rank.rank || "-"}</td>
