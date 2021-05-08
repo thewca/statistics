@@ -78,46 +78,162 @@ const BestEverRanksPage = () => {
                       <span className={`cubing-icon event-${rank.event_id}`} />
                     </th>
                     <th>WR</th>
-                    <td>{rank.best_world_single_rank.result || "-"}</td>
-                    <td>{rank.best_world_single_rank.rank || "-"}</td>
-                    <td>{rank.best_world_single_rank.start || "-"}</td>
-                    <td>{rank.best_world_single_rank.end || "-"}</td>
-                    <td>{rank.best_world_single_rank.competition || "-"}</td>
-                    <td>{rank.best_world_average_rank.result || "-"}</td>
-                    <td>{rank.best_world_average_rank.rank || "-"}</td>
-                    <td>{rank.best_world_average_rank.start || "-"}</td>
-                    <td>{rank.best_world_average_rank.end || "-"}</td>
-                    <td>{rank.best_world_average_rank.competition || "-"}</td>
+                    <td>
+                      {rank.best_world_single_rank.result != null
+                        ? rank.best_world_single_rank.result
+                        : "-"}
+                    </td>
+                    <td>
+                      {rank.best_world_single_rank.rank != null
+                        ? rank.best_world_single_rank.rank + 1
+                        : "-"}
+                    </td>
+                    <td>
+                      {rank.best_world_single_rank.start != null
+                        ? rank.best_world_single_rank.start
+                        : "-"}
+                    </td>
+                    <td>
+                      {rank.best_world_single_rank.end != null
+                        ? rank.best_world_single_rank.end
+                        : "-"}
+                    </td>
+                    <td>
+                      {rank.best_world_single_rank.competition != null
+                        ? rank.best_world_single_rank.competition
+                        : "-"}
+                    </td>
+                    <td>
+                      {rank.best_world_average_rank.result != null
+                        ? rank.best_world_average_rank.result
+                        : "-"}
+                    </td>
+                    <td>
+                      {rank.best_world_average_rank.rank != null
+                        ? rank.best_world_average_rank.rank + 1
+                        : "-"}
+                    </td>
+                    <td>
+                      {rank.best_world_average_rank.start != null
+                        ? rank.best_world_average_rank.start
+                        : "-"}
+                    </td>
+                    <td>
+                      {rank.best_world_average_rank.end != null
+                        ? rank.best_world_average_rank.end
+                        : "-"}
+                    </td>
+                    <td>
+                      {rank.best_world_average_rank.competition != null
+                        ? rank.best_world_average_rank.competition
+                        : "-"}
+                    </td>
                   </tr>
                   <tr>
                     <th>CR</th>
-                    <td>{rank.best_continent_single_rank.result || "-"}</td>
-                    <td>{rank.best_continent_single_rank.rank || "-"}</td>
-                    <td>{rank.best_continent_single_rank.start || "-"}</td>
-                    <td>{rank.best_continent_single_rank.end || "-"}</td>
                     <td>
-                      {rank.best_continent_single_rank.competition || "-"}
+                      {rank.best_continent_single_rank.result != null
+                        ? rank.best_continent_single_rank.result
+                        : "-"}
                     </td>
-                    <td>{rank.best_continent_average_rank.result || "-"}</td>
-                    <td>{rank.best_continent_average_rank.rank || "-"}</td>
-                    <td>{rank.best_continent_average_rank.start || "-"}</td>
-                    <td>{rank.best_continent_average_rank.end || "-"}</td>
                     <td>
-                      {rank.best_continent_average_rank.competition || "-"}
+                      {rank.best_continent_single_rank.rank != null
+                        ? rank.best_continent_single_rank.rank + 1
+                        : "-"}
+                    </td>
+                    <td>
+                      {rank.best_continent_single_rank.start != null
+                        ? rank.best_continent_single_rank.start
+                        : "-"}
+                    </td>
+                    <td>
+                      {rank.best_continent_single_rank.end != null
+                        ? rank.best_continent_single_rank.end
+                        : "-"}
+                    </td>
+                    <td>
+                      {rank.best_continent_single_rank.competition != null
+                        ? rank.best_continent_single_rank.competition
+                        : "-"}
+                    </td>
+                    <td>
+                      {rank.best_continent_average_rank.result != null
+                        ? rank.best_continent_average_rank.result
+                        : "-"}
+                    </td>
+                    <td>
+                      {rank.best_continent_average_rank.rank != null
+                        ? rank.best_continent_average_rank.rank + 1
+                        : "-"}
+                    </td>
+                    <td>
+                      {rank.best_continent_average_rank.start != null
+                        ? rank.best_continent_average_rank.start
+                        : "-"}
+                    </td>
+                    <td>
+                      {rank.best_continent_average_rank.end != null
+                        ? rank.best_continent_average_rank.end
+                        : "-"}
+                    </td>
+                    <td>
+                      {rank.best_continent_average_rank.competition != null
+                        ? rank.best_continent_average_rank.competition
+                        : "-"}
                     </td>
                   </tr>
                   <tr>
                     <th>NR</th>
-                    <td>{rank.best_country_single_rank.result || "-"}</td>
-                    <td>{rank.best_country_single_rank.rank || "-"}</td>
-                    <td>{rank.best_country_single_rank.start || "-"}</td>
-                    <td>{rank.best_country_single_rank.end || "-"}</td>
-                    <td>{rank.best_country_single_rank.competition || "-"}</td>
-                    <td>{rank.best_country_average_rank.result || "-"}</td>
-                    <td>{rank.best_country_average_rank.rank || "-"}</td>
-                    <td>{rank.best_country_average_rank.start || "-"}</td>
-                    <td>{rank.best_country_average_rank.end || "-"}</td>
-                    <td>{rank.best_country_average_rank.competition || "-"}</td>
+                    <td>
+                      {rank.best_country_single_rank.result != null
+                        ? rank.best_country_single_rank.result
+                        : "-"}
+                    </td>
+                    <td>
+                      {rank.best_country_single_rank.rank != null
+                        ? rank.best_country_single_rank.rank + 1
+                        : "-"}
+                    </td>
+                    <td>
+                      {rank.best_country_single_rank.start != null
+                        ? rank.best_country_single_rank.start
+                        : "-"}
+                    </td>
+                    <td>
+                      {rank.best_country_single_rank.end != null
+                        ? rank.best_country_single_rank.end
+                        : "-"}
+                    </td>
+                    <td>
+                      {rank.best_country_single_rank.competition != null
+                        ? rank.best_country_single_rank.competition
+                        : "-"}
+                    </td>
+                    <td>
+                      {rank.best_country_average_rank.result != null
+                        ? rank.best_country_average_rank.result
+                        : "-"}
+                    </td>
+                    <td>
+                      {rank.best_country_average_rank.rank != null
+                        ? rank.best_country_average_rank.rank + 1
+                        : "-"}
+                    </td>
+                    <td>
+                      {rank.best_country_average_rank.start != null
+                        ? rank.best_country_average_rank.start
+                        : "-"}
+                    </td>
+                    <td>
+                      {rank.best_country_average_rank.end != null
+                        ? rank.best_country_average_rank.end
+                        : "-"}
+                    </td>
+                    <td>
+                      {rank.best_country_average_rank.competition != null
+                        ? rank.best_country_average_rank.competition
+                        : "-"}
+                    </td>
                   </tr>
                 </React.Fragment>
               ))}

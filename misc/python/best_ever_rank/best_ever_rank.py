@@ -1,8 +1,8 @@
 # python3 -m misc.python.best_ever_rank.best_ever_rank
 
+import json
 from bisect import bisect_left, insort_left
 from datetime import date, timedelta
-import json
 
 from misc.python.model.competitor import Competitor as Comp
 from misc.python.util.database_util import get_database_connection
@@ -103,8 +103,8 @@ class Result:
     def __init__(self, result, start, competition) -> None:
         self.result = result
         self.start = start
-        self.competition = competition
         self.end = None
+        self.competition = competition
         self.rank = None
 
     def __repr__(self) -> str:
@@ -133,6 +133,13 @@ class Competitor(Comp):
     def __eq__(self, o):
         return self.wca_id == o.wca_id and self.continent == o.continent and self.country == o.country
 
+    def __lt__(self, o):
+        if self.wca_id != o.wca_id:
+            return self.wca_id < o.wca_id
+        if self.continent != o.continent:
+            return self.continent < o.continent
+        return self.country < o.country
+
     def __repr__(self) -> str:
         return str(self.__dict__)
 
@@ -160,6 +167,13 @@ class AllEventsCompetitor(Comp):
 
     def __eq__(self, o):
         return self.wca_id == o.wca_id and self.continent == o.continent and self.country_id == o.country_id
+
+    def __lt__(self, o):
+        if self.wca_id != o.wca_id:
+            return self.wca_id < o.wca_id
+        if self.continent != o.continent:
+            return self.continent < o.continent
+        return self.country_id < o.country_id
 
 
 class Region:
@@ -205,15 +219,7 @@ def update_averages(regions, competitor_region_name, old_average, new_average):
 
     if old_average:
         old_index = bisect_left(region.all_time_averages, old_average)
-        try:
-            del region.all_time_averages[old_index]
-        except:
-            print(competitor_region_name)
-            print(old_index)
-            print(len(region.all_time_averages))
-            print(old_average)
-            print(new_average)
-            raise "Error"
+        del region.all_time_averages[old_index]
 
     insort_left(region.all_time_averages, new_average)
 
@@ -373,9 +379,9 @@ def main():
 
     all_events_competitors = []
 
-    current_events = get_current_events()
+    # current_events = get_current_events()
     # current_events = [Ev("333fm"), Ev("555bf")]
-    # current_events = [Ev("555bf")]
+    current_events = [Ev("333fm")]
 
     for current_event in current_events:
         event_id = current_event.event_id
