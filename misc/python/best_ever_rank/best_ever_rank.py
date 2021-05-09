@@ -4,7 +4,6 @@ import json
 from bisect import bisect_left, insort_left
 from datetime import date, timedelta
 
-from misc.python.model.competitor import Competitor as Comp
 from misc.python.util.database_util import get_database_connection
 from misc.python.util.event_util import get_current_events
 from misc.python.util.log_util import log
@@ -100,11 +99,11 @@ update
 
 
 class Result:
-    def __init__(self, result, start, competition) -> None:
+    def __init__(self, result, competition, start) -> None:
         self.result = result
+        self.competition = competition
         self.start = start
         self.end = None
-        self.competition = competition
         self.rank = None
 
     def __repr__(self) -> str:
@@ -114,24 +113,43 @@ class Result:
         return self.__dict__
 
 
-class Competitor(Comp):
-    world = "world"
+class CompetitorWorld:
+    def __init__(self, wca_id) -> None:
+        self.wca_id = wca_id
+        self.single = None
+        self.average = None
 
-    def __init__(self, wca_id, continent, country, single, average, start, competition):
+    def __eq__(self, o: object) -> bool:
+        return self.wca_id == o.wca_id
+
+    def __lt__(self, o):
+        return self.wca_id < o.wca_id
+
+    def jsonable(self):
+        return self.__dict__
+
+
+class CompetitorContinent(CompetitorWorld):
+    def __init__(self, wca_id, continent) -> None:
         super().__init__(wca_id)
-        self.single = Result(single, start, competition)
-        self.average = Result(average, start, competition)
-        self.best_world_single_rank = Result(single, start, competition)
-        self.best_world_average_rank = Result(average, start, competition)
-        self.best_continent_single_rank = Result(single, start, competition)
-        self.best_continent_average_rank = Result(average, start, competition)
-        self.best_country_single_rank = Result(single, start, competition)
-        self.best_country_average_rank = Result(average, start, competition)
         self.continent = continent
+
+    def __eq__(self, o: object) -> bool:
+        return super().__eq__(o) and self.continent == o.continent
+
+    def __lt__(self, o):
+        if self.wca_id != o.wca_id:
+            return self.wca_id < o.wca_id
+        return self.continent < o.continent
+
+
+class CompetitorCountry(CompetitorContinent):
+    def __init__(self, wca_id, continent, country) -> None:
+        super().__init__(wca_id, continent)
         self.country = country
 
-    def __eq__(self, o):
-        return self.wca_id == o.wca_id and self.continent == o.continent and self.country == o.country
+    def __eq__(self, o: object) -> bool:
+        return super().__eq__(o) and self.country == o.country
 
     def __lt__(self, o):
         if self.wca_id != o.wca_id:
@@ -140,59 +158,18 @@ class Competitor(Comp):
             return self.continent < o.continent
         return self.country < o.country
 
-    def __repr__(self) -> str:
-        return str(self.__dict__)
-
-    def jsonable(self):
-        return self.__dict__
-
-
-class AllEventsCompetitor(Comp):
-    def __init__(self, wca_id, continent, country_id):
-        super().__init__(wca_id)
-        self.continent = continent
-        self.country_id = country_id
-        self.all_results = []
-
-    def insert_result(self, event, competitor):
-        d = competitor.__dict__
-        d["event_id"] = event
-        self.all_results.append(d)
-
-    def __repr__(self) -> str:
-        return str(self.__dict__)
-
-    def jsonable(self):
-        return self.__dict__
-
-    def __eq__(self, o):
-        return self.wca_id == o.wca_id and self.continent == o.continent and self.country_id == o.country_id
-
-    def __lt__(self, o):
-        if self.wca_id != o.wca_id:
-            return self.wca_id < o.wca_id
-        if self.continent != o.continent:
-            return self.continent < o.continent
-        return self.country_id < o.country_id
-
 
 class Region:
     def __init__(self, name) -> None:
         self.name = name
-        self.all_time_singles = []
-        self.all_time_averages = []
+        self.singles = []
+        self.averages = []
 
     def __eq__(self, o: object) -> bool:
         return self.name == o.name
 
     def __lt__(self, o):
         return self.name < o.name
-
-    def __repr__(self) -> str:
-        return str(self.__dict__)
-
-    def jsonable(self):
-        return self.__dict__
 
 
 def maybe_insort_and_return_region(regions, region_name):
@@ -228,7 +205,7 @@ def analyze_best(regions, region_name, competitor_best_single_region, competitor
     region = maybe_insort_and_return_region(regions, region_name)
 
     current_best_rank = bisect_left(
-        region.all_time_singles, competitor_single.result)
+        region.singles, competitor_single.result)
     if competitor_best_single_region.rank == None or current_best_rank < competitor_best_single_region.rank:
         competitor_best_single_region.rank = current_best_rank
         competitor_best_single_region.result = competitor_single.result
