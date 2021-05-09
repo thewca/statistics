@@ -98,6 +98,20 @@ update
     last_modified = %(last_modified)s"""
 
 
+class Region:
+    def __init__(self, name) -> None:
+        self.name = name
+        self.singles = []
+        self.averages = []
+        self.competitors = []
+
+    def __eq__(self, o: object) -> bool:
+        return self.name == o.name
+
+    def __lt__(self, o):
+        return self.name < o.name
+
+
 class Result:
     def __init__(self, result, competition, start) -> None:
         self.result = result
@@ -159,17 +173,21 @@ class CompetitorCountry(CompetitorContinent):
         return self.country < o.country
 
 
-class Region:
-    def __init__(self, name) -> None:
-        self.name = name
-        self.singles = []
-        self.averages = []
+class Competitor:
+    def __init__(self, wca_id) -> None:
+        self.wca_id = wca_id
+
+        # A competitor can have multiple nationalities, one at a time, but multiple
+        # We deal with world and continent in the same way
+        self.competitor_world = []
+        self.competitor_continent = []
+        self.competitor_country = []
 
     def __eq__(self, o: object) -> bool:
-        return self.name == o.name
+        return self.wca_id == o.wca_id
 
-    def __lt__(self, o):
-        return self.name < o.name
+    def __lt__(self, o: object) -> bool:
+        return self.wca_id < o.wca_id
 
 
 def maybe_insort_and_return_region(regions, region_name):
@@ -301,37 +319,40 @@ def summarize_results(all_time_competitors, today_competitors, worlds, continent
     find_ranks(all_time_competitors, worlds, continents, countries, today)
 
 
-def get_ranks_by_event(event_id, cursor):
+def get_ranks_by_event(competitors, event_id, cursor):
     log.info(event_id)
 
     worlds = [Region("world")]
-
-    all_time_competitors = []
     continents = []
     countries = []
-
-    # Sorted by wca_id
-    today_competitors = []
 
     log.info("Read results")
     cursor.execute(query_dates, {"event_id": event_id})
     dates = cursor.fetchall()
     log.info("Found %s dates" % len(dates))
+
+    year = None
     for row in dates:
         current_date = row[0]
+        if year != current_date.year:
+            log.info("Year: %s" % year)
+            year = current_date.year
+
+        today_competitors = []
+
         cursor.execute(query_next_results, {
                        "date": current_date, "event_id": event_id})
         today_results = cursor.fetchall()
         for wca_id, continent, country, single, average, competition_id in today_results:
-            competitor = Competitor(
-                wca_id, continent, country, single, average, current_date, competition_id)
-            today_competitors.append(competitor)
+            competitor_country = CompetitorCountry(wca_id, continent, country)
+            competitor_country.single = single
+            competitor_country.average = average
+
+            today_competitors.append(competitor_country)
 
         # One last summarization for the last day
-        summarize_results(all_time_competitors, today_competitors,
+        summarize_results(competitors, today_competitors,
                           worlds, continents, countries, current_date)
-
-    return all_time_competitors
 
 
 # TODO remove mock
@@ -354,7 +375,7 @@ def main():
     cnx = get_database_connection()
     cursor = cnx.cursor()
 
-    all_events_competitors = []
+    competitors = []
 
     # current_events = get_current_events()
     # current_events = [Ev("333fm"), Ev("555bf")]
@@ -362,30 +383,30 @@ def main():
 
     for current_event in current_events:
         event_id = current_event.event_id
-        competitors = get_ranks_by_event(event_id, cursor)
+        competitors = get_ranks_by_event(competitors, event_id, cursor)
 
         for competitor_for_event in competitors:
+            if competitor_for_event.wca_id == '2015CAMP17':
+                print(competitor_for_event)
 
-            competitor = AllEventsCompetitor(
-                competitor_for_event.wca_id, competitor_for_event.continent, competitor_for_event.country)
-            index = bisect_left(all_events_competitors, competitor)
-            if index == len(all_events_competitors) or all_events_competitors[index] != competitor:
-                all_events_competitors.insert(index, competitor)
+            # competitor
+            # if index == len(all_events_competitors) or all_events_competitors[index] != competitor:
+            #     all_events_competitors.insert(index, competitor)
 
-            competitor = all_events_competitors[index]
-            competitor.insert_result(event_id, competitor_for_event)
+            # competitor = all_events_competitors[index]
+            # competitor.insert_result(event_id, competitor_for_event)
 
-    log.info("Insert %s competitors into the database" %
-             len(all_events_competitors))
-    today = date.today()
-    for competitor in all_events_competitors:
+    # log.info("Insert %s competitors into the database" %
+    #          len(all_events_competitors))
+    # today = date.today()
+    # for competitor in all_events_competitors:
         # if competitor.wca_id == '2015CAMP17':
         #     print(json.dumps(competitor, default=ComplexHandler))
         #     break
-        best_ever_rank = json.dumps(
-            competitor.all_results, default=ComplexHandler)
-        cursor.execute(insert_query, {"wca_id": competitor.wca_id, "continent": competitor.continent, "country_id": competitor.country_id,
-                                      "best_ever_rank": best_ever_rank, "last_modified": today})
+        # best_ever_rank = json.dumps(
+        #     competitor.all_results, default=ComplexHandler)
+        # cursor.execute(insert_query, {"wca_id": competitor.wca_id, "continent": competitor.continent, "country_id": competitor.country_id,
+        #                               "best_ever_rank": best_ever_rank, "last_modified": today})
 
     cnx.commit()
 
