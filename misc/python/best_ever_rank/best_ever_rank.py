@@ -114,10 +114,10 @@ class Region:
 
 
 class Result:
-    def __init__(self, result) -> None:
+    def __init__(self, result, competition, date) -> None:
         self.result = result
-        self.competition = None
-        self.start = None
+        self.competition = competition
+        self.start = date
         self.end = None
         self.rank = None
 
@@ -129,13 +129,10 @@ class Result:
 
 
 class CompetitorWorld:
-    def __init__(self, wca_id, continent, country, single, average, competition) -> None:
+    def __init__(self, wca_id, single, average, competition, date) -> None:
         self.wca_id = wca_id
-        self.continent = continent
-        self.country = country
-        self.single = Result(single)
-        self.average = Result(average)
-        self.competition = competition
+        self.single = Result(single, competition, date)
+        self.average = Result(average, competition, date)
 
     def __eq__(self, o: object) -> bool:
         return self.wca_id == o.wca_id
@@ -145,6 +142,9 @@ class CompetitorWorld:
 
     def jsonable(self):
         return self.__dict__
+
+    def __repr__(self) -> str:
+        return json.dumps(self.__dict__, indent=2, default=ComplexHandler)
 
 
 class CompetitorContinent(CompetitorWorld):
@@ -315,13 +315,15 @@ def get_ranks_by_event(competitors, event_id, cursor):
         today_results = cursor.fetchall()
         for wca_id, continent, country, single, average, competition in today_results:
             competitor = CompetitorWorld(
-                wca_id, continent, country, single, average, competition)
+                wca_id, single, average, competition, current_date)
 
             today_competitors.append(competitor)
 
         # One last summarization for the last day
         summarize_results(today_competitors,
                           worlds, continents, countries, current_date)
+
+    return worlds, continents, countries
 
 
 # TODO remove mock
@@ -352,11 +354,12 @@ def main():
 
     for current_event in current_events:
         event_id = current_event.event_id
-        competitors = get_ranks_by_event(competitors, event_id, cursor)
+        worlds, continents, countries = get_ranks_by_event(
+            competitors, event_id, cursor)
 
-        for competitor_for_event in competitors:
-            if competitor_for_event.wca_id == '2015CAMP17':
-                print(competitor_for_event)
+        for competitor in worlds[0].competitors:
+            if competitor.wca_id == '2015CAMP17':
+                print(competitor)
 
             # competitor
             # if index == len(all_events_competitors) or all_events_competitors[index] != competitor:
