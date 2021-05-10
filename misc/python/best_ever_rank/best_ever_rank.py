@@ -1,6 +1,7 @@
 # python3 -m misc.python.best_ever_rank.best_ever_rank
 
 import json
+import time
 from bisect import bisect_left, insort_left
 from datetime import date, timedelta
 
@@ -251,41 +252,37 @@ def find_or_create_competitor(region: Region, competitor):
     return competitors[index]
 
 
-def update_results(region: Region, today_competitor, competitor, today):
+def update_results(region: Region, today_competitor, today):
+    region_competitor = find_or_create_competitor(region, today_competitor)
+
     # Singles are always non null
-    if today_competitor.single.result < competitor.single.result:
+    if today_competitor.single.result < region_competitor.single.result:
         # We remove the old result and insert the new one
-        index = bisect_left(region.singles, competitor.single.result)
+        index = bisect_left(region.singles, region_competitor.single.result)
         del region.singles[index]
 
         insort_left(region.singles, today_competitor.single.result)
 
-        competitor.single.result = today_competitor.single.result
-        competitor.single.competition = today_competitor.single.competition
-        competitor.single.start = today
-        competitor.single.end = None
+        region_competitor.single = today_competitor.single
 
     if today_competitor.average.result:
-        if not competitor.average.result or today_competitor.average.result < competitor.average.result:
-            if competitor.average.result:
-                index = bisect_left(region.averages, competitor.average.result)
+        if not region_competitor.average.result or today_competitor.average.result < region_competitor.average.result:
+            if region_competitor.average.result:
+                index = bisect_left(
+                    region.averages, region_competitor.average.result)
                 del region.averages[index]
 
             insort_left(region.averages, today_competitor.average.result)
 
-            competitor.average.result = today_competitor.average.result
-            competitor.average.competition = today_competitor.average.competition
-            competitor.average.start = today
-            competitor.average.end = None
+            region_competitor.average = today_competitor.average
 
 
 def summarize_results(today_competitors, worlds, continents, countries, today):
     world = worlds[0]
 
     # Assign today's best result
-    for competitor in today_competitors:
-        world_competitor = find_or_create_competitor(world, competitor)
-        update_results(world, world_competitor, competitor, today)
+    for today_competitor in today_competitors:
+        update_results(world, today_competitor, today)
 
     find_ranks(world, today)
 
@@ -302,12 +299,14 @@ def get_ranks_by_event(competitors, event_id, cursor):
     dates = cursor.fetchall()
     log.info("Found %s dates" % len(dates))
 
+    start = time.time()
+
     year = None
     for row in dates:
         current_date = row[0]
         if year != current_date.year:
-            log.info("Year: %s" % year)
             year = current_date.year
+            log.info("Year: %s, %.2f" % (year, time.time()-start))
 
         today_competitors = []
 
@@ -315,10 +314,10 @@ def get_ranks_by_event(competitors, event_id, cursor):
                        "date": current_date, "event_id": event_id})
         today_results = cursor.fetchall()
         for wca_id, continent, country, single, average, competition in today_results:
-            competitor_country = CompetitorWorld(
+            competitor = CompetitorWorld(
                 wca_id, continent, country, single, average, competition)
 
-            today_competitors.append(competitor_country)
+            today_competitors.append(competitor)
 
         # One last summarization for the last day
         summarize_results(today_competitors,
