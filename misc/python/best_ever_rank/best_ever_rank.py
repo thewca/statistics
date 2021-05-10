@@ -4,6 +4,7 @@ import json
 import time
 from bisect import bisect_left, insort_left
 from datetime import date, timedelta
+from typing import List
 
 from misc.python.util.database_util import get_database_connection
 from misc.python.util.event_util import get_current_events
@@ -129,10 +130,12 @@ class Result:
 
 
 class CompetitorWorld:
-    def __init__(self, wca_id, single, average, competition, date) -> None:
-        self.wca_id = wca_id
-        self.single = Result(single, competition, date)
-        self.average = Result(average, competition, date)
+    def __init__(self, competitor_country) -> None:
+        self.wca_id = competitor_country.wca_id
+        self.single = Result(competitor_country.single.result,
+                             competitor_country.single.competition, competitor_country.single.start)
+        self.average = Result(competitor_country.average.result,
+                              competitor_country.average.competition, competitor_country.average.start)
 
     def __eq__(self, o: object) -> bool:
         return self.wca_id == o.wca_id
@@ -148,8 +151,9 @@ class CompetitorWorld:
 
 
 class CompetitorContinent(CompetitorWorld):
-    def __init__(self, wca_id, continent, country, single, average, competition) -> None:
-        super().__init__(wca_id, continent, country, single, average, competition)
+    def __init__(self, competitor_country) -> None:
+        super().__init__(competitor_country)
+        self.continent = competitor_country.continent
 
     def __eq__(self, o: object) -> bool:
         return super().__eq__(o) and self.continent == o.continent
@@ -161,8 +165,12 @@ class CompetitorContinent(CompetitorWorld):
 
 
 class CompetitorCountry(CompetitorContinent):
-    def __init__(self, wca_id, continent, country, single, average, competition) -> None:
-        super().__init__(wca_id, continent, country, single, average, competition)
+    def __init__(self, wca_id, continent, country, single, average, competition, date) -> None:
+        self.wca_id = wca_id
+        self.continent = continent
+        self.country = country
+        self.single = Result(single, competition, date)
+        self.average = Result(average, competition, date)
 
     def __eq__(self, o: object) -> bool:
         return super().__eq__(o) and self.country == o.country
@@ -282,7 +290,24 @@ def summarize_results(today_competitors, worlds, continents, countries, today):
 
     # Assign today's best result
     for today_competitor in today_competitors:
-        update_results(world, today_competitor, today)
+
+        competitor_world = CompetitorWorld(today_competitor)
+        update_results(world, competitor_world, today)
+
+        continent = maybe_insort_and_return_region(
+            continents, today_competitor.continent)
+        competitor_continent = CompetitorContinent(today_competitor)
+        update_results(continent, competitor_continent, today)
+
+        country = maybe_insort_and_return_region(
+            countries, today_competitor.country)
+        update_results(country, today_competitor, today)
+
+    find_ranks(world, today)
+    for continent in continents:
+        find_ranks(continent, today)
+    for country in countries:
+        find_ranks(country, today)
 
     find_ranks(world, today)
 
@@ -308,14 +333,17 @@ def get_ranks_by_event(competitors, event_id, cursor):
             year = current_date.year
             log.info("Year: %s, %.2f" % (year, time.time()-start))
 
+            # if year == 2019:  # TODO remove mock
+            #     break
+
         today_competitors = []
 
         cursor.execute(query_next_results, {
                        "date": current_date, "event_id": event_id})
         today_results = cursor.fetchall()
         for wca_id, continent, country, single, average, competition in today_results:
-            competitor = CompetitorWorld(
-                wca_id, single, average, competition, current_date)
+            competitor = CompetitorCountry(
+                wca_id, continent, country, single, average, competition, current_date)
 
             today_competitors.append(competitor)
 
@@ -357,9 +385,22 @@ def main():
         worlds, continents, countries = get_ranks_by_event(
             competitors, event_id, cursor)
 
+        print("="*10, "World", "="*10)
         for competitor in worlds[0].competitors:
             if competitor.wca_id == '2015CAMP17':
                 print(competitor)
+
+        print("="*10, "Continent", "="*10)
+        for continent in continents:
+            for competitor in continent.competitors:
+                if competitor.wca_id == '2015CAMP17':
+                    print(competitor)
+
+        print("="*10, "Country", "="*10)
+        for country in countries:
+            for competitor in country.competitors:
+                if competitor.wca_id == '2015CAMP17':
+                    print(competitor)
 
             # competitor
             # if index == len(all_events_competitors) or all_events_competitors[index] != competitor:
