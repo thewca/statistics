@@ -229,7 +229,7 @@ def analyze_rank(region_results, competitor_result: Results, today):
         competitor_result.best_rank.result = competitor_result.current.result
         competitor_result.best_rank.competition = competitor_result.current.competition
         competitor_result.best_rank.start = competitor_result.current.start
-        competitor_result.best_rank.rank = competitor_result.current.rank
+        competitor_result.best_rank.rank = current_rank
         competitor_result.best_rank.end = None
     elif current_rank > competitor_result.best_rank.rank and competitor_result.best_rank.end == None:
         competitor_result.best_rank.end = today - timedelta(days=1)
@@ -268,7 +268,7 @@ def update_results(region: Region, today_competitor, today):
 
         insort_left(region.singles, today_competitor.single.current.result)
 
-        region_competitor.single = today_competitor.single
+        region_competitor.single.current = today_competitor.single.current
 
     if today_competitor.average.current.result:
         if not region_competitor.average.current.result or today_competitor.average.current.result < region_competitor.average.current.result:
@@ -280,7 +280,7 @@ def update_results(region: Region, today_competitor, today):
             insort_left(region.averages,
                         today_competitor.average.current.result)
 
-            region_competitor.average = today_competitor.average
+            region_competitor.average.current = today_competitor.average.current
 
 
 def summarize_results(today_competitors, worlds, continents, countries, today):
