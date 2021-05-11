@@ -129,13 +129,22 @@ class Result:
         return self.__dict__
 
 
+class Results:
+    def __init__(self, result, competition, date) -> None:
+        self.current = Result(result, competition, date)
+        self.best_rank = Result(None, None, None)
+
+    def jsonable(self):
+        return self.__dict__
+
+
 class CompetitorWorld:
     def __init__(self, competitor_country) -> None:
         self.wca_id = competitor_country.wca_id
-        self.single = Result(competitor_country.single.result,
-                             competitor_country.single.competition, competitor_country.single.start)
-        self.average = Result(competitor_country.average.result,
-                              competitor_country.average.competition, competitor_country.average.start)
+        self.single = Results(competitor_country.single.current.result,
+                              competitor_country.single.current.competition, competitor_country.single.current.start)
+        self.average = Results(competitor_country.average.current.result,
+                               competitor_country.average.current.competition, competitor_country.average.current.start)
 
     def __eq__(self, o: object) -> bool:
         return self.wca_id == o.wca_id
@@ -169,8 +178,8 @@ class CompetitorCountry(CompetitorContinent):
         self.wca_id = wca_id
         self.continent = continent
         self.country = country
-        self.single = Result(single, competition, date)
-        self.average = Result(average, competition, date)
+        self.single = Results(single, competition, date)
+        self.average = Results(average, competition, date)
 
     def __eq__(self, o: object) -> bool:
         return super().__eq__(o) and self.country == o.country
@@ -181,23 +190,6 @@ class CompetitorCountry(CompetitorContinent):
         if self.continent != o.continent:
             return self.continent < o.continent
         return self.country < o.country
-
-
-class Competitor:
-    def __init__(self, wca_id) -> None:
-        self.wca_id = wca_id
-
-        # A competitor can have multiple nationalities, one at a time, but multiple
-        # We deal with world and continent in the same way
-        self.competitor_world = []
-        self.competitor_continent = []
-        self.competitor_country = []
-
-    def __eq__(self, o: object) -> bool:
-        return self.wca_id == o.wca_id
-
-    def __lt__(self, o: object) -> bool:
-        return self.wca_id < o.wca_id
 
 
 def maybe_insort_and_return_region(regions, region_name):
@@ -229,22 +221,26 @@ def update_averages(regions, competitor_region_name, old_average, new_average):
     insort_left(region.all_time_averages, new_average)
 
 
+def analyze_rank(region_results, competitor_result: Results, today):
+    current_rank = bisect_left(
+        region_results, competitor_result.current.result)
+    competitor_result.current.rank = current_rank
+    if competitor_result.best_rank.rank == None or current_rank < competitor_result.best_rank.rank:
+        competitor_result.best_rank.result = competitor_result.current.result
+        competitor_result.best_rank.competition = competitor_result.current.competition
+        competitor_result.best_rank.start = competitor_result.current.start
+        competitor_result.best_rank.rank = competitor_result.current.rank
+        competitor_result.best_rank.end = None
+    elif current_rank > competitor_result.best_rank.rank and competitor_result.best_rank.end == None:
+        competitor_result.best_rank.end = today - timedelta(days=1)
+
+
 def find_ranks(region: Region, today):
     for competitor in region.competitors:
-        current_best_rank = bisect_left(
-            region.singles, competitor.single.result)
-        if competitor.single.rank == None or current_best_rank < competitor.single.rank:
-            competitor.single.rank = current_best_rank
-        elif current_best_rank > competitor.single.rank and competitor.single.end == None:
-            competitor.single.end = today - timedelta(days=1)
+        analyze_rank(region.singles, competitor.single, today)
 
-        if competitor.average.result:
-            current_best_rank = bisect_left(
-                region.averages, competitor.average.result)
-            if competitor.average.rank == None or current_best_rank < competitor.average.rank:
-                competitor.average.rank = current_best_rank
-            elif current_best_rank > competitor.average.rank and competitor.average.end == None:
-                competitor.average.end = today - timedelta(days=1)
+        if competitor.average.current.result:
+            analyze_rank(region.averages, competitor.average, today)
 
 
 def find_or_create_competitor(region: Region, competitor):
@@ -252,10 +248,10 @@ def find_or_create_competitor(region: Region, competitor):
     index = bisect_left(competitors, competitor)
     if index == len(competitors) or competitors[index] != competitor:
         competitors.insert(index, competitor)
-        insort_left(region.singles, competitor.single.result)
+        insort_left(region.singles, competitor.single.current.result)
 
-        if competitor.average.result:
-            insort_left(region.averages, competitor.average.result)
+        if competitor.average.current.result:
+            insort_left(region.averages, competitor.average.current.result)
 
     return competitors[index]
 
@@ -264,23 +260,25 @@ def update_results(region: Region, today_competitor, today):
     region_competitor = find_or_create_competitor(region, today_competitor)
 
     # Singles are always non null
-    if today_competitor.single.result < region_competitor.single.result:
+    if today_competitor.single.current.result < region_competitor.single.current.result:
         # We remove the old result and insert the new one
-        index = bisect_left(region.singles, region_competitor.single.result)
+        index = bisect_left(
+            region.singles, region_competitor.single.current.result)
         del region.singles[index]
 
-        insort_left(region.singles, today_competitor.single.result)
+        insort_left(region.singles, today_competitor.single.current.result)
 
         region_competitor.single = today_competitor.single
 
-    if today_competitor.average.result:
-        if not region_competitor.average.result or today_competitor.average.result < region_competitor.average.result:
-            if region_competitor.average.result:
+    if today_competitor.average.current.result:
+        if not region_competitor.average.current.result or today_competitor.average.current.result < region_competitor.average.current.result:
+            if region_competitor.average.current.result:
                 index = bisect_left(
-                    region.averages, region_competitor.average.result)
+                    region.averages, region_competitor.average.current.result)
                 del region.averages[index]
 
-            insort_left(region.averages, today_competitor.average.result)
+            insort_left(region.averages,
+                        today_competitor.average.current.result)
 
             region_competitor.average = today_competitor.average
 
@@ -308,8 +306,6 @@ def summarize_results(today_competitors, worlds, continents, countries, today):
         find_ranks(continent, today)
     for country in countries:
         find_ranks(country, today)
-
-    find_ranks(world, today)
 
 
 def get_ranks_by_event(competitors, event_id, cursor):
