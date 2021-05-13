@@ -192,6 +192,32 @@ class CompetitorCountry(CompetitorContinent):
         return self.country < o.country
 
 
+class EventRank:
+    def __init__(self, event) -> None:
+        self.event = event
+        self.worlds = []
+        self.continents = []
+        self.countries = []
+
+    def jsonable(self):
+        return self.__dict__
+
+
+class Competitor:
+    def __init__(self, wca_id) -> None:
+        self.wca_id = wca_id
+        self.event_ranks = []
+
+    def jsonable(self):
+        return self.__dict__
+
+    def __eq__(self, o: object) -> bool:
+        return self.wca_id == o.wca_id
+
+    def __lt__(self, o):
+        return self.wca_id < o.wca_id
+
+
 def maybe_insort_and_return_region(regions, region_name):
     region = Region(region_name)
 
@@ -308,7 +334,7 @@ def summarize_results(today_competitors, worlds, continents, countries, today):
         find_ranks(country, today)
 
 
-def get_ranks_by_event(competitors, event_id, cursor):
+def get_ranks_by_event(event_id, cursor):
     log.info(event_id)
 
     worlds = [Region("world")]
@@ -355,6 +381,9 @@ class Ev:
     def __init__(self, event_id) -> None:
         self.event_id = event_id
 
+    def jsonable(self):
+        return self.__dict__
+
 
 def ComplexHandler(Obj):
     if hasattr(Obj, 'jsonable'):
@@ -372,50 +401,56 @@ def main():
 
     competitors = []
 
-    # current_events = get_current_events()
-    # current_events = [Ev("333fm"), Ev("555bf")]
-    current_events = [Ev("333fm")]
+    current_events = get_current_events()
 
     for current_event in current_events:
         event_id = current_event.event_id
         worlds, continents, countries = get_ranks_by_event(
-            competitors, event_id, cursor)
+            event_id, cursor)
 
-        print("="*10, "World", "="*10)
         for competitor in worlds[0].competitors:
-            if competitor.wca_id == '2015CAMP17':
-                print(competitor)
+            # The competitor will exist after the first event
+            event_competitor = Competitor(competitor.wca_id)
+            index = bisect_left(competitors, event_competitor)
+            if index == len(competitors) or competitors[index] != event_competitor:
+                competitors.insert(index, event_competitor)
+            event_competitor = competitors[index]
+            event_rank = EventRank(current_event)
+            event_rank.worlds.append(competitor)
+            event_competitor.event_ranks.append(event_rank)
 
-        print("="*10, "Continent", "="*10)
         for continent in continents:
             for competitor in continent.competitors:
-                if competitor.wca_id == '2015CAMP17':
-                    print(competitor)
+                event_competitor = Competitor(competitor.wca_id)
+                index = bisect_left(competitors, event_competitor)
 
-        print("="*10, "Country", "="*10)
+                # We are sure the competitor exists
+                event_competitor = competitors[index]
+
+                # The current event is the last one
+                event_rank = event_competitor.event_ranks[-1]
+                event_rank.continents.append(competitor)
+
         for country in countries:
             for competitor in country.competitors:
-                if competitor.wca_id == '2015CAMP17':
-                    print(competitor)
+                event_competitor = Competitor(competitor.wca_id)
+                index = bisect_left(competitors, event_competitor)
 
-            # competitor
-            # if index == len(all_events_competitors) or all_events_competitors[index] != competitor:
-            #     all_events_competitors.insert(index, competitor)
+                # We are sure the competitor exists
+                event_competitor = competitors[index]
 
-            # competitor = all_events_competitors[index]
-            # competitor.insert_result(event_id, competitor_for_event)
+                # The current event is the last one
+                event_rank = event_competitor.event_ranks[-1]
+                event_rank.countries.append(competitor)
 
-    # log.info("Insert %s competitors into the database" %
-    #          len(all_events_competitors))
-    # today = date.today()
-    # for competitor in all_events_competitors:
-        # if competitor.wca_id == '2015CAMP17':
-        #     print(json.dumps(competitor, default=ComplexHandler))
-        #     break
-        # best_ever_rank = json.dumps(
-        #     competitor.all_results, default=ComplexHandler)
-        # cursor.execute(insert_query, {"wca_id": competitor.wca_id, "continent": competitor.continent, "country_id": competitor.country_id,
-        #                               "best_ever_rank": best_ever_rank, "last_modified": today})
+    log.info("Insert %s competitors into the database" %
+             len(competitors))
+    today = date.today()
+    for competitor in competitors:
+        best_ever_rank = json.dumps(
+            competitor.event_ranks, default=ComplexHandler)
+        cursor.execute(insert_query, {"wca_id": competitor.wca_id, "continent": "pass test", "country_id": "pass test",
+                                      "best_ever_rank": best_ever_rank, "last_modified": today})
 
     cnx.commit()
 
