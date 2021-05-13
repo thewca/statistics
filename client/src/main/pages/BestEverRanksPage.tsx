@@ -1,5 +1,5 @@
 import "@cubing/icons";
-import { Form, Input, Popover, Tooltip } from "antd";
+import { Form, Input, Tooltip } from "antd";
 import React, { useCallback, useEffect, useState } from "react";
 import statisticsApi from "../api/statistics.api";
 import BestEverRank from "../model/BestEverRank";
@@ -15,9 +15,16 @@ const BestEverRanksPage = () => {
     });
   }, []);
 
+  const getRank = (rank: number) => {
+    return rank != null ? (
+      <span className={rank < 10 ? "top-10-rank" : ""}>{rank + 1}</span>
+    ) : null;
+  };
+
   useEffect(() => {
     handleSubmit("2015CAMP17");
   }, [handleSubmit]);
+
   return (
     <div className="ranks-wrapper">
       <Form onFinish={() => handleSubmit(wcaId)}>
@@ -80,11 +87,7 @@ const BestEverRanksPage = () => {
                         "single"
                       )}
                     </td>
-                    <td>
-                      {world.single.best_rank.rank != null
-                        ? world.single.best_rank.rank + 1
-                        : null}
-                    </td>
+                    <td>{getRank(world.single.best_rank.rank)}</td>
                     <td>{world.single.best_rank.start}</td>
                     <td>{world.single.best_rank.end}</td>
                     <td>{world.single.best_rank.competition}</td>
@@ -95,7 +98,7 @@ const BestEverRanksPage = () => {
                         "average"
                       )}
                     </td>
-                    <td>{world.average.best_rank.rank}</td>
+                    <td>{getRank(world.average.best_rank.rank)}</td>
                     <td>{world.average.best_rank.start}</td>
                     <td>{world.average.best_rank.end}</td>
                     <td>{world.average.best_rank.competition}</td>
@@ -113,11 +116,7 @@ const BestEverRanksPage = () => {
                         "single"
                       )}
                     </td>
-                    <td>
-                      {continent.single.best_rank.rank != null
-                        ? continent.single.best_rank.rank + 1
-                        : null}
-                    </td>
+                    <td>{getRank(continent.single.best_rank.rank)}</td>
                     <td>{continent.single.best_rank.start}</td>
                     <td>{continent.single.best_rank.end}</td>
                     <td>{continent.single.best_rank.competition}</td>
@@ -128,7 +127,7 @@ const BestEverRanksPage = () => {
                         "average"
                       )}
                     </td>
-                    <td>{continent.average.best_rank.rank}</td>
+                    <td>{getRank(continent.average.best_rank.rank)}</td>
                     <td>{continent.average.best_rank.start}</td>
                     <td>{continent.average.best_rank.end}</td>
                     <td>{continent.average.best_rank.competition}</td>
@@ -146,11 +145,7 @@ const BestEverRanksPage = () => {
                         "single"
                       )}
                     </td>
-                    <td>
-                      {country.single.best_rank.rank != null
-                        ? country.single.best_rank.rank + 1
-                        : null}
-                    </td>
+                    <td>{getRank(country.single.best_rank.rank)}</td>
                     <td>{country.single.best_rank.start}</td>
                     <td>{country.single.best_rank.end}</td>
                     <td>{country.single.best_rank.competition}</td>
@@ -161,7 +156,7 @@ const BestEverRanksPage = () => {
                         "average"
                       )}
                     </td>
-                    <td>{country.average.best_rank.rank}</td>
+                    <td>{getRank(country.average.best_rank.rank)}</td>
                     <td>{country.average.best_rank.start}</td>
                     <td>{country.average.best_rank.end}</td>
                     <td>{country.average.best_rank.competition}</td>
