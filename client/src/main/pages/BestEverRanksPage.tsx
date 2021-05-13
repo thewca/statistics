@@ -3,6 +3,7 @@ import { Form, Input, Popover, Tooltip } from "antd";
 import React, { useCallback, useEffect, useState } from "react";
 import statisticsApi from "../api/statistics.api";
 import BestEverRank from "../model/BestEverRank";
+import formatResult from "../util/result.util";
 import "./BestEverRanksPage.css";
 
 const BestEverRanksPage = () => {
@@ -72,12 +73,28 @@ const BestEverRanksPage = () => {
                       />
                     </th>
                     <th>WR</th>
-                    <td>{world.single.best_rank.result}</td>
-                    <td>{world.single.best_rank.rank}</td>
+                    <td>
+                      {formatResult(
+                        world.single.best_rank.result,
+                        eventRank.event.event_id,
+                        "single"
+                      )}
+                    </td>
+                    <td>
+                      {world.single.best_rank.rank != null
+                        ? world.single.best_rank.rank + 1
+                        : null}
+                    </td>
                     <td>{world.single.best_rank.start}</td>
                     <td>{world.single.best_rank.end}</td>
                     <td>{world.single.best_rank.competition}</td>
-                    <td>{world.average.best_rank.result}</td>
+                    <td>
+                      {formatResult(
+                        world.average.best_rank.result,
+                        eventRank.event.event_id,
+                        "average"
+                      )}
+                    </td>
                     <td>{world.average.best_rank.rank}</td>
                     <td>{world.average.best_rank.start}</td>
                     <td>{world.average.best_rank.end}</td>
@@ -89,12 +106,28 @@ const BestEverRanksPage = () => {
                     <th>
                       <Tooltip title={continent.continent}>CR</Tooltip>
                     </th>
-                    <td>{continent.single.best_rank.result}</td>
-                    <td>{continent.single.best_rank.rank}</td>
+                    <td>
+                      {formatResult(
+                        continent.single.best_rank.result,
+                        eventRank.event.event_id,
+                        "single"
+                      )}
+                    </td>
+                    <td>
+                      {continent.single.best_rank.rank != null
+                        ? continent.single.best_rank.rank + 1
+                        : null}
+                    </td>
                     <td>{continent.single.best_rank.start}</td>
                     <td>{continent.single.best_rank.end}</td>
                     <td>{continent.single.best_rank.competition}</td>
-                    <td>{continent.average.best_rank.result}</td>
+                    <td>
+                      {formatResult(
+                        continent.average.best_rank.result,
+                        eventRank.event.event_id,
+                        "average"
+                      )}
+                    </td>
                     <td>{continent.average.best_rank.rank}</td>
                     <td>{continent.average.best_rank.start}</td>
                     <td>{continent.average.best_rank.end}</td>
@@ -106,177 +139,37 @@ const BestEverRanksPage = () => {
                     <th>
                       <Tooltip title={country.country}>NR</Tooltip>
                     </th>
-                    <td>{country.single.best_rank.result}</td>
-                    <td>{country.single.best_rank.rank}</td>
+                    <td>
+                      {formatResult(
+                        country.single.best_rank.result,
+                        eventRank.event.event_id,
+                        "single"
+                      )}
+                    </td>
+                    <td>
+                      {country.single.best_rank.rank != null
+                        ? country.single.best_rank.rank + 1
+                        : null}
+                    </td>
                     <td>{country.single.best_rank.start}</td>
                     <td>{country.single.best_rank.end}</td>
                     <td>{country.single.best_rank.competition}</td>
-                    <td>{country.average.best_rank.result}</td>
+                    <td>
+                      {formatResult(
+                        country.average.best_rank.result,
+                        eventRank.event.event_id,
+                        "average"
+                      )}
+                    </td>
                     <td>{country.average.best_rank.rank}</td>
                     <td>{country.average.best_rank.start}</td>
                     <td>{country.average.best_rank.end}</td>
                     <td>{country.average.best_rank.competition}</td>
                   </tr>
                 ))}
-                {/* <tr>
-                  <th>WR</th>
-                  <td>
-                    {eventRank.best_world_single_rank.result != null
-                      ? eventRank.best_world_single_rank.result
-                      : "-"}
-                  </td>
-                  <td>
-                    {eventRank.best_world_single_rank.rank != null
-                      ? eventRank.best_world_single_rank.rank + 1
-                      : "-"}
-                  </td>
-                  <td>
-                    {eventRank.best_world_single_rank.start != null
-                      ? eventRank.best_world_single_rank.start
-                      : "-"}
-                  </td>
-                  <td>
-                    {eventRank.best_world_single_rank.end != null
-                      ? eventRank.best_world_single_rank.end
-                      : "-"}
-                  </td>
-                  <td>
-                    {eventRank.best_world_single_rank.competition != null
-                      ? eventRank.best_world_single_rank.competition
-                      : "-"}
-                  </td>
-                  <td>
-                    {eventRank.best_world_average_rank.result != null
-                      ? eventRank.best_world_average_rank.result
-                      : "-"}
-                  </td>
-                  <td>
-                    {eventRank.best_world_average_rank.rank != null
-                      ? eventRank.best_world_average_rank.rank + 1
-                      : "-"}
-                  </td>
-                  <td>
-                    {eventRank.best_world_average_rank.start != null
-                      ? eventRank.best_world_average_rank.start
-                      : "-"}
-                  </td>
-                  <td>
-                    {eventRank.best_world_average_rank.end != null
-                      ? eventRank.best_world_average_rank.end
-                      : "-"}
-                  </td>
-                  <td>
-                    {eventRank.best_world_average_rank.competition != null
-                      ? eventRank.best_world_average_rank.competition
-                      : "-"}
-                  </td>
-                </tr>
                 <tr>
-                  <th>CR</th>
-                  <td>
-                    {eventRank.best_continent_single_rank.result != null
-                      ? eventRank.best_continent_single_rank.result
-                      : "-"}
-                  </td>
-                  <td>
-                    {eventRank.best_continent_single_rank.rank != null
-                      ? eventRank.best_continent_single_rank.rank + 1
-                      : "-"}
-                  </td>
-                  <td>
-                    {eventRank.best_continent_single_rank.start != null
-                      ? eventRank.best_continent_single_rank.start
-                      : "-"}
-                  </td>
-                  <td>
-                    {eventRank.best_continent_single_rank.end != null
-                      ? eventRank.best_continent_single_rank.end
-                      : "-"}
-                  </td>
-                  <td>
-                    {eventRank.best_continent_single_rank.competition != null
-                      ? eventRank.best_continent_single_rank.competition
-                      : "-"}
-                  </td>
-                  <td>
-                    {eventRank.best_continent_average_rank.result != null
-                      ? eventRank.best_continent_average_rank.result
-                      : "-"}
-                  </td>
-                  <td>
-                    {eventRank.best_continent_average_rank.rank != null
-                      ? eventRank.best_continent_average_rank.rank + 1
-                      : "-"}
-                  </td>
-                  <td>
-                    {eventRank.best_continent_average_rank.start != null
-                      ? eventRank.best_continent_average_rank.start
-                      : "-"}
-                  </td>
-                  <td>
-                    {eventRank.best_continent_average_rank.end != null
-                      ? eventRank.best_continent_average_rank.end
-                      : "-"}
-                  </td>
-                  <td>
-                    {eventRank.best_continent_average_rank.competition != null
-                      ? eventRank.best_continent_average_rank.competition
-                      : "-"}
-                  </td>
+                  <th colSpan={12}></th>
                 </tr>
-                <tr>
-                  <th>NR</th>
-                  <td>
-                    {eventRank.best_country_single_rank.result != null
-                      ? eventRank.best_country_single_rank.result
-                      : "-"}
-                  </td>
-                  <td>
-                    {eventRank.best_country_single_rank.rank != null
-                      ? eventRank.best_country_single_rank.rank + 1
-                      : "-"}
-                  </td>
-                  <td>
-                    {eventRank.best_country_single_rank.start != null
-                      ? eventRank.best_country_single_rank.start
-                      : "-"}
-                  </td>
-                  <td>
-                    {eventRank.best_country_single_rank.end != null
-                      ? eventRank.best_country_single_rank.end
-                      : "-"}
-                  </td>
-                  <td>
-                    {eventRank.best_country_single_rank.competition != null
-                      ? eventRank.best_country_single_rank.competition
-                      : "-"}
-                  </td>
-                  <td>
-                    {eventRank.best_country_average_rank.result != null
-                      ? eventRank.best_country_average_rank.result
-                      : "-"}
-                  </td>
-                  <td>
-                    {eventRank.best_country_average_rank.rank != null
-                      ? eventRank.best_country_average_rank.rank + 1
-                      : "-"}
-                  </td>
-                  <td>
-                    {eventRank.best_country_average_rank.start != null
-                      ? eventRank.best_country_average_rank.start
-                      : "-"}
-                  </td>
-                  <td>
-                    {eventRank.best_country_average_rank.end != null
-                      ? eventRank.best_country_average_rank.end
-                      : "-"}
-                  </td>
-                  <td>
-                    {eventRank.best_country_average_rank.competition != null
-                      ? eventRank.best_country_average_rank.competition
-                      : "-"}
-                  </td>
-                </tr> */}
               </React.Fragment>
             ))}
           </tbody>
