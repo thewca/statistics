@@ -6,11 +6,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.worldcubeassociation.statistics.dto.besteverrank.BestEverRankDTO;
 
-import java.util.List;
-
 @RequestMapping("best-ever-rank")
 @CrossOrigin(origins = "*", allowedHeaders = "*") // Enable this for testing
 public interface BestEverRanksController {
     @GetMapping("{personId}")
-    List<BestEverRankDTO> get(@PathVariable String personId);
+    BestEverRankDTO get(@PathVariable String personId);
 }

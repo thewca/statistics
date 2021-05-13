@@ -7,8 +7,6 @@ import org.worldcubeassociation.statistics.controller.BestEverRanksController;
 import org.worldcubeassociation.statistics.dto.besteverrank.BestEverRankDTO;
 import org.worldcubeassociation.statistics.service.BestEverRanksService;
 
-import java.util.List;
-
 @RestController
 public class BestEverRanksControllerImpl implements BestEverRanksController {
     @Autowired
@@ -18,7 +16,7 @@ public class BestEverRanksControllerImpl implements BestEverRanksController {
     private ObjectMapper objectMapper;
 
     @Override
-    public List<BestEverRankDTO> get(String personId) {
+    public BestEverRankDTO get(String personId) {
         return bestEverRanksService.get(personId);
     }
 }

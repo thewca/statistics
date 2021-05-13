@@ -449,7 +449,7 @@ def main():
     for competitor in competitors:
         best_ever_rank = json.dumps(
             competitor.event_ranks, default=ComplexHandler)
-        cursor.execute(insert_query, {"wca_id": competitor.wca_id, "continent": "pass test", "country_id": "pass test",
+        cursor.execute(insert_query, {"wca_id": competitor.wca_id,
                                       "best_ever_rank": best_ever_rank, "last_modified": today})
 
     cnx.commit()

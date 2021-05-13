@@ -13,9 +13,7 @@ create table if not exists statistics (
 
 create table if not exists best_ever_ranks (
     person_id varchar(10),
-    country_id varchar(50) not null,
-    continent varchar(20) not null,
     best_ever_rank json not null,
     last_modified datetime not null,
-    primary key (person_id, country_id, continent)
+    primary key (person_id)
 );

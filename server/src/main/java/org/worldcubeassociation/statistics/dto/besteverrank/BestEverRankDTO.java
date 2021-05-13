@@ -9,11 +9,7 @@ import java.util.List;
 public class BestEverRankDTO {
     private String personId;
 
-    private String countryId;
-
-    private String continent;
-
     private LocalDateTime lastModified;
 
-    private List<RankDTO> ranks;
+    private List<EventRankDTO> eventRanks;
 }
