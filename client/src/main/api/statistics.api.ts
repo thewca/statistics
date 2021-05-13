@@ -39,7 +39,7 @@ export class StatisticsApi {
     Axios.get<Statistics>(this.BASE_URL + "/statistics/list/" + pathId);
 
   getRanks = (wcaId: string) =>
-    Axios.get<BestEverRank[]>(this.BASE_URL + "/best-ever-rank/" + wcaId);
+    Axios.get<BestEverRank>(this.BASE_URL + "/best-ever-rank/" + wcaId);
 }
 
 const statisticsApi = new StatisticsApi();

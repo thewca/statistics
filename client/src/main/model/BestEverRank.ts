@@ -1,9 +1,7 @@
-import Rank from "./Rank";
+import EventRank from "./EventRank";
 
 export default interface BestEverRank {
   personId: string;
-  countryId: string;
-  continent: string;
   lastModified: Date;
-  ranks: Rank[];
+  eventRanks: EventRank[];
 }
