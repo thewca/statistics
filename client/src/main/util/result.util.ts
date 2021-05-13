@@ -1,8 +1,6 @@
-const formatResult = (
-  result: number,
-  event_id: string,
-  type: "average" | "single"
-) => {
+export type ResultType = "average" | "single";
+
+const formatResult = (result: number, event_id: string, type: ResultType) => {
   if (result == null) {
     return null;
   }

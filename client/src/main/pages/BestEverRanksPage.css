@@ -27,3 +27,11 @@
   color: #e64503;
   font-weight: bold;
 }
+
+.event-name {
+  font-size: smaller;
+}
+
+.empty-row {
+  background-color: #ebebeb;
+}

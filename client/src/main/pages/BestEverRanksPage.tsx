@@ -3,7 +3,9 @@ import { Form, Input, Tooltip } from "antd";
 import React, { useCallback, useEffect, useState } from "react";
 import statisticsApi from "../api/statistics.api";
 import BestEverRank from "../model/BestEverRank";
-import formatResult from "../util/result.util";
+import Competitor from "../model/Competitor";
+import Results from "../model/Results";
+import formatResult, { ResultType } from "../util/result.util";
 import "./BestEverRanksPage.css";
 
 const BestEverRanksPage = () => {
@@ -20,6 +22,42 @@ const BestEverRanksPage = () => {
       <span className={rank < 10 ? "top-10-rank" : ""}>{rank + 1}</span>
     ) : null;
   };
+
+  const getCompetitionLink = (
+    compeitionId: string,
+    competitionName?: string
+  ) => (
+    <a
+      href={`https://www.worldcubeassociation.org/competitions/${compeitionId}`}
+    >
+      {competitionName || compeitionId}
+    </a>
+  );
+
+  const getResults = (results: Results, event_id: string, type: ResultType) => (
+    <>
+      <td>{formatResult(results.best_rank.result, event_id, type)}</td>
+      <td>{getRank(results.best_rank.rank)}</td>
+      <td>{results.best_rank.start}</td>
+      <td>{results.best_rank.end}</td>
+      <td>{getCompetitionLink(results.best_rank.competition)}</td>
+    </>
+  );
+
+  const getCompetitor = (
+    competitor: Competitor,
+    event_id: string,
+    rank_type: string,
+    tooltip?: string
+  ) => (
+    <>
+      <th>
+        <Tooltip title={tooltip}>{rank_type}</Tooltip>
+      </th>
+      {getResults(competitor.single, event_id, "single")}
+      {getResults(competitor.average, event_id, "average")}
+    </>
+  );
 
   useEffect(() => {
     handleSubmit("2015CAMP17");
@@ -78,91 +116,32 @@ const BestEverRanksPage = () => {
                       <span
                         className={`cubing-icon event-${eventRank.event.event_id}`}
                       />
+                      <p className="event-name">{eventRank.event.name}</p>
                     </th>
-                    <th>WR</th>
-                    <td>
-                      {formatResult(
-                        world.single.best_rank.result,
-                        eventRank.event.event_id,
-                        "single"
-                      )}
-                    </td>
-                    <td>{getRank(world.single.best_rank.rank)}</td>
-                    <td>{world.single.best_rank.start}</td>
-                    <td>{world.single.best_rank.end}</td>
-                    <td>{world.single.best_rank.competition}</td>
-                    <td>
-                      {formatResult(
-                        world.average.best_rank.result,
-                        eventRank.event.event_id,
-                        "average"
-                      )}
-                    </td>
-                    <td>{getRank(world.average.best_rank.rank)}</td>
-                    <td>{world.average.best_rank.start}</td>
-                    <td>{world.average.best_rank.end}</td>
-                    <td>{world.average.best_rank.competition}</td>
+                    {getCompetitor(world, eventRank.event.event_id, "WR")}
                   </tr>
                 ))}
                 {eventRank.continents.map((continent) => (
                   <tr key={continent.continent}>
-                    <th>
-                      <Tooltip title={continent.continent}>CR</Tooltip>
-                    </th>
-                    <td>
-                      {formatResult(
-                        continent.single.best_rank.result,
-                        eventRank.event.event_id,
-                        "single"
-                      )}
-                    </td>
-                    <td>{getRank(continent.single.best_rank.rank)}</td>
-                    <td>{continent.single.best_rank.start}</td>
-                    <td>{continent.single.best_rank.end}</td>
-                    <td>{continent.single.best_rank.competition}</td>
-                    <td>
-                      {formatResult(
-                        continent.average.best_rank.result,
-                        eventRank.event.event_id,
-                        "average"
-                      )}
-                    </td>
-                    <td>{getRank(continent.average.best_rank.rank)}</td>
-                    <td>{continent.average.best_rank.start}</td>
-                    <td>{continent.average.best_rank.end}</td>
-                    <td>{continent.average.best_rank.competition}</td>
+                    {getCompetitor(
+                      continent,
+                      eventRank.event.event_id,
+                      "CR",
+                      continent.continent
+                    )}
                   </tr>
                 ))}
                 {eventRank.countries.map((country) => (
                   <tr key={country.country}>
-                    <th>
-                      <Tooltip title={country.country}>NR</Tooltip>
-                    </th>
-                    <td>
-                      {formatResult(
-                        country.single.best_rank.result,
-                        eventRank.event.event_id,
-                        "single"
-                      )}
-                    </td>
-                    <td>{getRank(country.single.best_rank.rank)}</td>
-                    <td>{country.single.best_rank.start}</td>
-                    <td>{country.single.best_rank.end}</td>
-                    <td>{country.single.best_rank.competition}</td>
-                    <td>
-                      {formatResult(
-                        country.average.best_rank.result,
-                        eventRank.event.event_id,
-                        "average"
-                      )}
-                    </td>
-                    <td>{getRank(country.average.best_rank.rank)}</td>
-                    <td>{country.average.best_rank.start}</td>
-                    <td>{country.average.best_rank.end}</td>
-                    <td>{country.average.best_rank.competition}</td>
+                    {getCompetitor(
+                      country,
+                      eventRank.event.event_id,
+                      "NR",
+                      country.country
+                    )}
                   </tr>
                 ))}
-                <tr>
+                <tr className="empty-row">
                   <th colSpan={12}></th>
                 </tr>
               </React.Fragment>
