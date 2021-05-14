@@ -5,13 +5,16 @@ import statisticsApi from "../api/statistics.api";
 import BestEverRank from "../model/BestEverRank";
 import Competitor from "../model/Competitor";
 import Results from "../model/Results";
+import { getQueryParameter, setQueryParameter } from "../util/query.param.util";
 import formatResult, { ResultType } from "../util/result.util";
 import "./BestEverRanksPage.css";
 
 const BestEverRanksPage = () => {
-  const [wcaId, setWcaId] = useState("2015CAMP17");
+  const [wcaId, setWcaId] = useState(getQueryParameter("wcaId") || "");
   const [bestEverRank, setBestEverRank] = useState<BestEverRank>();
+
   const handleSubmit = useCallback((wcaId: string) => {
+    setQueryParameter("wcaId", wcaId);
     statisticsApi.getRanks(wcaId).then((response) => {
       setBestEverRank(response.data);
     });
@@ -59,8 +62,23 @@ const BestEverRanksPage = () => {
     </>
   );
 
+  const getResultsHeaders = () => {
+    return (
+      <>
+        <th scope="row">Result</th>
+        <th scope="row">Best Rank</th>
+        <th scope="row">Start</th>
+        <th scope="row">End</th>
+        <th scope="row">Competition</th>
+      </>
+    );
+  };
+
   useEffect(() => {
-    handleSubmit("2015CAMP17");
+    let wcaId = getQueryParameter("wcaId");
+    if (!!wcaId) {
+      handleSubmit(wcaId);
+    }
   }, [handleSubmit]);
 
   return (
@@ -89,16 +107,8 @@ const BestEverRanksPage = () => {
             <tr>
               <th scope="row">Event</th>
               <th scope="row">Rank</th>
-              <th scope="row">Result</th>
-              <th scope="row">Best Rank</th>
-              <th scope="row">Start</th>
-              <th scope="row">End</th>
-              <th scope="row">Competition</th>
-              <th scope="row">Result</th>
-              <th scope="row">Best Rank</th>
-              <th scope="row">Start</th>
-              <th scope="row">End</th>
-              <th scope="row">Competition</th>
+              {getResultsHeaders()}
+              {getResultsHeaders()}
             </tr>
           </thead>
           <tbody>
