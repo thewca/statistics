@@ -82,16 +82,12 @@ where
 insert_query = """insert into
     best_ever_ranks (
         person_id,
-        continent,
-        country_id,
         best_ever_rank,
         last_modified
     )
 values
     (
         %(wca_id)s,
-        %(continent)s,
-        %(country_id)s,
         %(best_ever_rank)s,
         %(last_modified)s
     ) on duplicate key
