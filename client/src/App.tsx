@@ -2,6 +2,7 @@ import {
   DatabaseOutlined,
   HomeOutlined,
   OrderedListOutlined,
+  RiseOutlined,
   SolutionOutlined,
 } from "@ant-design/icons";
 import { message } from "antd";
@@ -15,6 +16,7 @@ import Topbar from "./main/components/Topbar";
 import { LinkItem } from "./main/model/LinkItem";
 import { StatisticsList } from "./main/model/StatisticsList";
 import AboutPage from "./main/pages/AboutPage";
+import BestEverRanksPage from "./main/pages/BestEverRanksPage";
 import DatabaseQueryPage from "./main/pages/DatabaseQueryPage";
 import HomePage from "./main/pages/HomePage";
 import NotFoundPage from "./main/pages/NotFoundPage";
@@ -58,6 +60,13 @@ function App() {
       exact: false,
       icon: <SolutionOutlined />,
       component: <AboutPage />,
+    },
+    {
+      name: "Best Ever Ranks",
+      href: "/best-ever-ranks",
+      exact: true,
+      icon: <RiseOutlined />,
+      component: <BestEverRanksPage />,
     },
   ];
 

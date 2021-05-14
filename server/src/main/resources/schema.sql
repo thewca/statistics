@@ -10,3 +10,10 @@ create table if not exists statistics (
     last_modified datetime not null,
     primary key (path)
 );
+
+create table if not exists best_ever_ranks (
+    person_id varchar(10),
+    best_ever_rank json not null,
+    last_modified datetime not null,
+    primary key (person_id)
+);

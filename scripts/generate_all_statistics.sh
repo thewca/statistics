@@ -14,3 +14,6 @@ curl -X DELETE "http://localhost:8080/statistics" -H "accept: */*"
 
 # Python
 ./scripts/generate_python_statistics.sh
+
+# Best ranks
+python3 -m misc.python.best_ever_rank.best_ever_rank

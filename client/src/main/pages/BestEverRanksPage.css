@@ -1,0 +1,42 @@
+.ranks-wrapper {
+  overflow-x: auto;
+}
+
+.ranks-table th,
+.ranks-table td {
+  border: 1px solid black;
+  text-align: center;
+  font-size: 12px;
+  margin: auto;
+  padding: 5px;
+}
+
+.person-info {
+  text-align: center;
+}
+
+.person-info-wrapper {
+  align-items: center;
+}
+
+.cubing-icon {
+  font-size: 3em;
+}
+
+.top-10-rank {
+  color: #e64503;
+  font-weight: bold;
+}
+
+.event-name {
+  font-size: smaller;
+}
+
+.empty-row {
+  background-color: #ebebeb;
+}
+
+.showing-for {
+  border: none !important;
+  text-align: right !important;
+}

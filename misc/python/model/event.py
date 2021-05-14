@@ -5,3 +5,6 @@ class Event:
 
     def __repr__(self) -> str:
         return "Event[event_id=%s, name=%s]" % (self.event_id, self.name)
+
+    def jsonable(self):
+        return self.__dict__

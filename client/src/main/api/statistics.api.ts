@@ -1,4 +1,5 @@
 import Axios from "axios";
+import BestEverRank from "../model/BestEverRank";
 import { QueryDatabaseResponse } from "../model/QueryDatabase";
 import { Statistics } from "../model/Statistic";
 import { StatisticsList } from "../model/StatisticsList";
@@ -36,6 +37,9 @@ export class StatisticsApi {
 
   getStatistic = (pathId: string) =>
     Axios.get<Statistics>(this.BASE_URL + "/statistics/list/" + pathId);
+
+  getRanks = (wcaId: string) =>
+    Axios.get<BestEverRank>(this.BASE_URL + "/best-ever-rank/" + wcaId);
 }
 
 const statisticsApi = new StatisticsApi();
