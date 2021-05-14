@@ -1,5 +1,6 @@
+import { UserOutlined } from "@ant-design/icons";
 import "@cubing/icons";
-import { Form, Input, Tooltip } from "antd";
+import { Col, Form, Input, Row, Tag, Tooltip } from "antd";
 import React, { useCallback, useEffect, useState } from "react";
 import statisticsApi from "../api/statistics.api";
 import BestEverRank from "../model/BestEverRank";
@@ -12,11 +13,14 @@ import "./BestEverRanksPage.css";
 const BestEverRanksPage = () => {
   const [wcaId, setWcaId] = useState(getQueryParameter("wcaId") || "");
   const [bestEverRank, setBestEverRank] = useState<BestEverRank>();
+  const [showingFor, setShowingFor] = useState("");
 
   const handleSubmit = useCallback((wcaId: string) => {
+    setShowingFor("");
     setQueryParameter("wcaId", wcaId);
     statisticsApi.getRanks(wcaId).then((response) => {
       setBestEverRank(response.data);
+      setShowingFor(wcaId);
     });
   }, []);
 
@@ -83,18 +87,32 @@ const BestEverRanksPage = () => {
 
   return (
     <div className="ranks-wrapper">
+      <h1 className="page-title">Best Ever Ranks</h1>
       <Form onFinish={() => handleSubmit(wcaId)}>
-        <Form.Item>
-          <Input
-            placeholder="WCA ID"
-            value={wcaId}
-            onChange={(e) => setWcaId(e.target.value)}
-          />
-        </Form.Item>
+        <Row>
+          <Col span={9} />
+          <Col span={6}>
+            <Form.Item>
+              <Input
+                prefix={<UserOutlined />}
+                placeholder="WCA ID"
+                value={wcaId}
+                onChange={(e) => setWcaId(e.target.value)}
+              />
+            </Form.Item>
+          </Col>
+        </Row>
       </Form>
       {!!bestEverRank && (
         <table className="ranks-table">
           <thead>
+            <tr>
+              <td colSpan={12} className="showing-for">
+                <Tag>
+                  Showing results for <strong>{showingFor}</strong>
+                </Tag>
+              </td>
+            </tr>
             <tr>
               <th colSpan={2}></th>
               <th scope="col" colSpan={5}>

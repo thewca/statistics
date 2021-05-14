@@ -35,3 +35,8 @@
 .empty-row {
   background-color: #ebebeb;
 }
+
+.showing-for {
+  border: none !important;
+  text-align: right !important;
+}

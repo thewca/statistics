@@ -2,7 +2,7 @@ import "./AboutPage.css";
 
 const AboutPage = () => {
   return (
-    <div className="container">
+    <div>
       <h1 className="page-title">About</h1>
       <p>
         WCA Statistics is a collection of interesting analysis over the WCA's
