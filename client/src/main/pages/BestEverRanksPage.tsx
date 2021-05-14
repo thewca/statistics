@@ -78,6 +78,7 @@ const BestEverRanksPage = () => {
     );
   };
 
+  // If we find an ID, already fetch results
   useEffect(() => {
     let wcaId = getQueryParameter("wcaId");
     if (!!wcaId) {

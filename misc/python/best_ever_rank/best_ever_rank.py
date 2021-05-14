@@ -351,9 +351,6 @@ def get_ranks_by_event(event_id, cursor):
             year = current_date.year
             log.info("Year: %s, %.2f" % (year, time.time()-start))
 
-            # if year == 2019:  # TODO remove mock
-            #     break
-
         today_competitors = []
 
         cursor.execute(query_next_results, {
@@ -370,15 +367,6 @@ def get_ranks_by_event(event_id, cursor):
                           worlds, continents, countries, current_date)
 
     return worlds, continents, countries
-
-
-# TODO remove mock
-class Ev:
-    def __init__(self, event_id) -> None:
-        self.event_id = event_id
-
-    def jsonable(self):
-        return self.__dict__
 
 
 def ComplexHandler(Obj):
