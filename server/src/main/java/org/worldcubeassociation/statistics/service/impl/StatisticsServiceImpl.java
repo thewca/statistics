@@ -8,15 +8,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.io.support.ResourcePatternUtils;
 import org.springframework.stereotype.Service;
-import org.worldcubeassociation.statistics.dto.ControlItemDTO;
-import org.worldcubeassociation.statistics.dto.DatabaseQueryBaseDTO;
-import org.worldcubeassociation.statistics.dto.StatisticsDTO;
-import org.worldcubeassociation.statistics.dto.StatisticsGroupDTO;
-import org.worldcubeassociation.statistics.dto.StatisticsGroupRequestDTO;
-import org.worldcubeassociation.statistics.dto.StatisticsGroupResponseDTO;
-import org.worldcubeassociation.statistics.dto.StatisticsListDTO;
-import org.worldcubeassociation.statistics.dto.StatisticsRequestDTO;
-import org.worldcubeassociation.statistics.dto.StatisticsResponseDTO;
+import org.worldcubeassociation.statistics.dto.*;
 import org.worldcubeassociation.statistics.enums.DisplayModeEnum;
 import org.worldcubeassociation.statistics.exception.InvalidParameterException;
 import org.worldcubeassociation.statistics.exception.NotFoundException;
@@ -26,18 +18,14 @@ import org.worldcubeassociation.statistics.service.DatabaseQueryService;
 import org.worldcubeassociation.statistics.service.StatisticsService;
 import org.yaml.snakeyaml.Yaml;
 
+import javax.validation.Valid;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
-import javax.validation.Valid;
 
 @Slf4j
 @Service
@@ -207,7 +195,7 @@ public class StatisticsServiceImpl implements StatisticsService {
         statisticsResponseDTO.setPath(path);
         statisticsResponseDTO.setGroupName(statisticsDTO.getGroupName());
 
-        statisticsDTO.getStatistics().forEach(stat -> {
+        statisticsResponseDTO.getStatistics().forEach(stat -> {
             Optional.ofNullable(stat.getSqlQueryCustom()).ifPresent(q -> stat.setSqlQueryCustom(
                     URLEncoder.encode(q, StandardCharsets.UTF_8)));
         });
@@ -244,15 +232,8 @@ public class StatisticsServiceImpl implements StatisticsService {
     }
 
     private Statistics saveStatistics(StatisticsResponseDTO statisticsResponseDTO) {
-        Statistics statistics = new Statistics();
-        statistics.setStatistics(statisticsResponseDTO.getStatistics());
-        statistics.setExplanation(statisticsResponseDTO.getExplanation());
-        statistics.setGroupName(statisticsResponseDTO.getGroupName());
-        statistics.setPath(statisticsResponseDTO.getPath());
-        statistics.setTitle(statisticsResponseDTO.getTitle());
-        statistics.setDisplayMode(statisticsResponseDTO.getDisplayMode());
+        Statistics statistics = MAPPER.convertValue(statisticsResponseDTO, Statistics.class);
         statistics.setLastModified(LocalDateTime.now());
-
         return statisticsRepository.save(statistics);
     }
 }

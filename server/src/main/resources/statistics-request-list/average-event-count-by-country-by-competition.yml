@@ -1,0 +1,39 @@
+queries:
+  - headers:
+      - Competition
+      - Average event count
+      - Competitors
+      - Country
+    sqlQuery: |-
+      select concat(
+              '<a href="https://www.worldcubeassociation.org/competitions/',
+              competition.id,
+              '">',
+              competition.cellName,
+              '</a>'
+          ),
+          format(AVG(event_count), 2) average_event_count,
+          COUNT(*) competitors,
+          country.name country
+      from (
+              select competitionId,
+                  personId,
+                  COUNT(DISTINCT eventId) event_count
+              from Results
+              group BY competitionId,
+                  personId
+          ) as competitors_with_event_count
+          join Competitions competition ON competition.id = competitionId
+          join Countries country ON country.id = competition.countryId
+      group by competitionId
+      order by convert(average_event_count, FLOAT4) DESC
+      limit 100
+    sqlQueryCustom: |
+      select competitionId,
+          count(distinct eventId) qt
+      from Results r
+      where personId = ':WCA_ID'
+      group by competitionId
+      order by qt desc
+title: Average event count by competition by country
+groupName: Countries
