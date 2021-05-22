@@ -36,4 +36,5 @@ queries:
       group by competitionId
       order by qt desc
 title: Average event count by competition by country
+explanation: In other words, average number of events competitors participated in.
 groupName: Countries

@@ -1,0 +1,446 @@
+queries:
+  - showPositions: true
+    keys:
+      - World record
+    positionTieBreakerIndex: 2
+    headers:
+      - Days
+      - Event
+      - Result
+      - Type
+      - Person
+      - Competition
+    sqlQuery: |-
+      select days,
+      	e.cellName,
+      	case
+      		when eventId = '333fm'
+      		and record_type = 'single' then record
+      		when eventId = '333fm'
+      		and record_type = 'average' then format(record / 100, 2)
+      		when eventId = '333mbf' then replace(
+      			replace(
+      				replace(
+      					concat(
+      						99 - substring(record, 1, 2),
+      						'/',
+      						99 - substring(record, 1, 2) + substring(record, 8, 2),
+      						' (',
+      						sec_to_time(substring(record, 3, 5)),
+      						')'
+      					),
+      					'.000000',
+      					''
+      				),
+      				'0000',
+      				''
+      			),
+      			'00:',
+      			''
+      		)
+      		else substring(
+      			replace(
+      				replace(
+      					replace(
+      						replace(
+      							replace(sec_to_time(record / 100), '00:00:00.', '0.'),
+      							'00:00:0',
+      							''
+      						),
+      						'00:00:',
+      						''
+      					),
+      					'00:0',
+      					''
+      				),
+      				'00:',
+      				''
+      			),
+      			1,
+      			length(
+      				replace(
+      					replace(
+      						replace(
+      							replace(
+      								replace(sec_to_time(record / 100), '00:00:00.', '0.'),
+      								'00:00:0',
+      								''
+      							),
+      							'00:00:',
+      							''
+      						),
+      						'00:0',
+      						''
+      					),
+      					'00:',
+      					''
+      				)
+      			) -2
+      		)
+      	end record,
+      	record_type,
+      	concat(
+      		'<a href="https://www.worldcubeassociation.org/persons/',
+      		personId,
+      		'">',
+      		personName,
+      		'</a>'
+      	),
+      	concat(
+      		'<a href="https://www.worldcubeassociation.org/competitions/',
+      		competitionId,
+      		'">',
+      		records.cellName,
+      		'</a>'
+      	)
+      from (
+      		select datediff(current_date, c.start_date) days,
+      			results.eventId,
+      			results.best record,
+      			'Single' record_type,
+      			results.personId,
+      			personName,
+      			competitionId,
+      			c.cellName
+      		from Results results
+      			inner join (
+      				select personId,
+      					eventId,
+      					best
+      				from RanksSingle
+      				where worldRank = 1
+      			) single_records on single_records.best = results.best
+      			and single_records.personId = results.personId
+      			and single_records.eventId = results.eventId
+      			and regionalSingleRecord = 'WR'
+      			inner join Competitions c on results.competitionId = c.id
+      		union all
+      		select datediff(current_date, c.start_date) days,
+      			results.eventId,
+      			results.average record,
+      			'Average' record_type,
+      			results.personId,
+      			personName,
+      			competitionId,
+      			c.cellName
+      		from Results results
+      			inner join (
+      				select personId,
+      					eventId,
+      					best
+      				from RanksAverage
+      				where worldRank = 1
+      			) average_records on average_records.best = results.average
+      			and average_records.personId = results.personId
+      			and average_records.eventId = results.eventId
+      			and regionalAverageRecord = 'WR'
+      			inner join Competitions c on results.competitionId = c.id
+      	) records
+      	inner join Events e on records.eventId = e.id
+      where e.rank < 900
+      order by days desc, e.rank
+      limit 20
+  - showPositions: true
+    keys:
+      - Continental record
+    positionTieBreakerIndex: 2
+    headers:
+      - Days
+      - Event
+      - Result
+      - Type
+      - Region
+      - Person
+      - Competition
+    sqlQuery: |-
+      select days,
+      	e.cellName,
+      	case
+      		when eventId = '333fm'
+      		and record_type = 'single' then record
+      		when eventId = '333fm'
+      		and record_type = 'average' then format(record / 100, 2)
+      		when eventId = '333mbf' then replace(
+      			replace(
+      				replace(
+      					concat(
+      						99 - substring(record, 1, 2),
+      						'/',
+      						99 - substring(record, 1, 2) + substring(record, 8, 2),
+      						' (',
+      						sec_to_time(substring(record, 3, 5)),
+      						')'
+      					),
+      					'.000000',
+      					''
+      				),
+      				'0000',
+      				''
+      			),
+      			'00:',
+      			''
+      		)
+      		else substring(
+      			replace(
+      				replace(
+      					replace(
+      						replace(
+      							replace(sec_to_time(record / 100), '00:00:00.', '0.'),
+      							'00:00:0',
+      							''
+      						),
+      						'00:00:',
+      						''
+      					),
+      					'00:0',
+      					''
+      				),
+      				'00:',
+      				''
+      			),
+      			1,
+      			length(
+      				replace(
+      					replace(
+      						replace(
+      							replace(
+      								replace(sec_to_time(record / 100), '00:00:00.', '0.'),
+      								'00:00:0',
+      								''
+      							),
+      							'00:00:',
+      							''
+      						),
+      						'00:0',
+      						''
+      					),
+      					'00:',
+      					''
+      				)
+      			) -2
+      		)
+      	end record,
+      	record_type,
+      	c3.name,
+      	concat(
+      		'<a href="https://www.worldcubeassociation.org/persons/',
+      		personId,
+      		'">',
+      		personName,
+      		'</a>'
+      	),
+      	concat(
+      		'<a href="https://www.worldcubeassociation.org/competitions/',
+      		competitionId,
+      		'">',
+      		records.cellName,
+      		'</a>'
+      	)
+      from (
+      		select datediff(current_date, c.start_date) days,
+      			results.eventId,
+      			results.best record,
+      			'Single' record_type,
+      			regionalSingleRecord region,
+      			results.personId,
+      			personName,
+      			competitionId,
+      			c.cellName,
+      			results.countryId
+      		from Results results
+      			inner join (
+      				select personId,
+      					eventId,
+      					best
+      				from RanksSingle
+      				where continentRank = 1
+      					and worldRank != 1
+      			) single_records on single_records.best = results.best
+      			and single_records.personId = results.personId
+      			and single_records.eventId = results.eventId
+      			and regionalSingleRecord not in ('WR', 'NR')
+      			inner join Competitions c on results.competitionId = c.id
+      		union all
+      		select datediff(current_date, c.start_date) days,
+      			results.eventId,
+      			results.average record,
+      			'Average' record_type,
+      			regionalAverageRecord region,
+      			results.personId,
+      			personName,
+      			competitionId,
+      			c.cellName,
+      			results.countryId
+      		from Results results
+      			inner join (
+      				select personId,
+      					eventId,
+      					best
+      				from RanksAverage
+      				where continentRank = 1
+      					and worldRank != 1
+      			) average_records on average_records.best = results.average
+      			and average_records.personId = results.personId
+      			and average_records.eventId = results.eventId
+      			and regionalAverageRecord not in ('WR', 'NR')
+      			inner join Competitions c on results.competitionId = c.id
+      	) records
+      	inner join Events e on records.eventId = e.id
+      	inner join Countries c2 on c2.id = records.countryId
+      	inner join Continents c3 on continentId = c3.id
+      where e.rank < 900
+      order by days desc, e.rank
+      limit 20
+  - showPositions: true
+    keys:
+      - National record
+    positionTieBreakerIndex: 2
+    headers:
+      - Days
+      - Event
+      - Result
+      - Type
+      - Region
+      - Person
+      - Competition
+    sqlQuery: |-
+      select days,
+      	e.cellName,
+      	case
+      		when eventId = '333fm'
+      		and record_type = 'single' then record
+      		when eventId = '333fm'
+      		and record_type = 'average' then format(record / 100, 2)
+      		when eventId = '333mbf' then replace(
+      			replace(
+      				replace(
+      					concat(
+      						99 - substring(record, 1, 2),
+      						'/',
+      						99 - substring(record, 1, 2) + substring(record, 8, 2),
+      						' (',
+      						sec_to_time(substring(record, 3, 5)),
+      						')'
+      					),
+      					'.000000',
+      					''
+      				),
+      				'0000',
+      				''
+      			),
+      			'00:',
+      			''
+      		)
+      		else substring(
+      			replace(
+      				replace(
+      					replace(
+      						replace(
+      							replace(sec_to_time(record / 100), '00:00:00.', '0.'),
+      							'00:00:0',
+      							''
+      						),
+      						'00:00:',
+      						''
+      					),
+      					'00:0',
+      					''
+      				),
+      				'00:',
+      				''
+      			),
+      			1,
+      			length(
+      				replace(
+      					replace(
+      						replace(
+      							replace(
+      								replace(sec_to_time(record / 100), '00:00:00.', '0.'),
+      								'00:00:0',
+      								''
+      							),
+      							'00:00:',
+      							''
+      						),
+      						'00:0',
+      						''
+      					),
+      					'00:',
+      					''
+      				)
+      			) -2
+      		)
+      	end record,
+      	record_type,
+      	c2.name,
+      	concat(
+      		'<a href="https://www.worldcubeassociation.org/persons/',
+      		personId,
+      		'">',
+      		personName,
+      		'</a>'
+      	),
+      	concat(
+      		'<a href="https://www.worldcubeassociation.org/competitions/',
+      		competitionId,
+      		'">',
+      		records.cellName,
+      		'</a>'
+      	)
+      from (
+      		select datediff(current_date, c.start_date) days,
+      			results.eventId,
+      			results.best record,
+      			'Single' record_type,
+      			results.countryId region,
+      			results.personId,
+      			personName,
+      			competitionId,
+      			c.cellName
+      		from Results results
+      			inner join (
+      				select personId,
+      					eventId,
+      					best
+      				from RanksSingle
+      				where countryRank = 1
+      					and continentRank != 1
+      					and worldRank != 1
+      			) single_records on single_records.best = results.best
+      			and single_records.personId = results.personId
+      			and single_records.eventId = results.eventId
+      			and regionalSingleRecord = 'NR'
+      			inner join Competitions c on results.competitionId = c.id
+      		union all
+      		select datediff(current_date, c.start_date) days,
+      			results.eventId,
+      			results.average record,
+      			'Average' record_type,
+      			results.countryId region,
+      			results.personId,
+      			personName,
+      			competitionId,
+      			c.cellName
+      		from Results results
+      			inner join (
+      				select personId,
+      					eventId,
+      					best
+      				from RanksAverage
+      				where countryRank = 1
+      					and continentRank != 1
+      					and worldRank != 1
+      			) average_records on average_records.best = results.average
+      			and average_records.personId = results.personId
+      			and average_records.eventId = results.eventId
+      			and regionalAverageRecord = 'NR'
+      			inner join Competitions c on results.competitionId = c.id
+      	) records
+      	inner join Events e on records.eventId = e.id
+      	inner join Countries c2 on c2.id = region
+      where e.rank < 900
+      order by days desc, e.rank
+      limit 20
+explanation: The first day of the competition is assumed here and thus the ages might be some days off.
+title: Oldest standing records
+groupName: Events
