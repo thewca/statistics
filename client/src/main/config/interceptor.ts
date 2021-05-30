@@ -1,7 +1,7 @@
-import { AxiosError } from "axios";
+import { AxiosError, AxiosRequestConfig } from "axios";
 import wcaApi from "../api/wca.api";
 
-export const interceptorError = (response: AxiosError) => {
+export const errorInterceptor = (response: AxiosError) => {
   if (response.response?.status === 404) {
     window.location.href = "/not-found";
   } else if (response.response?.status === 401) {
@@ -9,3 +9,12 @@ export const interceptorError = (response: AxiosError) => {
   }
   return response;
 };
+
+export const requestIntercetor = (item: AxiosRequestConfig) => {
+  let tokenType = wcaApi.tokenType;
+  let accessToken = wcaApi.accessToken;
+  if (!!accessToken && !! tokenType){
+    item.headers.Authorization = `${tokenType} ${accessToken}`
+  }
+  return item;
+}

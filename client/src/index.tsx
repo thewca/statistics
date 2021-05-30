@@ -3,10 +3,11 @@ import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
 import "./index.css";
-import { interceptorError } from "./main/config/interceptor";
+import { errorInterceptor, requestIntercetor } from "./main/config/interceptor";
 import reportWebVitals from "./reportWebVitals";
 
-axios.interceptors.response.use(undefined, interceptorError);
+axios.interceptors.response.use(undefined, errorInterceptor);
+axios.interceptors.request.use(requestIntercetor);
 
 ReactDOM.render(
   <React.StrictMode>

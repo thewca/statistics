@@ -17,3 +17,7 @@ management:
   endpoint:
     health:
       show-details: always
+
+service:
+  authorization:
+    token-valid-for: 2
