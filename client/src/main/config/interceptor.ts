@@ -1,9 +1,10 @@
+import { message } from "antd";
 import { AxiosError, AxiosRequestConfig } from "axios";
 import wcaApi from "../api/wca.api";
 
 export const errorInterceptor = (response: AxiosError) => {
   if (response.response?.status === 404) {
-    window.location.href = "/not-found";
+    message.error("Not found");
   } else if (response.response?.status === 401) {
     wcaApi.logout();
   }
