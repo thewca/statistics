@@ -1,6 +1,6 @@
 import { UserOutlined } from "@ant-design/icons";
 import "@cubing/icons";
-import { Col, Form, Input, Row, Tag, Tooltip } from "antd";
+import { Col, Form, Input, message, Row, Tag, Tooltip } from "antd";
 import React, { useCallback, useEffect, useState } from "react";
 import statisticsApi from "../api/statistics.api";
 import BestEverRank from "../model/BestEverRank";
@@ -16,12 +16,14 @@ const BestEverRanksPage = () => {
   const [showingFor, setShowingFor] = useState("");
 
   const handleSubmit = useCallback((wcaId: string) => {
-    setShowingFor("");
     setQueryParameter("wcaId", wcaId);
-    statisticsApi.getRanks(wcaId).then((response) => {
-      setBestEverRank(response.data);
-      setShowingFor(wcaId);
-    });
+    statisticsApi
+      .getRanks(wcaId)
+      .then((response) => {
+        setBestEverRank(response.data);
+        setShowingFor(wcaId);
+      })
+      .catch(() => message.error("Failed to search."));
   }, []);
 
   const getRank = (rank: number) => {

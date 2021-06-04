@@ -3,7 +3,7 @@ import BestEverRank from "../model/BestEverRank";
 import { QueryDatabaseResponse } from "../model/QueryDatabase";
 import { Statistics } from "../model/Statistic";
 import { StatisticsList } from "../model/StatisticsList";
-import { UserInfo } from "../model/UserInfo";
+import UserInfo from "../model/UserInfo";
 
 export class StatisticsApi {
   BASE_URL: string;
@@ -25,10 +25,8 @@ export class StatisticsApi {
       params: { frontendHost },
     });
 
-  getUserInfo = (accessToken: string, tokenType: string) =>
-    Axios.get<UserInfo>(this.BASE_URL + "/wca/user", {
-      params: { accessToken, tokenType },
-    });
+  getUserInfo = () =>
+    Axios.get<UserInfo>(this.BASE_URL + "/wca/user" );
 
   getStatisticsGroups = (term?: string) =>
     Axios.get<StatisticsList>(this.BASE_URL + "/statistics/list", {

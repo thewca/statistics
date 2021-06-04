@@ -1,36 +1,149 @@
 import { UserOutlined } from "@ant-design/icons";
-import { Menu } from "antd";
-import { useState } from "react";
+import { Menu, message } from "antd";
+import axios, { AxiosError, AxiosRequestConfig } from "axios";
+import { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import statisticsApi from "../api/statistics.api";
 import wcaApi from "../api/wca.api";
 import logo from "../assets/wca_logo.svg";
 import { LinkItem } from "../model/LinkItem";
 import StatisticsGroup from "../model/StatisticsGroup";
+import UserInfo from "../model/UserInfo";
+import { deleteParameter, getHashParameter } from "../util/query.param.util";
 import "./Topbar.css";
+
+const { SubMenu } = Menu;
 
 interface TopbarProps {
   links: LinkItem[];
   statisticsGroups?: StatisticsGroup[];
+  userInfo?: UserInfo;
+  setUserInfo: (userInfo?: UserInfo) => void;
 }
 
 const STATISTICS_LIST = "Statistics List";
+const ACCESS_TOKEN = "access_token";
+const EXPIRES_IN = "expires_in";
+const TOKEN_TYPE = "token_type";
+const USER_INFO = "user_info";
+const AUTHORIZATION = "authorization";
 
-const { SubMenu } = Menu;
+const Topbar = ({
+  links,
+  statisticsGroups,
+  userInfo,
+  setUserInfo,
+}: TopbarProps) => {
+  const [authorization, setAuthorization] = useState<string>();
+  const [expiresIn, setExpiresIn] = useState<number>();
 
-const Topbar = ({ links, statisticsGroups }: TopbarProps) => {
-  const [logged, setLogged] = useState(wcaApi.isLogged());
+  const logout = useCallback(() => {
+    delete localStorage[ACCESS_TOKEN];
+    delete localStorage[TOKEN_TYPE];
+    delete localStorage[USER_INFO];
+    delete localStorage[EXPIRES_IN];
+    setAuthorization(undefined);
+    setUserInfo(undefined);
+    setExpiresIn(undefined);
+
+    // Return to home after logout
+    // TODO do this only for pages that requires login
+    window.location.href = "/";
+  }, [setUserInfo]);
 
   const handle = () => {
-    if (logged) {
-      wcaApi.logout();
-      setLogged(false);
+    if (!!userInfo) {
+      logout();
     } else {
-      wcaApi.handleLogin();
+      wcaApi.login();
     }
   };
 
-  const statisticsListLink = links.find((it) => it.name === STATISTICS_LIST);
+  const isLogged = useCallback(() => {
+    if (!authorization) {
+      return false;
+    }
 
+    if (!expiresIn) {
+      return false;
+    }
+
+    if (new Date() < new Date(expiresIn)) {
+      return true;
+    }
+
+    logout();
+    return false;
+  }, [authorization, expiresIn, logout]);
+
+  const errorInterceptor = useCallback(
+    (response: AxiosError) => {
+      if (response.response?.status === 404) {
+        message.error("Not found");
+      } else if (response.response?.status === 401) {
+        logout();
+      }
+      return Promise.reject(response);
+    },
+    [logout]
+  );
+
+  const requestIntercetor = useCallback(
+    (item: AxiosRequestConfig) => {
+      if (isLogged()) {
+        item.headers.Authorization = authorization;
+      }
+      return item;
+    },
+    [authorization, isLogged]
+  );
+
+  useEffect(() => {
+    axios.interceptors.response.use(undefined, errorInterceptor);
+    axios.interceptors.request.use(requestIntercetor);
+
+    let accessToken = getHashParameter(ACCESS_TOKEN);
+    let tokenType = getHashParameter(TOKEN_TYPE);
+    let expiration = getHashParameter(EXPIRES_IN);
+
+    let token: string;
+    let userInfo: UserInfo | null = null;
+
+    if (!!accessToken && !!tokenType && !!expiration) {
+      deleteParameter(ACCESS_TOKEN, EXPIRES_IN, TOKEN_TYPE);
+
+      let now = new Date();
+      let expiresIn = now.setSeconds(now.getSeconds() + Number(expiration));
+      setExpiresIn(expiresIn);
+      localStorage.setItem(EXPIRES_IN, "" + expiresIn);
+
+      token = `${tokenType} ${accessToken}`;
+      setAuthorization(token);
+      localStorage.setItem(AUTHORIZATION, token);
+    } else {
+      token = localStorage[AUTHORIZATION];
+      setAuthorization(token);
+
+      userInfo = JSON.parse(localStorage[USER_INFO] || null);
+      if (!!userInfo) {
+        setUserInfo(userInfo);
+      }
+
+      let expiresIn = localStorage[EXPIRES_IN];
+      if (!!expiresIn) {
+        setExpiresIn(Number(expiresIn));
+      }
+    }
+
+    if (!!token && !userInfo) {
+      statisticsApi.getUserInfo().then((response) => {
+        setUserInfo(response.data);
+        localStorage.setItem(USER_INFO, JSON.stringify(response.data));
+      });
+    }
+  }, [errorInterceptor, requestIntercetor, setUserInfo]);
+
+  const statisticsListLink = links.find((it) => it.name === STATISTICS_LIST);
   return (
     <Menu theme="dark" mode="horizontal" id="top-bar">
       <Menu.Item key="logo">
@@ -66,9 +179,9 @@ const Topbar = ({ links, statisticsGroups }: TopbarProps) => {
       <div id="login">
         <Menu theme="dark" mode="horizontal" id="top-bar" onClick={handle}>
           <Menu.Item key="login">
-            {logged ? (
+            {!!userInfo ? (
               <img
-                src={wcaApi.getUserInfo()?.avatar?.thumb_url}
+                src={userInfo.avatar?.thumb_url}
                 width="30"
                 height="30"
                 alt="Avatar"
@@ -76,7 +189,7 @@ const Topbar = ({ links, statisticsGroups }: TopbarProps) => {
             ) : (
               <UserOutlined />
             )}{" "}
-            {logged ? "Logout" : "Login"}
+            {!!userInfo ? "Logout" : "Login"}
           </Menu.Item>
         </Menu>
       </div>

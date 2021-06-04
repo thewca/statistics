@@ -15,6 +15,7 @@ import StatisticsDisplay from "./main/components/StatisticsDisplay";
 import Topbar from "./main/components/Topbar";
 import { LinkItem } from "./main/model/LinkItem";
 import { StatisticsList } from "./main/model/StatisticsList";
+import UserInfo from "./main/model/UserInfo";
 import AboutPage from "./main/pages/AboutPage";
 import BestEverRanksPage from "./main/pages/BestEverRanksPage";
 import DatabaseQueryPage from "./main/pages/DatabaseQueryPage";
@@ -24,13 +25,14 @@ import StatisticsListPage from "./main/pages/StatisticsListPage";
 
 function App() {
   const [statisticsList, setStatisticsList] = useState<StatisticsList>();
+  const [userInfo, setUserInfo] = useState<UserInfo>();
+
   const getStatisticsList = () => {
     statisticsApi
       .getStatisticsGroups()
       .then((response) => setStatisticsList(response.data))
       .catch(() => message.error("Error fetching statistics list"));
   };
-  useEffect(getStatisticsList, []);
 
   const links: LinkItem[] = [
     {
@@ -53,6 +55,7 @@ function App() {
       exact: false,
       icon: <DatabaseOutlined />,
       component: <DatabaseQueryPage />,
+      requiresLogin: true,
     },
     {
       name: "About",
@@ -68,12 +71,21 @@ function App() {
       icon: <RiseOutlined />,
       component: <BestEverRanksPage />,
     },
-  ];
+  ]
+    // Filter logged area
+    .filter((it) => !it.requiresLogin || !!userInfo);
+
+  useEffect(getStatisticsList, []);
 
   return (
     <Router>
       <div id="page-container">
-        <Topbar links={links} statisticsGroups={statisticsList?.list} />
+        <Topbar
+          links={links}
+          statisticsGroups={statisticsList?.list}
+          userInfo={userInfo}
+          setUserInfo={setUserInfo}
+        />
         <div id="content-wrapper">
           <Switch>
             {links.map((link) => (

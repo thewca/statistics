@@ -6,4 +6,5 @@ export interface LinkItem {
   exact: boolean;
   icon: ReactElement;
   component: ReactElement;
+  requiresLogin?: boolean;
 }

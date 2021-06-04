@@ -15,5 +15,5 @@ public interface DatabaseQueryController {
     // TODO this error is returning 500. It should be 400.
     // Queries can't take more than 2 min to run
     @Transactional(timeout = 120)
-    DatabaseQueryDTO getResultSet(@Valid @RequestBody DatabaseQueryRequest databaseQueryRequest, @RequestHeader("Authorization") String accessToken);
+    DatabaseQueryDTO getResultSet(@Valid @RequestBody DatabaseQueryRequest databaseQueryRequest, @RequestHeader("Authorization") String token);
 }

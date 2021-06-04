@@ -19,22 +19,18 @@ public class WCAApi {
     @Value("${api.wca.baseurl}")
     private String wcaBaseUrl;
 
-    public UserInfoDTO getUserInfo(String accessToken) {
+    public UserInfoDTO getUserInfo(String token) {
         log.info("Get user info");
 
         String url = wcaBaseUrl + "/api/v0/me";
         log.info("url = {}", url);
 
         HttpHeaders headers = new HttpHeaders();
-        headers.set("Authorization", accessToken);
+        headers.set("Authorization", token);
         headers.set("Content-Type", "application/json");
         HttpEntity<String> entity = new HttpEntity<>("body", headers);
         ResponseEntity<UserInfoWrapperDTO> response =
                 REST_TEMPLATE.exchange(url, HttpMethod.GET, entity, UserInfoWrapperDTO.class);
         return response.getBody().getMe();
-    }
-
-    public UserInfoDTO getUserInfo(String accessToken, String tokenTyke) {
-        return getUserInfo(String.format("%s %s", tokenTyke, accessToken));
     }
 }

@@ -18,7 +18,7 @@ public class WCAControllerImpl implements WCAController {
     }
 
     @Override
-    public UserInfoDTO getUserInfo(String accessToken, String tokenType) {
-        return wcaService.getUserInfo(accessToken, tokenType);
+    public UserInfoDTO getUserInfo(String token) {
+        return wcaService.getUserInfo(token);
     }
 }
