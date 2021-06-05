@@ -135,13 +135,13 @@ const Topbar = ({
       }
     }
 
-    if (!!token && !userInfo) {
+    if (isLogged() && !userInfo) {
       statisticsApi.getUserInfo().then((response) => {
         setUserInfo(response.data);
         localStorage.setItem(USER_INFO, JSON.stringify(response.data));
       });
     }
-  }, [errorInterceptor, requestIntercetor, setUserInfo]);
+  }, [errorInterceptor, requestIntercetor, setUserInfo, isLogged]);
 
   const statisticsListLink = links.find((it) => it.name === STATISTICS_LIST);
   return (
