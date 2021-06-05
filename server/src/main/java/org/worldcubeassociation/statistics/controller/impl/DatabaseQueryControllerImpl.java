@@ -20,6 +20,6 @@ public class DatabaseQueryControllerImpl implements DatabaseQueryController {
     public DatabaseQueryDTO getResultSet(DatabaseQueryRequest databaseQueryRequest, String accessToken) {
         authorizationService.isLoggedInWca(accessToken);
 
-        return databaseQueryService.getResultSet(databaseQueryRequest);
+        return databaseQueryService.getResultSet(databaseQueryRequest, accessToken);
     }
 }
