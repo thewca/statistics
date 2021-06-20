@@ -8,13 +8,11 @@ const TOKEN_TYPE = "token_type";
 const ACCESS_TOKEN = "access_token";
 export const TOKEN = "token";
 export const EXPIRES_IN = "expires_in";
-const USER_INFO = "user_info";
 
 interface AuthProps {
   token: string;
   userInfo?: UserInfo;
   isLogged: boolean;
-  verifyIsLogged: () => boolean;
   login: () => void;
   logout: () => void;
 }
@@ -23,7 +21,6 @@ const AuthContext = React.createContext<AuthProps>({
   token: "",
   userInfo: undefined,
   isLogged: false,
-  verifyIsLogged: () => false,
   login: () => {},
   logout: () => {},
 });
@@ -63,8 +60,6 @@ const initialIsLogged = checkIsLogged(initialToken, initialExpiresIn);
 export const AuthContextProvider = (props: any) => {
   const [token, setToken] = useState(initialToken);
   const [userInfo, setUserInfo] = useState<UserInfo>();
-  const [expiresIn, setExpiresIn] =
-    useState<number | undefined>(initialExpiresIn);
   const [isLogged, setIsLogged] = useState(initialIsLogged);
 
   useEffect(() => {
@@ -83,7 +78,6 @@ export const AuthContextProvider = (props: any) => {
     setIsLogged(false);
     setToken("");
     setUserInfo(undefined);
-    setExpiresIn(undefined);
 
     delete localStorage[TOKEN];
     delete localStorage[EXPIRES_IN];
@@ -93,25 +87,9 @@ export const AuthContextProvider = (props: any) => {
     window.location.href = "/";
   };
 
-  const verifyIsLogged = () => {
-    if (!token || !expiresIn) {
-      setIsLogged(false);
-      return false;
-    }
-
-    if (new Date() < new Date(expiresIn)) {
-      setIsLogged(true);
-      return true;
-    }
-
-    logoutHandler();
-    return false;
-  };
-
   const contextValue = {
     token,
     isLogged,
-    verifyIsLogged,
     login: loginHandler,
     logout: logoutHandler,
     userInfo,
