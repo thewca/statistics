@@ -46,7 +46,7 @@ function App() {
       href: "/",
       exact: true,
       icon: <HomeOutlined />,
-      component: <HomePage />,
+      component: <HomePage statisticsList={statisticsList} />,
     },
     {
       name: "Statistics List",
