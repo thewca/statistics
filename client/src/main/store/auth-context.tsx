@@ -53,22 +53,22 @@ if (!!hashAccessToken && !!hashTokenType && !!hashExpiresIn) {
   initialExpiresIn = Number(storageExpiresIn);
 }
 
-if (!!storageUserInfo) {
-  initialUserInfo = JSON.parse(storageUserInfo);
-}
-
 export const checkIsLogged = (
   token: string | null,
   expiresIn?: number | string | null
 ) => !!token && !!expiresIn && new Date() < new Date(Number(expiresIn));
+
+const initialIsLogged = checkIsLogged(initialToken, initialExpiresIn);
+
+if (!!storageUserInfo && initialIsLogged) {
+  initialUserInfo = JSON.parse(storageUserInfo);
+}
 
 export const deleteStorageItems = () => {
   delete localStorage[TOKEN];
   delete localStorage[EXPIRES_IN];
   delete localStorage[USER_INFO];
 };
-
-const initialIsLogged = checkIsLogged(initialToken, initialExpiresIn);
 
 export const AuthContextProvider = (props: any) => {
   const [token, setToken] = useState(initialToken);
