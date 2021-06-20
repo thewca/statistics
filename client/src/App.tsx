@@ -6,7 +6,7 @@ import {
   SolutionOutlined,
 } from "@ant-design/icons";
 import { message } from "antd";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import "./App.css";
 import statisticsApi from "./main/api/statistics.api";
@@ -15,17 +15,18 @@ import StatisticsDisplay from "./main/components/StatisticsDisplay";
 import Topbar from "./main/components/Topbar";
 import { LinkItem } from "./main/model/LinkItem";
 import { StatisticsList } from "./main/model/StatisticsList";
-import UserInfo from "./main/model/UserInfo";
 import AboutPage from "./main/pages/AboutPage";
 import BestEverRanksPage from "./main/pages/BestEverRanksPage";
 import DatabaseQueryPage from "./main/pages/DatabaseQueryPage";
 import HomePage from "./main/pages/HomePage";
 import NotFoundPage from "./main/pages/NotFoundPage";
 import StatisticsListPage from "./main/pages/StatisticsListPage";
+import AuthContext from "./main/store/auth-context";
 
 function App() {
   const [statisticsList, setStatisticsList] = useState<StatisticsList>();
-  const [userInfo, setUserInfo] = useState<UserInfo>();
+
+  const authCtx = useContext(AuthContext);
 
   const getStatisticsList = () => {
     statisticsApi
@@ -73,19 +74,14 @@ function App() {
     },
   ]
     // Filter logged area
-    .filter((it) => !it.requiresLogin || !!userInfo);
+    .filter((it) => !it.requiresLogin || authCtx.isLogged);
 
   useEffect(getStatisticsList, []);
 
   return (
     <Router>
       <div id="page-container">
-        <Topbar
-          links={links}
-          statisticsGroups={statisticsList?.list}
-          userInfo={userInfo}
-          setUserInfo={setUserInfo}
-        />
+        <Topbar links={links} statisticsGroups={statisticsList?.list} />
         <div id="content-wrapper">
           <Switch>
             {links.map((link) => (

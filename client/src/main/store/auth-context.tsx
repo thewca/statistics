@@ -8,8 +8,17 @@ const EXPIRES_IN = "expires_in";
 const TOKEN_TYPE = "token_type";
 const USER_INFO = "user_info";
 
-const AuthContext = React.createContext({
+interface AuthProps {
+  token: string;
+  userInfo?: UserInfo;
+  isLogged: boolean;
+  login: () => void;
+  logout: () => void;
+}
+
+const AuthContext = React.createContext<AuthProps>({
   token: "",
+  userInfo: undefined,
   isLogged: false,
   login: () => {},
   logout: () => {},
@@ -63,14 +72,12 @@ export const AuthContextProvider = (props: any) => {
       return;
     }
 
-    setIsLogged(true);
-
     if (new Date() < new Date(expiresIn)) {
       setIsLogged(true);
       return;
     }
 
-    // logoutHandler();
+    logoutHandler();
   }, [token, expiresIn]);
 
   const contextValue = {
@@ -78,6 +85,7 @@ export const AuthContextProvider = (props: any) => {
     isLogged,
     login: loginHandler,
     logout: logoutHandler,
+    userInfo,
   };
 
   return (

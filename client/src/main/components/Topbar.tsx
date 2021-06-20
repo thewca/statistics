@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 import logo from "../assets/wca_logo.svg";
 import { LinkItem } from "../model/LinkItem";
 import StatisticsGroup from "../model/StatisticsGroup";
-import UserInfo from "../model/UserInfo";
 import AuthContext from "../store/auth-context";
 import "./Topbar.css";
 
@@ -14,18 +13,11 @@ const { SubMenu } = Menu;
 interface TopbarProps {
   links: LinkItem[];
   statisticsGroups?: StatisticsGroup[];
-  userInfo?: UserInfo;
-  setUserInfo: (userInfo?: UserInfo) => void;
 }
 
 const STATISTICS_LIST = "Statistics List";
 
-const Topbar = ({
-  links,
-  statisticsGroups,
-  userInfo,
-  setUserInfo,
-}: TopbarProps) => {
+const Topbar = ({ links, statisticsGroups }: TopbarProps) => {
   const authCtx = useContext(AuthContext);
 
   const handle = () => {
@@ -72,9 +64,9 @@ const Topbar = ({
       <div id="login">
         <Menu theme="dark" mode="horizontal" id="top-bar" onClick={handle}>
           <Menu.Item key="login">
-            {!!userInfo ? (
+            {!!authCtx.userInfo ? (
               <img
-                src={userInfo.avatar?.thumb_url}
+                src={authCtx.userInfo.avatar?.thumb_url}
                 width="30"
                 height="30"
                 alt="Avatar"
