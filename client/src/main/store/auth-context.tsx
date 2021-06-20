@@ -6,6 +6,7 @@ import { deleteParameter, getHashParameter } from "../util/query.param.util";
 
 const TOKEN_TYPE = "token_type";
 const ACCESS_TOKEN = "access_token";
+const USER_INFO = "user_info";
 export const TOKEN = "token";
 export const EXPIRES_IN = "expires_in";
 
@@ -33,9 +34,11 @@ let hashExpiresIn = Number(getHashParameter(EXPIRES_IN));
 
 let storageToken = localStorage[TOKEN];
 let storageExpiresIn = localStorage[EXPIRES_IN];
+let storageUserInfo = localStorage[USER_INFO];
 
 let initialToken = "";
 let initialExpiresIn = Number(now);
+let initialUserInfo: UserInfo;
 
 if (!!hashAccessToken && !!hashTokenType && !!hashExpiresIn) {
   deleteParameter(ACCESS_TOKEN, EXPIRES_IN, TOKEN_TYPE);
@@ -50,6 +53,10 @@ if (!!hashAccessToken && !!hashTokenType && !!hashExpiresIn) {
   initialExpiresIn = Number(storageExpiresIn);
 }
 
+if (!!storageUserInfo) {
+  initialUserInfo = JSON.parse(storageUserInfo);
+}
+
 export const checkIsLogged = (
   token: string | null,
   expiresIn?: number | string | null
@@ -58,20 +65,23 @@ export const checkIsLogged = (
 export const deleteStorageItems = () => {
   delete localStorage[TOKEN];
   delete localStorage[EXPIRES_IN];
+  delete localStorage[USER_INFO];
 };
 
 const initialIsLogged = checkIsLogged(initialToken, initialExpiresIn);
 
 export const AuthContextProvider = (props: any) => {
   const [token, setToken] = useState(initialToken);
-  const [userInfo, setUserInfo] = useState<UserInfo>();
+  const [userInfo, setUserInfo] =
+    useState<UserInfo | undefined>(initialUserInfo);
   const [isLogged, setIsLogged] = useState(initialIsLogged);
 
   useEffect(() => {
     if (isLogged && !userInfo) {
-      statisticsApi
-        .getUserInfo()
-        .then((response) => setUserInfo(response.data));
+      statisticsApi.getUserInfo().then((response) => {
+        localStorage.setItem(USER_INFO, JSON.stringify(response.data));
+        setUserInfo(response.data);
+      });
     }
   }, [isLogged, userInfo]);
 
