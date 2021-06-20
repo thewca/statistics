@@ -55,6 +55,11 @@ export const checkIsLogged = (
   expiresIn?: number | string | null
 ) => !!token && !!expiresIn && new Date() < new Date(Number(expiresIn));
 
+export const deleteStorageItems = () => {
+  delete localStorage[TOKEN];
+  delete localStorage[EXPIRES_IN];
+};
+
 const initialIsLogged = checkIsLogged(initialToken, initialExpiresIn);
 
 export const AuthContextProvider = (props: any) => {
@@ -75,12 +80,12 @@ export const AuthContextProvider = (props: any) => {
   };
 
   const logoutHandler = () => {
+    deleteStorageItems();
+
+    // It was not *actually* needed since screen gets reloaded
     setIsLogged(false);
     setToken("");
     setUserInfo(undefined);
-
-    delete localStorage[TOKEN];
-    delete localStorage[EXPIRES_IN];
 
     // Return to home after logout
     // TODO do this only for pages that requires login
