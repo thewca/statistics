@@ -1,25 +1,23 @@
 import { message } from "antd";
-import axios, { AxiosError, AxiosRequestConfig } from "axios";
-import { useContext } from "react";
-import AuthContext from "../store/auth-context";
+import { AxiosError, AxiosRequestConfig } from "axios";
+import { checkIsLogged, EXPIRES_IN, TOKEN } from "../store/auth-context";
 
-const authCtx = useContext(AuthContext);
-
-const errorInterceptor = (response: AxiosError) => {
+export const errorInterceptor = (response: AxiosError) => {
   if (response.response?.status === 404) {
     message.error("Not found");
   } else if (response.response?.status === 401) {
-    authCtx.logout();
+    // Refresh screen so the login process can start
+    window.location.href = "/";
   }
   return Promise.reject(response);
 };
 
-const requestIntercetor = (item: AxiosRequestConfig) => {
-  if (!!authCtx.token) {
-    item.headers.Authorization = authCtx.token;
+export const requestIntercetor = (item: AxiosRequestConfig) => {
+  let token = localStorage.getItem(TOKEN);
+  let expiresIn = localStorage.getItem(EXPIRES_IN);
+  debugger;
+  if (checkIsLogged(token, expiresIn)) {
+    item.headers.Authorization = token;
   }
   return item;
 };
-
-axios.interceptors.response.use(undefined, errorInterceptor);
-axios.interceptors.request.use(requestIntercetor);
