@@ -13,3 +13,8 @@
   box-shadow: 0 0 0 1px #d9d9d9 inset;
   margin-left: 5px;
 }
+
+.stat-card {
+  text-align: center;
+  background-color: inherit !important;
+}

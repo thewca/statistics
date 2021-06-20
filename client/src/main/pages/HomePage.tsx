@@ -1,9 +1,10 @@
-import { Card } from "antd";
+import { Card, Col, Row, Statistic } from "antd";
 import { sample } from "lodash";
 import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { StatisticsList } from "../model/StatisticsList";
 import AuthContext from "../store/auth-context";
+import "./HomePage.css";
 
 interface HomePageProps {
   statisticsList?: StatisticsList;
@@ -28,48 +29,53 @@ const Home = ({ statisticsList }: HomePageProps) => {
         database.
       </p>
 
-      <h3>Statistics List</h3>
+      <Row gutter={16}>
+        <Col span={8}>
+          <Card title="Statistics List">
+            <p>
+              Check our <Link to="statistics-list">list with intereting</Link>{" "}
+              statistics.
+            </p>
 
-      <p>
-        Check our <Link to="statistics-list">list with intereting</Link>{" "}
-        statistics.
-      </p>
+            <p>
+              We try always to add new statistics. You can suggest one by
+              reaching the WCA Software Team. If that's widely interesting and
+              feasible to implement, we might add it!
+            </p>
 
-      <p>
-        We try always to add new statistics. You can suggest one by reaching the
-        WCA Software Team. If that's widely interesting and feasible to
-        implement, we might add it!
-      </p>
+            {!!statisticsList && (
+              <Statistic
+                className="stat-card"
+                title="Current Statistics"
+                value={statisticsList.totalSize}
+              />
+            )}
+          </Card>
+        </Col>
+        <Col span={8}>
+          <Card title="Take me to a random statistics">
+            <p>
+              Click <Link to={randomLink}>here</Link> to be redirected to a
+              random page.
+            </p>
+          </Card>
+        </Col>
+        <Col span={8}>
+          <Card title="Logged Feature">
+            {authCtx.isLogged && (
+              <p>
+                Since you are logged, you can check exclusive features like{" "}
+                <Link to="database-query">Database Query</Link> (in case you
+                have SQL skills or a query).
+              </p>
+            )}
 
-      {!!statisticsList && (
-        <Card
-          style={{ textAlign: "center" }}
-          prefix={"teste"}
-          title="Current Statistics"
-        >
-          {statisticsList.totalSize}
-        </Card>
-      )}
-
-      <h3>Take me to a random statistics</h3>
-      <p>
-        Click <Link to={randomLink}>here</Link> to be redirected to a random
-        page.
-      </p>
-
-      <h3>Logged Features</h3>
-
-      {authCtx.isLogged && (
-        <p>
-          Since you are logged, you can check exclusive features like{" "}
-          <Link to="database-query">Database Query</Link> (in case you have SQL
-          skills or a query).
-        </p>
-      )}
-
-      {!authCtx.isLogged && (
-        <p>Log in with the WCA's website to get more content.</p>
-      )}
+            {!authCtx.isLogged && (
+              <p>Log in with the WCA's website to get more content.</p>
+            )}
+          </Card>
+        </Col>
+      </Row>
     </div>
   );
 };
