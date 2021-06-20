@@ -32,7 +32,7 @@ const Home = ({ statisticsList }: HomePageProps) => {
 
       <p>
         Check our <Link to="statistics-list">list with intereting</Link>{" "}
-        statistics
+        statistics.
       </p>
 
       <p>
@@ -54,7 +54,7 @@ const Home = ({ statisticsList }: HomePageProps) => {
       <h3>Take me to a random statistics</h3>
       <p>
         Click <Link to={randomLink}>here</Link> to be redirected to a random
-        page
+        page.
       </p>
 
       <h3>Logged Features</h3>
@@ -62,7 +62,8 @@ const Home = ({ statisticsList }: HomePageProps) => {
       {authCtx.isLogged && (
         <p>
           Since you are logged, you can check exclusive features like{" "}
-          <Link to="database-query">Database Query</Link>.
+          <Link to="database-query">Database Query</Link> (in case you have SQL
+          skills or a query).
         </p>
       )}
 

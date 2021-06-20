@@ -101,6 +101,9 @@ const BestEverRanksPage = () => {
                 placeholder="WCA ID"
                 value={wcaId}
                 onChange={(e) => setWcaId(e.target.value)}
+                minLength={10}
+                maxLength={10}
+                required
               />
             </Form.Item>
           </Col>
