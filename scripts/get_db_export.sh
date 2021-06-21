@@ -9,7 +9,12 @@ export_file_zip="wca-developer-database-dump.zip"
 export_file_sql="wca-developer-database-dump.sql"
 temp_database="wca_development_temp"
 new_database="wca_development"
-mysqlconn="sudo mysql"
+
+if [ $DB_PASSWORD ]; then
+    mysqlconn="sudo mysql -h ${DB_HOST:-localhost} -u ${DB_USER:-root} -P ${DB_PORT:-3306} -p${DB_PASSWORD}"
+else
+    mysqlconn="sudo mysql"
+fi
 
 download=true
 

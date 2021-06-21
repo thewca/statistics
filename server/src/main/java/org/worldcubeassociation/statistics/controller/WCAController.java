@@ -2,6 +2,7 @@ package org.worldcubeassociation.statistics.controller;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.worldcubeassociation.statistics.dto.UserInfoDTO;
 
@@ -15,5 +16,5 @@ public interface WCAController {
     String getWcaAuthenticationUrl(@NotBlank String frontendHost);
 
     @GetMapping("user")
-    UserInfoDTO getUserInfo(@NotBlank String accessToken, @NotBlank String tokenType);
+    UserInfoDTO getUserInfo(@RequestHeader("Authorization") String token);
 }

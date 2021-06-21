@@ -1,0 +1,76 @@
+queries:
+  - headers:
+      - Mean
+      - Attempt 1
+      - Attempt 2
+      - Attempt 3
+      - Competition
+    showPositions: true
+    positionTieBreakerIndex: 0
+    sqlQuery: |-
+      select format((r1 + r2 + r3) / 3, 2) average,
+          r1,
+          r2,
+          r3,
+          concat(
+              '<a href="https://www.worldcubeassociation.org/competitions/',
+              competitionId,
+              '">',
+              cellName,
+              '</a>'
+          )
+      from (
+              select competitionId,
+                  min(
+                      case
+                          when value1 > 0 then value1
+                          else null
+                      end
+                  ) r1,
+                  min(
+                      case
+                          when value2 > 0 then value2
+                          else null
+                      end
+                  ) r2,
+                  min(
+                      case
+                          when value3 > 0 then value3
+                          else null
+                      end
+                  ) r3
+              from Results
+              where eventId = '333fm'
+              group by competitionId
+          ) best_results
+          inner join Competitions c on best_results.competitionId = c.id
+      where r1 is not null
+          and r2 is not null
+          and r3 is not null
+      order by convert(average, float4),
+          competitionId
+      limit 20
+    sqlQueryCustom: |
+      select
+      	coalesce(format((r1 + r2 + r3)/ 3, 2), 'DNF') average,
+      	coalesce(r1, 'DNF'),
+      	coalesce(r2, 'DNF'),
+      	coalesce(r3, 'DNF'),
+      	competitionId
+      from
+      	(
+      	select
+      		competitionId,
+      		min(case when value1 > 0 then value1 else null end) r1,
+      		min(case when value2 > 0 then value2 else null end) r2,
+      		min(case when value3 > 0 then value3 else null end) r3
+      	from
+      		Results
+      	where
+      		eventId = '333fm'
+      		and competitionId = ':COMPETITION_ID'
+      	group by
+      		competitionId) best_results
+title: Best potential FMC mean
+explanation: The means are computed by taking the best result for each attempt in the given round.
+groupName: Events

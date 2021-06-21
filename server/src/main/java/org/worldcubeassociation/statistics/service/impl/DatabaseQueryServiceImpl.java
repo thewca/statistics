@@ -1,7 +1,9 @@
 package org.worldcubeassociation.statistics.service.impl;
 
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.util.Pair;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
@@ -12,7 +14,10 @@ import org.worldcubeassociation.statistics.request.DatabaseQueryRequest;
 import org.worldcubeassociation.statistics.rowmapper.ResultSetRowMapper;
 import org.worldcubeassociation.statistics.service.DatabaseQueryService;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,10 +31,23 @@ public class DatabaseQueryServiceImpl implements DatabaseQueryService {
     @Autowired
     private ResultSetRowMapper resultSetRowMapper;
 
+    @Value("${service.seconds-to-timeout}")
+    private int secondsToTimeout;
+
+    private static List<CachedToken> cachedTokens = new ArrayList<>();
+
     private static final String PAGINATION_WRAPPER = "select * from (\n%s\n) alias limit %s offset %s";
     private static final String PAGINATION_COUNT = "select count(*) from (\n%s\n) alias";
 
     @Override
+    public DatabaseQueryDTO getResultSet(DatabaseQueryRequest databaseQueryRequest, String accessToken) {
+        validateToken(accessToken);
+        DatabaseQueryDTO result = getResultSet(databaseQueryRequest);
+        removeCachedToken(accessToken);
+
+        return result;
+    }
+
     public DatabaseQueryDTO getResultSet(DatabaseQueryRequest databaseQueryRequest) {
         String query = databaseQueryRequest.getSqlQuery();
         int page = databaseQueryRequest.getPage();
@@ -82,6 +100,40 @@ public class DatabaseQueryServiceImpl implements DatabaseQueryService {
         return databaseQueryDTO;
     }
 
+    private void validateToken(String accessToken) {
+        CachedToken newToken = new CachedToken();
+        newToken.setToken(accessToken);
+        int index = Collections.binarySearch(cachedTokens, newToken);
+
+        if (index < 0) {
+            // The user was not doing any requisition
+            newToken.setCacheTime(LocalDateTime.now());
+            cachedTokens.add(-index - 1, newToken);
+            return;
+        }
+
+        CachedToken cachedToken = cachedTokens.get(index);
+        LocalDateTime now = LocalDateTime.now();
+        long diff = cachedToken.getCacheTime().until(now, ChronoUnit.SECONDS);
+        if (diff > secondsToTimeout) {
+            // In this scenario, the controller probably killed a connection. The cache is idle because it was not removed after getting the result set
+
+            cachedToken.setCacheTime(now);
+            return;
+        }
+
+        // We block, in the server, multiple request from the same user
+        throw new InvalidParameterException("You can't get multiple queries running in parallel. Wait for it to finish or until " + cachedToken.getCacheTime().plusSeconds(secondsToTimeout));
+    }
+
+    private void removeCachedToken(String accessToken) {
+        // We remove token cached token so the user can query again
+        CachedToken cachedToken = new CachedToken();
+        cachedToken.setToken(accessToken);
+        int index = Collections.binarySearch(cachedTokens, cachedToken);
+        cachedTokens.remove(index);
+    }
+
     public DatabaseQueryBaseDTO getResultSet(String query) {
         log.info("Get result set for {}", query);
 
@@ -110,5 +162,16 @@ public class DatabaseQueryServiceImpl implements DatabaseQueryService {
         }
 
         return result;
+    }
+
+    @Data
+    private class CachedToken implements Comparable<CachedToken> {
+        private String token;
+        private LocalDateTime cacheTime;
+
+        @Override
+        public int compareTo(CachedToken other) {
+            return token.compareTo(other.token);
+        }
     }
 }

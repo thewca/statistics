@@ -1,0 +1,24 @@
+.list-item {
+  margin: 30px 0;
+  font-size: 120%;
+}
+
+#switch {
+  margin-bottom: 10px;
+}
+
+.badge-count sup {
+  color: #999;
+  background-color: #fff;
+  box-shadow: 0 0 0 1px #d9d9d9 inset;
+  margin-left: 5px;
+}
+
+.stat-stat {
+  text-align: center;
+}
+
+.stat-card {
+  height: 100%;
+  box-shadow: 3px 3px 6px #ccc;
+}

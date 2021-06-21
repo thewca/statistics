@@ -1,12 +1,13 @@
 import logging
 import requests
+import os
 
 logging.basicConfig(level=logging.INFO)
 log = logging.getLogger()
 
+port = os.environ.get("STATISTICS_PORT", "8080")
 
-url = "http://localhost:8080/statistics/create"
-
+url = "http://localhost:%s/statistics/create"%port
 
 def create_statistics(data):
 

@@ -1,16 +1,15 @@
-import axios from "axios";
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
 import "./index.css";
-import { interceptorError } from "./main/config/interceptor";
+import { AuthContextProvider } from "./main/store/auth-context";
 import reportWebVitals from "./reportWebVitals";
-
-axios.interceptors.response.use(undefined, interceptorError);
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <AuthContextProvider>
+      <App />
+    </AuthContextProvider>
   </React.StrictMode>,
   document.getElementById("root")
 );

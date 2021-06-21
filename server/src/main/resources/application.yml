@@ -7,6 +7,10 @@ spring:
     active: local
   jpa:
     open-in-view: true
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
 server:
   port: 8080
   error:
@@ -17,3 +21,8 @@ management:
   endpoint:
     health:
       show-details: always
+
+service:
+  authorization:
+    token-valid-for: 120 # 2 hours
+  seconds-to-timeout: 120 # 2 minutes

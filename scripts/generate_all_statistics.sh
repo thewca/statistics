@@ -2,11 +2,13 @@
 
 # server must be running
 
+port=${STATISTICS_PORT:-8080}
+
 # Download db export
 ./scripts/get_db_export.sh
 
 echo "Deleting existing statistics"
-curl -X DELETE "http://localhost:8080/statistics" -H "accept: */*"
+curl -X DELETE "http://localhost:${port}/statistics" -H "accept: */*"
 
 
 # Sql stats

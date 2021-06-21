@@ -20,9 +20,8 @@ const StatisticsDisplay = () => {
   const [selectedKeys, setSelectedKeys] = useState<string | undefined>(
     getQueryParameter("selectedKeys") || undefined
   );
-  const [filteredStatistics, setFilteredStatistics] = useState<
-    StatisticsDetail[]
-  >();
+  const [filteredStatistics, setFilteredStatistics] =
+    useState<StatisticsDetail[]>();
 
   const handleFilteredStatistics = useCallback(
     (statistics: Statistics, selectedKeys: string | null) => {
@@ -80,9 +79,10 @@ const StatisticsDisplay = () => {
       );
   }, [pathId, handleFilteredStatistics]);
 
-  useEffect(() => setQueryParameter("selectedKeys", selectedKeys), [
-    selectedKeys,
-  ]);
+  useEffect(
+    () => setQueryParameter("selectedKeys", selectedKeys),
+    [selectedKeys]
+  );
 
   const getIcon = (statisticsDetail: StatisticsDetail) => {
     if (!statisticsDetail.sqlQueryCustom) {
@@ -161,7 +161,7 @@ const StatisticsDisplay = () => {
   };
 
   return (
-    <div className="container">
+    <div>
       <h1 className="page-title">{statistics?.title}</h1>
 
       <Row>

@@ -1,12 +1,14 @@
 import { UserOutlined } from "@ant-design/icons";
 import { Menu } from "antd";
-import { useState } from "react";
+import { useContext } from "react";
 import { Link } from "react-router-dom";
-import wcaApi from "../api/wca.api";
 import logo from "../assets/wca_logo.svg";
 import { LinkItem } from "../model/LinkItem";
 import StatisticsGroup from "../model/StatisticsGroup";
+import AuthContext from "../store/auth-context";
 import "./Topbar.css";
+
+const { SubMenu } = Menu;
 
 interface TopbarProps {
   links: LinkItem[];
@@ -15,22 +17,18 @@ interface TopbarProps {
 
 const STATISTICS_LIST = "Statistics List";
 
-const { SubMenu } = Menu;
-
 const Topbar = ({ links, statisticsGroups }: TopbarProps) => {
-  const [logged, setLogged] = useState(wcaApi.isLogged());
+  const authCtx = useContext(AuthContext);
 
   const handle = () => {
-    if (logged) {
-      wcaApi.logout();
-      setLogged(false);
+    if (authCtx.isLogged) {
+      authCtx.logout();
     } else {
-      wcaApi.handleLogin();
+      authCtx.login();
     }
   };
 
   const statisticsListLink = links.find((it) => it.name === STATISTICS_LIST);
-
   return (
     <Menu theme="dark" mode="horizontal" id="top-bar">
       <Menu.Item key="logo">
@@ -66,9 +64,9 @@ const Topbar = ({ links, statisticsGroups }: TopbarProps) => {
       <div id="login">
         <Menu theme="dark" mode="horizontal" id="top-bar" onClick={handle}>
           <Menu.Item key="login">
-            {logged ? (
+            {!!authCtx.userInfo ? (
               <img
-                src={wcaApi.getUserInfo()?.avatar?.thumb_url}
+                src={authCtx.userInfo.avatar?.thumb_url}
                 width="30"
                 height="30"
                 alt="Avatar"
@@ -76,7 +74,7 @@ const Topbar = ({ links, statisticsGroups }: TopbarProps) => {
             ) : (
               <UserOutlined />
             )}{" "}
-            {logged ? "Logout" : "Login"}
+            {authCtx.isLogged ? "Logout" : "Login"}
           </Menu.Item>
         </Menu>
       </div>

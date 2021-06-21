@@ -5,7 +5,7 @@ import org.worldcubeassociation.statistics.dto.DatabaseQueryDTO;
 import org.worldcubeassociation.statistics.request.DatabaseQueryRequest;
 
 public interface DatabaseQueryService {
-    DatabaseQueryDTO getResultSet(DatabaseQueryRequest databaseQueryRequest);
+    DatabaseQueryDTO getResultSet(DatabaseQueryRequest databaseQueryRequest, String accessToken);
 
     DatabaseQueryBaseDTO getResultSet(String query);
 }

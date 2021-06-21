@@ -16,9 +16,7 @@ import org.worldcubeassociation.statistics.dto.UserInfoDTO;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class WCAServiceImplTest {
@@ -47,14 +45,13 @@ public class WCAServiceImplTest {
 
     @Test
     public void getUserInfo() {
-        String accessToken = "token123";
-        String accessTokenType = "Bearer";
-        when(wcaApi.getUserInfo(anyString(), anyString())).thenReturn(new UserInfoDTO());
-        UserInfoDTO userInfo = service.getUserInfo(accessToken, accessTokenType);
+        String token = "Bearer token123";
+        when(wcaApi.getUserInfo(anyString())).thenReturn(new UserInfoDTO());
+        UserInfoDTO userInfo = service.getUserInfo(token);
         assertNotNull(userInfo);
 
         // The workflow simply redirects to WCA
-        verify(wcaApi, times(1)).getUserInfo(anyString(), anyString());
+        verify(wcaApi, times(1)).getUserInfo(anyString());
     }
 
 }

@@ -6,13 +6,15 @@ import {
   SolutionOutlined,
 } from "@ant-design/icons";
 import { message } from "antd";
-import React, { useEffect, useState } from "react";
+import axios from "axios";
+import React, { useContext, useEffect, useState } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import "./App.css";
 import statisticsApi from "./main/api/statistics.api";
 import Footer from "./main/components/Footer";
 import StatisticsDisplay from "./main/components/StatisticsDisplay";
 import Topbar from "./main/components/Topbar";
+import { errorInterceptor, requestIntercetor } from "./main/config/interceptor";
 import { LinkItem } from "./main/model/LinkItem";
 import { StatisticsList } from "./main/model/StatisticsList";
 import AboutPage from "./main/pages/AboutPage";
@@ -21,16 +23,22 @@ import DatabaseQueryPage from "./main/pages/DatabaseQueryPage";
 import HomePage from "./main/pages/HomePage";
 import NotFoundPage from "./main/pages/NotFoundPage";
 import StatisticsListPage from "./main/pages/StatisticsListPage";
+import AuthContext from "./main/store/auth-context";
+
+axios.interceptors.response.use(undefined, errorInterceptor);
+axios.interceptors.request.use(requestIntercetor);
 
 function App() {
   const [statisticsList, setStatisticsList] = useState<StatisticsList>();
+
+  const authCtx = useContext(AuthContext);
+
   const getStatisticsList = () => {
     statisticsApi
       .getStatisticsGroups()
       .then((response) => setStatisticsList(response.data))
       .catch(() => message.error("Error fetching statistics list"));
   };
-  useEffect(getStatisticsList, []);
 
   const links: LinkItem[] = [
     {
@@ -38,7 +46,7 @@ function App() {
       href: "/",
       exact: true,
       icon: <HomeOutlined />,
-      component: <HomePage />,
+      component: <HomePage statisticsList={statisticsList} />,
     },
     {
       name: "Statistics List",
@@ -53,6 +61,7 @@ function App() {
       exact: false,
       icon: <DatabaseOutlined />,
       component: <DatabaseQueryPage />,
+      requiresLogin: true,
     },
     {
       name: "About",
@@ -68,7 +77,11 @@ function App() {
       icon: <RiseOutlined />,
       component: <BestEverRanksPage />,
     },
-  ];
+  ]
+    // Filter logged area
+    .filter((it) => !it.requiresLogin || authCtx.isLogged);
+
+  useEffect(getStatisticsList, []);
 
   return (
     <Router>
