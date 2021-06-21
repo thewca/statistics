@@ -14,7 +14,11 @@
   margin-left: 5px;
 }
 
-.stat-card {
+.stat-stat {
   text-align: center;
-  background-color: inherit !important;
+}
+
+.stat-card {
+  height: 100%;
+  box-shadow: 3px 3px 6px #ccc;
 }
