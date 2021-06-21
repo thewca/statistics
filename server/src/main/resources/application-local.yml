@@ -7,11 +7,6 @@ spring:
     username: root
     password:
     initialization-mode: always # Creates database using schema.sql
-  jpa:
-    show-sql: true
-    properties:
-      hibernate:
-        format_sql: true
 api:
   wca:
     baseurl: https://staging.worldcubeassociation.org
