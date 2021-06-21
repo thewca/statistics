@@ -1,4 +1,4 @@
-import { Card, Col, Row, Statistic } from "antd";
+import { Card, Col, Divider, Row, Statistic } from "antd";
 import { sample } from "lodash";
 import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
@@ -24,14 +24,12 @@ const Home = ({ statisticsList }: HomePageProps) => {
   return (
     <div className="container">
       <h1 className="page-title">WCA Statistics</h1>
-      <p>
-        Navigate through interesting analysis over the World Cube Association's
-        database.
-      </p>
+
+      <Divider />
 
       <Row gutter={16}>
         <Col span={8}>
-          <Card title="Statistics List" className="stat-card">
+          <Card title="Statistics List" className="stat-card" hoverable>
             <p>
               Check our <Link to="statistics-list">list with intereting</Link>{" "}
               statistics.
@@ -53,7 +51,11 @@ const Home = ({ statisticsList }: HomePageProps) => {
           </Card>
         </Col>
         <Col span={8}>
-          <Card title="Take me to a random statistics" className="stat-card">
+          <Card
+            title="Take me to a random statistics"
+            className="stat-card"
+            hoverable
+          >
             <p>
               Click <Link to={randomLink}>here</Link> to be redirected to a
               random page.
@@ -61,7 +63,7 @@ const Home = ({ statisticsList }: HomePageProps) => {
           </Card>
         </Col>
         <Col span={8}>
-          <Card title="Logged Feature" className="stat-card">
+          <Card title="Logged Feature" className="stat-card" hoverable>
             {authCtx.isLogged && (
               <p>
                 Since you are logged, you can check exclusive features like{" "}
@@ -76,6 +78,8 @@ const Home = ({ statisticsList }: HomePageProps) => {
           </Card>
         </Col>
       </Row>
+
+      <Divider />
     </div>
   );
 };
