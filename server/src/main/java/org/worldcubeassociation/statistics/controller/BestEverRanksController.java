@@ -2,6 +2,7 @@ package org.worldcubeassociation.statistics.controller;
 
 import org.springframework.web.bind.annotation.*;
 import org.worldcubeassociation.statistics.dto.besteverrank.BestEverRankDTO;
+import org.worldcubeassociation.statistics.request.BestEverRanksRequest;
 import org.worldcubeassociation.statistics.response.BestEverRanksResponse;
 
 @RequestMapping("best-ever-rank")
@@ -10,8 +11,8 @@ public interface BestEverRanksController {
     @GetMapping("{personId}")
     BestEverRankDTO get(@PathVariable String personId);
 
-    @PostMapping("{eventId}")
-    BestEverRanksResponse generate(String eventId);
+    @PostMapping("generate")
+    BestEverRanksResponse generate(BestEverRanksRequest bestEverRanksRequest);
 
     @PostMapping
     BestEverRanksResponse generate();

@@ -7,6 +7,7 @@ import org.worldcubeassociation.statistics.dto.besteverrank.BestEverRankDTO;
 import org.worldcubeassociation.statistics.exception.NotFoundException;
 import org.worldcubeassociation.statistics.model.BestEverRank;
 import org.worldcubeassociation.statistics.repository.BestEverRanksRepository;
+import org.worldcubeassociation.statistics.request.BestEverRanksRequest;
 import org.worldcubeassociation.statistics.response.BestEverRanksResponse;
 import org.worldcubeassociation.statistics.service.BestEverRanksService;
 
@@ -26,7 +27,7 @@ public class BestEverRanksServiceImpl implements BestEverRanksService {
     }
 
     @Override
-    public BestEverRanksResponse generate(String eventId) {
+    public BestEverRanksResponse generate(BestEverRanksRequest bestEverRanksRequest) {
         return null;
     }
 

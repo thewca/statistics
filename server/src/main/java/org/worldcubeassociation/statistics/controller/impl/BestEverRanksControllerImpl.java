@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 import org.worldcubeassociation.statistics.controller.BestEverRanksController;
 import org.worldcubeassociation.statistics.dto.besteverrank.BestEverRankDTO;
+import org.worldcubeassociation.statistics.request.BestEverRanksRequest;
 import org.worldcubeassociation.statistics.response.BestEverRanksResponse;
 import org.worldcubeassociation.statistics.service.BestEverRanksService;
 
@@ -18,8 +19,8 @@ public class BestEverRanksControllerImpl implements BestEverRanksController {
     }
 
     @Override
-    public BestEverRanksResponse generate(String eventId) {
-        return bestEverRanksService.generate(eventId);
+    public BestEverRanksResponse generate(BestEverRanksRequest bestEverRanksRequest) {
+        return bestEverRanksService.generate(bestEverRanksRequest);
     }
 
     @Override
