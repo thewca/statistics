@@ -1,6 +1,5 @@
 package org.worldcubeassociation.statistics.dto.besteverrank;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 @Data
