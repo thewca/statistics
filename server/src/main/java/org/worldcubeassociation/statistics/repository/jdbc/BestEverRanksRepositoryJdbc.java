@@ -6,5 +6,5 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface BestEverRanksRepositoryJdbc {
-    List<LocalDate> getDates(BestEverRanksRequest bestEverRanksRequest);
+    List<LocalDate> getDates(String eventId);
 }

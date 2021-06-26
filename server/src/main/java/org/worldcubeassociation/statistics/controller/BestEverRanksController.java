@@ -5,6 +5,8 @@ import org.worldcubeassociation.statistics.dto.besteverrank.BestEverRankDTO;
 import org.worldcubeassociation.statistics.request.BestEverRanksRequest;
 import org.worldcubeassociation.statistics.response.BestEverRanksResponse;
 
+import javax.validation.Valid;
+
 @RequestMapping("best-ever-rank")
 @CrossOrigin(origins = "*", allowedHeaders = "*") // Enable this for testing
 public interface BestEverRanksController {
@@ -12,9 +14,9 @@ public interface BestEverRanksController {
     BestEverRankDTO get(@PathVariable String personId);
 
     @PostMapping("generate")
-    BestEverRanksResponse generate(BestEverRanksRequest bestEverRanksRequest);
+    BestEverRanksResponse generate(@RequestBody @Valid BestEverRanksRequest bestEverRanksRequest);
 
-    @PostMapping
-    BestEverRanksResponse generate();
+    @PostMapping("generate/all")
+    BestEverRanksResponse generateAll();
 
 }

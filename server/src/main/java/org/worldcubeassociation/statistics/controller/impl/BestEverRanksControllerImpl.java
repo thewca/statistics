@@ -24,7 +24,7 @@ public class BestEverRanksControllerImpl implements BestEverRanksController {
     }
 
     @Override
-    public BestEverRanksResponse generate() {
-        return bestEverRanksService.generate();
+    public BestEverRanksResponse generateAll() {
+        return bestEverRanksService.generateAll();
     }
 }

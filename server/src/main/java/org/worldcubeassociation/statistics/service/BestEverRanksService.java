@@ -9,5 +9,5 @@ public interface BestEverRanksService {
 
     BestEverRanksResponse generate(BestEverRanksRequest bestEverRanksRequest);
 
-    BestEverRanksResponse generate();
+    BestEverRanksResponse generateAll();
 }
