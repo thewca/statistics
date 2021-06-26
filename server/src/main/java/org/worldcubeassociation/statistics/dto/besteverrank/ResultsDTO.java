@@ -6,7 +6,5 @@ import lombok.Data;
 @Data
 public class ResultsDTO {
     private ResultDTO current;
-
-    @JsonProperty("best_rank")
     private ResultDTO bestRank;
 }

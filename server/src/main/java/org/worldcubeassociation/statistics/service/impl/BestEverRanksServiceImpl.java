@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.worldcubeassociation.statistics.dto.besteverrank.BestEverRankDTO;
+import org.worldcubeassociation.statistics.dto.besteverrank.*;
 import org.worldcubeassociation.statistics.exception.NotFoundException;
 import org.worldcubeassociation.statistics.model.BestEverRank;
 import org.worldcubeassociation.statistics.repository.BestEverRanksRepository;
@@ -13,6 +13,7 @@ import org.worldcubeassociation.statistics.response.BestEverRanksResponse;
 import org.worldcubeassociation.statistics.service.BestEverRanksService;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -49,6 +50,21 @@ public class BestEverRanksServiceImpl implements BestEverRanksService {
 
         List<LocalDate> dates = bestEverRanksRepository.getDates(eventId);
         log.info("Found {} dates", dates.size());
+
+        List<WorldDTO> worlds = new ArrayList<>();
+        List<ContinentDTO> continents = new ArrayList<>();
+        List<CountryDTO> countries = new ArrayList<>();
+
+        worlds.add(new WorldDTO("world"));
+
+        for (LocalDate date : dates) {
+            List<CompetitorCountryDTO> todayCompetitors = bestEverRanksRepository.getTodayCompetitors(date, eventId);
+
+            summarizeResults(todayCompetitors, worlds, continents, countries, date);
+        }
+    }
+
+    private void summarizeResults(List<CompetitorCountryDTO> todayCompetitors, List<WorldDTO> worlds, List<ContinentDTO> continents, List<CountryDTO> countries, LocalDate date) {
     }
 
     @Override

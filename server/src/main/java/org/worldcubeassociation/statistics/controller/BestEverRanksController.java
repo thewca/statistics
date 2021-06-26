@@ -18,5 +18,4 @@ public interface BestEverRanksController {
 
     @PostMapping("generate/all")
     BestEverRanksResponse generateAll();
-
 }

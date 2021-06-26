@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
+import org.worldcubeassociation.statistics.dto.besteverrank.CompetitorCountryDTO;
 import org.worldcubeassociation.statistics.repository.jdbc.BestEverRanksRepositoryJdbc;
 import org.worldcubeassociation.statistics.util.StatisticsUtil;
 
@@ -17,6 +18,7 @@ public class BestEverRanksRepositoryJdbcImpl implements BestEverRanksRepositoryJ
     private NamedParameterJdbcTemplate namedJdbcTemplate;
 
     private static final String EVENT_ID = "EVENT_ID";
+    private static final String DATE = "DATE";
 
     @Override
     public List<LocalDate> getDates(String eventId) {
@@ -27,6 +29,18 @@ public class BestEverRanksRepositoryJdbcImpl implements BestEverRanksRepositoryJ
                         JdbcTemplateMapperFactory
                                 .newInstance()
                                 .newRowMapper(LocalDate.class)
+                );
+    }
+
+    @Override
+    public List<CompetitorCountryDTO> getTodayCompetitors(LocalDate date, String eventId) {
+        return namedJdbcTemplate
+                .query(
+                        StatisticsUtil.getQuery("besteverranks/getTodayCompetitors"),
+                        new MapSqlParameterSource().addValue(EVENT_ID, eventId).addValue(DATE, date),
+                        JdbcTemplateMapperFactory
+                                .newInstance()
+                                .newRowMapper(CompetitorCountryDTO.class)
                 );
     }
 }
