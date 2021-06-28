@@ -72,7 +72,26 @@ public class BestEverRanksServiceImpl implements BestEverRanksService {
         for (CompetitorCountryDTO todayCompetitor : todayCompetitors) {
             CompetitorWorldDTO competitorWorld = new CompetitorWorldDTO(todayCompetitor);
             updateResults(world, competitorWorld, today);
+
+            RegionDTO continent = findOrCreateRegion(continents, todayCompetitor.getContinent());
+            CompetitorContinentDTO competitorContinentDTO = new CompetitorContinentDTO(todayCompetitor);
+            updateResults(continent, competitorContinentDTO, today);
+
+            RegionDTO country = findOrCreateRegion(countries, todayCompetitor.getCountry());
+            updateResults(country, todayCompetitor, today);
         }
+    }
+
+    private RegionDTO findOrCreateRegion(List<RegionDTO> regions, String name) {
+        RegionDTO region = new RegionDTO(name);
+
+        int index = Collections.binarySearch(regions, region);
+        if (index < 0) {
+            index = -index - 1;
+            regions.add(index, region);
+        }
+
+        return regions.get(index);
     }
 
     private void updateResults(RegionDTO region, Competitor todayCompetitor, LocalDate today) {
@@ -105,9 +124,7 @@ public class BestEverRanksServiceImpl implements BestEverRanksService {
             region.getAverages().add(Math.max(-j - 1, j), newAverage);
 
             regionCompetitor.getAverage().setCurrent(todayCompetitor.getAverage().getCurrent());
-
         }
-
     }
 
     private Competitor findOrCreateCompetitor(RegionDTO region, Competitor competitor) {

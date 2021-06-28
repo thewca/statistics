@@ -14,6 +14,7 @@ public class CompetitorContinentDTO extends CompetitorWorldDTO implements Compar
 
     public CompetitorContinentDTO(CompetitorCountryDTO competitorCountryDTO) {
         super(competitorCountryDTO);
+        this.continent = competitorCountryDTO.getContinent();
     }
 
     @Override

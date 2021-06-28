@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-public class RegionDTO {
+public class RegionDTO implements Comparable<RegionDTO> {
     private String name;
     private List<Integer> singles;
     private List<Integer> averages;
@@ -17,5 +17,11 @@ public class RegionDTO {
         this.name = name;
         this.singles = new ArrayList<>();
         this.averages = new ArrayList<>();
+        this.competitors = new ArrayList<>();
+    }
+
+    @Override
+    public int compareTo(RegionDTO o) {
+        return name.compareTo(o.getName());
     }
 }
