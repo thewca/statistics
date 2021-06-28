@@ -52,11 +52,11 @@ public class BestEverRanksServiceImpl implements BestEverRanksService {
         List<LocalDate> dates = bestEverRanksRepository.getDates(eventId);
         log.info("Found {} dates", dates.size());
 
-        List<WorldDTO> worlds = new ArrayList<>();
-        List<ContinentDTO> continents = new ArrayList<>();
-        List<CountryDTO> countries = new ArrayList<>();
+        List<RegionDTO> worlds = new ArrayList<>();
+        List<RegionDTO> continents = new ArrayList<>();
+        List<RegionDTO> countries = new ArrayList<>();
 
-        worlds.add(new WorldDTO("world"));
+        worlds.add(new RegionDTO("world"));
 
         for (LocalDate date : dates) {
             List<CompetitorCountryDTO> todayCompetitors = bestEverRanksRepository.getTodayCompetitors(date, eventId);
@@ -65,8 +65,8 @@ public class BestEverRanksServiceImpl implements BestEverRanksService {
         }
     }
 
-    private void summarizeResults(List<CompetitorCountryDTO> todayCompetitors, List<WorldDTO> worlds, List<ContinentDTO> continents, List<CountryDTO> countries, LocalDate today) {
-        WorldDTO world = worlds.get(0);
+    private void summarizeResults(List<CompetitorCountryDTO> todayCompetitors, List<RegionDTO> worlds, List<RegionDTO> continents, List<RegionDTO> countries, LocalDate today) {
+        RegionDTO world = worlds.get(0);
 
         // Asign today's best result
         for (CompetitorCountryDTO todayCompetitor : todayCompetitors) {
@@ -110,7 +110,7 @@ public class BestEverRanksServiceImpl implements BestEverRanksService {
 
     }
 
-    private Competitor findOrCreateCompetitor(Region region, Competitor competitor) {
+    private Competitor findOrCreateCompetitor(RegionDTO region, Competitor competitor) {
         List<Competitor> competitors = region.getCompetitors();
         int index = Collections.binarySearch(competitors, competitor);
         if (index < 0) {
