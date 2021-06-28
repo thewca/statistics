@@ -1,12 +1,16 @@
 package org.worldcubeassociation.statistics.dto.besteverrank;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.FieldNameConstants;
 
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
 @FieldNameConstants(asEnum = true)
 public class CompetitorWorldDTO implements Competitor {
-    private String wcaId;
+    protected String wcaId;
     private String competition;
     private ResultsDTO single;
     private ResultsDTO average;

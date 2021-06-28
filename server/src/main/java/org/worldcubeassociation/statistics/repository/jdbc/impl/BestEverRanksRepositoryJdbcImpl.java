@@ -54,7 +54,7 @@ public class BestEverRanksRepositoryJdbcImpl implements BestEverRanksRepositoryJ
                             competitor.setContinent(continent);
                             competitor.setCountry(country);
                             competitor.setSingle(new ResultsDTO(single, competition, date));
-                            competitor.setSingle(new ResultsDTO(average, competition, date));
+                            competitor.setAverage(new ResultsDTO(average, competition, date));
 
                             return competitor;
                         }

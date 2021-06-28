@@ -1,20 +1,24 @@
 package org.worldcubeassociation.statistics.dto.besteverrank;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.FieldNameConstants;
 
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
 @FieldNameConstants(asEnum = true)
-public class CompetitorCountryDTO implements Comparable<CompetitorCountryDTO> {
-    private String wcaId;
-    private String competition;
-    private ResultsDTO single;
-    private ResultsDTO average;
-    private String continent;
+public class CompetitorCountryDTO extends CompetitorContinentDTO implements Comparable<Competitor>, Competitor {
     private String country;
 
+    public CompetitorCountryDTO(CompetitorCountryDTO competitorCountryDTO) {
+        super(competitorCountryDTO);
+    }
+
     @Override
-    public int compareTo(CompetitorCountryDTO o) {
+    public int compareTo(Competitor competitor) {
+        CompetitorCountryDTO o = (CompetitorCountryDTO) competitor;
         if (!wcaId.equals(o.getWcaId())) {
             return wcaId.compareTo(o.getWcaId());
         }

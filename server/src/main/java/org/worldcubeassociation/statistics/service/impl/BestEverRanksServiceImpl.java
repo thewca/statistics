@@ -79,11 +79,22 @@ public class BestEverRanksServiceImpl implements BestEverRanksService {
         Competitor regionCompetitor = findOrCreateCompetitor(region, todayCompetitor);
 
         // Singles are always non null
-        if (todayCompetitor.getSingle().getCurrent().getResult() < regionCompetitor.getSingle().getCurrent().getResult()){
+        Integer oldSingle = regionCompetitor.getSingle().getCurrent().getResult();
+        Integer newSingle = todayCompetitor.getSingle().getCurrent().getResult();
+        if (newSingle < oldSingle) {
             // We remove the old result and insert the new one
 
-            int index = Collections.binarySearch(region.getSingles(), regionCompetitor.getSingle().getCurrent().getResult());
+            int index = Collections.binarySearch(region.getSingles(), oldSingle);
             region.getSingles().remove(index);
+
+            int j = Collections.binarySearch(region.getSingles(), newSingle);
+            if (j < 0) {
+                region.getSingles().add(-j - 1, newSingle);
+            } else {
+                region.getSingles().add(j, newSingle);
+            }
+
+            regionCompetitor.getSingle().setCurrent(todayCompetitor.getSingle().getCurrent());
         }
 
     }
@@ -94,7 +105,7 @@ public class BestEverRanksServiceImpl implements BestEverRanksService {
         if (index < 0) {
             // In case then competitor is not there, we add it
             index = -index - 1;
-            competitors.add(-index - 1, competitor);
+            competitors.add(index, competitor);
 
             // Also in the single list
             Integer single = competitor.getSingle().getCurrent().getResult();
