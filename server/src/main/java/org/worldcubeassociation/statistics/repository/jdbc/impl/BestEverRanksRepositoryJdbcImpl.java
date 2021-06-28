@@ -5,7 +5,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
+import org.worldcubeassociation.statistics.dto.besteverrank.CompetitorContinentDTO;
 import org.worldcubeassociation.statistics.dto.besteverrank.CompetitorCountryDTO;
+import org.worldcubeassociation.statistics.dto.besteverrank.CompetitorWorldDTO;
+import org.worldcubeassociation.statistics.dto.besteverrank.ResultsDTO;
 import org.worldcubeassociation.statistics.repository.jdbc.BestEverRanksRepositoryJdbc;
 import org.worldcubeassociation.statistics.util.StatisticsUtil;
 
@@ -38,9 +41,23 @@ public class BestEverRanksRepositoryJdbcImpl implements BestEverRanksRepositoryJ
                 .query(
                         StatisticsUtil.getQuery("besteverranks/getTodayCompetitors"),
                         new MapSqlParameterSource().addValue(EVENT_ID, eventId).addValue(DATE, date),
-                        JdbcTemplateMapperFactory
-                                .newInstance()
-                                .newRowMapper(CompetitorCountryDTO.class)
+                        (rs, rowNum) -> {
+                            String wcaId = rs.getString(CompetitorWorldDTO.Fields.WCA_ID.name());
+                            String continent = rs.getString(CompetitorContinentDTO.Fields.CONTINENT.name());
+                            String country = rs.getString(CompetitorCountryDTO.Fields.COUNTRY.name());
+                            Integer single = rs.getInt(CompetitorWorldDTO.Fields.SINGLE.name());
+                            Integer average = rs.getInt(CompetitorWorldDTO.Fields.AVERAGE.name());
+                            String competition = rs.getString(CompetitorWorldDTO.Fields.COMPETITION.name());
+
+                            CompetitorCountryDTO competitor = new CompetitorCountryDTO();
+                            competitor.setWcaId(wcaId);
+                            competitor.setContinent(continent);
+                            competitor.setCountry(country);
+                            competitor.setSingle(new ResultsDTO(single, competition, date));
+                            competitor.setSingle(new ResultsDTO(average, competition, date));
+
+                            return competitor;
+                        }
                 );
     }
 }

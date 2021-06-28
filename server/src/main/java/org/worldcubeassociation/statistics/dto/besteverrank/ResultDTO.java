@@ -11,4 +11,10 @@ public class ResultDTO {
     private LocalDate start;
     private Integer result;
     private String competition;
+
+    public ResultDTO(Integer result, String competition, LocalDate start) {
+        this.result = result;
+        this.competition = competition;
+        this.start = start;
+    }
 }

@@ -1,19 +1,24 @@
 package org.worldcubeassociation.statistics.dto.besteverrank;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.experimental.FieldNameConstants;
 
 @Data
-@EqualsAndHashCode // Only wcaId is considered
-public class CompetitorWorldDTO {
+@FieldNameConstants(asEnum = true)
+public class CompetitorWorldDTO implements Competitor {
     private String wcaId;
-
-    @EqualsAndHashCode.Exclude
     private String competition;
+    private ResultsDTO single;
+    private ResultsDTO average;
 
-    @EqualsAndHashCode.Exclude
-    private Integer single;
+    public CompetitorWorldDTO(CompetitorCountryDTO competitorCountryDTO) {
+        this.wcaId = competitorCountryDTO.getWcaId();
+        this.single = new ResultsDTO(competitorCountryDTO.getSingle().getCurrent().getResult(), competitorCountryDTO.getSingle().getCurrent().getCompetition(), competitorCountryDTO.getSingle().getCurrent().getStart());
+        this.average = new ResultsDTO(competitorCountryDTO.getAverage().getCurrent().getResult(), competitorCountryDTO.getAverage().getCurrent().getCompetition(), competitorCountryDTO.getAverage().getCurrent().getStart());
+    }
 
-    @EqualsAndHashCode.Exclude
-    private Integer average;
+    @Override
+    public int compareTo(Competitor o) {
+        return wcaId.compareTo(o.getWcaId());
+    }
 }

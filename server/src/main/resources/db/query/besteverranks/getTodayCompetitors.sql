@@ -1,5 +1,5 @@
 select
-    personId wcaId,
+    personId wca_id,
     ct.name continent,
     c.name country,
     single,

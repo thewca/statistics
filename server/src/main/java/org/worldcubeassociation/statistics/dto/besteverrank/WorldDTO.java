@@ -1,18 +1,19 @@
 package org.worldcubeassociation.statistics.dto.besteverrank;
 
+import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
-@Getter
-@Setter
+@Data
 @EqualsAndHashCode(callSuper = true)
 public class WorldDTO extends RegionDTO {
-    private List<CompetitorWorldDTO> competitors;
+    @EqualsAndHashCode.Exclude
+    private List<Competitor> competitors;
 
     public WorldDTO(String name) {
         super(name);
+        this.competitors = new ArrayList<>();
     }
 }

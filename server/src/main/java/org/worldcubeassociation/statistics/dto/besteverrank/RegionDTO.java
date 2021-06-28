@@ -6,10 +6,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-public class RegionDTO {
+public class RegionDTO implements Region {
     private String name;
     private List<Integer> singles;
     private List<Integer> averages;
+
+    private List<Competitor> competitors;
 
     public RegionDTO(String name) {
         this.name = name;
