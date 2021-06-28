@@ -63,6 +63,37 @@ public class BestEverRanksServiceImpl implements BestEverRanksService {
 
             summarizeResults(todayCompetitors, worlds, continents, countries, date);
         }
+
+        for (RegionDTO region : worlds) {
+            for (Competitor competitor : region.getCompetitors()) {
+                if ("2015CAMP17".equalsIgnoreCase(competitor.getWcaId())) {
+                    System.out.println(region.getName());
+                    System.out.println(competitor);
+                    System.out.println("");
+                    break;
+                }
+            }
+        }
+        for (RegionDTO region : continents) {
+            for (Competitor competitor : region.getCompetitors()) {
+                if ("2015CAMP17".equalsIgnoreCase(competitor.getWcaId())) {
+                    System.out.println(region.getName());
+                    System.out.println(competitor);
+                    System.out.println("");
+                    break;
+                }
+            }
+        }
+        for (RegionDTO region : countries) {
+            for (Competitor competitor : region.getCompetitors()) {
+                if ("2015CAMP17".equalsIgnoreCase(competitor.getWcaId())) {
+                    System.out.println(region.getName());
+                    System.out.println(competitor);
+                    System.out.println("");
+                    break;
+                }
+            }
+        }
     }
 
     private void summarizeResults(List<CompetitorCountryDTO> todayCompetitors, List<RegionDTO> worlds, List<RegionDTO> continents, List<RegionDTO> countries, LocalDate today) {
@@ -79,6 +110,41 @@ public class BestEverRanksServiceImpl implements BestEverRanksService {
 
             RegionDTO country = findOrCreateRegion(countries, todayCompetitor.getCountry());
             updateResults(country, todayCompetitor, today);
+        }
+
+        findRanks(world, today);
+        for (RegionDTO continent : continents) {
+            findRanks(continent, today);
+        }
+        for (RegionDTO country : countries) {
+            findRanks(country, today);
+        }
+
+    }
+
+    private void findRanks(RegionDTO region, LocalDate today) {
+        for (Competitor competitor : region.getCompetitors()) {
+            analyzeRank(region.getSingles(), competitor.getSingle(), today);
+
+            if (competitor.getAverage().getCurrent().getResult() > 0) {
+                analyzeRank(region.getAverages(), competitor.getAverage(), today);
+            }
+        }
+    }
+
+    private void analyzeRank(List<Integer> regionResults, ResultsDTO competitorResults, LocalDate today) {
+        int currentRank = Collections.binarySearch(regionResults, competitorResults.getCurrent().getResult());
+        competitorResults.getCurrent().setRank(currentRank);
+
+        Integer oldRank = competitorResults.getBestRank().getRank();
+        if (oldRank == null || currentRank < oldRank) {
+            competitorResults.getBestRank().setResult(competitorResults.getCurrent().getResult());
+            competitorResults.getBestRank().setCompetition(competitorResults.getCurrent().getCompetition());
+            competitorResults.getBestRank().setStart(competitorResults.getCurrent().getStart());
+            competitorResults.getBestRank().setRank(competitorResults.getCurrent().getRank());
+            competitorResults.getBestRank().setEnd(null);
+        } else if (currentRank > oldRank && competitorResults.getBestRank().getEnd() == null) {
+            competitorResults.getBestRank().setEnd(today.minusDays(1));
         }
     }
 

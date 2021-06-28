@@ -3,11 +3,13 @@ package org.worldcubeassociation.statistics.dto.besteverrank;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 import lombok.experimental.FieldNameConstants;
 
 @Getter
 @Setter
 @NoArgsConstructor
+@ToString(callSuper = true)
 @FieldNameConstants(asEnum = true)
 public class CompetitorWorldDTO implements Competitor {
     protected String wcaId;
