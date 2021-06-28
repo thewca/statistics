@@ -88,13 +88,24 @@ public class BestEverRanksServiceImpl implements BestEverRanksService {
             region.getSingles().remove(index);
 
             int j = Collections.binarySearch(region.getSingles(), newSingle);
-            if (j < 0) {
-                region.getSingles().add(-j - 1, newSingle);
-            } else {
-                region.getSingles().add(j, newSingle);
-            }
+            region.getSingles().add(Math.max(-j - 1, j), newSingle);
 
             regionCompetitor.getSingle().setCurrent(todayCompetitor.getSingle().getCurrent());
+        }
+
+        Integer oldAverage = regionCompetitor.getAverage().getCurrent().getResult();
+        Integer newAverage = todayCompetitor.getAverage().getCurrent().getResult();
+        if (newAverage != null && (oldAverage == null || newAverage < oldAverage)) {
+            int index = Collections.binarySearch(region.getAverages(), oldAverage);
+            if (index >= 0) {
+                region.getSingles().remove(index);
+            }
+
+            int j = Collections.binarySearch(region.getAverages(), newAverage);
+            region.getAverages().add(Math.max(-j - 1, j), newAverage);
+
+            regionCompetitor.getAverage().setCurrent(todayCompetitor.getAverage().getCurrent());
+
         }
 
     }
@@ -110,11 +121,7 @@ public class BestEverRanksServiceImpl implements BestEverRanksService {
             // Also in the single list
             Integer single = competitor.getSingle().getCurrent().getResult();
             int j = Collections.binarySearch(region.getSingles(), single);
-            if (j < 0) {
-                region.getSingles().add(-j - 1, single);
-            } else {
-                region.getSingles().add(j, single);
-            }
+            region.getSingles().add(Math.max(-j - 1, j), single);
         }
         return competitors.get(index);
     }
