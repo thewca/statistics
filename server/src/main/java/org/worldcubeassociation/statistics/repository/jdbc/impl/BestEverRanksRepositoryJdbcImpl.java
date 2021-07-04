@@ -1,5 +1,6 @@
 package org.worldcubeassociation.statistics.repository.jdbc.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.simpleflatmapper.jdbc.spring.JdbcTemplateMapperFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,10 +8,7 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import org.worldcubeassociation.statistics.dto.besteverrank.CompetitorContinentDTO;
-import org.worldcubeassociation.statistics.dto.besteverrank.CompetitorCountryDTO;
-import org.worldcubeassociation.statistics.dto.besteverrank.CompetitorWorldDTO;
-import org.worldcubeassociation.statistics.dto.besteverrank.ResultsDTO;
+import org.worldcubeassociation.statistics.dto.besteverrank.*;
 import org.worldcubeassociation.statistics.model.BestEverRank;
 import org.worldcubeassociation.statistics.repository.jdbc.BestEverRanksRepositoryJdbc;
 import org.worldcubeassociation.statistics.util.StatisticsUtil;
@@ -74,7 +72,7 @@ public class BestEverRanksRepositoryJdbcImpl implements BestEverRanksRepositoryJ
                 .stream()
                 .map(ber -> new MapSqlParameterSource()
                         .addValue(BestEverRank.Fields.PERSON_ID.name(), ber.getPersonId())
-                        .addValue(BestEverRank.Fields.EVENT_RANKS.name(), "[]")
+                        .addValue(BestEverRank.Fields.EVENT_RANKS.name(), convertToJson(ber.getEventRanks()))
                 )
                 .toArray(MapSqlParameterSource[]::new);
 
@@ -84,4 +82,15 @@ public class BestEverRanksRepositoryJdbcImpl implements BestEverRanksRepositoryJ
                         paramsList)[0];
 
     }
+
+    private Object convertToJson(List<EventRankDTO> eventRanks) {
+        try {
+            return objectMapper.writeValueAsString(eventRanks);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return "[]";
+    }
+
+
 }

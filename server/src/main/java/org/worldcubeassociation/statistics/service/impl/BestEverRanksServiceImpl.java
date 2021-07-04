@@ -82,7 +82,12 @@ public class BestEverRanksServiceImpl implements BestEverRanksService {
 
         worlds.add(new RegionDTO("world"));
 
+        int currentYear = -1;
         for (LocalDate date : dates) {
+            if (date.getYear() != currentYear) {
+                currentYear = date.getYear();
+                log.info("Current year: {}", currentYear);
+            }
             List<CompetitorCountryDTO> todayCompetitors = bestEverRanksRepository.getTodayCompetitors(date, eventId);
 
             summarizeResults(todayCompetitors, worlds, continents, countries, date);
