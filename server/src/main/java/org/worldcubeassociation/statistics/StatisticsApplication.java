@@ -33,8 +33,8 @@ public class StatisticsApplication {
         BestEverRanksRequest request = new BestEverRanksRequest();
         List<String> eventIds = new ArrayList<>();
         eventIds.add("555bf");
-        eventIds.add("444bf");
-        eventIds.add("333fm");
+//        eventIds.add("444bf");
+//        eventIds.add("333fm");
         request.setEventIds(eventIds);
         bestEverRanksController.generate(request);
         bestEverRanksController.get("2015CAMP17");

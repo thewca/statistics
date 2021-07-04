@@ -221,34 +221,25 @@ public class BestEverRanksServiceImpl implements BestEverRanksService {
         Competitor regionCompetitor = findOrCreateCompetitor(region, todayCompetitor);
 
         // Singles are always non null
-        Integer oldSingle = regionCompetitor.getSingle().getCurrent().getResult();
-        Integer newSingle = todayCompetitor.getSingle().getCurrent().getResult();
-        if (newSingle < oldSingle) {
+        updateResult(region.getSingles(), regionCompetitor.getSingle(), todayCompetitor.getSingle());
+        updateResult(region.getAverages(), regionCompetitor.getAverage(), todayCompetitor.getAverage());
+    }
+
+    private void updateResult(List<Integer> results, ResultsDTO oldResult, ResultsDTO newResult) {
+        Integer oldBest = oldResult.getCurrent().getResult();
+        Integer newBest = newResult.getCurrent().getResult();
+        if (newBest != null && (oldBest == null || newBest < oldBest)) {
             // We remove the old result and insert the new one
 
-            int index = Collections.binarySearch(region.getSingles(), oldSingle);
-            region.getSingles().remove(index);
-
-            int j = Collections.binarySearch(region.getSingles(), newSingle);
-            region.getSingles().add(Math.max(-j - 1, j), newSingle);
-
-            regionCompetitor.getSingle().setCurrent(todayCompetitor.getSingle().getCurrent());
-        }
-
-        Integer oldAverage = regionCompetitor.getAverage().getCurrent().getResult();
-        Integer newAverage = todayCompetitor.getAverage().getCurrent().getResult();
-        if (newAverage != null && (oldAverage == null || newAverage < oldAverage)) {
-            if (oldAverage != null) {
-                int index = Collections.binarySearch(region.getAverages(), oldAverage);
-                if (index >= 0) {
-                    region.getAverages().remove(index);
-                }
+            if (oldBest != null) {
+                int index = Collections.binarySearch(results, oldBest);
+                results.remove(index);
             }
 
-            int j = Collections.binarySearch(region.getAverages(), newAverage);
-            region.getAverages().add(Math.max(-j - 1, j), newAverage);
+            int j = Collections.binarySearch(results, newBest);
+            results.add(Math.max(-j - 1, j), newBest);
 
-            regionCompetitor.getAverage().setCurrent(todayCompetitor.getAverage().getCurrent());
+            oldResult.setCurrent(newResult.getCurrent());
         }
     }
 

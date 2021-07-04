@@ -27,6 +27,7 @@ public class BestEverRanksRepositoryJdbcImpl implements BestEverRanksRepositoryJ
 
     private static final String EVENT_ID = "EVENT_ID";
     private static final String DATE = "DATE";
+    private static final String COMPETITION = "COMPETITION";
 
     @Override
     public List<LocalDate> getDates(String eventId) {
@@ -52,7 +53,7 @@ public class BestEverRanksRepositoryJdbcImpl implements BestEverRanksRepositoryJ
                             String country = rs.getString(CompetitorCountryDTO.Fields.COUNTRY.name());
                             Integer single = rs.getInt(CompetitorWorldDTO.Fields.SINGLE.name());
                             Integer average = rs.getInt(CompetitorWorldDTO.Fields.AVERAGE.name());
-                            String competition = rs.getString(CompetitorWorldDTO.Fields.COMPETITION.name());
+                            String competition = rs.getString(COMPETITION);
 
                             CompetitorCountryDTO competitor = new CompetitorCountryDTO();
                             competitor.setWcaId(wcaId);
