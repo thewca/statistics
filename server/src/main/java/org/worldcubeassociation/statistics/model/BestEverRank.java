@@ -2,6 +2,7 @@ package org.worldcubeassociation.statistics.model;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.experimental.FieldNameConstants;
 import org.hibernate.annotations.Type;
 import org.worldcubeassociation.statistics.dto.besteverrank.EventRankDTO;
 
@@ -13,6 +14,7 @@ import java.util.List;
 
 @Data
 @Entity
+@FieldNameConstants(asEnum = true)
 @EqualsAndHashCode(callSuper = true)
 public class BestEverRank extends BaseEntity implements Comparable<BestEverRank> {
     @Id

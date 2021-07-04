@@ -102,8 +102,7 @@ public class BestEverRanksServiceImpl implements BestEverRanksService {
 
             List<EventRankDTO> eventRanks = new ArrayList<>();
 
-            EventRankDTO eventRank = new EventRankDTO();
-            eventRank.setEvent(eventDTO);
+            EventRankDTO eventRank = new EventRankDTO(eventDTO);
             eventRank.getWorlds().add(competitor);
             eventRanks.add(eventRank);
 
@@ -111,14 +110,8 @@ public class BestEverRanksServiceImpl implements BestEverRanksService {
             bestEverRanks.add(bestEverRank);
         }
 
-        for (BestEverRank bestEverRank : bestEverRanks) {
-            if ("2015CAMP17".equals(bestEverRank.getPersonId())) {
-                System.out.println(bestEverRank);
-            }
-        }
-
-
-        bestEverRanksRepository.upsert(bestEverRanks);
+        Integer totalUpdated = bestEverRanksRepository.upsert(bestEverRanks, event.getId());
+        log.info("Updated {} results for {}", totalUpdated, event.getId());
     }
 
     private void summarizeResults(List<CompetitorCountryDTO> todayCompetitors, List<RegionDTO> worlds, List<RegionDTO> continents, List<RegionDTO> countries, LocalDate today) {

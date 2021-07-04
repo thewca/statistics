@@ -1,10 +1,12 @@
 package org.worldcubeassociation.statistics.repository.jdbc.impl;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.simpleflatmapper.jdbc.spring.JdbcTemplateMapperFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import org.worldcubeassociation.statistics.dto.besteverrank.CompetitorContinentDTO;
 import org.worldcubeassociation.statistics.dto.besteverrank.CompetitorCountryDTO;
 import org.worldcubeassociation.statistics.dto.besteverrank.CompetitorWorldDTO;
@@ -20,6 +22,9 @@ import java.util.List;
 public class BestEverRanksRepositoryJdbcImpl implements BestEverRanksRepositoryJdbc {
     @Autowired
     private NamedParameterJdbcTemplate namedJdbcTemplate;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     private static final String EVENT_ID = "EVENT_ID";
     private static final String DATE = "DATE";
@@ -63,15 +68,20 @@ public class BestEverRanksRepositoryJdbcImpl implements BestEverRanksRepositoryJ
     }
 
     @Override
-    public void upsert(List<BestEverRank> bestEverRanks) {
-//        namedJdbcTemplate
-//                .query(
-//                        StatisticsUtil.getQuery("besteverranks/upsert"),
-//                        new MapSqlParameterSource().addValue(EVENT_ID, eventId),
-//                        JdbcTemplateMapperFactory
-//                                .newInstance()
-//                                .newRowMapper(LocalDate.class)
-//                );
+    @Transactional
+    public Integer upsert(List<BestEverRank> bestEverRanks, String eventId) {
+        MapSqlParameterSource[] paramsList = bestEverRanks
+                .stream()
+                .map(ber -> new MapSqlParameterSource()
+                        .addValue(BestEverRank.Fields.PERSON_ID.name(), ber.getPersonId())
+                        .addValue(BestEverRank.Fields.EVENT_RANKS.name(), "[]")
+                )
+                .toArray(MapSqlParameterSource[]::new);
+
+        return namedJdbcTemplate
+                .batchUpdate(
+                        StatisticsUtil.getQuery("besteverranks/upsert"),
+                        paramsList)[0];
 
     }
 }

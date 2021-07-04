@@ -11,5 +11,5 @@ public interface BestEverRanksRepositoryJdbc {
 
     List<CompetitorCountryDTO> getTodayCompetitors(LocalDate date, String eventId);
 
-    void upsert(List<BestEverRank> bestEverRanks);
+    Integer upsert(List<BestEverRank> bestEverRanks, String eventId);
 }
