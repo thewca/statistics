@@ -5,16 +5,16 @@ import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.Type;
 import org.worldcubeassociation.statistics.dto.besteverrank.EventRankDTO;
 
-import java.time.LocalDateTime;
-import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
-@Entity(name = "best_ever_ranks")
+@Entity
 @EqualsAndHashCode(callSuper = true)
-public class BestEverRank extends BaseEntity {
+public class BestEverRank extends BaseEntity implements Comparable<BestEverRank> {
     @Id
     @Column(name = "person_id")
     private String personId;
@@ -25,4 +25,9 @@ public class BestEverRank extends BaseEntity {
     @Type(type = "json")
     @Column(columnDefinition = "json", name = "best_ever_rank")
     private List<EventRankDTO> eventRanks;
+
+    @Override
+    public int compareTo(BestEverRank o) {
+        return personId.compareTo(o.getPersonId());
+    }
 }

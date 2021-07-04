@@ -5,9 +5,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.worldcubeassociation.statistics.dto.besteverrank.*;
+import org.worldcubeassociation.statistics.exception.InvalidParameterException;
 import org.worldcubeassociation.statistics.exception.NotFoundException;
 import org.worldcubeassociation.statistics.model.BestEverRank;
+import org.worldcubeassociation.statistics.model.Event;
 import org.worldcubeassociation.statistics.repository.BestEverRanksRepository;
+import org.worldcubeassociation.statistics.repository.EventRepository;
 import org.worldcubeassociation.statistics.request.BestEverRanksRequest;
 import org.worldcubeassociation.statistics.response.BestEverRanksResponse;
 import org.worldcubeassociation.statistics.service.BestEverRanksService;
@@ -16,12 +19,16 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
 public class BestEverRanksServiceImpl implements BestEverRanksService {
     @Autowired
     private BestEverRanksRepository bestEverRanksRepository;
+
+    @Autowired
+    private EventRepository eventRepository;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -37,16 +44,33 @@ public class BestEverRanksServiceImpl implements BestEverRanksService {
     public BestEverRanksResponse generate(BestEverRanksRequest bestEverRanksRequest) {
         log.info("{} events to generate", bestEverRanksRequest.getEventIds().size());
 
-        BestEverRanksResponse bestEverRanksResponse = new BestEverRanksResponse();
+        List<Event> events = getEvents(bestEverRanksRequest.getEventIds());
 
-        for (String eventId : bestEverRanksRequest.getEventIds()) {
-            generateByEventId(eventId, bestEverRanksResponse);
+        log.info("Delete all existing ranks");
+        bestEverRanksRepository.deleteAll();
+
+        BestEverRanksResponse bestEverRanksResponse = new BestEverRanksResponse();
+        for (Event event : events) {
+            log.info("Generate ranks for {}", event.getId());
+            generateByEventId(event, bestEverRanksResponse);
         }
 
         return bestEverRanksResponse;
     }
 
-    private void generateByEventId(String eventId, BestEverRanksResponse bestEverRanksResponse) {
+    private List<Event> getEvents(List<String> eventIds) {
+        List<Event> events = eventRepository.findAllById(eventIds);
+        if (events.size() != eventIds.size()) {
+            List<String> existingEvents = events.stream().map(Event::getId).collect(Collectors.toList());
+            List<String> invalidEvents = eventIds.stream().filter(eventId -> !existingEvents.contains(eventId)).collect(Collectors.toList());
+            throw new InvalidParameterException("The following events are invalid: " + invalidEvents.stream().collect(Collectors.joining(", ")));
+        }
+        return events;
+    }
+
+    private void generateByEventId(Event event, BestEverRanksResponse bestEverRanksResponse) {
+        String eventId = event.getId();
+
         log.info("Current event: {}", eventId);
 
         List<LocalDate> dates = bestEverRanksRepository.getDates(eventId);
@@ -64,36 +88,37 @@ public class BestEverRanksServiceImpl implements BestEverRanksService {
             summarizeResults(todayCompetitors, worlds, continents, countries, date);
         }
 
-        for (RegionDTO region : worlds) {
-            for (Competitor competitor : region.getCompetitors()) {
-                if ("2015CAMP17".equalsIgnoreCase(competitor.getWcaId())) {
-                    System.out.println(region.getName());
-                    System.out.println(competitor);
-                    System.out.println("");
-                    break;
-                }
+        saveResults(event, worlds, continents, countries);
+    }
+
+    private void saveResults(Event event, List<RegionDTO> worlds, List<RegionDTO> continents, List<RegionDTO> countries) {
+        List<BestEverRank> bestEverRanks = new ArrayList<>();
+
+        EventDTO eventDTO = objectMapper.convertValue(event, EventDTO.class);
+
+        for (Competitor competitor : worlds.get(0).getCompetitors()) {
+            BestEverRank bestEverRank = new BestEverRank();
+            bestEverRank.setPersonId(competitor.getWcaId());
+
+            List<EventRankDTO> eventRanks = new ArrayList<>();
+
+            EventRankDTO eventRank = new EventRankDTO();
+            eventRank.setEvent(eventDTO);
+            eventRank.getWorlds().add(competitor);
+            eventRanks.add(eventRank);
+
+            bestEverRank.setEventRanks(eventRanks);
+            bestEverRanks.add(bestEverRank);
+        }
+
+        for (BestEverRank bestEverRank : bestEverRanks) {
+            if ("2015CAMP17".equals(bestEverRank.getPersonId())) {
+                System.out.println(bestEverRank);
             }
         }
-        for (RegionDTO region : continents) {
-            for (Competitor competitor : region.getCompetitors()) {
-                if ("2015CAMP17".equalsIgnoreCase(competitor.getWcaId())) {
-                    System.out.println(region.getName());
-                    System.out.println(competitor);
-                    System.out.println("");
-                    break;
-                }
-            }
-        }
-        for (RegionDTO region : countries) {
-            for (Competitor competitor : region.getCompetitors()) {
-                if ("2015CAMP17".equalsIgnoreCase(competitor.getWcaId())) {
-                    System.out.println(region.getName());
-                    System.out.println(competitor);
-                    System.out.println("");
-                    break;
-                }
-            }
-        }
+
+
+        bestEverRanksRepository.upsert(bestEverRanks);
     }
 
     private void summarizeResults(List<CompetitorCountryDTO> todayCompetitors, List<RegionDTO> worlds, List<RegionDTO> continents, List<RegionDTO> countries, LocalDate today) {

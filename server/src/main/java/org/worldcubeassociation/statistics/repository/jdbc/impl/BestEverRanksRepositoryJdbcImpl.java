@@ -9,6 +9,7 @@ import org.worldcubeassociation.statistics.dto.besteverrank.CompetitorContinentD
 import org.worldcubeassociation.statistics.dto.besteverrank.CompetitorCountryDTO;
 import org.worldcubeassociation.statistics.dto.besteverrank.CompetitorWorldDTO;
 import org.worldcubeassociation.statistics.dto.besteverrank.ResultsDTO;
+import org.worldcubeassociation.statistics.model.BestEverRank;
 import org.worldcubeassociation.statistics.repository.jdbc.BestEverRanksRepositoryJdbc;
 import org.worldcubeassociation.statistics.util.StatisticsUtil;
 
@@ -59,5 +60,18 @@ public class BestEverRanksRepositoryJdbcImpl implements BestEverRanksRepositoryJ
                             return competitor;
                         }
                 );
+    }
+
+    @Override
+    public void upsert(List<BestEverRank> bestEverRanks) {
+//        namedJdbcTemplate
+//                .query(
+//                        StatisticsUtil.getQuery("besteverranks/upsert"),
+//                        new MapSqlParameterSource().addValue(EVENT_ID, eventId),
+//                        JdbcTemplateMapperFactory
+//                                .newInstance()
+//                                .newRowMapper(LocalDate.class)
+//                );
+
     }
 }
