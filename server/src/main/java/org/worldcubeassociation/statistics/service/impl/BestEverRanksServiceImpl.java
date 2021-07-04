@@ -182,7 +182,7 @@ public class BestEverRanksServiceImpl implements BestEverRanksService {
         for (Competitor competitor : region.getCompetitors()) {
             analyzeRank(region.getSingles(), competitor.getSingle(), today);
 
-            if (competitor.getAverage().getCurrent().getResult() > 0) {
+            if (competitor.getAverage().getCurrent().getResult() != null) {
                 analyzeRank(region.getAverages(), competitor.getAverage(), today);
             }
         }
@@ -237,9 +237,11 @@ public class BestEverRanksServiceImpl implements BestEverRanksService {
         Integer oldAverage = regionCompetitor.getAverage().getCurrent().getResult();
         Integer newAverage = todayCompetitor.getAverage().getCurrent().getResult();
         if (newAverage != null && (oldAverage == null || newAverage < oldAverage)) {
-            int index = Collections.binarySearch(region.getAverages(), oldAverage);
-            if (index >= 0) {
-                region.getSingles().remove(index);
+            if (oldAverage != null) {
+                int index = Collections.binarySearch(region.getAverages(), oldAverage);
+                if (index >= 0) {
+                    region.getAverages().remove(index);
+                }
             }
 
             int j = Collections.binarySearch(region.getAverages(), newAverage);
