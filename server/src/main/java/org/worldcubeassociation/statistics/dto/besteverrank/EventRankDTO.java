@@ -1,16 +1,18 @@
 package org.worldcubeassociation.statistics.dto.besteverrank;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
+@NoArgsConstructor // jackson
 public class EventRankDTO {
     private EventDTO event;
-    private List<Competitor> worlds;
-    private List<Competitor> continents;
-    private List<Competitor> countries;
+    private List<CompetitorWorldDTO> worlds;
+    private List<CompetitorContinentDTO> continents;
+    private List<CompetitorCountryDTO> countries;
 
     public EventRankDTO(EventDTO event) {
         this.event = event;

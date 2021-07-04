@@ -84,6 +84,8 @@ public class BestEverRanksServiceImpl implements BestEverRanksService {
 
         int currentYear = -1;
         for (LocalDate date : dates) {
+
+            // Just to get a track of how long it's been
             if (date.getYear() != currentYear) {
                 currentYear = date.getYear();
                 log.info("Current year: {}", currentYear);
@@ -108,11 +110,42 @@ public class BestEverRanksServiceImpl implements BestEverRanksService {
             List<EventRankDTO> eventRanks = new ArrayList<>();
 
             EventRankDTO eventRank = new EventRankDTO(eventDTO);
-            eventRank.getWorlds().add(competitor);
+            eventRank.getWorlds().add((CompetitorWorldDTO) competitor);
             eventRanks.add(eventRank);
 
             bestEverRank.setEventRanks(eventRanks);
             bestEverRanks.add(bestEverRank);
+        }
+
+        for (RegionDTO continent : continents) {
+            for (Competitor competitor : continent.getCompetitors()) {
+
+                // It's guaranteed that there exist the current event rank already
+                BestEverRank bestEverRank = new BestEverRank();
+                bestEverRank.setPersonId(competitor.getWcaId());
+                int index = Collections.binarySearch(bestEverRanks, bestEverRank);
+                bestEverRank = bestEverRanks.get(index);
+
+                List<EventRankDTO> eventRanks = bestEverRank.getEventRanks();
+
+                EventRankDTO eventRank = eventRanks.get(0);
+                eventRank.getContinents().add((CompetitorContinentDTO) competitor);
+            }
+        }
+
+        for (RegionDTO country : countries) {
+            for (Competitor competitor : country.getCompetitors()) {
+
+                BestEverRank bestEverRank = new BestEverRank();
+                bestEverRank.setPersonId(competitor.getWcaId());
+                int index = Collections.binarySearch(bestEverRanks, bestEverRank);
+                bestEverRank = bestEverRanks.get(index);
+
+                List<EventRankDTO> eventRanks = bestEverRank.getEventRanks();
+
+                EventRankDTO eventRank = eventRanks.get(0);
+                eventRank.getCountries().add((CompetitorCountryDTO) competitor);
+            }
         }
 
         Integer totalUpdated = bestEverRanksRepository.upsert(bestEverRanks, event.getId());
@@ -122,7 +155,7 @@ public class BestEverRanksServiceImpl implements BestEverRanksService {
     private void summarizeResults(List<CompetitorCountryDTO> todayCompetitors, List<RegionDTO> worlds, List<RegionDTO> continents, List<RegionDTO> countries, LocalDate today) {
         RegionDTO world = worlds.get(0);
 
-        // Asign today's best result
+        // Assign today's best result
         for (CompetitorCountryDTO todayCompetitor : todayCompetitors) {
             CompetitorWorldDTO competitorWorld = new CompetitorWorldDTO(todayCompetitor);
             updateResults(world, competitorWorld, today);

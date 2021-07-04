@@ -79,7 +79,7 @@ public class BestEverRanksRepositoryJdbcImpl implements BestEverRanksRepositoryJ
         return namedJdbcTemplate
                 .batchUpdate(
                         StatisticsUtil.getQuery("besteverranks/upsert"),
-                        paramsList)[0];
+                        paramsList).length;
 
     }
 

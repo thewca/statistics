@@ -9,7 +9,6 @@ import org.worldcubeassociation.statistics.controller.BestEverRanksController;
 import org.worldcubeassociation.statistics.request.BestEverRanksRequest;
 
 import javax.annotation.PostConstruct;
-import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,6 +35,7 @@ public class StatisticsApplication {
         eventIds.add("555bf");
         request.setEventIds(eventIds);
         bestEverRanksController.generate(request);
+        bestEverRanksController.get("2015CAMP17");
     }
 
     public static void main(String[] args) {
