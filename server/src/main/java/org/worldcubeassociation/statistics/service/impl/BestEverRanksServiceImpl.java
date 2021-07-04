@@ -47,7 +47,8 @@ public class BestEverRanksServiceImpl implements BestEverRanksService {
         List<Event> events = getEvents(bestEverRanksRequest.getEventIds());
 
         log.info("Delete all existing ranks");
-        bestEverRanksRepository.deleteAll();
+        int deleted = bestEverRanksRepository.removeAll();
+        log.info("{} results deleted", deleted);
 
         BestEverRanksResponse bestEverRanksResponse = new BestEverRanksResponse();
         for (Event event : events) {

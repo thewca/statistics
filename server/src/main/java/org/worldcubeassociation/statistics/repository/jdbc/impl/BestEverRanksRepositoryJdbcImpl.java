@@ -14,6 +14,7 @@ import org.worldcubeassociation.statistics.repository.jdbc.BestEverRanksReposito
 import org.worldcubeassociation.statistics.util.StatisticsUtil;
 
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
 
 @Repository
@@ -81,6 +82,12 @@ public class BestEverRanksRepositoryJdbcImpl implements BestEverRanksRepositoryJ
                         StatisticsUtil.getQuery("besteverranks/upsert"),
                         paramsList).length;
 
+    }
+
+    @Override
+    public Integer removeAll() {
+        return namedJdbcTemplate
+                .update(StatisticsUtil.getQuery("besteverranks/removeAll"), new HashMap<>());
     }
 
     private Object convertToJson(List<EventRankDTO> eventRanks) {
