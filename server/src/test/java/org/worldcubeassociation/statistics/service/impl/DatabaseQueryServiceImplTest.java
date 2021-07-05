@@ -65,7 +65,8 @@ public class DatabaseQueryServiceImplTest {
         databaseQueryRequest.setPage(0);
         databaseQueryRequest.setSize(25);
 
-        DatabaseQueryDTO result = service.getResultSet(databaseQueryRequest, null);
+        String accessToken = "access token";
+        DatabaseQueryDTO result = service.getResultSet(databaseQueryRequest, accessToken);
 
         assertEquals(tableHeaders.size(), result.getHeaders().size());
         assertEquals(nEvents, result.getContent().size());
@@ -82,7 +83,8 @@ public class DatabaseQueryServiceImplTest {
         databaseQueryRequest.setPage(0);
         databaseQueryRequest.setSize(25);
 
-        DatabaseQueryDTO result = service.getResultSet(databaseQueryRequest, null);
+        String accessToken = "access token";
+        DatabaseQueryDTO result = service.getResultSet(databaseQueryRequest, accessToken);
 
         assertTrue(result.getHeaders().isEmpty());
         assertTrue(result.getContent().isEmpty());
