@@ -6,12 +6,16 @@ import org.worldcubeassociation.statistics.controller.BestEverRanksController;
 import org.worldcubeassociation.statistics.dto.besteverrank.BestEverRankDTO;
 import org.worldcubeassociation.statistics.request.BestEverRanksRequest;
 import org.worldcubeassociation.statistics.response.BestEverRanksResponse;
+import org.worldcubeassociation.statistics.service.AuthorizationService;
 import org.worldcubeassociation.statistics.service.BestEverRanksService;
 
 @RestController
 public class BestEverRanksControllerImpl implements BestEverRanksController {
     @Autowired
     private BestEverRanksService bestEverRanksService;
+
+    @Autowired
+    private AuthorizationService authorizationService;
 
     @Override
     public BestEverRankDTO get(String personId) {
@@ -20,11 +24,13 @@ public class BestEverRanksControllerImpl implements BestEverRanksController {
 
     @Override
     public BestEverRanksResponse generate(BestEverRanksRequest bestEverRanksRequest) {
+        authorizationService.disableInProd();
         return bestEverRanksService.generate(bestEverRanksRequest);
     }
 
     @Override
     public BestEverRanksResponse generateAll() {
+        authorizationService.disableInProd();
         return bestEverRanksService.generateAll();
     }
 }
