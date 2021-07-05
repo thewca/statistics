@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.worldcubeassociation.statistics.api.WCAApi;
 import org.worldcubeassociation.statistics.dto.UserInfoDTO;
+import org.worldcubeassociation.statistics.exception.InvalidParameterException;
 import org.worldcubeassociation.statistics.exception.UnauthorizedException;
 import org.worldcubeassociation.statistics.service.AuthorizationService;
 
@@ -22,6 +23,9 @@ public class AuthorizationServiceImpl implements AuthorizationService {
 
     @Value("${service.authorization.token-valid-for}")
     private int tokenValidFor;
+
+    @Value("${spring.profiles.active}")
+    private String profile;
 
     @Override
     public void isLoggedInWca(String accessToken) {
@@ -54,5 +58,13 @@ public class AuthorizationServiceImpl implements AuthorizationService {
         }
 
 
+    }
+
+    @Override
+    public void disableInProd() {
+        // TODO turn into annotation, configure via properties
+        if ("prod".equals(profile)) {
+            throw new InvalidParameterException("This endpoint is not allowed in the environment " + profile);
+        }
     }
 }

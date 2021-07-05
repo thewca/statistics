@@ -45,11 +45,11 @@ const BestEverRanksPage = () => {
 
   const getResults = (results: Results, event_id: string, type: ResultType) => (
     <>
-      <td>{formatResult(results.best_rank.result, event_id, type)}</td>
-      <td>{getRank(results.best_rank.rank)}</td>
-      <td>{results.best_rank.start}</td>
-      <td>{results.best_rank.end}</td>
-      <td>{getCompetitionLink(results.best_rank.competition)}</td>
+      <td>{formatResult(results.bestRank.result, event_id, type)}</td>
+      <td>{getRank(results.bestRank.rank)}</td>
+      <td>{results.bestRank.start}</td>
+      <td>{results.bestRank.end}</td>
+      <td>{getCompetitionLink(results.bestRank.competition)}</td>
     </>
   );
 
@@ -137,7 +137,7 @@ const BestEverRanksPage = () => {
           </thead>
           <tbody>
             {bestEverRank.eventRanks.map((eventRank) => (
-              <React.Fragment key={eventRank.event.event_id}>
+              <React.Fragment key={eventRank.event.id}>
                 {eventRank.worlds.map((world, i) => (
                   <tr key={i}>
                     <th
@@ -148,18 +148,18 @@ const BestEverRanksPage = () => {
                       }
                     >
                       <span
-                        className={`cubing-icon event-${eventRank.event.event_id}`}
+                        className={`cubing-icon event-${eventRank.event.id}`}
                       />
                       <p className="event-name">{eventRank.event.name}</p>
                     </th>
-                    {getCompetitor(world, eventRank.event.event_id, "WR")}
+                    {getCompetitor(world, eventRank.event.id, "WR")}
                   </tr>
                 ))}
                 {eventRank.continents.map((continent) => (
                   <tr key={continent.continent}>
                     {getCompetitor(
                       continent,
-                      eventRank.event.event_id,
+                      eventRank.event.id,
                       "CR",
                       continent.continent
                     )}
@@ -169,7 +169,7 @@ const BestEverRanksPage = () => {
                   <tr key={country.country}>
                     {getCompetitor(
                       country,
-                      eventRank.event.event_id,
+                      eventRank.event.id,
                       "NR",
                       country.country
                     )}
