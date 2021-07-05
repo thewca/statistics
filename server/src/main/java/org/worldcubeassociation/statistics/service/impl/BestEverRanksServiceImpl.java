@@ -17,6 +17,8 @@ import org.worldcubeassociation.statistics.response.BestEverRanksResponse;
 import org.worldcubeassociation.statistics.service.BestEverRanksService;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -43,9 +45,12 @@ public class BestEverRanksServiceImpl implements BestEverRanksService {
 
     @Override
     public BestEverRanksResponse generate(BestEverRanksRequest bestEverRanksRequest) {
-        log.info("{} events to generate", bestEverRanksRequest.getEventIds().size());
-
         List<Event> events = getEvents(bestEverRanksRequest.getEventIds());
+        return generateByEventList(events);
+    }
+
+    private BestEverRanksResponse generateByEventList(List<Event> events) {
+        log.info("{} events to generate", events.size());
 
         log.info("Delete all existing ranks");
         int deleted = bestEverRanksRepository.removeAll();
@@ -54,8 +59,14 @@ public class BestEverRanksServiceImpl implements BestEverRanksService {
         BestEverRanksResponse bestEverRanksResponse = new BestEverRanksResponse();
         bestEverRanksResponse.setEvents(new ArrayList<>());
         for (Event event : events) {
+            LocalDateTime start = LocalDateTime.now();
+
             log.info("Generate ranks for {}", event.getId());
             generateByEventId(event, bestEverRanksResponse);
+
+            LocalDateTime end = LocalDateTime.now();
+
+            log.info("Generated in {} minutes", start.until(end, ChronoUnit.MINUTES));
         }
 
         return bestEverRanksResponse;
@@ -288,6 +299,7 @@ public class BestEverRanksServiceImpl implements BestEverRanksService {
 
     @Override
     public BestEverRanksResponse generateAll() {
-        return null;
+        List<Event> events = eventRepository.findAll();
+        return generateByEventList(events);
     }
 }
