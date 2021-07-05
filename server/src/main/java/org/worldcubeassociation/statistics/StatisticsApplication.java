@@ -6,8 +6,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.worldcubeassociation.statistics.controller.BestEverRanksController;
+import org.worldcubeassociation.statistics.request.BestEverRanksRequest;
 
 import javax.annotation.PostConstruct;
+import java.util.ArrayList;
+import java.util.List;
 
 @Slf4j
 @SpringBootApplication

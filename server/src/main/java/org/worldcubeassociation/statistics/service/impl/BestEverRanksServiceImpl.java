@@ -5,16 +5,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.worldcubeassociation.statistics.dto.besteverrank.*;
-import org.worldcubeassociation.statistics.exception.InvalidParameterException;
 import org.worldcubeassociation.statistics.exception.NotFoundException;
 import org.worldcubeassociation.statistics.model.BestEverRank;
 import org.worldcubeassociation.statistics.model.Event;
 import org.worldcubeassociation.statistics.repository.BestEverRanksRepository;
-import org.worldcubeassociation.statistics.repository.EventRepository;
 import org.worldcubeassociation.statistics.request.BestEverRanksRequest;
 import org.worldcubeassociation.statistics.response.BestEverRanksEventResponse;
 import org.worldcubeassociation.statistics.response.BestEverRanksResponse;
 import org.worldcubeassociation.statistics.service.BestEverRanksService;
+import org.worldcubeassociation.statistics.service.EventService;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -22,7 +21,6 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -31,7 +29,7 @@ public class BestEverRanksServiceImpl implements BestEverRanksService {
     private BestEverRanksRepository bestEverRanksRepository;
 
     @Autowired
-    private EventRepository eventRepository;
+    private EventService eventService;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -45,7 +43,7 @@ public class BestEverRanksServiceImpl implements BestEverRanksService {
 
     @Override
     public BestEverRanksResponse generate(BestEverRanksRequest bestEverRanksRequest) {
-        List<Event> events = getEvents(bestEverRanksRequest.getEventIds());
+        List<Event> events = eventService.getEvents(bestEverRanksRequest.getEventIds());
         return generateByEventList(events);
     }
 
@@ -70,16 +68,6 @@ public class BestEverRanksServiceImpl implements BestEverRanksService {
         }
 
         return bestEverRanksResponse;
-    }
-
-    private List<Event> getEvents(List<String> eventIds) {
-        List<Event> events = eventRepository.findAllById(eventIds);
-        if (events.size() != eventIds.size()) {
-            List<String> existingEvents = events.stream().map(Event::getId).collect(Collectors.toList());
-            List<String> invalidEvents = eventIds.stream().filter(eventId -> !existingEvents.contains(eventId)).collect(Collectors.toList());
-            throw new InvalidParameterException("The following events are invalid: " + invalidEvents.stream().collect(Collectors.joining(", ")));
-        }
-        return events;
     }
 
     private void generateByEventId(Event event, BestEverRanksResponse bestEverRanksResponse) {
@@ -299,7 +287,7 @@ public class BestEverRanksServiceImpl implements BestEverRanksService {
 
     @Override
     public BestEverRanksResponse generateAll() {
-        List<Event> events = eventRepository.findAll();
+        List<Event> events = eventService.findAll();
         return generateByEventList(events);
     }
 }

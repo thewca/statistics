@@ -6,4 +6,7 @@ import java.util.List;
 
 public interface EventRepositoryJdbc {
     List<Event> findAllById(List<String> ids);
+
+    List<Event> findAll();
+
 }

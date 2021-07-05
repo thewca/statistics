@@ -25,4 +25,16 @@ public class EventRepositoryJdbcImpl implements EventRepositoryJdbc {
                                 .newRowMapper(Event.class)
                 );
     }
+
+    @Override
+    public List<Event> findAll() {
+        return namedJdbcTemplate
+                .query(
+                        StatisticsUtil.getQuery("event/findAll"),
+                        new MapSqlParameterSource(),
+                        JdbcTemplateMapperFactory
+                                .newInstance()
+                                .newRowMapper(Event.class)
+                );
+    }
 }
