@@ -12,6 +12,7 @@ import org.worldcubeassociation.statistics.model.Event;
 import org.worldcubeassociation.statistics.repository.BestEverRanksRepository;
 import org.worldcubeassociation.statistics.repository.EventRepository;
 import org.worldcubeassociation.statistics.request.BestEverRanksRequest;
+import org.worldcubeassociation.statistics.response.BestEverRanksEventResponse;
 import org.worldcubeassociation.statistics.response.BestEverRanksResponse;
 import org.worldcubeassociation.statistics.service.BestEverRanksService;
 
@@ -51,6 +52,7 @@ public class BestEverRanksServiceImpl implements BestEverRanksService {
         log.info("{} results deleted", deleted);
 
         BestEverRanksResponse bestEverRanksResponse = new BestEverRanksResponse();
+        bestEverRanksResponse.setEvents(new ArrayList<>());
         for (Event event : events) {
             log.info("Generate ranks for {}", event.getId());
             generateByEventId(event, bestEverRanksResponse);
@@ -97,6 +99,11 @@ public class BestEverRanksServiceImpl implements BestEverRanksService {
         }
 
         saveResults(event, worlds, continents, countries);
+
+        BestEverRanksEventResponse bestEverRanksEventResponse = new BestEverRanksEventResponse();
+        bestEverRanksEventResponse.setEventId(event.getId());
+        bestEverRanksEventResponse.setUpdatedResults(worlds.get(0).getCompetitors().size());
+        bestEverRanksResponse.getEvents().add(bestEverRanksEventResponse);
     }
 
     private void saveResults(Event event, List<RegionDTO> worlds, List<RegionDTO> continents, List<RegionDTO> countries) {
@@ -159,14 +166,14 @@ public class BestEverRanksServiceImpl implements BestEverRanksService {
         // Assign today's best result
         for (CompetitorCountryDTO todayCompetitor : todayCompetitors) {
             CompetitorWorldDTO competitorWorld = new CompetitorWorldDTO(todayCompetitor);
-            updateResults(world, competitorWorld, today);
+            updateResults(world, competitorWorld);
 
             RegionDTO continent = findOrCreateRegion(continents, todayCompetitor.getContinent());
             CompetitorContinentDTO competitorContinentDTO = new CompetitorContinentDTO(todayCompetitor);
-            updateResults(continent, competitorContinentDTO, today);
+            updateResults(continent, competitorContinentDTO);
 
             RegionDTO country = findOrCreateRegion(countries, todayCompetitor.getCountry());
-            updateResults(country, todayCompetitor, today);
+            updateResults(country, todayCompetitor);
         }
 
         findRanks(world, today);
@@ -176,7 +183,6 @@ public class BestEverRanksServiceImpl implements BestEverRanksService {
         for (RegionDTO country : countries) {
             findRanks(country, today);
         }
-
     }
 
     private void findRanks(RegionDTO region, LocalDate today) {
@@ -190,7 +196,7 @@ public class BestEverRanksServiceImpl implements BestEverRanksService {
     }
 
     private void analyzeRank(List<Integer> regionResults, ResultsDTO competitorResults, LocalDate today) {
-        int currentRank = Collections.binarySearch(regionResults, competitorResults.getCurrent().getResult());
+        int currentRank = binarySearchLeft(regionResults, competitorResults.getCurrent().getResult());
         competitorResults.getCurrent().setRank(currentRank);
 
         Integer oldRank = competitorResults.getBestRank().getRank();
@@ -205,6 +211,20 @@ public class BestEverRanksServiceImpl implements BestEverRanksService {
         }
     }
 
+    private int binarySearchLeft(List<Integer> list, Integer result) {
+        int low = 0;
+        int hi = list.size();
+        while (low < hi) {
+            int mid = (low + hi) / 2;
+            if (list.get(mid) >= result) {
+                hi = mid;
+            } else {
+                low = mid + 1;
+            }
+        }
+        return low;
+    }
+
     private RegionDTO findOrCreateRegion(List<RegionDTO> regions, String name) {
         RegionDTO region = new RegionDTO(name);
 
@@ -217,10 +237,9 @@ public class BestEverRanksServiceImpl implements BestEverRanksService {
         return regions.get(index);
     }
 
-    private void updateResults(RegionDTO region, Competitor todayCompetitor, LocalDate today) {
+    private void updateResults(RegionDTO region, Competitor todayCompetitor) {
         Competitor regionCompetitor = findOrCreateCompetitor(region, todayCompetitor);
 
-        // Singles are always non null
         updateResult(region.getSingles(), regionCompetitor.getSingle(), todayCompetitor.getSingle());
         updateResult(region.getAverages(), regionCompetitor.getAverage(), todayCompetitor.getAverage());
     }
@@ -228,6 +247,7 @@ public class BestEverRanksServiceImpl implements BestEverRanksService {
     private void updateResult(List<Integer> results, ResultsDTO oldResult, ResultsDTO newResult) {
         Integer oldBest = oldResult.getCurrent().getResult();
         Integer newBest = newResult.getCurrent().getResult();
+
         if (newBest != null && (oldBest == null || newBest < oldBest)) {
             // We remove the old result and insert the new one
 
@@ -252,11 +272,18 @@ public class BestEverRanksServiceImpl implements BestEverRanksService {
             competitors.add(index, competitor);
 
             // Also in the single list
-            Integer single = competitor.getSingle().getCurrent().getResult();
-            int j = Collections.binarySearch(region.getSingles(), single);
-            region.getSingles().add(Math.max(-j - 1, j), single);
+            maybeAddResult(region.getSingles(), competitor.getSingle().getCurrent().getResult());
+            maybeAddResult(region.getAverages(), competitor.getAverage().getCurrent().getResult());
         }
         return competitors.get(index);
+    }
+
+    private void maybeAddResult(List<Integer> results, Integer result) {
+        if (result != null) {
+            int j = Collections.binarySearch(results, result);
+            results.add(Math.max(-j - 1, j), result);
+        }
+
     }
 
     @Override
