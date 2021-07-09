@@ -1,4 +1,4 @@
-name: Deploy frontend
+name: Test frontend
 
 on:
   push:
@@ -11,25 +11,18 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [10.x, 12.x, 14.x]
-
     steps:
       - uses: actions/checkout@v2
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: Use Node.js 14
         uses: actions/setup-node@v2
         with:
-          node-version: ${{ matrix.node-version }}
-      - name: Change to client
-        run: |
-          cd client
+          node-version: "14"
       - name: Yarn Install
-        run: |
-          yarn install
+        working-directory: ./client
+        run: yarn install
       - name: Build
-        run: |
-          yarn build
+        working-directory: ./client
+        run: yarn build
       - name: Unit Tests
-        run: |
-          yarn test
+        working-directory: ./client
+        run: yarn test
