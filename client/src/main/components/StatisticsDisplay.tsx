@@ -1,4 +1,4 @@
-import { CompassOutlined } from "@ant-design/icons";
+import { CompassOutlined, QuestionCircleOutlined } from "@ant-design/icons";
 import { Col, message, Popover, Row, Select } from "antd";
 import { useCallback, useContext, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
@@ -194,20 +194,17 @@ const StatisticsDisplay = () => {
       {!!filteredStatistics &&
         filteredStatistics.map((stat, i) => (
           <div key={i} className="statistics-item">
-            <Row className="key-statistic-item">
-              <Col span={8} />
-              <Col span={8} style={{ textAlign: "center" }}>
-                <span>
-                  {showKeys(stat, statistics?.displayMode)}
-                  {getIcon(stat)}
-                </span>
-              </Col>
-              {!!stat.explanation && (
-                <Col span={8}>
-                  <h3 className="explanation">{stat.explanation}</h3>
-                </Col>
-              )}
-            </Row>
+            <div className="key-statistic-item">
+              <span>
+                {showKeys(stat, statistics?.displayMode)}
+                {getIcon(stat)}
+                {!!stat.explanation && (
+                  <Popover content={stat.explanation}>
+                    <QuestionCircleOutlined />
+                  </Popover>
+                )}
+              </span>
+            </div>
             <StatisticsTable
               headers={stat.headers}
               content={stat.content}
