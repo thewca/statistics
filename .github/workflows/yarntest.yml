@@ -1,0 +1,35 @@
+name: Deploy frontend
+
+on:
+  push:
+    branches-ignore:
+      - "main" # Already tested by deploy
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [8.x, 10.x, 12.x]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Change to client
+        run: |
+          cd client
+      - name: Yarn Install
+        run: |
+          yarn install
+      - name: Unit Tests
+        run: |
+          yarn test
+      - name: Build
+        run: |
+          yarn build
