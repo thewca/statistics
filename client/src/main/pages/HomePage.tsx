@@ -29,7 +29,7 @@ const Home = ({ statisticsList }: HomePageProps) => {
 
       <Row gutter={16}>
         <Col span={8}>
-          <Card title="Statistics List" className="stat-card" hoverable>
+          <Card title="Statistics List" className="stat-card">
             <p>
               Check our <Link to="statistics-list">list with intereting</Link>{" "}
               statistics.
@@ -51,11 +51,7 @@ const Home = ({ statisticsList }: HomePageProps) => {
           </Card>
         </Col>
         <Col span={8}>
-          <Card
-            title="Take me to a random statistics"
-            className="stat-card"
-            hoverable
-          >
+          <Card title="Take me to a random statistics" className="stat-card">
             <p>
               Click <Link to={randomLink}>here</Link> to be redirected to a
               random page.
@@ -63,7 +59,7 @@ const Home = ({ statisticsList }: HomePageProps) => {
           </Card>
         </Col>
         <Col span={8}>
-          <Card title="Logged Feature" className="stat-card" hoverable>
+          <Card title="Logged Feature" className="stat-card">
             {authCtx.isLogged && (
               <p>
                 Since you are logged, you can check exclusive features like{" "}
