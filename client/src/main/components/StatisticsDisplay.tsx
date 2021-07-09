@@ -1,10 +1,11 @@
 import { CompassOutlined } from "@ant-design/icons";
 import { Col, message, Popover, Row, Select } from "antd";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import statisticsApi from "../api/statistics.api";
 import { DisplayMode, Statistics } from "../model/Statistic";
 import { StatisticsDetail } from "../model/StatisticsDetail";
+import AuthContext from "../store/auth-context";
 import { getQueryParameter, setQueryParameter } from "../util/query.param.util";
 import "./StatisticsDisplay.css";
 import StatisticsTable from "./StatisticsTable";
@@ -15,6 +16,8 @@ interface StatisticsDisplayProps {
 
 const StatisticsDisplay = () => {
   const { pathId } = useParams<StatisticsDisplayProps>();
+
+  const authCtx = useContext(AuthContext);
 
   const [statistics, setStatistics] = useState<Statistics>();
   const [selectedKeys, setSelectedKeys] = useState<string | undefined>(
@@ -85,12 +88,12 @@ const StatisticsDisplay = () => {
   );
 
   const getIcon = (statisticsDetail: StatisticsDetail) => {
-    if (!statisticsDetail.sqlQueryCustom) {
+    if (!authCtx.isLogged || !statisticsDetail.sqlQueryCustom) {
       return null;
     }
 
     return (
-      <Popover content="Find me">
+      <Popover content="Custom query">
         <Link
           to={`/database-query?sqlQuery=${statisticsDetail.sqlQueryCustom}`}
         >
@@ -191,7 +194,7 @@ const StatisticsDisplay = () => {
       {!!filteredStatistics &&
         filteredStatistics.map((stat, i) => (
           <div key={i} className="statistics-item">
-            <Row>
+            <Row className="key-statistic-item">
               <Col span={8} />
               <Col span={8} style={{ textAlign: "center" }}>
                 <span>
