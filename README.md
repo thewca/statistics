@@ -2,9 +2,9 @@
 
 WCA Statistics is a collection data analysis over the WCA's database.
 
-[![Build backend](https://github.com/thewca/statistics/actions/workflows/gradlew.yml/badge.svg)](https://github.com/thewca/statistics/actions/workflows/gradlew.yml)
-[![Build frontend](https://github.com/thewca/statistics/actions/workflows/yarntest.yml/badge.svg)](https://github.com/thewca/statistics/actions/workflows/yarntest.yml)
-[![Deploy frontend](https://github.com/thewca/statistics/actions/workflows/deployfront.yml/badge.svg)](https://github.com/thewca/statistics/actions/workflows/deployfront.yml)
+[![Backend](https://github.com/thewca/statistics/actions/workflows/backtest.yml/badge.svg)](https://github.com/thewca/statistics/actions/workflows/backtest.yml)
+[![Frontend](https://github.com/thewca/statistics/actions/workflows/fronttest.yml/badge.svg)](https://github.com/thewca/statistics/actions/workflows/fronttest.yml)
+[![Deploy frontend](https://github.com/thewca/statistics/actions/workflows/frontdeploy.yml/badge.svg)](https://github.com/thewca/statistics/actions/workflows/frontdeploy.yml)
 
 ## Requirements
 
