@@ -29,8 +29,8 @@ jobs:
         working-directory: ./client
         run: yarn build
         env:
-          REACT_APP_BASE_URL: ${{ env.STATISTICS_REACT_APP_BASE_URL }}
-          PUBLIC_URL: ${{ env.STATISTICS_PUBLIC_URL }}
+          REACT_APP_BASE_URL: ${{ secrets.REACT_APP_BASE_URL }}
+          PUBLIC_URL: ${{ secrets.PUBLIC_URL }}
       - name: Unit Tests
         working-directory: ./client
         run: yarn test
@@ -39,8 +39,8 @@ jobs:
         with:
           args: --acl public-read --delete
         env:
-          AWS_S3_BUCKET: ${{ env.STATISTICS_AWS_S3_BUCKET }}
-          AWS_ACCESS_KEY_ID: ${{ env.CI_CD_AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ env.CI_CD_AWS_SECRET_ACCESS_KEY }}
+          AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.CI_CD_AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.CI_CD_AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: us-west-2
           SOURCE_DIR: "client/build"
