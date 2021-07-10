@@ -11,17 +11,16 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - uses: actions/cache@v2
+        with:
+          working-directory: ./client
+          path: "**/node_modules"
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+
       - name: Use Node.js 14
         uses: actions/setup-node@v2
         with:
           node-version: "14"
-
-      - name: Cache dependencies
-        working-directory: ./client
-        uses: actions/cache@v2
-        with:
-          path: "**/node_modules"
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
 
       - name: Yarn Install
         working-directory: ./client
