@@ -1,6 +1,6 @@
 # https://docs.github.com/en/actions/guides/building-and-testing-java-with-gradle
 
-name: Gradle CI
+name: Backend
 
 on:
   push:
