@@ -13,9 +13,8 @@ jobs:
 
       - uses: actions/cache@v2
         with:
-          working-directory: ./client
-          path: "**/node_modules"
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+          path: "**/client/node_modules"
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/client/yarn.lock') }}
 
       - name: Use Node.js 14
         uses: actions/setup-node@v2
