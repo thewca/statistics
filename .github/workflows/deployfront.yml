@@ -10,10 +10,19 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+
       - name: Use Node.js 14
         uses: actions/setup-node@v2
         with:
           node-version: "14"
+
+      - name: Cache dependencies
+        working-directory: ./client
+        uses: actions/cache@v2
+        with:
+          path: "**/node_modules"
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+
       - name: Yarn Install
         working-directory: ./client
         run: yarn install
@@ -21,8 +30,8 @@ jobs:
         working-directory: ./client
         run: yarn build
         env:
-          REACT_APP_BASE_URL: ${{ secrets.REACT_APP_BASE_URL }}
-          PUBLIC_URL: ${{ secrets.PUBLIC_URL }}
+          REACT_APP_BASE_URL: ${{ env.STATISTICS_REACT_APP_BASE_URL }}
+          PUBLIC_URL: ${{ env.STATISTICS_PUBLIC_URL }}
       - name: Unit Tests
         working-directory: ./client
         run: yarn test
@@ -31,8 +40,8 @@ jobs:
         with:
           args: --acl public-read --delete
         env:
-          AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_REGION: ${{ secrets.AWS_REGION }}
+          AWS_S3_BUCKET: ${{ env.STATISTICS_AWS_S3_BUCKET }}
+          AWS_ACCESS_KEY_ID: ${{ env.CI_CD_AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ env.CI_CD_AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: us-west-2
           SOURCE_DIR: "client/build"
