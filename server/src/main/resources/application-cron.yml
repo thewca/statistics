@@ -10,4 +10,4 @@ spring:
 api:
   wca:
     baseurl: https://worldcubeassociation.org
-    appid: ${APP_ID}
+    appid: ${APP_ID:cron}

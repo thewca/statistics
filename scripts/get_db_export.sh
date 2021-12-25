@@ -11,7 +11,7 @@ temp_database="wca_development_temp"
 new_database="wca_development"
 
 if [ $DB_PASSWORD ]; then
-    mysqlconn="sudo mysql -h ${DB_HOST:-localhost} -u ${DB_USER:-root} -P ${DB_PORT:-3306} -p${DB_PASSWORD}"
+    mysqlconn="sudo mysql -h ${DB_HOST:-localhost} -u ${DB_USERNAME:-root} -P ${DB_PORT:-3306} -p${DB_PASSWORD}"
 else
     mysqlconn="sudo mysql"
 fi
