@@ -49,3 +49,20 @@ cd client
 PUBLIC_URL="{OMMITED FOR NOW}" REACT_APP_BASE_URL="{OMMITED FOR NOW}" yarn build
 
 ```
+
+## Run cron
+
+- Export variables
+
+```
+export STATISTICS_PORT=8080
+export DB_HOST={{SENSITIVE}}
+export DB_DATABASE={{SENSITIVE}}
+export DB_USERNAME={{SENSITIVE}}
+export DB_PASSWORD={{SENSITIVE}}
+export DB_PORT=3306
+```
+
+- Run it
+
+  `source scripts/cron.sh`

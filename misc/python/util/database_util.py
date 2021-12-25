@@ -2,10 +2,10 @@ import os
 
 import mysql.connector
 
-user = os.environ.get('DB_USER', 'root')
+user = os.environ.get('DB_USERNAME', 'root')
 host = os.environ.get('DB_HOST', 'locahost')
 password = os.environ.get('DB_PASSWORD', '')
-database = os.environ.get('DATABASE', 'wca_development')
+database = os.environ.get('DB_DATABASE', 'wca_development')
 
 
 def get_database_connection():
