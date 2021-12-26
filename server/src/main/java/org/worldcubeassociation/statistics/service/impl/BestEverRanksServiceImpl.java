@@ -94,6 +94,10 @@ public class BestEverRanksServiceImpl implements BestEverRanksService {
             }
             List<CompetitorCountryDTO> todayCompetitors = bestEverRanksRepository.getTodayCompetitors(date, eventId);
 
+            if (todayCompetitors.isEmpty()) {
+                continue;
+            }
+
             summarizeResults(todayCompetitors, worlds, continents, countries, date);
         }
 
