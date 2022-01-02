@@ -14,4 +14,8 @@ WORKDIR /tmp
 
 USER nobody
 
+RUN mkdir /tmp/gradle
+
+ENV GRADLE_USER_HOME=/tmp/gradle
+
 ENTRYPOINT ["/usr/local/bin/cron-docker.sh"]
