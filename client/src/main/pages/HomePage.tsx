@@ -31,7 +31,7 @@ const Home = ({ statisticsList }: HomePageProps) => {
         <Col span={8}>
           <Card title="Statistics List" className="stat-card">
             <p>
-              Check our <Link to="statistics-list">list with intereting</Link>{" "}
+              Check our <Link to="statistics-list">list with interesting</Link>{" "}
               statistics.
             </p>
 

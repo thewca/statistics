@@ -11,6 +11,9 @@ INTERVAL=5
 echo "Build artifact"
 ./server/gradlew build -p server -x test
 
+echo "Install python dependencies"
+pip3 install -r misc/python/requirements.txt
+
 echo "Start the API in the port $port"
 java -jar server/build/libs/statistics-server.jar --spring.profiles.active=cron --server.port=${port} &
 
