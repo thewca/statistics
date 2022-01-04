@@ -11,6 +11,9 @@ INTERVAL=5
 echo "Build artifact"
 ./server/gradlew build -p server -x test
 
+virtualenv venv -p python3
+source venv/bin/activate
+
 echo "Install python dependencies"
 pip3 install -r misc/python/requirements.txt
 

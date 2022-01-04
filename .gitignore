@@ -15,3 +15,5 @@ WCA_export*
 
 *.pem
 nohup.out
+
+venv/
