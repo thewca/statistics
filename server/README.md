@@ -38,8 +38,6 @@ chmod +x scripts/get_db_export.sh
 ./scripts/get_db_export.sh
 ```
 
-It will ask you to run in sudo mode in order to execute the sql.
-
 ## How to run it
 
 The commands listed here should work in Unix systems or in Windows (using GitBash commandline) with maven set.
