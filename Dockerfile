@@ -4,7 +4,12 @@ ARG DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && apt-get install -y \
     git \
-    default-jre
+    default-jre \
+    curl \
+    python3 \
+    python3-pip \
+    wget \
+    sudo
 
 ADD scripts/cron-docker.sh /usr/local/bin/cron-docker.sh
 
