@@ -10,7 +10,9 @@ RUN apt-get update && apt-get install -y \
     python3-pip \
     wget \
     sudo \
-    python3-virtualenv
+    python3-virtualenv \
+    unzip \
+    mysql-client
 
 ADD scripts/cron-docker.sh /usr/local/bin/cron-docker.sh
 

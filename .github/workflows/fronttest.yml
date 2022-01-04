@@ -2,10 +2,15 @@ name: Frontend
 
 on:
   push:
-    branches-ignore:
-      - "main" # Already tested by deploy
+    branches:
+      - main
+    paths:
+      - 'client/**'
   pull_request:
-    branches: [main]
+    branches:
+      - main
+    paths:
+      - 'client/**'
 
 jobs:
   build:
