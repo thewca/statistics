@@ -50,5 +50,5 @@ done
 echo "Get database export and generate statistics"
 source scripts/generate_all_statistics.sh
 
-echo "Kill the process on port ${port}"
-sudo kill -9 `sudo lsof -t -i:${port}`
+echo "Success"
+exit 0
