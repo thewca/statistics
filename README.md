@@ -50,6 +50,28 @@ PUBLIC_URL="{OMMITED FOR NOW}" REACT_APP_BASE_URL="{OMMITED FOR NOW}" yarn build
 
 ```
 
+## Docker cron
+
+The file `scripts/cron-docker.sh` is used to make a fresh new download of the ropository and run the statistics over it. In the process or calculating statistics, the other `sh` files inside of `scripts` are used.
+
+### Deploy the cron image
+
+The cron script also runs in its own container. This helps when running this periodically like in a cron schedule, using AWS Batch
+
+- Build the image
+
+  `docker build -t thewca/statistics-cron .`
+
+- Deploy the image
+
+  `docker push thewca/statistics-cron`
+
+### Run the image locally
+
+You can also run this image locally. This image will download the export, update the database and calculate all the statistics.
+
+  `docker run thewca/statistics-cron`
+
 ## Run cron
 
 - Export variables
@@ -66,3 +88,4 @@ export DB_PORT=3306
 - Run it
 
   `source scripts/cron.sh`
+
