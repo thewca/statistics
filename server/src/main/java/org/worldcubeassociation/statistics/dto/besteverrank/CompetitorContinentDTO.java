@@ -1,12 +1,14 @@
 package org.worldcubeassociation.statistics.dto.besteverrank;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldNameConstants;
 
 @Data
 @NoArgsConstructor
 @FieldNameConstants(asEnum = true)
+@EqualsAndHashCode(callSuper = true)
 public class CompetitorContinentDTO extends CompetitorWorldDTO implements Comparable<Competitor>, Competitor {
     protected String continent;
 
