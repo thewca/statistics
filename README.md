@@ -2,10 +2,10 @@
 
 WCA Statistics is a collection data analysis over the WCA's database.
 
-[![Backend](https://github.com/thewca/statistics/actions/workflows/backtest.yml/badge.svg)](https://github.com/thewca/statistics/actions/workflows/backtest.yml)
-[![Deploy backend](https://github.com/thewca/statistics/actions/workflows/backdeploy.yml/badge.svg)](https://github.com/thewca/statistics/actions/workflows/backdeploy.yml)
-[![Frontend](https://github.com/thewca/statistics/actions/workflows/fronttest.yml/badge.svg)](https://github.com/thewca/statistics/actions/workflows/fronttest.yml)
-[![Deploy frontend](https://github.com/thewca/statistics/actions/workflows/frontdeploy.yml/badge.svg)](https://github.com/thewca/statistics/actions/workflows/frontdeploy.yml)
+[![Backend](https://github.com/thewca/statistics/actions/workflows/backtest.yaml/badge.svg)](https://github.com/thewca/statistics/actions/workflows/backtest.yaml)
+[![Deploy backend](https://github.com/thewca/statistics/actions/workflows/backdeploy.yaml/badge.svg)](https://github.com/thewca/statistics/actions/workflows/backdeploy.yaml)
+[![Frontend](https://github.com/thewca/statistics/actions/workflows/fronttest.yaml/badge.svg)](https://github.com/thewca/statistics/actions/workflows/fronttest.yaml)
+[![Deploy frontend](https://github.com/thewca/statistics/actions/workflows/frontdeploy.yaml/badge.svg)](https://github.com/thewca/statistics/actions/workflows/frontdeploy.yaml)
 
 
 ## Requirements

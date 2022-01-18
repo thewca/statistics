@@ -6,6 +6,11 @@ on:
       - main
     paths:
       - 'server/**'
+  pull_request: # TODO remove after image deploy actually works
+    branches:
+      - main
+    paths:
+      - 'server/**'
 
 jobs:
   build:
