@@ -5,6 +5,8 @@ WCA Statistics is a collection data analysis over the WCA's database.
 [![Backend](https://github.com/thewca/statistics/actions/workflows/backtest.yml/badge.svg)](https://github.com/thewca/statistics/actions/workflows/backtest.yml)
 [![Frontend](https://github.com/thewca/statistics/actions/workflows/fronttest.yml/badge.svg)](https://github.com/thewca/statistics/actions/workflows/fronttest.yml)
 [![Deploy frontend](https://github.com/thewca/statistics/actions/workflows/frontdeploy.yml/badge.svg)](https://github.com/thewca/statistics/actions/workflows/frontdeploy.yml)
+[![Deploy backend](https://github.com/thewca/statistics/actions/workflows/backtest.yml/badge.svg)](https://github.com/thewca/statistics/actions/workflows/backdeploy.yml)
+
 
 ## Requirements
 
