@@ -1,5 +1,8 @@
 # WCA Statistics Client
 
+[![Frontend](https://github.com/thewca/statistics/actions/workflows/fronttest.yaml/badge.svg)](https://github.com/thewca/statistics/actions/workflows/fronttest.yaml)
+[![Deploy frontend](https://github.com/thewca/statistics/actions/workflows/frontdeploy.yaml/badge.svg)](https://github.com/thewca/statistics/actions/workflows/frontdeploy.yaml)
+
 ## Requirements
 
 - [Node](https://nodejs.org/)
@@ -37,3 +40,7 @@ The commands listed here should work in Unix systems or in Windows (using GitBas
 `docker run -d -p 3000:3000 --name statistics-client user/statistics-client:latest`
 
 The `-d` part means "detached", so you'll have to stop by killing the process running on port 3000.
+
+## Deploy
+
+Deploy is made using GH Actions.
