@@ -16,6 +16,10 @@ bootJar {
     archiveFileName = "statistics-server.jar"
 }
 
+tasks.named('test') {
+    useJUnitPlatform()
+}
+
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter'
     implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -49,8 +53,4 @@ dependencies {
     testImplementation 'io.rest-assured:xml-path:4.4.0'
 
     testImplementation 'com.google.guava:guava:23.0'
-}
-
-tasks.named('test') {
-    useJUnitPlatform()
 }
