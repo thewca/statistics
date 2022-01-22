@@ -1,0 +1,7 @@
+{
+    "timestamp": "2022-01-22T21:08:21.219+00:00",
+    "status": 400,
+    "error": "Bad Request",
+    "message": "The following events are invalid: xxx",
+    "path": "/best-ever-rank/generate"
+}

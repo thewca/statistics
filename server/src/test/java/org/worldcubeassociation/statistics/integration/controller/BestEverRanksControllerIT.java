@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.test.context.jdbc.Sql;
 import org.worldcubeassociation.statistics.integration.AbstractTest;
 
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Stream;
 
 import static io.restassured.RestAssured.given;
@@ -40,6 +42,30 @@ public class BestEverRanksControllerIT extends AbstractTest {
         return Stream.of(
                 Arguments.of(0, HttpStatus.OK, "2015CAMP17", "Happy path for best ever rank"),
                 Arguments.of(1, HttpStatus.NOT_FOUND, "2022XXXX01", "User not found")
+        );
+    }
+
+    @Order(2)
+    @MethodSource("generateByEventsArguments")
+    @ParameterizedTest(name = "index {0} status {1} body {2} reason {3}")
+    public void generateByEvents(int index, HttpStatus status, Map<String, Object> body, String reason) {
+        Response response = given()
+                .spec(super.SPEC)
+                .body(body)
+                .when()
+                .post(BASE_PATH + "generate")
+                .then()
+                .statusCode(status.value())
+                .extract()
+                .response();
+
+        super.validateResponseIgnoreAttribute(index, response, "timestamp");
+    }
+
+    static Stream<Arguments> generateByEventsArguments() {
+        return Stream.of(
+                Arguments.of(0, HttpStatus.OK, Map.of("eventIds", List.of("333", "333fm", "555bf")), "Happy path"),
+                Arguments.of(1, HttpStatus.BAD_REQUEST, Map.of("eventIds", List.of("333", "333fm", "xxx")), "Not existing xxx")
         );
     }
 
