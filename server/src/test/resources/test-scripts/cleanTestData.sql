@@ -1,0 +1,1 @@
+truncate wca_development.best_ever_rank;
