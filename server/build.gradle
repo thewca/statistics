@@ -52,5 +52,5 @@ dependencies {
     testImplementation 'io.rest-assured:json-path:4.4.0'
     testImplementation 'io.rest-assured:xml-path:4.4.0'
 
-    testImplementation 'com.google.guava:guava:23.0'
+    testImplementation 'com.google.guava:guava:31.0.1-jre'
 }
