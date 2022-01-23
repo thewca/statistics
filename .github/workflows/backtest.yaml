@@ -1,5 +1,3 @@
-# https://docs.github.com/en/actions/guides/building-and-testing-java-with-gradle
-
 name: Backend
 
 on:
@@ -8,11 +6,13 @@ on:
       - main
     paths:
       - 'server/**'
+      - '.github/workflows/backtest.yaml'
   pull_request:
     branches:
       - main
     paths:
       - 'server/**'
+      - '.github/workflows/backtest.yaml'
 
 jobs:
   build:

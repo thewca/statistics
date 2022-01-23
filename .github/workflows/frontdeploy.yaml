@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - 'client/**'
+      - '.github/workflows/frontdeploy.yaml'
 
 jobs:
   build:
