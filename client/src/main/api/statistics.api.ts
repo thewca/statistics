@@ -1,4 +1,5 @@
 import Axios from "axios";
+import { AuthenticationResponse } from "../model/AuthenticationResponse";
 import BestEverRank from "../model/BestEverRank";
 import { QueryDatabaseResponse } from "../model/QueryDatabase";
 import { Statistics } from "../model/Statistic";
@@ -21,12 +22,12 @@ export class StatisticsApi {
   };
 
   getWcaAuthenticationUrl = (frontendHost: string) =>
-    Axios.get<string>(this.BASE_URL + "/wca/authentication", {
+    Axios.get<AuthenticationResponse>(this.BASE_URL + "/wca/authentication", {
       params: { frontendHost },
     });
 
   getUserInfo = () =>
-    Axios.get<UserInfo>(this.BASE_URL + "/wca/user" );
+    Axios.get<UserInfo>(this.BASE_URL + "/wca/user");
 
   getStatisticsGroups = (term?: string) =>
     Axios.get<StatisticsList>(this.BASE_URL + "/statistics/list", {
