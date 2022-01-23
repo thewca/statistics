@@ -81,3 +81,32 @@ The `-d` part means "detached", so you'll have to stop by killing the process ru
 - Push the image
 
 `docker push thewca/statistics-server`
+
+## Tests
+
+This backend project uses integration tests so we need to actually connect to a database and fetch data from somewhere.
+
+- Preparing the database for tests (from the repository root)
+
+    `docker-compose -f server/docker-compose.yaml up -d`
+
+- Run the test web server
+
+    ```
+    cd server/test-web-server
+    yarn install
+    yarn start
+    ```
+
+- Run the tests
+
+In  a new terminal, from the repository root, run
+
+    `./server/gradlew clean build -p server --info`
+
+- If you need to change migrations, run
+
+    ```
+    docker-compose -f server/docker-compose.yaml down --volumes
+    docker-compose -f server/docker-compose.yaml up -d
+    ```
