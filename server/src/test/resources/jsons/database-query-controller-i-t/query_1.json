@@ -1,0 +1,7 @@
+{
+    "timestamp": "2022-01-23T14:42:03.654+00:00",
+    "status": 400,
+    "error": "Bad Request",
+    "message": "StatementCallback; bad SQL grammar [select count(*) from (\ncelect * from Competitions\n) alias]; nested exception is java.sql.SQLSyntaxErrorException: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '* from Competitions\n) alias' at line 2",
+    "path": "/database/query"
+}

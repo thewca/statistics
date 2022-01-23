@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.util.Pair;
+import org.springframework.jdbc.BadSqlGrammarException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.worldcubeassociation.statistics.dto.DatabaseQueryBaseDTO;
@@ -42,7 +43,14 @@ public class DatabaseQueryServiceImpl implements DatabaseQueryService {
     @Override
     public DatabaseQueryDTO getResultSet(DatabaseQueryRequest databaseQueryRequest, String accessToken) {
         validateToken(accessToken);
-        DatabaseQueryDTO result = getResultSet(databaseQueryRequest);
+        DatabaseQueryDTO result = null;
+        try {
+            result = getResultSet(databaseQueryRequest);
+        } catch (BadSqlGrammarException e) {
+            log.info("{}", e.toString());
+            removeCachedToken(accessToken);
+            throw new InvalidParameterException(e.getMessage());
+        }
         removeCachedToken(accessToken);
 
         return result;
@@ -69,15 +77,8 @@ public class DatabaseQueryServiceImpl implements DatabaseQueryService {
 
         DatabaseQueryDTO databaseQueryDTO = new DatabaseQueryDTO();
 
-        int count; // TODO cache since we are querying db twice in case of next page
-        try {
-            count = jdbcTemplate.queryForObject(countQuery, Integer.class);
-        } catch (Exception e) {
-            log.error("" + e);
-
-            // A bit generic, but it's more likely to be user's fault.
-            throw new InvalidParameterException(e.getCause().getMessage());
-        }
+        // TODO cache since we are querying db twice in case of next page
+        int count = jdbcTemplate.queryForObject(countQuery, Integer.class);
 
         DatabaseQueryBaseDTO sqlResult = getResultSet(finalQuery);
 

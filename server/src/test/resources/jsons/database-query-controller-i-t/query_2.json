@@ -1,0 +1,56 @@
+{
+    "headers": [
+        "id",
+        "name",
+        "rank",
+        "format",
+        "cellName"
+    ],
+    "content": [
+        [
+            "333",
+            "3x3x3 Cube",
+            "10",
+            "time",
+            "3x3x3 Cube"
+        ],
+        [
+            "444",
+            "4x4x4 Cube",
+            "30",
+            "time",
+            "4x4x4 Cube"
+        ],
+        [
+            "555",
+            "5x5x5 Cube",
+            "40",
+            "time",
+            "5x5x5 Cube"
+        ],
+        [
+            "333bf",
+            "3x3x3 Blindfolded",
+            "70",
+            "time",
+            "3x3x3 Blindfolded"
+        ],
+        [
+            "333fm",
+            "3x3x3 Fewest Moves",
+            "80",
+            "number",
+            "3x3x3 Fewest Moves"
+        ]
+    ],
+    "number": 0,
+    "numberOfElements": 5,
+    "size": 5,
+    "totalElements": 14,
+    "totalPages": 3,
+    "hasContent": true,
+    "hasNextPage": true,
+    "hasPreviousPage": false,
+    "firstPage": true,
+    "lastPage": false
+}

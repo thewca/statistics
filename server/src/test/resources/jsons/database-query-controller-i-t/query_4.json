@@ -1,0 +1,7 @@
+{
+    "timestamp": "2022-01-23T14:31:57.964+00:00",
+    "status": 401,
+    "error": "Unauthorized",
+    "message": "No token provided",
+    "path": "/database/query"
+}

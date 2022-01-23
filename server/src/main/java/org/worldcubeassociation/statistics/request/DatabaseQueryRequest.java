@@ -10,10 +10,10 @@ import javax.validation.constraints.NotBlank;
 public class DatabaseQueryRequest {
 
     @Min(0)
-    private Integer page;
+    private Integer page = 0;
 
     @Min(1) @Max(100)
-    private Integer size;
+    private Integer size = 20;
 
     @NotBlank
     private String sqlQuery;

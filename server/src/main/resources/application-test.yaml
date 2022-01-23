@@ -7,7 +7,7 @@ spring:
     initialization-mode: always # Creates database using schema.sql
 api:
   wca:
-    baseurl: https://staging.worldcubeassociation.org
+    baseurl: http://localhost:3500
     appid: example-application-id
 server:
   port: 8081
