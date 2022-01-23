@@ -1,0 +1,4 @@
+{
+    "url": "http://localhost:3500/oauth/authorize?client_id=example-application-id&redirect_uri=http://localhost:3000&response_type=token&scope=public",
+    "frontendHost": "http://localhost:3000"
+}
