@@ -31,7 +31,7 @@ public class DatabaseQueryControllerIT extends AbstractTest {
                 .extract()
                 .response();
 
-        super.validateResponseIgnoreAttribute(index, response, "timestamp");
+        super.validateResponse(index, response);
     }
 
     static Stream<Arguments> queryArguments() {

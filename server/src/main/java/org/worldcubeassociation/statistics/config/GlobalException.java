@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import org.worldcubeassociation.statistics.exception.InvalidParameterException;
 import org.worldcubeassociation.statistics.exception.NotFoundException;
+import org.worldcubeassociation.statistics.exception.UnauthorizedException;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
@@ -16,43 +17,41 @@ import java.util.stream.Collectors;
 
 @ControllerAdvice
 public class GlobalException extends ResponseEntityExceptionHandler {
-    @ExceptionHandler(NotFoundException.class)
-    public ResponseEntity<ResponseError> handleNotFound(NotFoundException ex) {
+    private ResponseEntity<ResponseError> buildResponse(String message, HttpStatus status) {
         return new ResponseEntity<>(ResponseError
                 .builder()
-                .status(HttpStatus.NOT_FOUND.value())
-                .message(ex.getMessage()).build(), HttpStatus.NOT_FOUND);
+                .status(status.value())
+                .message(message).build(), status);
     }
 
-    private ResponseEntity<ResponseError> genericBadRequest(String message) {
-        return ResponseEntity
-                .badRequest()
-                .body(ResponseError
-                        .builder()
-                        .status(HttpStatus.BAD_REQUEST.value())
-                        .message(message)
-                        .build());
+    @ExceptionHandler(UnauthorizedException.class)
+    public ResponseEntity<ResponseError> handleUnauthorized(UnauthorizedException ex) {
+        return buildResponse(ex.getMessage(), HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<ResponseError> handleNotFound(NotFoundException ex) {
+        return buildResponse(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(InvalidParameterException.class)
     public ResponseEntity<ResponseError> handleInvalidParameterException(InvalidParameterException ex) {
-        return genericBadRequest(ex.getMessage());
+        return buildResponse(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<ResponseError> handleConstraintViolation(ConstraintViolationException ex) {
-        return genericBadRequest(ex.getConstraintViolations().stream().map(ConstraintViolation::getMessage).collect(Collectors.joining(", ")));
+        return buildResponse(ex.getConstraintViolations().stream().map(ConstraintViolation::getMessage).collect(Collectors.joining(", ")), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<ResponseError> handleRuntimeException(RuntimeException ex) {
-        return ResponseEntity
-                .internalServerError()
-                .body(ResponseError
-                        .builder()
-                        .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
-                        .message("An internal error occurred. Please contact WST.")
-                        .build());
+        return buildResponse("An internal error occurred. Please contact WST.", HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ResponseError> handleRuntimeException(Exception ex) {
+        return buildResponse("An internal error occurred. Please contact WST.", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @Data
