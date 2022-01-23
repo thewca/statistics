@@ -8,7 +8,7 @@ export class WcaApi {
       .getWcaAuthenticationUrl(window.location.href)
       .then((response) => {
         // Navigante to the url
-        window.location.href = response.data;
+        window.location.href = response.data.url;
       });
   };
 

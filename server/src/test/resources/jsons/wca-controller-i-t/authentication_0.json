@@ -1,0 +1,4 @@
+{
+    "url": "http://localhost:3500/oauth/authorize?client_id=example-application-id&redirect_uri=https://statistics.worldcubeassociation.org/&response_type=token&scope=public",
+    "frontendHost": "https://statistics.worldcubeassociation.org/"
+}

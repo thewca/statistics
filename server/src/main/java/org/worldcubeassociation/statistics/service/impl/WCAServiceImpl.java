@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.worldcubeassociation.statistics.api.WCAApi;
 import org.worldcubeassociation.statistics.dto.UserInfoDTO;
+import org.worldcubeassociation.statistics.response.AuthenticationResponse;
 import org.worldcubeassociation.statistics.service.WCAService;
 
 @Service
@@ -19,10 +20,10 @@ public class WCAServiceImpl implements WCAService {
     private WCAApi wcaApi;
 
     @Override
-    public String getWcaAuthenticationUrl(String frontendHost) {
-        return String
+    public AuthenticationResponse getWcaAuthenticationUrl(String frontendHost) {
+        return AuthenticationResponse.builder().frontendHost(frontendHost).url(String
                 .format("%s/oauth/authorize?client_id=%s&redirect_uri=%s&response_type=token&scope=public", wcaBaseUrl,
-                        wcaAppId, frontendHost);
+                        wcaAppId, frontendHost)).build();
     }
 
     @Override

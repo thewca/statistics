@@ -9,4 +9,4 @@ services:
     ports:
       - "3307:3306"
     volumes:
-      - ${PWD}/db/migration:/docker-entrypoint-initdb.d/:ro
+      - "./db/migration:/docker-entrypoint-initdb.d/:ro"

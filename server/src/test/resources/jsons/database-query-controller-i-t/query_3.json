@@ -1,0 +1,56 @@
+{
+    "headers": [
+        "id",
+        "name",
+        "rank",
+        "format",
+        "cellName"
+    ],
+    "content": [
+        [
+            "333oh",
+            "3x3x3 One-Handed",
+            "90",
+            "time",
+            "3x3x3 One-Handed"
+        ],
+        [
+            "clock",
+            "Clock",
+            "110",
+            "time",
+            "Clock"
+        ],
+        [
+            "minx",
+            "Megaminx",
+            "120",
+            "time",
+            "Megaminx"
+        ],
+        [
+            "pyram",
+            "Pyraminx",
+            "130",
+            "time",
+            "Pyraminx"
+        ],
+        [
+            "sq1",
+            "Square-1",
+            "150",
+            "time",
+            "Square-1"
+        ]
+    ],
+    "number": 1,
+    "numberOfElements": 5,
+    "size": 5,
+    "totalElements": 14,
+    "totalPages": 3,
+    "hasContent": true,
+    "hasNextPage": true,
+    "hasPreviousPage": true,
+    "firstPage": false,
+    "lastPage": false
+}

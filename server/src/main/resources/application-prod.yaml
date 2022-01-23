@@ -7,5 +7,5 @@ spring:
     initialization-mode: always # Creates database using schema.sql
 api:
   wca:
-    baseurl: https://worldcubeassociation.org
+    baseurl: https://www.worldcubeassociation.org
     appid: ${APP_ID}

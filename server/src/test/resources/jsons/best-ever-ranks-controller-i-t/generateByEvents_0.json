@@ -1,0 +1,17 @@
+{
+    "message": null,
+    "events": [
+        {
+            "eventId": "333",
+            "updatedResults": 102
+        },
+        {
+            "eventId": "333fm",
+            "updatedResults": 2
+        },
+        {
+            "eventId": "555bf",
+            "updatedResults": 0
+        }
+    ]
+}

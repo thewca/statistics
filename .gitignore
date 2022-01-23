@@ -17,3 +17,5 @@ WCA_export*
 nohup.out
 
 venv/
+
+*node_modules*

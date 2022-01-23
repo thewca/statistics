@@ -1,0 +1,30 @@
+{
+    "headers": [
+        "competition_name",
+        "events"
+    ],
+    "content": [
+        [
+            "DutchOpen2003",
+            "1"
+        ],
+        [
+            "WC1982",
+            "1"
+        ],
+        [
+            "WC2003",
+            "14"
+        ]
+    ],
+    "number": 0,
+    "numberOfElements": 3,
+    "size": 20,
+    "totalElements": 3,
+    "totalPages": 1,
+    "hasContent": true,
+    "hasNextPage": true,
+    "hasPreviousPage": false,
+    "firstPage": true,
+    "lastPage": false
+}
