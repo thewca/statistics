@@ -50,6 +50,9 @@ public class DatabaseQueryServiceImpl implements DatabaseQueryService {
             log.info("{}", e.toString());
             removeCachedToken(accessToken);
             throw new InvalidParameterException(e.getMessage());
+        } catch (Exception e) {
+            removeCachedToken(accessToken);
+            throw e;
         }
         removeCachedToken(accessToken);
 
