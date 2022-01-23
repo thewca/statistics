@@ -2,13 +2,13 @@ package org.worldcubeassociation.statistics.controller.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
-import org.worldcubeassociation.statistics.controller.WCAController;
+import org.worldcubeassociation.statistics.controller.WcaController;
 import org.worldcubeassociation.statistics.dto.UserInfoDTO;
 import org.worldcubeassociation.statistics.response.AuthenticationResponse;
 import org.worldcubeassociation.statistics.service.WCAService;
 
 @RestController
-public class WCAControllerImpl implements WCAController {
+public class WcaControllerImpl implements WcaController {
 
     @Autowired
     private WCAService wcaService;

@@ -11,7 +11,7 @@ import javax.validation.constraints.NotBlank;
 @Validated
 @RequestMapping("wca")
 @CrossOrigin(origins = "*", allowedHeaders = "*") // Enable this for testing
-public interface WCAController {
+public interface WcaController {
 
     @GetMapping("authentication")
     AuthenticationResponse getWcaAuthenticationUrl(@Valid @NotBlank(message = "Frontend can not be blank") @RequestParam String frontendHost);
