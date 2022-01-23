@@ -1,7 +1,4 @@
 {
-    "timestamp": "2022-01-22T19:31:46.434+00:00",
     "status": 404,
-    "error": "Not Found",
-    "message": "Rank not found for 2022XXXX01",
-    "path": "/best-ever-rank/2022XXXX01"
+    "message": "Rank not found for 2022XXXX01"
 }

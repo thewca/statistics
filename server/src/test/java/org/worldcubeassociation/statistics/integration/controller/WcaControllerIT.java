@@ -1,6 +1,7 @@
 package org.worldcubeassociation.statistics.integration.controller;
 
 import io.restassured.response.Response;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -12,9 +13,11 @@ import java.util.stream.Stream;
 
 import static io.restassured.RestAssured.given;
 
+@DisplayName("WCA")
 public class WcaControllerIT extends AbstractTest {
     private static final String BASE_PATH = "/wca/";
 
+    @DisplayName("WCA authentication")
     @MethodSource("authenticationArguments")
     @ParameterizedTest(name = "index {0} status {1} params {2} reason {3}")
     public void authentication(int index, HttpStatus status, Map<String, Object> params, String reason) {
