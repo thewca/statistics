@@ -1,5 +1,5 @@
 {
-  "name": "test-web-service",
+  "name": "test-web-server",
   "version": "1.0.0",
   "description": "Simulate WCA for local test",
   "main": "index.js",
