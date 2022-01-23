@@ -17,5 +17,5 @@ public interface WcaController {
     AuthenticationResponse getWcaAuthenticationUrl(@Valid @NotBlank(message = "Frontend can not be blank") @RequestParam String frontendHost);
 
     @GetMapping("user")
-    UserInfoDTO getUserInfo(@RequestHeader("Authorization") String token);
+    UserInfoDTO getUserInfo(@RequestHeader(value = "Authorization", required = false) String token);
 }

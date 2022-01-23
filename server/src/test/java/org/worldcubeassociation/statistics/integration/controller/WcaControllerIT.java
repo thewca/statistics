@@ -42,4 +42,28 @@ public class WcaControllerIT extends AbstractTest {
         );
     }
 
+    @DisplayName("WCA user info")
+    @MethodSource("userInfoArguments")
+    @ParameterizedTest(name = "index {0} status {1} token {2} reason {3}")
+    public void userInfo(int index, HttpStatus status, String token, String reason) {
+        Response response = given()
+                .spec(super.SPEC)
+                .header("Authorization", token)
+                .when()
+                .get(BASE_PATH + "user")
+                .then()
+                .statusCode(status.value())
+                .extract()
+                .response();
+
+        super.validateResponse(index, response);
+    }
+
+    private static Stream<Arguments> userInfoArguments() {
+        return Stream.of(
+                Arguments.of(0, HttpStatus.OK, "Bearer token", "Happy path"),
+                Arguments.of(1, HttpStatus.UNAUTHORIZED, "", "Unauthorized")
+        );
+    }
+
 }
