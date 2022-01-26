@@ -7,7 +7,6 @@ WCA Statistics is a collection data analysis over the WCA's database.
 [![Frontend](https://github.com/thewca/statistics/actions/workflows/fronttest.yaml/badge.svg)](https://github.com/thewca/statistics/actions/workflows/fronttest.yaml)
 [![Deploy frontend](https://github.com/thewca/statistics/actions/workflows/frontdeploy.yaml/badge.svg)](https://github.com/thewca/statistics/actions/workflows/frontdeploy.yaml)
 
-
 ## Requirements
 
 This project is composed of front end and backend. You can check the requirements in each one.
@@ -44,13 +43,21 @@ chmod +x scripts/generate_all_statistics.sh
 
 ## Deploy
 
-Frontend
+- Frontend
+
+GitHub actions will deploy after merging to main. Anyways, if you wanna do it manually, you can
 
 ```
 cd client
-PUBLIC_URL="{OMMITED FOR NOW}" REACT_APP_BASE_URL="{OMMITED FOR NOW}" yarn build
-
+export PUBLIC_URL="https://statistics-api.worldcubeassociation.org"
+export REACT_APP_BASE_URL="https://statistics-api.worldcubeassociation.org"
+yarn build
+aws s3 cp build s3://{{STATISTICS_WEBSITE_BUCKET}} --recursive
 ```
+
+- Backend
+
+GitHub actions will deploy after merging to main.
 
 ## Docker cron
 
@@ -72,7 +79,7 @@ The cron script also runs in its own container. This helps when running this per
 
 You can also run this image locally. This image will download the export, update the database and calculate all the statistics.
 
-  `docker run thewca/statistics-cron`
+`docker run thewca/statistics-cron`
 
 ## Run cron
 
@@ -90,4 +97,3 @@ export DB_PORT=3306
 - Run it
 
   `source scripts/cron.sh`
-

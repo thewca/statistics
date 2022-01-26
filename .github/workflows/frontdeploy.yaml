@@ -5,8 +5,8 @@ on:
     branches:
       - main
     paths:
-      - 'client/**'
-      - '.github/workflows/frontdeploy.yaml'
+      - "client/**"
+      - ".github/workflows/frontdeploy.yaml"
 
 jobs:
   build:
@@ -47,3 +47,5 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.CI_CD_AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: us-west-2
           SOURCE_DIR: "client/build"
+      - name: Create cloudfront invalidation
+        run: aws cloudfront create-invalidation --distribution-id ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }} --paths '/*'
