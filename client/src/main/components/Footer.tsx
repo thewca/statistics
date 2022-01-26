@@ -12,7 +12,7 @@ const Footer = () => {
       <Divider />
       <footer>
         <Row justify="center">
-          <Col span={6}>
+          <Col xs={12} md={8}>
             <h3 className="footer-title">Links</h3>
             <ul className="list-unstyled">
               <li>
@@ -25,7 +25,7 @@ const Footer = () => {
               </li>
             </ul>
           </Col>
-          <Col span={6}>
+          <Col xs={12} md={8}>
             <h3 className="footer-title">Media</h3>
             <ul className="list-unstyled">
               <li>

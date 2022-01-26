@@ -1,4 +1,4 @@
-import { UserOutlined } from "@ant-design/icons";
+import { LoadingOutlined, UserOutlined } from "@ant-design/icons";
 import "@cubing/icons";
 import { Col, Form, Input, message, Row, Tag, Tooltip } from "antd";
 import React, { useCallback, useEffect, useState } from "react";
@@ -14,8 +14,10 @@ const BestEverRanksPage = () => {
   const [wcaId, setWcaId] = useState(getQueryParameter("wcaId") || "");
   const [bestEverRank, setBestEverRank] = useState<BestEverRank>();
   const [showingFor, setShowingFor] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = useCallback((wcaId: string) => {
+    setLoading(true);
     setQueryParameter("wcaId", wcaId);
     statisticsApi
       .getRanks(wcaId)
@@ -23,7 +25,8 @@ const BestEverRanksPage = () => {
         setBestEverRank(response.data);
         setShowingFor(wcaId);
       })
-      .catch(() => message.error("Failed to search."));
+      .catch(() => message.error("Failed to search."))
+      .finally(() => setLoading(false));
   }, []);
 
   const getRank = (rank: number) => {
@@ -97,7 +100,7 @@ const BestEverRanksPage = () => {
           <Col span={6}>
             <Form.Item>
               <Input
-                prefix={<UserOutlined />}
+                prefix={loading ? <LoadingOutlined/> : <UserOutlined />}
                 placeholder="WCA ID"
                 value={wcaId}
                 onChange={(e) => setWcaId(e.target.value)}

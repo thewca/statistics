@@ -22,13 +22,13 @@ const Home = ({ statisticsList }: HomePageProps) => {
   }, [statisticsList]);
 
   return (
-    <div className="container">
+    <div>
       <h1 className="page-title">WCA Statistics</h1>
 
       <Divider />
 
-      <Row gutter={16}>
-        <Col span={8}>
+      <Row gutter={[8, 8]}>
+        <Col xs={24} md={8}>
           <Card title="Statistics List" className="stat-card">
             <p>
               Check our <Link to="statistics-list">list with interesting</Link>{" "}
@@ -50,7 +50,7 @@ const Home = ({ statisticsList }: HomePageProps) => {
             )}
           </Card>
         </Col>
-        <Col span={8}>
+        <Col xs={24} md={8}>
           <Card title="Take me to a random statistics" className="stat-card">
             <p>
               Click <Link to={randomLink}>here</Link> to be redirected to a
@@ -58,7 +58,7 @@ const Home = ({ statisticsList }: HomePageProps) => {
             </p>
           </Card>
         </Col>
-        <Col span={8}>
+        <Col xs={24} md={8}>
           <Card title="Logged Feature" className="stat-card">
             {authCtx.isLogged && (
               <p>
