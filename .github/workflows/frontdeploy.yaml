@@ -48,4 +48,9 @@ jobs:
           AWS_REGION: us-west-2
           SOURCE_DIR: "client/build"
       - name: Create cloudfront invalidation
-        run: aws cloudfront create-invalidation --distribution-id ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }} --paths '/*'
+        run: |
+          export AWS_ACCESS_KEY_ID=${{ secrets.CI_CD_AWS_ACCESS_KEY_ID }}
+          export AWS_SECRET_ACCESS_KEY=${{ secrets.CI_CD_AWS_SECRET_ACCESS_KEY }}
+          export AWS_DEFAULT_REGION=${{ secrets.AWS_DEFAULT_REGION }}
+
+          aws cloudfront create-invalidation --distribution-id ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }} --paths '/*'
