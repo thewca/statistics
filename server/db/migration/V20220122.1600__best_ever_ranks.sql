@@ -1,4 +1,3 @@
--- This should match the one in the server/src/main/resources/schema.sql
 use wca_development;
 
 create table if not exists statistics (
