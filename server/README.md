@@ -25,6 +25,8 @@ create database wca_development;
 
 The database `wca_development` will be populated with WCA data. If you want to change password, username or others, make sure to also change on `application-local.properties`.
 
+You should also create the best ever ranks table using the file `server/db/migration/V20220122.1600__best_ever_ranks.sql`.
+
 ## Before you run this
 
 You need your copy of the database from WCA. If you already have it (with a user 'root' with no password), you can skip this.
