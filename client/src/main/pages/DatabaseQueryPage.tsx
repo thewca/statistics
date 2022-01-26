@@ -27,10 +27,8 @@ const DatabaseQueryPage = () => {
   const [lastSearchedQuery, setLastSearchedQuery] = useState<string>();
   const [replaceList, setReplaceList] = useState<ReplaceItem[]>([]);
   const [loading, setLoading] = useState(false);
-  const [
-    positionTieBreakerIndex,
-    setPositionTieBreakerIndex,
-  ] = useState<number>();
+  const [positionTieBreakerIndex, setPositionTieBreakerIndex] =
+    useState<number>();
   const [showPositions, setShowPositions] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
 
@@ -115,6 +113,13 @@ const DatabaseQueryPage = () => {
     );
   };
 
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    // SQL submit with ctrl+enter
+    if (e.key === "Enter" && e.ctrlKey && query.length) {
+      handleSubmit(page, pageSize);
+    }
+  };
+
   return (
     <div id="database-query-wrapper">
       <h1 className="page-title">Database Query</h1>
@@ -128,6 +133,7 @@ const DatabaseQueryPage = () => {
             placeholder="Type your query here"
             rows={10}
             id="query-input"
+            onKeyPress={handleKeyPress}
           />
         </Form.Item>
         {replaceList.map((replaceItem) => (
