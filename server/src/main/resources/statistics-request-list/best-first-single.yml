@@ -1,5 +1,8 @@
 queries:
-  - keyColumnIndex: 0
+  - headers:
+      - First single
+      - Person
+    keyColumnIndex: 0
     showPositions: true
     positionTieBreakerIndex: 1
     sqlQuery: |-
@@ -25,6 +28,7 @@ queries:
               inner join Events e on r.eventId = e.id
           where
               r.value1 > 0
+              and e.`rank` < 900 -- Active events
       ),
       first_results as (
           select
@@ -48,13 +52,6 @@ queries:
       )
       select
           event_name,
-          concat(
-              '<a href="https://www.worldcubeassociation.org/persons/',
-              person_id,
-              '">',
-              person_name,
-              '</a>'
-          ),
           case
               when event_id = '333fm' then value1
               when event_id = '333mbf' then replace(
@@ -116,10 +113,18 @@ queries:
                       )
                   ) -2
               )
-          end value1
+          end value1,
+          concat(
+              '<a href="https://www.worldcubeassociation.org/persons/',
+              person_id,
+              '">',
+              person_name,
+              '</a>'
+          )
       from
           first_results
       where
-          event_rank <= 10
+          event_rank <= 20
 title: Best first single
 groupName: Competitors
+displayMode: SELECTOR
