@@ -4,50 +4,77 @@ queries:
       - Golds
       - Silvers
       - Bronzes
-    keys:
-      - 3x3x3
+    keyColumnIndex: 0
     showPositions: true
     positionTieBreakerIndex: 2
     sqlQuery: |-
-      select
-          concat(
-              '<a href="https://www.worldcubeassociation.org/persons/',
-              personId,
-              '">',
+      with medals as (
+          select
+              e.name,
+              e.`rank`,
+              concat(
+                  '<a href="https://www.worldcubeassociation.org/persons/',
+                  personId,
+                  '">',
+                  personName,
+                  '</a>'
+              ) person_name,
+              sum(
+                  case
+                      when pos = 1 then 1
+                      else 0
+                  end
+              ) golds,
+              sum(
+                  case
+                      when pos = 2 then 1
+                      else 0
+                  end
+              ) silvers,
+              sum(
+                  case
+                      when pos = 3 then 1
+                      else 0
+                  end
+              ) bronzes
+          from
+              Results r
+              inner join Events e on r.eventId = e.id
+          where
+              roundTypeId in ('c', 'f')
+              and best > 0
+          group by
               personName,
-              '</a>'
-          ),
-          sum(
-              case
-                  when pos = 1 then 1
-                  else 0
-              end
-          ) Golds,
-          sum(
-              case
-                  when pos = 2 then 1
-                  else 0
-              end
-          ) Silvers,
-          sum(
-              case
-                  when pos = 3 then 1
-                  else 0
-              end
-          ) Bronzes
+              personId,
+              e.name,
+              e.`rank`
+          order by
+              e.`rank`,
+              golds desc,
+              silvers desc,
+              bronzes desc
+      ),
+      medals_rank as (
+          select
+              *,
+              rank() over (
+                  partition by name
+                  order by
+                      golds desc
+              ) medal_rank
+          from
+              medals
+      )
+      select
+          name,
+          person_name,
+          golds,
+          silvers,
+          bronzes
       from
-          Results
+          medals_rank
       where
-          roundTypeId in ('c', 'f')
-          and best > 0
-          and eventId = '333'
-      group by
-          personName,
-          personId
-      order by
-          Golds desc
-      limit
-          10
+          medal_rank <= 20
     sqlQueryCustom: |
       select
           personName,
@@ -59,13 +86,13 @@ queries:
       where
           roundTypeId in ('c', 'f')
           and best > 0
-          and eventId = '333'
+          and eventId = ':EVENT_ID'
           and personId = ':WCA_ID'
       group by
           personName
       order by
           Golds desc
-      limit 10
+      limit 20
   - headers:
       - Person
       - Golds
@@ -133,3 +160,4 @@ queries:
       limit 10
 title: Best medal collection
 groupName: Competitors
+displayMode: SELECTOR
