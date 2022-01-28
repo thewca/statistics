@@ -58,7 +58,7 @@ queries:
           select
               *,
               rank() over (
-                  partition by name
+                  partition by `rank`
                   order by
                       golds desc
               ) medal_rank
@@ -157,7 +157,7 @@ queries:
           personName
       order by
           Golds desc
-      limit 10
+      limit 20
 title: Best medal collection
 groupName: Competitors
 displayMode: SELECTOR
