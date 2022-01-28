@@ -25,7 +25,7 @@ This project is separated in server and client, backend and front and respective
 
 ```
 chmod +x server/get_db_export.sh
-./server/get_db_export.sh
+source server/get_db_export.sh
 ```
 
 - Run docker
