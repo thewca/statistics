@@ -1,5 +1,5 @@
 import { CompassOutlined, QuestionCircleOutlined } from "@ant-design/icons";
-import { Col, message, Popover, Row, Select } from "antd";
+import { Col, message, Popover, Row, Select, Skeleton } from "antd";
 import { useCallback, useContext, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import statisticsApi from "../api/statistics.api";
@@ -25,6 +25,7 @@ const StatisticsDisplay = () => {
   );
   const [filteredStatistics, setFilteredStatistics] =
     useState<StatisticsDetail[]>();
+  const [loading, setLoading] = useState(false);
 
   const handleFilteredStatistics = useCallback(
     (statistics: Statistics, selectedKeys: string | null) => {
@@ -68,6 +69,7 @@ const StatisticsDisplay = () => {
   );
 
   useEffect(() => {
+    setLoading(true);
     statisticsApi
       .getStatistic(pathId)
       .then((response) => {
@@ -79,7 +81,8 @@ const StatisticsDisplay = () => {
       })
       .catch(() =>
         message.error("Could not get statistics result for " + pathId)
-      );
+      )
+      .finally(() => setLoading(false));
   }, [pathId, handleFilteredStatistics]);
 
   useEffect(
@@ -166,6 +169,14 @@ const StatisticsDisplay = () => {
   return (
     <div>
       <h1 className="page-title">{statistics?.title}</h1>
+
+      {loading && (
+        <Row>
+          <Col span={24}>
+            <Skeleton active />
+          </Col>
+        </Row>
+      )}
 
       <Row>
         <Col span={8} />
