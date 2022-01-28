@@ -1,17 +1,22 @@
 package org.worldcubeassociation.statistics.dto;
 
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.annotations.ApiParam;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.util.List;
+import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.NotBlank;
+import java.util.List;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class StatisticsGroupRequestDTO extends StatisticsGroupBaseDTO {
     @ApiModelProperty(value = "Group identifier", example = "[\"2010\"], [\"Brazil\", \"2010\"]")
     private List<@NotBlank String> keys;
+
+    @ApiModelProperty(value = "An optional value to \"keys\". Select a column to be treated as key so you won't have to write multiple related query", example = "0")
+    private Integer keyColumnIndex;
 
     @NotBlank
     @ApiModelProperty(value = "Query to be grouped",
@@ -34,4 +39,10 @@ public class StatisticsGroupRequestDTO extends StatisticsGroupBaseDTO {
 
     @ApiModelProperty(value = "Tell UI to automatically show positions", example = "true")
     private Boolean showPositions;
+
+    @ApiParam(hidden = true)
+    @AssertTrue(message = "You must inform exactly 1 of the following: keyColumnIndex or keys")
+    public boolean isValid() {
+        return (keyColumnIndex == null && keys.size() > 0) || (keyColumnIndex != null && keys.size() == 0);
+    }
 }

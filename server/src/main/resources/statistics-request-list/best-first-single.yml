@@ -4,7 +4,7 @@ queries:
       - Person
     keyColumnIndex: 0
     showPositions: true
-    positionTieBreakerIndex: 1
+    positionTieBreakerIndex: 0
     sqlQuery: |-
       with rank_results as (
           select
