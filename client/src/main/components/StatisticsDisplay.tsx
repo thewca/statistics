@@ -186,9 +186,11 @@ const StatisticsDisplay = () => {
           {!!statistics?.explanation && (
             <h4 className="explanation">{statistics.explanation}</h4>
           )}
-          <h4 className="explanation">
-            Computed at: {statistics?.lastModified}
-          </h4>
+          {statistics?.lastModified && (
+            <h4 className="explanation">
+              Computed at: {statistics.lastModified}
+            </h4>
+          )}
         </Col>
       </Row>
       {!!filteredStatistics &&
