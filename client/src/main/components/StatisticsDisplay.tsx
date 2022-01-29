@@ -180,7 +180,7 @@ const StatisticsDisplay = () => {
 
       <Row>
         <Col span={8} />
-        <Col span={8}>
+        <Col xs={24} md={8}>
           {["SELECTOR", "GROUPED"].includes(statistics?.displayMode || "") && (
             <div id="display-mode-wrapper">
               <Select
@@ -193,7 +193,7 @@ const StatisticsDisplay = () => {
           )}
         </Col>
 
-        <Col span={8}>
+        <Col xs={24} md={8}>
           {!!statistics?.explanation && (
             <h4 className="explanation">{statistics.explanation}</h4>
           )}

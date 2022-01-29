@@ -6,11 +6,9 @@
 
 - [MySQL](https://dev.mysql.com/doc/refman/8.0/en/linux-installation.html)
 
-- [Lombok](https://projectlombok.org/)
-
 ## Setup local database
 
-You should an internal database for handling WCA data.
+You should use an internal database for handling WCA data.
 
 In case you do not have it installed yet, you will need to get MySQL.
 
@@ -35,10 +33,7 @@ Download [the latest export](https://www.worldcubeassociation.org/wst/wca-develo
 
 From the root folder, use
 
-```
-chmod +x scripts/get_db_export.sh
-./scripts/get_db_export.sh
-```
+    source scripts/get_db_export.sh
 
 ## How to run it
 
@@ -56,7 +51,7 @@ The commands listed here should work in Unix systems or in Windows (using GitBas
 
 `./gradlew bootRun`
 
-An address should be logged. Probably http://localhost:8000/swagger-ui.html#/, if you did not change port. Visit it to read the documentation. You can run in another port (let's say 8001) by using `./gradlew bootRun --args='--spring.profiles.active=local --server.port=8001'`.
+An address should be logged. Probably http://localhost:8080/swagger-ui.html#/, if you did not change port. Visit it to read the documentation. You can run in another port (let's say 8001) by using `./gradlew bootRun --args='--spring.profiles.active=local --server.port=8001'`.
 
 ## Run with docker
 
@@ -66,23 +61,9 @@ An address should be logged. Probably http://localhost:8000/swagger-ui.html#/, i
 
 - Run the image
 
-`docker run -d -p 8080:8080 --network=host --name statistics-server {user}/statistics-server:latest`
+`docker run -d -p 8080:8080 --name statistics-server {user}/statistics-server:latest`
 
 The `-d` part means "detached", so you'll have to stop by killing the process running on port 8080.
-
-## Deploy docker image
-
-- Build a jar
-
-`./gradlew build`
-
-- Build a docker image
-
-`docker build -t thewca/statistics-server .`
-
-- Push the image
-
-`docker push thewca/statistics-server`
 
 ## Tests
 
@@ -104,7 +85,7 @@ This backend project uses integration tests so we need to actually connect to a 
 
 In  a new terminal, from the repository root, run
 
-    `./server/gradlew clean build -p server --info`
+    ./server/gradlew clean build -p server --info
 
 - If you need to change migrations, run
 

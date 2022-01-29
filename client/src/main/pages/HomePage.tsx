@@ -1,3 +1,4 @@
+import { CompassOutlined } from "@ant-design/icons";
 import { Card, Col, Divider, Row, Statistic } from "antd";
 import { sample } from "lodash";
 import React, { useContext, useEffect, useState } from "react";
@@ -61,11 +62,26 @@ const Home = ({ statisticsList }: HomePageProps) => {
         <Col xs={24} md={8}>
           <Card title="Logged Feature" className="stat-card">
             {authCtx.isLogged && (
-              <p>
-                Since you are logged, you can check exclusive features like{" "}
-                <Link to="database-query">Database Query</Link> (in case you
-                have SQL skills or a query).
-              </p>
+              <>
+                <p>
+                  Since you are logged, you can check exclusive features like{" "}
+                  <Link to="database-query">Database Query</Link> (in case you
+                  have SQL skills or a query).
+                </p>
+                <p>
+                  If you find a statistic with the icon{" "}
+                  <Link
+                    to={
+                      "/database-query?sqlQuery=select id, name from Persons p where id = ':WCA_ID'"
+                    }
+                  >
+                    <CompassOutlined />
+                  </Link>
+                  , you can click it to be redirected to a custom query. This
+                  means that you can query for specific results (like your own)
+                  in a query based on the one that generated the statistic.
+                </p>
+              </>
             )}
 
             {!authCtx.isLogged && (

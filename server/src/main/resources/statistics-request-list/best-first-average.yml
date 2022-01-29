@@ -1,6 +1,6 @@
 queries:
   - headers:
-      - First single
+      - First average
       - Person
     keyColumnIndex: 0
     showPositions: true
@@ -12,7 +12,7 @@ queries:
               e.id event_id,
               personId person_id,
               r.personName person_name,
-              value1,
+              average,
               dense_rank() over (
                   partition by personId,
                   eventId
@@ -35,51 +35,31 @@ queries:
               event_id,
               person_id,
               person_name,
-              value1,
+              average,
               rank() over (
                   partition by event_name
                   order by
-                      value1
+                      average
               ) event_rank
           from
               rank_results
           where
               competition_order = 1
-              and value1 > 0
+              and average > 0
           order by
               `rank`,
-              value1
+              average
       )
       select
           event_name,
           case
-              when event_id = '333fm' then value1
-              when event_id = '333mbf' then replace(
-                  replace(
-                      replace(
-                          concat(
-                              99 - substring(value1, 1, 2) + substring(value1, 8, 2),
-                              '/',
-                              99 - substring(value1, 1, 2) + 2*substring(value1, 8, 2),
-                              ' (',
-                              sec_to_time(substring(value1, 3, 5)),
-                              ')'
-                          ),
-                          '.000000',
-                          ''
-                      ),
-                      '0000',
-                      ''
-                  ),
-                  '00:',
-                  ''
-              )
+              when event_id = '333fm' then round(average/100, 2)
               else substring(
                   replace(
                       replace(
                           replace(
                               replace(
-                                  replace(sec_to_time(value1 / 100), '00:00:00.', '0.'),
+                                  replace(sec_to_time(average / 100), '00:00:00.', '0.'),
                                   '00:00:0',
                                   ''
                               ),
@@ -98,7 +78,7 @@ queries:
                           replace(
                               replace(
                                   replace(
-                                      replace(sec_to_time(value1 / 100), '00:00:00.', '0.'),
+                                      replace(sec_to_time(average / 100), '00:00:00.', '0.'),
                                       '00:00:0',
                                       ''
                                   ),
@@ -113,7 +93,7 @@ queries:
                       )
                   ) -2
               )
-          end value1,
+          end average,
           concat(
               '<a href="https://www.worldcubeassociation.org/persons/',
               person_id,
@@ -125,6 +105,6 @@ queries:
           first_results
       where
           event_rank <= 20
-title: Best first single
+title: Best first average
 groupName: Competitors
 displayMode: SELECTOR
