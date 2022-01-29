@@ -27,8 +27,7 @@ queries:
               inner join RoundTypes rt on r.roundTypeId = rt.id
               inner join Events e on r.eventId = e.id
           where
-              r.value1 > 0
-              and e.`rank` < 900 -- Active events
+              e.`rank` < 900 -- Active events
       ),
       first_results as (
           select
@@ -46,6 +45,7 @@ queries:
               rank_results
           where
               competition_order = 1
+              and value1 > 0
           order by
               `rank`,
               value1
