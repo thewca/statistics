@@ -1,17 +1,16 @@
 # python3 -m misc.python.statistics.recent_success
 
 import bisect
-from misc.python.util.time_util import time_format
-from dateutil.relativedelta import relativedelta
 import datetime
 
+from dateutil.relativedelta import relativedelta
 from misc.python.model.competitor import Competitor as Comp
 from misc.python.util.database_util import get_database_connection
 from misc.python.util.event_util import get_current_events
-from misc.python.util.html_util import (get_competition_html_link,
-                                        get_competitor_html_link)
+from misc.python.util.html_util import get_competitor_html_link
 from misc.python.util.log_util import log
 from misc.python.util.statistics_api_util import create_statistics
+from misc.python.util.time_util import time_format
 
 title = "Recent success rate"
 
@@ -166,7 +165,7 @@ def recent_success():
 
             link = get_competitor_html_link(competitor.wca_id, competitor.name)
             table.append([link, competitor.country, "%.2f" % rate, "%s / %s" %
-                          (len(competitor.results), competitor.attempts), time_format(min(competitor.results), event.event_id), time_format(max(competitor.results), event.event_id), time_format(sum(competitor.results)/len(competitor.results), event.event_id, "average")])
+                          (len(competitor.results), competitor.attempts), time_format(min(competitor.results), event.event_id), time_format(max(competitor.results), event.event_id), time_format(0 if event_id == '333mbf' else sum(competitor.results)/len(competitor.results), event.event_id, "average")])
 
             count += 1
             prev = rate

@@ -22,9 +22,9 @@ queries:
       			replace(
       				replace(
       					concat(
-      						99 - substring(record, 1, 2),
-      						'/',
       						99 - substring(record, 1, 2) + substring(record, 8, 2),
+      						'/',
+      						99 - substring(record, 1, 2) + 2*substring(record, 8, 2),
       						' (',
       						sec_to_time(substring(record, 3, 5)),
       						')'
@@ -164,9 +164,9 @@ queries:
       			replace(
       				replace(
       					concat(
-      						99 - substring(record, 1, 2),
-      						'/',
       						99 - substring(record, 1, 2) + substring(record, 8, 2),
+      						'/',
+      						99 - substring(record, 1, 2) + 2*substring(record, 8, 2),
       						' (',
       						sec_to_time(substring(record, 3, 5)),
       						')'
@@ -315,9 +315,9 @@ queries:
       			replace(
       				replace(
       					concat(
-      						99 - substring(record, 1, 2),
-      						'/',
       						99 - substring(record, 1, 2) + substring(record, 8, 2),
+      						'/',
+      						99 - substring(record, 1, 2) + 2*substring(record, 8, 2),
       						' (',
       						sec_to_time(substring(record, 3, 5)),
       						')'

@@ -1,4 +1,4 @@
-# Used in swagger ui
+# Used in swagger ui, replaced during docker build
 version: 1.0.0
 
 # Default profile
@@ -13,9 +13,6 @@ spring:
         format_sql: true
 server:
   port: 8080
-  error:
-    include-message: always
-    include-binding-errors: always
 
 management:
   endpoint:

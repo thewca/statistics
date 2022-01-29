@@ -5,7 +5,7 @@ queries:
     explanation: Number of competitors that have competed in each event
     headers:
       - Event
-      - Persons
+      - Competitors
     sqlQuery: |-
       select
           e.name,
@@ -24,7 +24,7 @@ queries:
       - Competition
     headers:
       - Competition
-      - Persons
+      - Competitors
     explanation: Competitions with most competitors
     sqlQuery: |-
       select
@@ -70,7 +70,7 @@ queries:
     explanation: Number of competitors of each nationality
     headers:
       - Country
-      - Persons
+      - Competitors
     sqlQuery: |-
       SELECT
           countryId,
@@ -94,5 +94,5 @@ queries:
           countryId = ':COUNTRY_ID'
       GROUP BY
           countryId
-title: Most persons
+title: Most competitors
 groupName: Competitors

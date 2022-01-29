@@ -55,26 +55,7 @@ public class StatisticsServiceImpl implements StatisticsService {
         for (StatisticsGroupRequestDTO query : statisticsRequestDTO.getQueries()) {
             DatabaseQueryBaseDTO sqlResult = databaseQueryService.getResultSet(query.getSqlQuery());
 
-            StatisticsGroupResponseDTO statisticsGroupResponseDTO = new StatisticsGroupResponseDTO();
-            statisticsGroupResponseDTO.setKeys(query.getKeys());
-            statisticsGroupResponseDTO.setContent(sqlResult.getContent());
-            statisticsGroupResponseDTO.setShowPositions(query.getShowPositions());
-            statisticsGroupResponseDTO.setPositionTieBreakerIndex(query.getPositionTieBreakerIndex());
-            statisticsGroupResponseDTO.setExplanation(query.getExplanation());
-            statisticsGroupResponseDTO.setSqlQueryCustom(query.getSqlQueryCustom());
-            statisticsDTO.getStatistics().add(statisticsGroupResponseDTO);
-
-            statisticsGroupResponseDTO.setHeaders(
-                    // First option is the headers provided in this key
-                    Optional.ofNullable(query.getHeaders())
-                            // Then, the one provided by the query
-                            .orElse(sqlResult.getHeaders()));
-
-            if (statisticsGroupResponseDTO.getHeaders().size() != sqlResult.getHeaders().size()) {
-                throw new InvalidParameterException(
-                        "The provided headers length and the response headers length must match. If you are "
-                                + "unsure, leave it empty.");
-            }
+            buildStatistics(statisticsDTO, query, sqlResult);
         }
 
         statisticsDTO
@@ -85,6 +66,48 @@ public class StatisticsServiceImpl implements StatisticsService {
         statisticsDTO.setGroupName(statisticsRequestDTO.getGroupName());
 
         return create(statisticsDTO);
+    }
+
+    private void buildStatistics(StatisticsDTO statisticsDTO, StatisticsGroupRequestDTO query, DatabaseQueryBaseDTO sqlResult) {
+        if (query.getKeyColumnIndex() == null) {
+            addResult(query, statisticsDTO, query.getKeys(), sqlResult.getContent(), sqlResult.getHeaders());
+        } else {
+            var map = new LinkedHashMap<String, List<List<String>>>();
+
+            for (var result : sqlResult.getContent()) {
+                if (!map.containsKey(result.get(query.getKeyColumnIndex()))) {
+                    map.put(result.get(query.getKeyColumnIndex()), new ArrayList<>());
+                }
+                List<String> list = new ArrayList<>();
+                for (var i = 0; i < result.size(); i++) {
+                    if (i != query.getKeyColumnIndex()) {
+                        list.add(result.get(i));
+                    }
+                }
+                map.get(result.get(query.getKeyColumnIndex())).add(list);
+            }
+
+            for (var entries : map.entrySet()) {
+                addResult(query, statisticsDTO, List.of(entries.getKey()), entries.getValue(), sqlResult.getHeaders());
+            }
+        }
+    }
+
+    private void addResult(StatisticsGroupRequestDTO query, StatisticsDTO statisticsDTO, List<String> key, List<List<String>> content, List<String> headers) {
+        StatisticsGroupResponseDTO statisticsGroupResponseDTO = new StatisticsGroupResponseDTO();
+        statisticsGroupResponseDTO.setKeys(key);
+        statisticsGroupResponseDTO.setContent(content);
+        statisticsGroupResponseDTO.setShowPositions(query.getShowPositions());
+        statisticsGroupResponseDTO.setPositionTieBreakerIndex(query.getPositionTieBreakerIndex());
+        statisticsGroupResponseDTO.setExplanation(query.getExplanation());
+        statisticsGroupResponseDTO.setSqlQueryCustom(query.getSqlQueryCustom());
+        statisticsGroupResponseDTO.setHeaders(
+                // First option is the headers provided in this key
+                Optional.ofNullable(query.getHeaders())
+                        // Then, the one provided by the query
+                        .orElse(headers));
+
+        statisticsDTO.getStatistics().add(statisticsGroupResponseDTO);
     }
 
     @Override
@@ -189,7 +212,7 @@ public class StatisticsServiceImpl implements StatisticsService {
         StatisticsResponseDTO statisticsResponseDTO = MAPPER.convertValue(statisticsDTO, StatisticsResponseDTO.class);
 
         String path = String.join("-",
-                StringUtils.stripAccents(statisticsDTO.getTitle().replaceAll("[^a-zA-Z0-9 ]", "")).split(" "))
+                        StringUtils.stripAccents(statisticsDTO.getTitle().replaceAll("[^a-zA-Z0-9 ]", "")).split(" "))
                 .toLowerCase();
 
         statisticsResponseDTO.setPath(path);

@@ -64,7 +64,7 @@ queries:
     showPositions: false
     headers:
       - Country
-      - Persons
+      - Competitions
     sqlQuery: |-
       SELECT
           countryId,

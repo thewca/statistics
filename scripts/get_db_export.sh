@@ -10,11 +10,7 @@ export_file_sql="wca-developer-database-dump.sql"
 temp_database="wca_development_temp"
 new_database="wca_development"
 
-if [ $DB_PASSWORD ]; then
-    mysqlconn="mysql -h ${DB_HOST:-localhost} -u ${DB_USERNAME:-root} -P ${DB_PORT:-3306} -p${DB_PASSWORD}"
-else
-    mysqlconn="mysql"
-fi
+mysqlconn="mysql -h ${DB_HOST:-localhost} -u ${DB_USERNAME:-root} -P ${DB_PORT:-3306} --password=${DB_PASSWORD:-}"
 
 download=true
 
