@@ -19,3 +19,5 @@ nohup.out
 venv/
 
 *node_modules*
+
+*.vscode/*
