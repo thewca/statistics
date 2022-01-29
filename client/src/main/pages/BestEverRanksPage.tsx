@@ -1,6 +1,10 @@
-import { LoadingOutlined, UserOutlined } from "@ant-design/icons";
+import {
+  LoadingOutlined,
+  QuestionCircleOutlined,
+  UserOutlined,
+} from "@ant-design/icons";
 import "@cubing/icons";
-import { Col, Form, Input, message, Row, Tag, Tooltip } from "antd";
+import { Col, Form, Input, message, Popover, Row, Tag, Tooltip } from "antd";
 import React, { useCallback, useEffect, useState } from "react";
 import statisticsApi from "../api/statistics.api";
 import BestEverRank from "../model/BestEverRank";
@@ -100,7 +104,7 @@ const BestEverRanksPage = () => {
           <Col span={6}>
             <Form.Item>
               <Input
-                prefix={loading ? <LoadingOutlined/> : <UserOutlined />}
+                prefix={loading ? <LoadingOutlined /> : <UserOutlined />}
                 placeholder="WCA ID"
                 value={wcaId}
                 onChange={(e) => setWcaId(e.target.value)}
@@ -118,7 +122,10 @@ const BestEverRanksPage = () => {
             <tr>
               <td colSpan={12} className="showing-for">
                 <Tag>
-                  Showing results for <strong>{showingFor}</strong>
+                  Showing results for <strong>{showingFor}</strong>{" "}
+                  <Popover content="Results are considered at the end of the day, and the first day of the competition is assumed. Thus some values might be slightly off, but this page is just intended to show the big picture anyway.">
+                    <QuestionCircleOutlined />
+                  </Popover>
                 </Tag>
               </td>
             </tr>
