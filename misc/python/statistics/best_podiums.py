@@ -13,35 +13,36 @@ podium_length = 3
 
 query = """
       select comp_id, c.name,
-          (first_avg + second_avg + third_avg) avg_sum,
+          case when eventId = '333mbf' then (99*3 - substring(first_result, 1, 2) - substring(second_result, 1, 2) - substring(third_result, 1, 2)) else first_result + second_result + third_result end avg_sum,
           first_id, first_name,
-          first_avg,
+          first_result,
           second_id, second_name,
-          second_avg,
+          second_result,
           third_id, third_name,
-          third_avg
+          third_result
       from (
           select competitionId comp_id, 
               max(case when row_num=1 then personId end) first_id, 
               max(case when row_num=1 then personName end) first_name,
-              max(case when row_num=1 then average end) first_avg, 
+              max(case when row_num=1 then best_results end) first_result, 
               max(case when row_num=2 then personId end) second_id, 
               max(case when row_num=2 then personName end) second_name, 
-              max(case when row_num=2 then average end) second_avg, 
+              max(case when row_num=2 then best_results end) second_result, 
               max(case when row_num=3 then personId end) third_id, 
               max(case when row_num=3 then personName end) third_name, 
-              max(case when row_num=3 then average end) third_avg
+              max(case when row_num=3 then best_results end) third_result,
+              eventId
           from (
-              select competitionId, personId, personName, average,
-                  row_number() over (partition by competitionId order by average) row_num
+              select competitionId, personId, personName, case when eventId in ('333bf', '444bf', '555bf', '333mbf') then best else average end best_results, eventId,
+                  row_number() over (partition by competitionId order by case when eventId in ('333bf', '444bf', '555bf', '333mbf') then best else average end) row_num
               from Results
-              where eventId = '%s' and roundTypeId in ('c', 'f') and average > 0
+              where eventId = '%s' and roundTypeId in ('c', 'f') and (case when eventId in ('333bf', '444bf', '555bf', '333mbf') then best else average end) > 0
               ) final_podiums_without_ties
           group by competitionId
       ) podiums_pivotted
       inner join Competitions as c on podiums_pivotted.comp_id = c.id
-      where third_avg is not null
-      order by convert(avg_sum, float)
+      where third_result is not null
+      order by case when eventId = '333mbf' then avg_sum end desc, case when eventId != '333mbf' then convert(avg_sum, float) end
       limit 10
 """
 
@@ -54,7 +55,7 @@ def best_podiums():
     statistics["displayMode"] = "SELECTOR"
 
     headers = ["Competition", "Sum", "First",
-               "Avg", "Second", "Avg", "Third", "Avg"]
+               "Result", "Second", "Result", "Third", "Result"]
 
     current_events = get_current_events()
 
@@ -77,8 +78,9 @@ def best_podiums():
         for line in lines:
 
             result = [get_competition_html_link(
-                line[0], line[1]), time_format(line[2], current_event.event_id, "average")]
+                line[0], line[1]), str(int(line[2])) if current_event.event_id == '333mbf' else time_format(line[2], current_event.event_id, "average")]
 
+            # Each competitor
             for i in range(podium_length):
                 result.append(get_competitor_html_link(
                     line[3+3*i], line[4+3*i]))
