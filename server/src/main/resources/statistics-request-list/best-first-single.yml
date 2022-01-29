@@ -58,9 +58,9 @@ queries:
                   replace(
                       replace(
                           concat(
-                              99 - substring(value1, 1, 2),
-                              '/',
                               99 - substring(value1, 1, 2) + substring(value1, 8, 2),
+                              '/',
+                              99 - substring(value1, 1, 2) + 2*substring(value1, 8, 2),
                               ' (',
                               sec_to_time(substring(value1, 3, 5)),
                               ')'
