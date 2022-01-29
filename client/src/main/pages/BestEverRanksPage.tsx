@@ -100,8 +100,8 @@ const BestEverRanksPage = () => {
       <h1 className="page-title">Best Ever Ranks</h1>
       <Form onFinish={() => handleSubmit(wcaId)}>
         <Row>
-          <Col span={9} />
-          <Col span={6}>
+          <Col span={7} />
+          <Col xs={24} md={10}>
             <Form.Item>
               <Input
                 prefix={loading ? <LoadingOutlined /> : <UserOutlined />}

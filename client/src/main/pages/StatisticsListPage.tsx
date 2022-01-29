@@ -57,8 +57,8 @@ const StatisticsListPage = ({ statisticsList }: StatisticsListPageProps) => {
     <>
       <h1 className="page-title">Statistics List</h1>
 
-      <Row>
-        <Col span={18}>
+      <Row justify="center">
+        <Col xs={6} md={12}>
           <div id="switch">
             <Switch
               checked={completeList}
@@ -71,7 +71,7 @@ const StatisticsListPage = ({ statisticsList }: StatisticsListPageProps) => {
             )}
           </div>
         </Col>
-        <Col span={6}>
+        <Col xs={24} md={12}>
           <Form>
             <Form.Item
               label={
