@@ -139,6 +139,10 @@ public class StatisticsServiceImpl implements StatisticsService {
 
     private void resourcesToStatistics(List<Resource> resources) throws IOException {
         for (Resource resource : resources) {
+            if (!resource.exists()) {
+                throw new NotFoundException("File " + resource.getFilename() + " does not exist");
+            }
+
             log.info("Statistic {}", resource.getDescription());
 
             InputStream inputStream = resource.getInputStream();
