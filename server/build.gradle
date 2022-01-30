@@ -68,7 +68,7 @@ dependencies {
 
     implementation "org.yaml:snakeyaml:1.29"
 
-    implementation "com.vladmihalcea:hibernate-types-5:2.10.4"
+    implementation 'com.vladmihalcea:hibernate-types-5:2.14.0'
 
     implementation "org.simpleflatmapper:sfm-springjdbc:$simpleflatmapperVersion"
     implementation "org.simpleflatmapper:sfm-tuples:$simpleflatmapperVersion"
