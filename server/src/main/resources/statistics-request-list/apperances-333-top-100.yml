@@ -5,13 +5,7 @@ queries:
     positionTieBreakerIndex: 2
     sqlQuery: |-
       select
-          concat(
-              '<a href="https://www.worldcubeassociation.org/persons/',
-              personId,
-              '">',
-              personName,
-              '</a>'
-          ) Name,
+          wca_statistics_person_link_format(personId, personName) Name,
           Country,
           count(*) Apperances
       from
@@ -43,13 +37,7 @@ queries:
     positionTieBreakerIndex: 2
     sqlQuery: |-
       select
-          concat(
-              '<a href="https://www.worldcubeassociation.org/persons/',
-              personId,
-              '">',
-              personName,
-              '</a>'
-          ) Name,
+          wca_statistics_person_link_format(personId, personName) Name,
           Country,
           count(*) Apperances
       from

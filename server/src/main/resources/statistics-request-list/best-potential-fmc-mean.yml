@@ -12,13 +12,7 @@ queries:
           r1,
           r2,
           r3,
-          concat(
-              '<a href="https://www.worldcubeassociation.org/competitions/',
-              competitionId,
-              '">',
-              cellName,
-              '</a>'
-          )
+          wca_statistics_competition_link_format(competitionId, cellName)
       from (
               select competitionId,
                   min(

@@ -10,13 +10,7 @@ queries:
     explanation: Current events, all time records
     sqlQuery: |-
       select
-          concat(
-              '<a href="https://www.worldcubeassociation.org/persons/',
-              personId,
-              '">',
-              personName,
-              '</a>'
-          ),
+          wca_statistics_person_link_format(personId, personName),
           worldRecordEvents,
           events
       from
@@ -209,13 +203,7 @@ queries:
     explanation: All time events
     sqlQuery: |-
       select
-          concat(
-              '<a href="https://www.worldcubeassociation.org/competitions/',
-              id,
-              '">',
-              name,
-              '</a>'
-          ),
+          wca_statistics_competition_link_format(id, name),
           qt,
           events
       from

@@ -13,86 +13,10 @@ queries:
     sqlQuery: |-
       select days,
       	e.cellName,
-      	case
-      		when eventId = '333fm'
-      		and record_type = 'single' then record
-      		when eventId = '333fm'
-      		and record_type = 'average' then format(record / 100, 2)
-      		when eventId = '333mbf' then replace(
-      			replace(
-      				replace(
-      					concat(
-      						99 - substring(record, 1, 2) + substring(record, 8, 2),
-      						'/',
-      						99 - substring(record, 1, 2) + 2*substring(record, 8, 2),
-      						' (',
-      						sec_to_time(substring(record, 3, 5)),
-      						')'
-      					),
-      					'.000000',
-      					''
-      				),
-      				'0000',
-      				''
-      			),
-      			'00:',
-      			''
-      		)
-      		else substring(
-      			replace(
-      				replace(
-      					replace(
-      						replace(
-      							replace(sec_to_time(record / 100), '00:00:00.', '0.'),
-      							'00:00:0',
-      							''
-      						),
-      						'00:00:',
-      						''
-      					),
-      					'00:0',
-      					''
-      				),
-      				'00:',
-      				''
-      			),
-      			1,
-      			length(
-      				replace(
-      					replace(
-      						replace(
-      							replace(
-      								replace(sec_to_time(record / 100), '00:00:00.', '0.'),
-      								'00:00:0',
-      								''
-      							),
-      							'00:00:',
-      							''
-      						),
-      						'00:0',
-      						''
-      					),
-      					'00:',
-      					''
-      				)
-      			) -2
-      		)
-      	end record,
+        wca_statistics_time_format(record, eventId, record) record,
       	record_type,
-      	concat(
-      		'<a href="https://www.worldcubeassociation.org/persons/',
-      		personId,
-      		'">',
-      		personName,
-      		'</a>'
-      	),
-      	concat(
-      		'<a href="https://www.worldcubeassociation.org/competitions/',
-      		competitionId,
-      		'">',
-      		records.cellName,
-      		'</a>'
-      	)
+      	wca_statistics_person_link_format(personId, personName),
+      	wca_statistics_competition_link_format(competitionId, records.cellName)
       from (
       		select datediff(current_date, c.start_date) days,
       			results.eventId,
@@ -155,87 +79,11 @@ queries:
     sqlQuery: |-
       select days,
       	e.cellName,
-      	case
-      		when eventId = '333fm'
-      		and record_type = 'single' then record
-      		when eventId = '333fm'
-      		and record_type = 'average' then format(record / 100, 2)
-      		when eventId = '333mbf' then replace(
-      			replace(
-      				replace(
-      					concat(
-      						99 - substring(record, 1, 2) + substring(record, 8, 2),
-      						'/',
-      						99 - substring(record, 1, 2) + 2*substring(record, 8, 2),
-      						' (',
-      						sec_to_time(substring(record, 3, 5)),
-      						')'
-      					),
-      					'.000000',
-      					''
-      				),
-      				'0000',
-      				''
-      			),
-      			'00:',
-      			''
-      		)
-      		else substring(
-      			replace(
-      				replace(
-      					replace(
-      						replace(
-      							replace(sec_to_time(record / 100), '00:00:00.', '0.'),
-      							'00:00:0',
-      							''
-      						),
-      						'00:00:',
-      						''
-      					),
-      					'00:0',
-      					''
-      				),
-      				'00:',
-      				''
-      			),
-      			1,
-      			length(
-      				replace(
-      					replace(
-      						replace(
-      							replace(
-      								replace(sec_to_time(record / 100), '00:00:00.', '0.'),
-      								'00:00:0',
-      								''
-      							),
-      							'00:00:',
-      							''
-      						),
-      						'00:0',
-      						''
-      					),
-      					'00:',
-      					''
-      				)
-      			) -2
-      		)
-      	end record,
+        wca_statistics_time_format(record, eventId, record_type) record,
       	record_type,
       	c3.name,
-      	concat(
-      		'<a href="https://www.worldcubeassociation.org/persons/',
-      		personId,
-      		'">',
-      		personName,
-      		'</a>'
-      	),
-      	concat(
-      		'<a href="https://www.worldcubeassociation.org/competitions/',
-      		competitionId,
-      		'">',
-      		records.cellName,
-      		'</a>'
-      	)
+      	wca_statistics_person_link_format(personId, personName),
+      	wca_statistics_competition_link_format(competitionId)
       from (
       		select datediff(current_date, c.start_date) days,
       			results.eventId,
@@ -306,87 +154,11 @@ queries:
     sqlQuery: |-
       select days,
       	e.cellName,
-      	case
-      		when eventId = '333fm'
-      		and record_type = 'single' then record
-      		when eventId = '333fm'
-      		and record_type = 'average' then format(record / 100, 2)
-      		when eventId = '333mbf' then replace(
-      			replace(
-      				replace(
-      					concat(
-      						99 - substring(record, 1, 2) + substring(record, 8, 2),
-      						'/',
-      						99 - substring(record, 1, 2) + 2*substring(record, 8, 2),
-      						' (',
-      						sec_to_time(substring(record, 3, 5)),
-      						')'
-      					),
-      					'.000000',
-      					''
-      				),
-      				'0000',
-      				''
-      			),
-      			'00:',
-      			''
-      		)
-      		else substring(
-      			replace(
-      				replace(
-      					replace(
-      						replace(
-      							replace(sec_to_time(record / 100), '00:00:00.', '0.'),
-      							'00:00:0',
-      							''
-      						),
-      						'00:00:',
-      						''
-      					),
-      					'00:0',
-      					''
-      				),
-      				'00:',
-      				''
-      			),
-      			1,
-      			length(
-      				replace(
-      					replace(
-      						replace(
-      							replace(
-      								replace(sec_to_time(record / 100), '00:00:00.', '0.'),
-      								'00:00:0',
-      								''
-      							),
-      							'00:00:',
-      							''
-      						),
-      						'00:0',
-      						''
-      					),
-      					'00:',
-      					''
-      				)
-      			) -2
-      		)
-      	end record,
+        wca_statistics_time_format(record, eventId, record_type) record,
       	record_type,
       	c2.name,
-      	concat(
-      		'<a href="https://www.worldcubeassociation.org/persons/',
-      		personId,
-      		'">',
-      		personName,
-      		'</a>'
-      	),
-      	concat(
-      		'<a href="https://www.worldcubeassociation.org/competitions/',
-      		competitionId,
-      		'">',
-      		records.cellName,
-      		'</a>'
-      	)
+      	wca_statistics_person_link_format(personId, personName),
+      	wca_statistics_competition_link_format(competitionId, records.cellName)
       from (
       		select datediff(current_date, c.start_date) days,
       			results.eventId,
