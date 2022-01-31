@@ -28,8 +28,8 @@ create function wca_statistics_time_format(
             '0000',
             ''
         ),
-        '00:',
-        ''
+        '(00:',
+        '('
     )
     else substring(
         replace(

@@ -83,7 +83,7 @@ queries:
       	record_type,
       	c3.name,
       	wca_statistics_person_link_format(personId, personName),
-      	wca_statistics_competition_link_format(competitionId)
+      	wca_statistics_competition_link_format(competitionId, records.cellName)
       from (
       		select datediff(current_date, c.start_date) days,
       			results.eventId,

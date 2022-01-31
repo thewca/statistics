@@ -5,8 +5,8 @@ create function wca_statistics_competition_link_format(
     competition_name varchar(200)
 ) returns varchar(300) deterministic reads sql data return concat(
     '<a href="https://www.worldcubeassociation.org/competitions/',
-    competition.id,
+    competition_id,
     '">',
-    competition.cellName,
+    competition_name,
     '</a>'
 );
