@@ -5,14 +5,14 @@ on:
     branches:
       - main
     paths:
-      - 'client/**'
-      - '.github/workflows/fronttest.yaml'
+      - "client/**"
+      - ".github/workflows/fronttest.yaml"
   pull_request:
     branches:
       - main
     paths:
-      - 'client/**'
-      - '.github/workflows/fronttest.yaml'
+      - "client/**"
+      - ".github/workflows/fronttest.yaml"
 
 jobs:
   build:
@@ -31,6 +31,9 @@ jobs:
       - name: Yarn Install
         working-directory: ./client
         run: yarn install
+      - name: Check style
+        working-directory: ./client
+        run: yarn prettier
       - name: Build
         working-directory: ./client
         run: yarn build
