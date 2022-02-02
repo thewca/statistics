@@ -72,8 +72,9 @@ export const deleteStorageItems = () => {
 
 export const AuthContextProvider = (props: any) => {
   const [token, setToken] = useState(initialToken);
-  const [userInfo, setUserInfo] =
-    useState<UserInfo | undefined>(initialUserInfo);
+  const [userInfo, setUserInfo] = useState<UserInfo | undefined>(
+    initialUserInfo
+  );
   const [isLogged, setIsLogged] = useState(initialIsLogged);
 
   useEffect(() => {

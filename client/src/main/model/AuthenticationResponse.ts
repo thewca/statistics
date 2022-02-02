@@ -1,4 +1,4 @@
 export interface AuthenticationResponse {
-    frontendHost: string;
-    url: string;
+  frontendHost: string;
+  url: string;
 }

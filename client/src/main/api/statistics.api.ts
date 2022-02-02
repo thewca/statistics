@@ -26,8 +26,7 @@ export class StatisticsApi {
       params: { frontendHost },
     });
 
-  getUserInfo = () =>
-    Axios.get<UserInfo>(this.BASE_URL + "/wca/user");
+  getUserInfo = () => Axios.get<UserInfo>(this.BASE_URL + "/wca/user");
 
   getStatisticsGroups = (term?: string) =>
     Axios.get<StatisticsList>(this.BASE_URL + "/statistics/list", {

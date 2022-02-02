@@ -1,5 +1,5 @@
 import { CompassOutlined, LoadingOutlined } from "@ant-design/icons";
-import { Card, Col, Divider, Row, Skeleton, Statistic } from "antd";
+import { Card, Col, Divider, Row, Statistic } from "antd";
 import { sample } from "lodash";
 import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
