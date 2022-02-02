@@ -61,23 +61,19 @@ const Topbar = ({ links, statisticsGroups }: TopbarProps) => {
           </SubMenu>
         ))}
       </SubMenu>
-      <div id="login">
-        <Menu theme="dark" mode="horizontal" id="top-bar" onClick={handle}>
-          <Menu.Item key="login">
-            {!!authCtx.userInfo ? (
-              <img
-                src={authCtx.userInfo.avatar?.thumb_url}
-                width="30"
-                height="30"
-                alt="Avatar"
-              />
-            ) : (
-              <UserOutlined />
-            )}{" "}
-            {authCtx.isLogged ? "Logout" : "Login"}
-          </Menu.Item>
-        </Menu>
-      </div>
+      <Menu.Item key="login" onClick={handle} id="login">
+        {!!authCtx.userInfo ? (
+          <img
+            src={authCtx.userInfo.avatar?.thumb_url}
+            width="30"
+            height="30"
+            alt="Avatar"
+          />
+        ) : (
+          <UserOutlined />
+        )}{" "}
+        {authCtx.isLogged ? "Logout" : "Login"}
+      </Menu.Item>
     </Menu>
   );
 };
