@@ -29,6 +29,10 @@ The commands listed here should work in Unix systems or in Windows (using GitBas
 
 `yarn start`
 
+- Run local
+
+`yarn start:local`
+
 ## Run with docker
 
 - Build an image
