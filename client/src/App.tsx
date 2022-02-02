@@ -30,14 +30,17 @@ axios.interceptors.request.use(requestIntercetor);
 
 function App() {
   const [statisticsList, setStatisticsList] = useState<StatisticsList>();
+  const [loading, setLoading] = useState(false);
 
   const authCtx = useContext(AuthContext);
 
   const getStatisticsList = () => {
+    setLoading(true);
     statisticsApi
       .getStatisticsGroups()
       .then((response) => setStatisticsList(response.data))
-      .catch(() => message.error("Error fetching statistics list"));
+      .catch(() => message.error("Error fetching statistics list"))
+      .finally(() => setLoading(false));
   };
 
   const links: LinkItem[] = [
@@ -46,7 +49,7 @@ function App() {
       href: "/",
       exact: true,
       icon: <HomeOutlined />,
-      component: <HomePage statisticsList={statisticsList} />,
+      component: <HomePage statisticsList={statisticsList} loading={loading} />,
     },
     {
       name: "Statistics List",

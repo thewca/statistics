@@ -1,5 +1,5 @@
-import { CompassOutlined } from "@ant-design/icons";
-import { Card, Col, Divider, Row, Statistic } from "antd";
+import { CompassOutlined, LoadingOutlined } from "@ant-design/icons";
+import { Card, Col, Divider, Row, Skeleton, Statistic } from "antd";
 import { sample } from "lodash";
 import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
@@ -9,9 +9,10 @@ import "./HomePage.css";
 
 interface HomePageProps {
   statisticsList?: StatisticsList;
+  loading: boolean;
 }
 
-const Home = ({ statisticsList }: HomePageProps) => {
+const Home = ({ statisticsList, loading }: HomePageProps) => {
   const authCtx = useContext(AuthContext);
   const [randomLink, setRandomLink] = useState("");
 
@@ -42,12 +43,18 @@ const Home = ({ statisticsList }: HomePageProps) => {
               feasible to implement, we might add it!
             </p>
 
-            {!!statisticsList && (
+            {statisticsList && (
               <Statistic
                 className="stat-stat"
                 title="Current Statistics"
                 value={statisticsList.totalSize}
               />
+            )}
+
+            {loading && (
+              <div style={{ textAlign: "center" }}>
+                <LoadingOutlined />
+              </div>
             )}
           </Card>
         </Col>
