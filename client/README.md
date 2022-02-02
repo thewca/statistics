@@ -48,3 +48,7 @@ The `-d` part means "detached", so you'll have to stop by killing the process ru
 ## Deploy
 
 Deploy is made using GH Actions.
+
+## Checkstyle
+
+We use prettier for checking style. After code, you can run `yarn prettier_write` for auto formatting or `yarn prettier` for simple check.

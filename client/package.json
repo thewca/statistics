@@ -28,7 +28,9 @@
     "start:local": "export REACT_APP_DATE_VERSION=$(date -u +'%Y-%m-%d') && export REACT_APP_VERSION=$(git rev-parse --short HEAD) && env-cmd -f .env-local.env react-scripts start",
     "build": "export REACT_APP_DATE_VERSION=$(date -u +'%Y-%m-%d') && export REACT_APP_VERSION=$(git rev-parse --short HEAD) && react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "prettier": "prettier --check .",
+    "prettier_write": "prettier --write ."
   },
   "eslintConfig": {
     "extends": [
