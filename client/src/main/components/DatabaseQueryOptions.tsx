@@ -22,13 +22,10 @@ const DatabaseQueryOptions = ({
   setShowPositions,
   setPositionTieBreakerIndex,
 }: DatabaseQueryOptionsProps) => {
-  const [optionsShowPositions, setOptionsShowPositions] = useState(
-    showPositions
-  );
-  const [
-    optionsPositionTieBreakerIndex,
-    setOptionsPositionTieBreakerIndex,
-  ] = useState(positionTieBreakerIndex);
+  const [optionsShowPositions, setOptionsShowPositions] =
+    useState(showPositions);
+  const [optionsPositionTieBreakerIndex, setOptionsPositionTieBreakerIndex] =
+    useState(positionTieBreakerIndex);
 
   const handleOk = () => {
     setShowPositions(optionsShowPositions);

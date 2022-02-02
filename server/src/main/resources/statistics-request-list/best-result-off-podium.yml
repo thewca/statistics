@@ -1,0 +1,96 @@
+queries:
+  - headers:
+      - Person
+      - Average
+      - Competition
+      - Pos
+    keyColumnIndex: 0
+    showPositions: true
+    positionTieBreakerIndex: 1
+    sqlQuery: |-
+      with averages as (
+          select
+              concat('Average,', e.name) key_name,
+              wca_statistics_person_link_format(personId, personName) person,
+              wca_statistics_time_format(average, eventId, 'average') average,
+              wca_statistics_competition_link_format(c.id, c.cellName) competition,
+              pos,
+              rank() over (
+                  partition by e.id
+                  order by
+                      average
+              ) the_rank
+          from
+              Results r
+              inner join Competitions c on r.competitionId = c.id
+              inner join Events e on r.eventId = e.id
+              inner join Formats f on r.formatId = f.id
+          where
+              r.roundTypeId in ('c', 'f')
+              and pos > 3
+              and e.`rank` < 900
+              and f.sort_by = 'average'
+              and average > 0
+          order by
+              e.`rank`,
+              average
+      )
+      select
+          key_name,
+          person,
+          average,
+          competition,
+          pos
+      from
+          averages
+      where
+          the_rank <= 20
+  - headers:
+      - Person
+      - Single
+      - Competition
+      - Pos
+    keyColumnIndex: 0
+    showPositions: true
+    positionTieBreakerIndex: 1
+    sqlQuery: |-
+      with singles as (
+          select
+              concat('Single,', e.name) key_name,
+              wca_statistics_person_link_format(personId, personName) person,
+              wca_statistics_time_format(best, eventId, 'single') single,
+              wca_statistics_competition_link_format(c.id, c.cellName) competition,
+              pos,
+              rank() over (
+                  partition by e.id
+                  order by
+                      best
+              ) the_rank
+          from
+              Results r
+              inner join Competitions c on r.competitionId = c.id
+              inner join Events e on r.eventId = e.id
+              inner join Formats f on r.formatId = f.id
+          where
+              r.roundTypeId in ('c', 'f')
+              and pos > 3
+              and e.`rank` < 900
+              and f.sort_by = 'single'
+              and best > 0
+          order by
+              e.`rank`,
+              best
+      )
+      select
+          key_name,
+          person,
+          single,
+          competition,
+          pos
+      from
+          singles
+      where
+          the_rank <= 20
+title: Best result not providing a podium
+groupName: Results
+displayMode: SELECTOR

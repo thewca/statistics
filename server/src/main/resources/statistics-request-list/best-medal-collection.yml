@@ -12,13 +12,7 @@ queries:
           select
               e.name,
               e.`rank`,
-              concat(
-                  '<a href="https://www.worldcubeassociation.org/persons/',
-                  personId,
-                  '">',
-                  personName,
-                  '</a>'
-              ) person_name,
+              wca_statistics_person_link_format(personId, personName) person_name,
               sum(
                   case
                       when pos = 1 then 1

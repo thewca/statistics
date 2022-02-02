@@ -5,13 +5,7 @@ queries:
       - Competitors
       - Country
     sqlQuery: |-
-      select concat(
-              '<a href="https://www.worldcubeassociation.org/competitions/',
-              competition.id,
-              '">',
-              competition.cellName,
-              '</a>'
-          ),
+      select wca_statistics_competition_link_format(competition.id, competition.cellName),
           format(AVG(event_count), 2) average_event_count,
           COUNT(*) competitors,
           country.name country

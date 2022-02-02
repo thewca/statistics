@@ -8,13 +8,7 @@ queries:
       - Countries
     sqlQuery: |-
       SELECT
-          concat(
-              '<a href="https://www.worldcubeassociation.org/persons/',
-              personId,
-              '">',
-              person.name,
-              '</a>'
-          ),
+          wca_statistics_person_link_format(personId, person.name),
           COUNT(competition_countries_by_person.countryId) numberOfCountries
       FROM
           (
@@ -78,13 +72,7 @@ queries:
     explanation: Different nationalities competing in a competition
     sqlQuery: |-
       select
-          concat(
-              '<a href="https://www.worldcubeassociation.org/competitions/',
-              competitionId,
-              '">',
-              c.name,
-              '</a>'
-          ),
+          wca_statistics_competition_link_format(competitionId, c.name),
           Countries
       from
           (

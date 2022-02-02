@@ -52,55 +52,8 @@ queries:
       )
       select
           event_name,
-          case
-              when event_id = '333fm' then round(average/100, 2)
-              else substring(
-                  replace(
-                      replace(
-                          replace(
-                              replace(
-                                  replace(sec_to_time(average / 100), '00:00:00.', '0.'),
-                                  '00:00:0',
-                                  ''
-                              ),
-                              '00:00:',
-                              ''
-                          ),
-                          '00:0',
-                          ''
-                      ),
-                      '00:',
-                      ''
-                  ),
-                  1,
-                  length(
-                      replace(
-                          replace(
-                              replace(
-                                  replace(
-                                      replace(sec_to_time(average / 100), '00:00:00.', '0.'),
-                                      '00:00:0',
-                                      ''
-                                  ),
-                                  '00:00:',
-                                  ''
-                              ),
-                              '00:0',
-                              ''
-                          ),
-                          '00:',
-                          ''
-                      )
-                  ) -2
-              )
-          end average,
-          concat(
-              '<a href="https://www.worldcubeassociation.org/persons/',
-              person_id,
-              '">',
-              person_name,
-              '</a>'
-          )
+          wca_statistics_time_format(average, event_id, 'average'),
+          wca_statistics_person_link_format(person_id, person_name)
       from
           first_results
       where

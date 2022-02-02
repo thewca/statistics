@@ -10,7 +10,6 @@ import org.springframework.core.io.support.ResourcePatternUtils;
 import org.springframework.stereotype.Service;
 import org.worldcubeassociation.statistics.dto.*;
 import org.worldcubeassociation.statistics.enums.DisplayModeEnum;
-import org.worldcubeassociation.statistics.exception.InvalidParameterException;
 import org.worldcubeassociation.statistics.exception.NotFoundException;
 import org.worldcubeassociation.statistics.model.Statistics;
 import org.worldcubeassociation.statistics.repository.StatisticsRepository;
@@ -46,8 +45,6 @@ public class StatisticsServiceImpl implements StatisticsService {
     @Override
     public StatisticsResponseDTO sqlToStatistics(StatisticsRequestDTO statisticsRequestDTO) {
         log.info("SQL to statistics for {}", statisticsRequestDTO);
-
-        validateRequest(statisticsRequestDTO);
 
         StatisticsDTO statisticsDTO = new StatisticsDTO();
         statisticsDTO.setStatistics(new ArrayList<>());
@@ -88,7 +85,7 @@ public class StatisticsServiceImpl implements StatisticsService {
             }
 
             for (var entries : map.entrySet()) {
-                addResult(query, statisticsDTO, List.of(entries.getKey()), entries.getValue(), sqlResult.getHeaders());
+                addResult(query, statisticsDTO, List.of(entries.getKey().split(",")), entries.getValue(), sqlResult.getHeaders());
             }
         }
     }
@@ -139,6 +136,10 @@ public class StatisticsServiceImpl implements StatisticsService {
 
     private void resourcesToStatistics(List<Resource> resources) throws IOException {
         for (Resource resource : resources) {
+            if (!resource.exists()) {
+                throw new NotFoundException("File " + resource.getFilename() + " does not exist");
+            }
+
             log.info("Statistic {}", resource.getDescription());
 
             InputStream inputStream = resource.getInputStream();
@@ -233,25 +234,6 @@ public class StatisticsServiceImpl implements StatisticsService {
         log.info("Delete all statistics");
         statisticsRepository.deleteAll();
         log.info("Deleted");
-    }
-
-    private void validateRequest(StatisticsRequestDTO statisticsRequestDTO) {
-        List<StatisticsGroupRequestDTO> queries = statisticsRequestDTO.getQueries();
-        for (StatisticsGroupRequestDTO query : queries) {
-
-            // TODO check if this is needed since there is a @Valid annotation
-            if (query == null) {
-                throw new InvalidParameterException("Query item must not be null.");
-            }
-
-        }
-
-        // Key emptiness validation already happens in the bean, so we can validate just if keys are unique
-        if (queries.size() != queries.stream().map(StatisticsGroupRequestDTO::getKeys).distinct().count()) {
-            throw new InvalidParameterException("The identifier keys must be unique.");
-        }
-
-        log.info("Validated");
     }
 
     private Statistics saveStatistics(StatisticsResponseDTO statisticsResponseDTO) {

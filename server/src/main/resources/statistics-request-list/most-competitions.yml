@@ -7,13 +7,7 @@ queries:
       - Competitions
     sqlQuery: |-
       select
-          concat(
-              '<a href="https://www.worldcubeassociation.org/persons/',
-              personId,
-              '">',
-              p.name,
-              '</a>'
-          ),
+          wca_statistics_person_link_format(personId, p.name),
           numberOfCompetitions
       from
           Persons p

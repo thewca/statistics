@@ -8,20 +8,8 @@ queries:
       - Solves / Attemps
     sqlQuery: |-
       select
-          concat(
-              '<a href="https://www.worldcubeassociation.org/persons/',
-              personId,
-              '">',
-              personName,
-              '</a>'
-          ),
-          concat(
-              '<a href="https://www.worldcubeassociation.org/competitions/',
-              competitionId,
-              '">',
-              competitionId,
-              '</a>'
-          ),
+          wca_statistics_person_link_format(personId, personName),
+          wca_statistics_competition_link_format(competitionId, competitionId),
           concat(solves, ' / ', attempts)
       from
           (
@@ -124,13 +112,7 @@ queries:
       - Solves / Attemps
     sqlQuery: |-
       select
-          concat(
-              '<a href="https://www.worldcubeassociation.org/persons/',
-              personId,
-              '">',
-              personName,
-              '</a>'
-          ),
+          wca_statistics_person_link_format(personId, personName),
           year,
           concat(solves, ' / ', attempts)
       from
@@ -238,13 +220,7 @@ queries:
       - Solves / Attempts
     sqlQuery: |-
       select
-          concat(
-              '<a href="https://www.worldcubeassociation.org/persons/',
-              personId,
-              '">',
-              personName,
-              '</a>'
-          ),
+          wca_statistics_person_link_format(personId, personName),
           concat(solves, ' / ', attempts)
       from
           (

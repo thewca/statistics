@@ -52,75 +52,8 @@ queries:
       )
       select
           event_name,
-          case
-              when event_id = '333fm' then value1
-              when event_id = '333mbf' then replace(
-                  replace(
-                      replace(
-                          concat(
-                              99 - substring(value1, 1, 2) + substring(value1, 8, 2),
-                              '/',
-                              99 - substring(value1, 1, 2) + 2*substring(value1, 8, 2),
-                              ' (',
-                              sec_to_time(substring(value1, 3, 5)),
-                              ')'
-                          ),
-                          '.000000',
-                          ''
-                      ),
-                      '0000',
-                      ''
-                  ),
-                  '00:',
-                  ''
-              )
-              else substring(
-                  replace(
-                      replace(
-                          replace(
-                              replace(
-                                  replace(sec_to_time(value1 / 100), '00:00:00.', '0.'),
-                                  '00:00:0',
-                                  ''
-                              ),
-                              '00:00:',
-                              ''
-                          ),
-                          '00:0',
-                          ''
-                      ),
-                      '00:',
-                      ''
-                  ),
-                  1,
-                  length(
-                      replace(
-                          replace(
-                              replace(
-                                  replace(
-                                      replace(sec_to_time(value1 / 100), '00:00:00.', '0.'),
-                                      '00:00:0',
-                                      ''
-                                  ),
-                                  '00:00:',
-                                  ''
-                              ),
-                              '00:0',
-                              ''
-                          ),
-                          '00:',
-                          ''
-                      )
-                  ) -2
-              )
-          end value1,
-          concat(
-              '<a href="https://www.worldcubeassociation.org/persons/',
-              person_id,
-              '">',
-              person_name,
-              '</a>'
-          )
+          wca_statistics_time_format(value1, event_id, 'single') value1,
+          wca_statistics_person_link_format(person_id, person_name)
       from
           first_results
       where

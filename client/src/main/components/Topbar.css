@@ -1,16 +1,12 @@
-#top-bar {
-  font-variant: small-caps;
-  text-shadow: 2px 2px 5px #888;
-}
-
 nav a span {
   vertical-align: text-top !important;
 }
 
-#login {
-  float: right;
-}
-
 #top-bar a {
   color: inherit;
+}
+
+#login {
+  margin-right: 0px;
+  margin-left: auto;
 }

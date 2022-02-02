@@ -28,13 +28,7 @@ queries:
     explanation: Competitions with most competitors
     sqlQuery: |-
       select
-          concat(
-              '<a href="https://www.worldcubeassociation.org/competitions/',
-              c.id,
-              '">',
-              c.name,
-              '</a>'
-          ),
+          wca_statistics_competition_link_format(c.id, c.name),
           qt
       from
           (
