@@ -7,6 +7,8 @@ import { StatisticsList } from "../model/StatisticsList";
 import AuthContext from "../store/auth-context";
 import "./HomePage.css";
 
+import banner from "../assets/homepage_banner.svg";
+
 interface HomePageProps {
   statisticsList?: StatisticsList;
   loading: boolean;
@@ -24,8 +26,11 @@ const Home = ({ statisticsList, loading }: HomePageProps) => {
   }, [statisticsList]);
 
   return (
-    <div>
-      <h1 className="page-title">WCA Statistics</h1>
+    <div
+      className="homepage-banner"
+      style={{ backgroundImage: "url(" + banner + ")" }}
+    >
+      <h1 className="page-title main-title">WCA Statistics</h1>
 
       <Divider />
 

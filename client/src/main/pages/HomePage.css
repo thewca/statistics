@@ -22,3 +22,8 @@
   height: 100%;
   box-shadow: 3px 3px 6px #ccc;
 }
+
+.homepage-banner {
+  background-image: no-repeat center center fixed;
+  background-size: cover;
+}
