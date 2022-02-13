@@ -32,11 +32,10 @@ const Home = ({ statisticsList, loading }: HomePageProps) => {
     >
       <h1 className="page-title main-title">WCA Statistics</h1>
 
-      <Divider />
-
-      <Row gutter={[8, 8]}>
-        <Col xs={24} md={8}>
-          <Card title="Statistics List" className="stat-card">
+      <Row gutter={[8, 8]} justify="center">
+        <Col xs={24} md={6}>
+          <div className="stat-card">
+            <h3>Statistics List</h3>
             <p>
               Check our <Link to="statistics-list">list with interesting</Link>{" "}
               statistics.
@@ -61,18 +60,20 @@ const Home = ({ statisticsList, loading }: HomePageProps) => {
                 <LoadingOutlined />
               </div>
             )}
-          </Card>
+          </div>
         </Col>
-        <Col xs={24} md={8}>
-          <Card title="Take me to a random statistics" className="stat-card">
+        <Col xs={24} md={6}>
+          <div className="stat-card">
+            <h3>Take me to a random statistics</h3>
             <p>
               Click <Link to={randomLink}>here</Link> to be redirected to a
               random page.
             </p>
-          </Card>
+          </div>
         </Col>
-        <Col xs={24} md={8}>
-          <Card title="Logged Feature" className="stat-card">
+        <Col xs={24} md={6}>
+          <div className="stat-card">
+            <h3>Logged Feature</h3>
             {authCtx.isLogged && (
               <>
                 <p>
@@ -99,11 +100,9 @@ const Home = ({ statisticsList, loading }: HomePageProps) => {
             {!authCtx.isLogged && (
               <p>Log in with the WCA's website to get more content.</p>
             )}
-          </Card>
+          </div>
         </Col>
       </Row>
-
-      <Divider />
     </div>
   );
 };
