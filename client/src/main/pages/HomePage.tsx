@@ -1,13 +1,12 @@
 import { CompassOutlined, LoadingOutlined } from "@ant-design/icons";
-import { Card, Col, Divider, Row, Statistic } from "antd";
+import { Col, Row, Statistic } from "antd";
 import { sample } from "lodash";
 import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import banner from "../assets/homepage_banner.svg";
 import { StatisticsList } from "../model/StatisticsList";
 import AuthContext from "../store/auth-context";
 import "./HomePage.css";
-
-import banner from "../assets/homepage_banner.svg";
 
 interface HomePageProps {
   statisticsList?: StatisticsList;
