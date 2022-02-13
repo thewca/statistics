@@ -20,5 +20,19 @@
 
 .stat-card {
   height: 100%;
-  box-shadow: 3px 3px 6px #ccc;
+  background-color: #fff;
+  padding: 20px;
+  text-align: center;
+  border-radius: 10px;
+}
+
+.stat-card h3 {
+  font-weight: bold;
+  font-size: 150%;
+}
+
+.homepage-banner {
+  background-image: no-repeat center center fixed;
+  background-size: cover;
+  padding: 30px 0 80px 0;
 }

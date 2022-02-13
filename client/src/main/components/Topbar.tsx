@@ -30,7 +30,7 @@ const Topbar = ({ links, statisticsGroups }: TopbarProps) => {
 
   const statisticsListLink = links.find((it) => it.name === STATISTICS_LIST);
   return (
-    <Menu theme="dark" mode="horizontal" id="top-bar">
+    <Menu mode="horizontal" id="top-bar">
       <Menu.Item key="logo">
         <Link to={links[0].href}>
           <img src={logo} width="30" height="30" alt="Logo" />

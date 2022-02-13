@@ -2,6 +2,10 @@ nav a span {
   vertical-align: text-top !important;
 }
 
+#top-bar {
+  background-color: inherit;
+}
+
 #top-bar a {
   color: inherit;
 }

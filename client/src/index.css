@@ -2,9 +2,7 @@
 
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
+  font-family: Roboto, "Helvetica Neue", Arial, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: rgb(245, 245, 245) !important;
@@ -16,18 +14,17 @@ body {
   padding-bottom: 150px;
 }
 
-#footer {
-  margin-top: 150px;
-  position: absolute;
-  bottom: 0;
-  width: 100%;
+.main-title {
+  font-size: 3em;
+  color: #fff !important;
+  text-shadow: 0 0 5px #000;
+  text-transform: uppercase;
 }
 
 .page-title {
   text-align: center;
-  font-variant: small-caps;
-  font-weight: bold;
-  margin: 20px 0;
+  font-weight: bolder;
+  color: rgb(130, 130, 130);
 }
 
 .anticon {

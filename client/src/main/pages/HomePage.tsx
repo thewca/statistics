@@ -1,8 +1,9 @@
 import { CompassOutlined, LoadingOutlined } from "@ant-design/icons";
-import { Card, Col, Divider, Row, Statistic } from "antd";
+import { Col, Row, Statistic } from "antd";
 import { sample } from "lodash";
 import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import banner from "../assets/homepage_banner.svg";
 import { StatisticsList } from "../model/StatisticsList";
 import AuthContext from "../store/auth-context";
 import "./HomePage.css";
@@ -24,14 +25,16 @@ const Home = ({ statisticsList, loading }: HomePageProps) => {
   }, [statisticsList]);
 
   return (
-    <div>
-      <h1 className="page-title">WCA Statistics</h1>
+    <div
+      className="homepage-banner"
+      style={{ backgroundImage: "url(" + banner + ")" }}
+    >
+      <h1 className="page-title main-title">WCA Statistics</h1>
 
-      <Divider />
-
-      <Row gutter={[8, 8]}>
-        <Col xs={24} md={8}>
-          <Card title="Statistics List" className="stat-card">
+      <Row gutter={16} justify="center">
+        <Col xs={20} md={6}>
+          <div className="stat-card">
+            <h3>Statistics List</h3>
             <p>
               Check our <Link to="statistics-list">list with interesting</Link>{" "}
               statistics.
@@ -56,18 +59,20 @@ const Home = ({ statisticsList, loading }: HomePageProps) => {
                 <LoadingOutlined />
               </div>
             )}
-          </Card>
+          </div>
         </Col>
-        <Col xs={24} md={8}>
-          <Card title="Take me to a random statistics" className="stat-card">
+        <Col xs={20} md={6}>
+          <div className="stat-card">
+            <h3>Take me to a random statistics</h3>
             <p>
               Click <Link to={randomLink}>here</Link> to be redirected to a
               random page.
             </p>
-          </Card>
+          </div>
         </Col>
-        <Col xs={24} md={8}>
-          <Card title="Logged Feature" className="stat-card">
+        <Col xs={20} md={6}>
+          <div className="stat-card">
+            <h3>Logged Feature</h3>
             {authCtx.isLogged && (
               <>
                 <p>
@@ -94,11 +99,9 @@ const Home = ({ statisticsList, loading }: HomePageProps) => {
             {!authCtx.isLogged && (
               <p>Log in with the WCA's website to get more content.</p>
             )}
-          </Card>
+          </div>
         </Col>
       </Row>
-
-      <Divider />
     </div>
   );
 };

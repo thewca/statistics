@@ -1,11 +1,20 @@
+footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+  align-items: center;
+}
+
 footer a {
   color: inherit;
 }
 
-footer a span {
-  vertical-align: text-top !important;
+footer ul {
+  list-style-type: none;
 }
 
-.footer-title {
-  margin-left: 37px;
+footer li {
+  float: left;
+  margin: 0 15px;
 }
