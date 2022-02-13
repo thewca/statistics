@@ -14,23 +14,17 @@ body {
   padding-bottom: 150px;
 }
 
-#footer {
-  margin-top: 150px;
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-}
-
 .main-title {
   font-size: 3em;
+  color: #fff !important;
+  text-shadow: 0 0 5px #000;
+  text-transform: uppercase;
 }
 
 .page-title {
   text-align: center;
-  text-shadow: 0 0 5px #000;
-  text-transform: uppercase;
-  color: #fff;
-  font-weight: bold;
+  font-weight: bolder;
+  color: rgb(130, 130, 130);
 }
 
 .anticon {
