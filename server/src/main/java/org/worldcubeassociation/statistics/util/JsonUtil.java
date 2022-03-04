@@ -11,12 +11,21 @@ public final class JsonUtil {
     private JsonUtil() {
     }
 
-    public static Object convertToJson(List<? extends Object> objects) {
+    public static Object convertToJsonArray(List<? extends Object> objects) {
         try {
             return OBJECT_MAPPER.writeValueAsString(objects);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
         return "[]";
+    }
+
+    public static Object convertToJson(Object object) {
+        try {
+            return OBJECT_MAPPER.writeValueAsString(object);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return "{}";
     }
 }

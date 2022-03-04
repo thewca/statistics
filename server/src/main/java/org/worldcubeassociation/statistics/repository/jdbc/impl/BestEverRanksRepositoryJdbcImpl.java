@@ -73,7 +73,7 @@ public class BestEverRanksRepositoryJdbcImpl implements BestEverRanksRepositoryJ
                 .stream()
                 .map(ber -> new MapSqlParameterSource()
                         .addValue(BestEverRank.Fields.PERSON_ID.name(), ber.getPersonId())
-                        .addValue(BestEverRank.Fields.EVENT_RANKS.name(), JsonUtil.convertToJson(ber.getEventRanks()))
+                        .addValue(BestEverRank.Fields.EVENT_RANKS.name(), JsonUtil.convertToJsonArray(ber.getEventRanks()))
                 )
                 .toArray(MapSqlParameterSource[]::new);
 

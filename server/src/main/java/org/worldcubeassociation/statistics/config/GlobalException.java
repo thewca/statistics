@@ -44,14 +44,19 @@ public class GlobalException extends ResponseEntityExceptionHandler {
         return buildResponse(ex.getConstraintViolations().stream().map(ConstraintViolation::getMessage).collect(Collectors.joining(", ")), HttpStatus.BAD_REQUEST);
     }
 
+    private ResponseEntity<ResponseError> genericResponse(Exception ex) {
+        ex.printStackTrace();
+        return buildResponse("An internal error occurred. Please contact WST.", HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<ResponseError> handleRuntimeException(RuntimeException ex) {
-        return buildResponse("An internal error occurred. Please contact WST.", HttpStatus.INTERNAL_SERVER_ERROR);
+        return genericResponse(ex);
     }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ResponseError> handleRuntimeException(Exception ex) {
-        return buildResponse("An internal error occurred. Please contact WST.", HttpStatus.INTERNAL_SERVER_ERROR);
+        return genericResponse(ex);
     }
 
     @Data
