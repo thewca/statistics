@@ -18,6 +18,11 @@ create table if not exists best_ever_rank (
     primary key (person_id)
 );
 
+create table if not exists record_evolution (
+    region varchar(50) primary key,
+    evolution json not null
+);
+
 ----------------------------------------------------------------------------------------------------
 -- Person link
 

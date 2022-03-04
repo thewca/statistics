@@ -4,6 +4,7 @@ spring:
     url: jdbc:mysql://localhost:3306/wca_development
     username: root
     password:
+#    initialization-mode: always
 api:
   wca:
     baseurl: https://staging.worldcubeassociation.org

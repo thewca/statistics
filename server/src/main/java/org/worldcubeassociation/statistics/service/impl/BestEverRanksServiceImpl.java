@@ -14,6 +14,7 @@ import org.worldcubeassociation.statistics.response.BestEverRanksEventResponse;
 import org.worldcubeassociation.statistics.response.BestEverRanksResponse;
 import org.worldcubeassociation.statistics.service.BestEverRanksService;
 import org.worldcubeassociation.statistics.service.EventService;
+import org.worldcubeassociation.statistics.service.RecordEvolutionService;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -33,6 +34,9 @@ public class BestEverRanksServiceImpl implements BestEverRanksService {
 
     @Autowired
     private ObjectMapper objectMapper;
+
+    @Autowired
+    private RecordEvolutionService recordEvolutionService;
 
     @Override
     public BestEverRankDTO get(String personId) {
@@ -196,6 +200,7 @@ public class BestEverRanksServiceImpl implements BestEverRanksService {
                 analyzeRank(region.getAverages(), competitor.getAverage(), today);
             }
         }
+        recordEvolutionService.registerEvolution(region, today);
     }
 
     private void analyzeRank(List<Integer> regionResults, ResultsDTO competitorResults, LocalDate today) {
