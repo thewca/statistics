@@ -1,6 +1,7 @@
 import {
   DatabaseOutlined,
   HomeOutlined,
+  LineChartOutlined,
   OrderedListOutlined,
   RiseOutlined,
   SolutionOutlined,
@@ -22,6 +23,7 @@ import BestEverRanksPage from "./main/pages/BestEverRanksPage";
 import DatabaseQueryPage from "./main/pages/DatabaseQueryPage";
 import HomePage from "./main/pages/HomePage";
 import NotFoundPage from "./main/pages/NotFoundPage";
+import { RecordEvolution } from "./main/pages/RecordEvolution";
 import StatisticsListPage from "./main/pages/StatisticsListPage";
 import AuthContext from "./main/store/auth-context";
 
@@ -72,6 +74,13 @@ function App() {
       exact: false,
       icon: <SolutionOutlined />,
       component: <AboutPage />,
+    },
+    {
+      name: "Record Evolution",
+      href: "/record-evolution",
+      exact: true,
+      icon: <LineChartOutlined />,
+      component: <RecordEvolution />,
     },
     {
       name: "Best Ever Ranks",
