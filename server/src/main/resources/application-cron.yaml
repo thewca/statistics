@@ -4,6 +4,7 @@ spring:
     url: jdbc:mysql://${DB_HOST}:${DB_PORT}/${DB_DATABASE}
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
+    initialization-mode: always
 api:
   wca:
     baseurl: https://www.worldcubeassociation.org
