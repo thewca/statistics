@@ -1,8 +1,8 @@
 import os
+import re
 
 import mysql.connector
 from misc.python.util.log_util import log
-import re
 
 user = os.environ.get('DB_USERNAME', 'root')
 host = os.environ.get('DB_HOST', 'localhost')
@@ -28,7 +28,6 @@ def sql_replace(query_str):
 
 
 def execute_query(sql_file_name, values=()):
-    log.info("Execute sql %s with params %s" % (sql_file_name, values))
     try:
         with open(__get_file_name(sql_file_name), encoding='utf-8') as query:
             query_str = sql_replace(query.read())
@@ -41,4 +40,4 @@ def execute_query(sql_file_name, values=()):
 
 
 cnx = get_database_connection()
-cursor = cnx.cursor()
+cursor = cnx.cursor(dictionary=True)
