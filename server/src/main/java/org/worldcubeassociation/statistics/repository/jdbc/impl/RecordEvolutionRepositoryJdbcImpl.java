@@ -40,7 +40,7 @@ public class RecordEvolutionRepositoryJdbcImpl implements RecordEvolutionReposit
 
     private Map<String, Object> workData(RegionDTO region, LocalDate today) {
         Map<String, Object> result = new HashMap<>();
-        result.put("name", today.toString());
+        result.put("date", today.toString());
         for (int index : BEST) {
             maybeAddValue(index, region.getSingles(), result);
         }

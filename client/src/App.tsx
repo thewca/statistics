@@ -23,7 +23,7 @@ import BestEverRanksPage from "./main/pages/BestEverRanksPage";
 import DatabaseQueryPage from "./main/pages/DatabaseQueryPage";
 import HomePage from "./main/pages/HomePage";
 import NotFoundPage from "./main/pages/NotFoundPage";
-import { RecordEvolution } from "./main/pages/RecordEvolution";
+import { RecordEvolutionPage } from "./main/pages/RecordEvolutionPage";
 import StatisticsListPage from "./main/pages/StatisticsListPage";
 import AuthContext from "./main/store/auth-context";
 
@@ -80,7 +80,7 @@ function App() {
       href: "/record-evolution",
       exact: true,
       icon: <LineChartOutlined />,
-      component: <RecordEvolution />,
+      component: <RecordEvolutionPage />,
     },
     {
       name: "Best Ever Ranks",
