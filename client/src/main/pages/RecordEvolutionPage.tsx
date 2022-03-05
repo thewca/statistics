@@ -24,6 +24,8 @@ const LINES = [
   { key: 100, color: "#ff7300" },
 ];
 
+const omitDate = (evolution: Evolution) => omit(evolution, ["date"]);
+
 export const RecordEvolutionPage = () => {
   const [data, setData] = useState<Evolution[]>([]);
   const [filteredData, setFilteredData] = useState<Evolution[]>([]);
@@ -42,10 +44,7 @@ export const RecordEvolutionPage = () => {
         let nonRedundant = response.data.evolution.filter(
           (it, i) =>
             i === 0 ||
-            !isEqual(
-              omit(it, ["date"]),
-              omit(response.data.evolution[i - 1], ["date"])
-            )
+            !isEqual(omitDate(it), omitDate(response.data.evolution[i - 1]))
         );
         setData(nonRedundant);
         setFilteredData(nonRedundant);
@@ -82,15 +81,15 @@ export const RecordEvolutionPage = () => {
   };
 
   const handleMouseUp = (leftChartDate?: number, rightChartDate?: number) => {
+    if (!leftChartDate || !rightChartDate) {
+      return;
+    }
+    let left = Math.min(leftChartDate, rightChartDate);
+    let right = Math.max(leftChartDate, rightChartDate);
     setFilteredData(
       data
-        .filter(
-          (it) => !leftChartDate || new Date(it.date).getTime() >= leftChartDate
-        )
-        .filter(
-          (it) =>
-            !rightChartDate || new Date(it.date).getTime() <= rightChartDate
-        )
+        .filter((it) => new Date(it.date).getTime() >= left)
+        .filter((it) => new Date(it.date).getTime() <= right)
     );
     setLeftChartDate(undefined);
     setRightChartDate(undefined);
@@ -116,10 +115,10 @@ export const RecordEvolutionPage = () => {
       {filteredData.length > 0 && (
         <>
           <Button onClick={() => setFilteredData(data)}>Zoom Out</Button>
-          <ResponsiveContainer width="100%" height={0.7 * window.innerHeight}>
+          <ResponsiveContainer width="100%" height={0.6 * window.innerHeight}>
             <LineChart
               width={0.9 * window.innerWidth}
-              height={0.7 * window.innerHeight}
+              height={0.6 * window.innerHeight}
               data={filteredData}
               style={{ margin: "0 auto" }}
               onMouseDown={handleMouseDown}
@@ -165,6 +164,3 @@ export const RecordEvolutionPage = () => {
     </div>
   );
 };
-function ommit(it: Evolution): any {
-  throw new Error("Function not implemented.");
-}
