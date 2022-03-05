@@ -105,6 +105,7 @@ public class BestEverRanksServiceImpl implements BestEverRanksService {
             }
 
             summarizeResults(todayCompetitors, worlds, continents, countries, date);
+            recordEvolutionService.registerEvolution(worlds, continents, countries, date);
         }
 
         saveResults(event, worlds, continents, countries);
@@ -202,7 +203,6 @@ public class BestEverRanksServiceImpl implements BestEverRanksService {
                 analyzeRank(region.getAverages(), competitor.getAverage(), today);
             }
         }
-        recordEvolutionService.registerEvolution(region, today);
     }
 
     private void analyzeRank(List<Integer> regionResults, ResultsDTO competitorResults, LocalDate today) {

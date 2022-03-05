@@ -42,7 +42,7 @@ public class RecordEvolutionRepositoryJdbcImpl implements RecordEvolutionReposit
         Map<String, Object> result = new HashMap<>();
         result.put("name", today.toString());
         for (int index : BEST) {
-            maybeAddValue(index, region.getAverages(), result);
+            maybeAddValue(index, region.getSingles(), result);
         }
         return result;
     }

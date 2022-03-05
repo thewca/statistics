@@ -21,8 +21,8 @@ public class RecordEvolutionServiceImpl implements RecordEvolutionService {
     }
 
     @Override
-    public void registerEvolution(RegionDTO region, LocalDate today) {
-        repository.upsert(region, today);
+    public void registerEvolution(List<RegionDTO> worlds, List<RegionDTO> continents, List<RegionDTO> countries, LocalDate date) {
+        repository.upsert(worlds.get(0), date);
     }
 
     @Override

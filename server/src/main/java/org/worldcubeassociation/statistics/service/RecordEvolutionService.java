@@ -7,7 +7,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface RecordEvolutionService {
-    void registerEvolution(RegionDTO region, LocalDate today);
+    void registerEvolution(List<RegionDTO> worlds, List<RegionDTO> continents, List<RegionDTO> countries, LocalDate date);
 
     void removeAll();
 
