@@ -10,6 +10,7 @@ import {
   YAxis,
 } from "recharts";
 import recordEvolutionApi from "../api/RecordEvolutionApi";
+import wcaEventApi from "../api/WcaEventApi";
 import { Evolution } from "../model/RecordEvolution";
 import { millsToDate } from "../util/DateUtil";
 import formatResult from "../util/result.util";
@@ -23,20 +24,28 @@ const LINES = [
 export const RecordEvolutionPage = () => {
   const [data, setData] = useState<Evolution[]>([]);
   const [eventId, setEventId] = useState("555bf");
-  const [loading, setLoading] = useState(false);
   const [options, setOptions] = useState([
     { label: "555 BLD", value: "555bf" },
   ]);
 
   const fetchData = useCallback((eventId: string) => {
-    setLoading(true);
     recordEvolutionApi
       .getEvolution(eventId)
       .then((response) => {
         setData(response.data.evolution);
       })
-      .catch(() => message.error("Failed to search."))
-      .finally(() => setLoading(false));
+      .catch(() => message.error("Failed to search."));
+  }, []);
+
+  const fetchEvents = useCallback(() => {
+    wcaEventApi
+      .list()
+      .then((response) => {
+        setOptions(
+          response.data.map((it) => ({ label: it.name, value: it.id }))
+        );
+      })
+      .catch(() => message.error("Failed to search."));
   }, []);
 
   const handleChange = useCallback((eventId: string) => {
@@ -44,6 +53,7 @@ export const RecordEvolutionPage = () => {
   }, []);
 
   useEffect(() => fetchData(eventId), [fetchData, eventId]);
+  useEffect(fetchEvents, [fetchEvents]);
 
   return (
     <div>
