@@ -1,3 +1,2 @@
-export const millsToDate = (mills: number) => {
-  return new Date(mills).toISOString().split("T")[0];
-};
+export const millsToDate = (mills: number) =>
+  new Date(mills).toISOString().split("T")[0];
