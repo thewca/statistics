@@ -1,11 +1,11 @@
 package org.worldcubeassociation.statistics.service;
 
-import org.worldcubeassociation.statistics.model.Event;
+import org.worldcubeassociation.statistics.dto.EventDto;
 
 import java.util.List;
 
 public interface EventService {
-    List<Event> findAll();
+    List<EventDto> findAll();
 
-    List<Event> getEvents(List<String> eventIds);
+    List<EventDto> getEvents(List<String> eventIds);
 }
