@@ -2,8 +2,6 @@ import { message } from "antd";
 import { useCallback, useEffect, useState } from "react";
 import {
   CartesianGrid,
-  Label,
-  LabelList,
   Legend,
   Line,
   LineChart,
@@ -13,6 +11,7 @@ import {
 } from "recharts";
 import recordEvolutionApi from "../api/RecordEvolutionApi";
 import { Evolution } from "../model/RecordEvolution";
+import { millsToDate } from "../util/DateUtil";
 
 const LINES = [
   { key: 1, color: "#82ca9d" },
@@ -41,34 +40,36 @@ export const RecordEvolutionPage = () => {
   return (
     <div>
       <h1 className="page-title">Record Evolution</h1>
-      <LineChart
-        width={0.9 * window.innerWidth}
-        height={0.7 * window.innerHeight}
-        data={data}
-        style={{ margin: "0 auto" }}
-      >
-        <CartesianGrid strokeDasharray="3 3" />
-        <XAxis
-          dataKey={(it) => {
-            console.log(it.date);
-            // debugger;
-            return new Date(it.date).getTime();
-          }}
-        />
-        <YAxis />
-        <Tooltip />
-        <Legend />
-        {LINES.map((it) => (
-          <Line
-            key={it.key}
-            type="monotone"
-            dataKey={`best${it.key}`}
-            name={`WR ${it.key}`}
-            stroke={it.color}
-            strokeWidth={3}
-          ></Line>
-        ))}
-      </LineChart>
+      {data.length > 0 && (
+        <LineChart
+          width={0.9 * window.innerWidth}
+          height={0.7 * window.innerHeight}
+          data={data}
+          style={{ margin: "0 auto" }}
+        >
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis
+            dataKey={(it) => new Date(it.date).getTime()}
+            domain={["auto", "auto"]}
+            name="Time"
+            tickFormatter={(mills) => millsToDate(mills)}
+            type="number"
+          />
+          <YAxis />
+          <Tooltip />
+          <Legend />
+          {LINES.map((it) => (
+            <Line
+              key={it.key}
+              type="monotone"
+              dataKey={`best${it.key}`}
+              name={`WR ${it.key}`}
+              stroke={it.color}
+              strokeWidth={3}
+            ></Line>
+          ))}
+        </LineChart>
+      )}
     </div>
   );
 };
