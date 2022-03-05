@@ -1,4 +1,5 @@
 import { Button, message, Select } from "antd";
+import { isEqual, omit } from "lodash";
 import { useCallback, useEffect, useState } from "react";
 import {
   CartesianGrid,
@@ -13,7 +14,6 @@ import {
 } from "recharts";
 import { CategoricalChartState } from "recharts/types/chart/generateCategoricalChart";
 import recordEvolutionApi from "../api/RecordEvolutionApi";
-import wcaEventApi from "../api/WcaEventApi";
 import { Evolution } from "../model/RecordEvolution";
 import { millsToDate } from "../util/DateUtil";
 import formatResult from "../util/result.util";
@@ -38,15 +38,24 @@ export const RecordEvolutionPage = () => {
     recordEvolutionApi
       .getEvolution(eventId)
       .then((response) => {
-        setData(response.data.evolution);
-        setFilteredData(response.data.evolution);
+        // Removes repeated dots
+        let nonRedundant = response.data.evolution.filter(
+          (it, i) =>
+            i === 0 ||
+            !isEqual(
+              omit(it, ["date"]),
+              omit(response.data.evolution[i - 1], ["date"])
+            )
+        );
+        setData(nonRedundant);
+        setFilteredData(nonRedundant);
       })
       .catch(() => message.error("Failed to search."));
   }, []);
 
   const fetchEvents = useCallback(() => {
-    wcaEventApi
-      .list()
+    recordEvolutionApi
+      .getAvailableEvents()
       .then((response) => {
         setEventId(response.data[0].id);
         setOptions(
@@ -156,3 +165,6 @@ export const RecordEvolutionPage = () => {
     </div>
   );
 };
+function ommit(it: Evolution): any {
+  throw new Error("Function not implemented.");
+}

@@ -1,4 +1,5 @@
 import Axios from "axios";
+import Event from "../model/Event";
 import { RecordEvolution } from "../model/RecordEvolution";
 
 class RecordEvolutionApi {
@@ -11,6 +12,8 @@ class RecordEvolutionApi {
   getEvolution = (eventId: string) => {
     return Axios.get<RecordEvolution>(`${this.BASE_URL}/${eventId}`);
   };
+
+  getAvailableEvents = () => Axios.get<Event[]>(`${this.BASE_URL}/event`);
 }
 
 const recordEvolutionApi = new RecordEvolutionApi();
