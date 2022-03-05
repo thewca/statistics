@@ -21,8 +21,12 @@ body {
   text-transform: uppercase;
 }
 
+.align-center,
 .page-title {
   text-align: center;
+}
+
+.page-title {
   font-weight: bolder;
   color: rgb(130, 130, 130);
 }

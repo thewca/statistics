@@ -1,4 +1,4 @@
-import { message } from "antd";
+import { message, Select } from "antd";
 import { useCallback, useEffect, useState } from "react";
 import {
   CartesianGrid,
@@ -24,6 +24,9 @@ export const RecordEvolutionPage = () => {
   const [data, setData] = useState<Evolution[]>([]);
   const [eventId, setEventId] = useState("555bf");
   const [loading, setLoading] = useState(false);
+  const [options, setOptions] = useState([
+    { label: "555 BLD", value: "555bf" },
+  ]);
 
   const fetchData = useCallback((eventId: string) => {
     setLoading(true);
@@ -36,11 +39,23 @@ export const RecordEvolutionPage = () => {
       .finally(() => setLoading(false));
   }, []);
 
+  const handleChange = useCallback((eventId: string) => {
+    setEventId(eventId);
+  }, []);
+
   useEffect(() => fetchData(eventId), [fetchData, eventId]);
 
   return (
     <div>
       <h1 className="page-title">Record Evolution</h1>
+      <div className="align-center">
+        <Select
+          value={eventId}
+          onChange={handleChange}
+          options={options}
+          style={{ width: "50%" }}
+        />
+      </div>
       {data.length > 0 && (
         <LineChart
           width={0.9 * window.innerWidth}
