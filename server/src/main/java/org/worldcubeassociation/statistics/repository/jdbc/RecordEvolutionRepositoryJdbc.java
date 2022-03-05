@@ -5,7 +5,7 @@ import org.worldcubeassociation.statistics.dto.besteverrank.RegionDTO;
 import java.time.LocalDate;
 
 public interface RecordEvolutionRepositoryJdbc {
-    void upsert(RegionDTO region, LocalDate today);
+    void upsert(RegionDTO region, String eventId, LocalDate today);
 
     int removeAll();
 }

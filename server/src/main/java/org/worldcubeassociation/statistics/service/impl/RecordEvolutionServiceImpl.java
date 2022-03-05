@@ -1,28 +1,31 @@
 package org.worldcubeassociation.statistics.service.impl;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.worldcubeassociation.statistics.dto.besteverrank.RegionDTO;
-import org.worldcubeassociation.statistics.dto.recordevolution.EvolutionDto;
+import org.worldcubeassociation.statistics.dto.recordevolution.RecordEvolutionDto;
 import org.worldcubeassociation.statistics.exception.NotFoundException;
+import org.worldcubeassociation.statistics.model.RecordEvolution;
 import org.worldcubeassociation.statistics.repository.RecordEvolutionRepository;
 import org.worldcubeassociation.statistics.service.RecordEvolutionService;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @Slf4j
 @Service
 public class RecordEvolutionServiceImpl implements RecordEvolutionService {
     private final RecordEvolutionRepository repository;
+    private final ObjectMapper objectMapper;
 
-    public RecordEvolutionServiceImpl(RecordEvolutionRepository repository) {
+    public RecordEvolutionServiceImpl(RecordEvolutionRepository repository, ObjectMapper objectMapper) {
         this.repository = repository;
+        this.objectMapper = objectMapper;
     }
 
     @Override
-    public void registerEvolution(List<RegionDTO> worlds, List<RegionDTO> continents, List<RegionDTO> countries, LocalDate date) {
-        repository.upsert(worlds.get(0), date);
+    public void registerEvolution(RegionDTO world, String eventId, LocalDate date) {
+        repository.upsert(world, eventId, date);
     }
 
     @Override
@@ -33,8 +36,8 @@ public class RecordEvolutionServiceImpl implements RecordEvolutionService {
     }
 
     @Override
-    public List<EvolutionDto> getRecordEvolution(String region) {
-        return repository.findById(region).orElseThrow(() -> new NotFoundException("No record evolution with region " + region)).getEvolution();
-
+    public RecordEvolutionDto getRecordEvolution(String eventId) {
+        RecordEvolution recordEvolution = repository.findById(eventId).orElseThrow(() -> new NotFoundException("No record evolution with event " + eventId));
+        return objectMapper.convertValue(recordEvolution, RecordEvolutionDto.class);
     }
 }

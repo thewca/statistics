@@ -17,7 +17,8 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 public class RecordEvolution extends BaseEntity {
     @Id
-    private String region;
+    @Column(name = "event_id")
+    private String eventId;
 
     @Type(type = "json")
     @Column(columnDefinition = "json", name = "evolution")

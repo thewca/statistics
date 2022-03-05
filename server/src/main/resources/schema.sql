@@ -19,7 +19,7 @@ create table if not exists best_ever_rank (
 );
 
 create table if not exists record_evolution (
-    region varchar(50) primary key,
+    event_id varchar(6) primary key,
     evolution json not null
 );
 

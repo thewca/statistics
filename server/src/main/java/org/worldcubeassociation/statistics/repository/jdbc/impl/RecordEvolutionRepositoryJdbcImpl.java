@@ -26,8 +26,8 @@ public class RecordEvolutionRepositoryJdbcImpl implements RecordEvolutionReposit
 
     @Override
     @Transactional
-    public void upsert(RegionDTO region, LocalDate today) {
-        MapSqlParameterSource paramsList = new MapSqlParameterSource().addValue(RecordEvolution.Fields.REGION.name(), region.getName()).addValue(RecordEvolution.Fields.EVOLUTION.name(), JsonUtil.convertToJson(workData(region, today)));
+    public void upsert(RegionDTO region, String eventId, LocalDate today) {
+        MapSqlParameterSource paramsList = new MapSqlParameterSource().addValue(RecordEvolution.Fields.EVENT_ID.name(), eventId).addValue(RecordEvolution.Fields.EVOLUTION.name(), JsonUtil.convertToJson(workData(region, today)));
 
         namedJdbcTemplate.update(StatisticsUtil.getQuery("recordevolution/upsert"), paramsList);
     }

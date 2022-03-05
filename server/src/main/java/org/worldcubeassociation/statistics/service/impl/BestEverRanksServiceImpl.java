@@ -105,7 +105,7 @@ public class BestEverRanksServiceImpl implements BestEverRanksService {
             }
 
             summarizeResults(todayCompetitors, worlds, continents, countries, date);
-            recordEvolutionService.registerEvolution(worlds, continents, countries, date);
+            recordEvolutionService.registerEvolution(worlds.get(0), eventId, date);
         }
 
         saveResults(event, worlds, continents, countries);
