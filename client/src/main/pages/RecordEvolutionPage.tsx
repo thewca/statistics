@@ -56,12 +56,11 @@ export const RecordEvolutionPage = () => {
             tickFormatter={(mills) => millsToDate(mills)}
             type="number"
           />
-          <YAxis
-            tickFormatter={(mills) =>
-              formatResult(mills, eventId, "average") as string
-            }
+          <YAxis tickFormatter={(mills) => formatResult(mills, eventId)} />
+          <Tooltip
+            formatter={(time: any) => formatResult(time, eventId)}
+            labelFormatter={(mills) => millsToDate(mills)}
           />
-          <Tooltip />
           <Legend />
           {LINES.map((it) => (
             <Line
@@ -71,7 +70,7 @@ export const RecordEvolutionPage = () => {
               name={`WR ${it.key}`}
               stroke={it.color}
               strokeWidth={3}
-            ></Line>
+            />
           ))}
         </LineChart>
       )}

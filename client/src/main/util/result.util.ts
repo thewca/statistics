@@ -1,8 +1,12 @@
 export type ResultType = "average" | "single";
 
-const formatResult = (result: number, event_id: string, type: ResultType) => {
+const formatResult = (
+  result: number,
+  event_id: string,
+  type: ResultType = "average"
+): string => {
   if (result == null) {
-    return null;
+    return "";
   }
   if (result === -2) {
     return "DNS";
@@ -18,7 +22,7 @@ const formatResult = (result: number, event_id: string, type: ResultType) => {
     if (type === "average") {
       return (result / 100).toFixed(2);
     }
-    return result;
+    return "" + result;
   }
   if (event_id === "333mbf") {
     if (type === "single") {
