@@ -12,6 +12,7 @@ import {
 import recordEvolutionApi from "../api/RecordEvolutionApi";
 import { Evolution } from "../model/RecordEvolution";
 import { millsToDate } from "../util/DateUtil";
+import formatResult from "../util/result.util";
 
 const LINES = [
   { key: 1, color: "#82ca9d" },
@@ -55,7 +56,11 @@ export const RecordEvolutionPage = () => {
             tickFormatter={(mills) => millsToDate(mills)}
             type="number"
           />
-          <YAxis />
+          <YAxis
+            tickFormatter={(mills) =>
+              formatResult(mills, eventId, "average") as string
+            }
+          />
           <Tooltip />
           <Legend />
           {LINES.map((it) => (
