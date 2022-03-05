@@ -1,4 +1,4 @@
-import { message, Select } from "antd";
+import { Button, message, Select } from "antd";
 import { useCallback, useEffect, useState } from "react";
 import {
   CartesianGrid,
@@ -105,50 +105,53 @@ export const RecordEvolutionPage = () => {
         />
       </div>
       {filteredData.length > 0 && (
-        <ResponsiveContainer width="100%" height={0.7 * window.innerHeight}>
-          <LineChart
-            width={0.9 * window.innerWidth}
-            height={0.7 * window.innerHeight}
-            data={filteredData}
-            style={{ margin: "0 auto" }}
-            onMouseDown={handleMouseDown}
-            onMouseMove={handleMouseMove}
-            onMouseUp={() => handleMouseUp(leftChartDate, rightChartDate)}
-          >
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis
-              dataKey={(it) => new Date(it.date).getTime()}
-              tickFormatter={(mills) => millsToDate(mills)}
-              allowDataOverflow
-              domain={["dataMin", "dataMax"]}
-              type="number"
-            />
+        <>
+          <Button onClick={() => setFilteredData(data)}>Zoom Out</Button>
+          <ResponsiveContainer width="100%" height={0.7 * window.innerHeight}>
+            <LineChart
+              width={0.9 * window.innerWidth}
+              height={0.7 * window.innerHeight}
+              data={filteredData}
+              style={{ margin: "0 auto" }}
+              onMouseDown={handleMouseDown}
+              onMouseMove={handleMouseMove}
+              onMouseUp={() => handleMouseUp(leftChartDate, rightChartDate)}
+            >
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis
+                dataKey={(it) => new Date(it.date).getTime()}
+                tickFormatter={(mills) => millsToDate(mills)}
+                allowDataOverflow
+                domain={["dataMin", "dataMax"]}
+                type="number"
+              />
 
-            <YAxis tickFormatter={(mills) => formatResult(mills, eventId!)} />
-            <Tooltip
-              formatter={(time: any) => formatResult(time, eventId!)}
-              labelFormatter={(mills) => millsToDate(mills)}
-            />
-            <Legend />
-            {LINES.map((it) => (
-              <Line
-                key={it.key}
-                type="monotone"
-                dataKey={`best${it.key}`}
-                name={`WR ${it.key}`}
-                stroke={it.color}
-                strokeWidth={3}
+              <YAxis tickFormatter={(mills) => formatResult(mills, eventId!)} />
+              <Tooltip
+                formatter={(time: any) => formatResult(time, eventId!)}
+                labelFormatter={(mills) => millsToDate(mills)}
               />
-            ))}
-            {leftChartDate && rightChartDate ? (
-              <ReferenceArea
-                x1={leftChartDate}
-                x2={rightChartDate}
-                strokeOpacity={0.3}
-              />
-            ) : null}
-          </LineChart>
-        </ResponsiveContainer>
+              <Legend />
+              {LINES.map((it) => (
+                <Line
+                  key={it.key}
+                  type="monotone"
+                  dataKey={`best${it.key}`}
+                  name={`WR ${it.key}`}
+                  stroke={it.color}
+                  strokeWidth={3}
+                />
+              ))}
+              {leftChartDate && rightChartDate ? (
+                <ReferenceArea
+                  x1={leftChartDate}
+                  x2={rightChartDate}
+                  strokeOpacity={0.3}
+                />
+              ) : null}
+            </LineChart>
+          </ResponsiveContainer>
+        </>
       )}
     </div>
   );
