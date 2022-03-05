@@ -5,6 +5,7 @@ import {
   Legend,
   Line,
   LineChart,
+  ResponsiveContainer,
   Tooltip,
   XAxis,
   YAxis,
@@ -67,37 +68,39 @@ export const RecordEvolutionPage = () => {
         />
       </div>
       {data.length > 0 && (
-        <LineChart
-          width={0.9 * window.innerWidth}
-          height={0.7 * window.innerHeight}
-          data={data}
-          style={{ margin: "0 auto" }}
-        >
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis
-            dataKey={(it) => new Date(it.date).getTime()}
-            domain={["auto", "auto"]}
-            name="Time"
-            tickFormatter={(mills) => millsToDate(mills)}
-            type="number"
-          />
-          <YAxis tickFormatter={(mills) => formatResult(mills, eventId)} />
-          <Tooltip
-            formatter={(time: any) => formatResult(time, eventId)}
-            labelFormatter={(mills) => millsToDate(mills)}
-          />
-          <Legend />
-          {LINES.map((it) => (
-            <Line
-              key={it.key}
-              type="monotone"
-              dataKey={`best${it.key}`}
-              name={`WR ${it.key}`}
-              stroke={it.color}
-              strokeWidth={3}
+        <ResponsiveContainer width="100%" height={0.7 * window.innerHeight}>
+          <LineChart
+            width={0.9 * window.innerWidth}
+            height={0.7 * window.innerHeight}
+            data={data}
+            style={{ margin: "0 auto" }}
+          >
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis
+              dataKey={(it) => new Date(it.date).getTime()}
+              domain={["auto", "auto"]}
+              name="Time"
+              tickFormatter={(mills) => millsToDate(mills)}
+              type="number"
             />
-          ))}
-        </LineChart>
+            <YAxis tickFormatter={(mills) => formatResult(mills, eventId)} />
+            <Tooltip
+              formatter={(time: any) => formatResult(time, eventId)}
+              labelFormatter={(mills) => millsToDate(mills)}
+            />
+            <Legend />
+            {LINES.map((it) => (
+              <Line
+                key={it.key}
+                type="monotone"
+                dataKey={`best${it.key}`}
+                name={`WR ${it.key}`}
+                stroke={it.color}
+                strokeWidth={3}
+              />
+            ))}
+          </LineChart>
+        </ResponsiveContainer>
       )}
     </div>
   );
