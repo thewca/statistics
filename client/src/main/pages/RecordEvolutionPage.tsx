@@ -19,9 +19,12 @@ import { millsToDate } from "../util/DateUtil";
 import formatResult from "../util/result.util";
 
 const LINES = [
-  { key: 1, color: "#82ca9d" },
-  { key: 10, color: "#8884d8" },
-  { key: 100, color: "#ff7300" },
+  { key: 1, type: "best", label: "Single", color: "#82ca9d" },
+  { key: 1, type: "avg", label: "Average", color: "#82ca9d" },
+  { key: 10, type: "best", label: "Single", color: "#8884d8" },
+  { key: 10, type: "avg", label: "Average", color: "#8884d8" },
+  { key: 100, type: "best", label: "Single", color: "#ff7300" },
+  { key: 100, type: "avg", label: "Average", color: "#ff7300" },
 ];
 
 const omitDate = (evolution: Evolution) => omit(evolution, ["date"]);
@@ -142,12 +145,13 @@ export const RecordEvolutionPage = () => {
               <Legend />
               {LINES.map((it) => (
                 <Line
-                  key={it.key}
+                  key={it.type + it.key}
                   type="monotone"
-                  dataKey={`best${it.key}`}
-                  name={`WR ${it.key}`}
+                  dataKey={it.type + it.key}
+                  name={`${it.label} ${it.key}`}
                   stroke={it.color}
                   strokeWidth={3}
+                  dot={false}
                 />
               ))}
               {leftChartDate && rightChartDate ? (

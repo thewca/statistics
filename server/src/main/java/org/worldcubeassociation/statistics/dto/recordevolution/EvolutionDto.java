@@ -8,4 +8,7 @@ public class EvolutionDto {
     private Integer best1;
     private Integer best10;
     private Integer best100;
+    private Integer avg1;
+    private Integer avg10;
+    private Integer avg100;
 }

@@ -56,14 +56,15 @@ public class RecordEvolutionRepositoryJdbcImpl implements RecordEvolutionReposit
         Map<String, Object> result = new HashMap<>();
         result.put("date", today.toString());
         for (int index : BEST) {
-            maybeAddValue(index, region.getSingles(), result);
+            maybeAddValue(index, region.getSingles(), result, "best");
+            maybeAddValue(index, region.getAverages(), result, "avg");
         }
         return result;
     }
 
-    private void maybeAddValue(int index, List<Integer> results, Map<String, Object> result) {
+    private void maybeAddValue(int index, List<Integer> results, Map<String, Object> result, String type) {
         if (results.size() > index) {
-            result.put("best" + (index + 1), results.get(index));
+            result.put(type + (index + 1), results.get(index));
         }
     }
 }
