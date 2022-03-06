@@ -1,5 +1,30 @@
 export type ResultType = "average" | "single";
 
+const getMbldResult = (result: number) => {
+  let resultString = "" + result;
+
+  let missed = Number(
+    resultString.slice(resultString.length - 2, resultString.length)
+  );
+  let DD = Number(resultString.slice(0, 2));
+  let difference = 99 - DD;
+  let solved: number = difference + missed;
+  let attempted: number = solved + missed;
+
+  let seconds = Number(resultString.slice(2, 7));
+
+  let time = timeFormat(seconds * 100);
+  if (time.endsWith(".00")) {
+    time = time.slice(0, time.length - 3);
+  }
+  return [solved, attempted, time];
+};
+
+export const getMbldPoints = (result: number) => {
+  const [solved, attempted] = getMbldResult(result);
+  return 2 * (solved as number) - (attempted as number);
+};
+
 const formatResult = (
   result: number,
   event_id: string,
@@ -26,23 +51,7 @@ const formatResult = (
   }
   if (event_id === "333mbf") {
     if (type === "single") {
-      let resultString = "" + result;
-
-      let missed = Number(
-        resultString.slice(resultString.length - 2, resultString.length)
-      );
-      let DD = Number(resultString.slice(0, 2));
-      let difference = 99 - DD;
-      let solved = difference + missed;
-      let attempted = solved + missed;
-
-      let seconds = Number(resultString.slice(2, 7));
-
-      let time = timeFormat(seconds * 100);
-      if (time.endsWith(".00")) {
-        time = time.slice(0, time.length - 3);
-      }
-
+      const [solved, attempted, time] = getMbldResult(result);
       return `${solved}/${attempted} (${time})`;
     }
   }

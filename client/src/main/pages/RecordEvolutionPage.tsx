@@ -16,7 +16,7 @@ import { CategoricalChartState } from "recharts/types/chart/generateCategoricalC
 import recordEvolutionApi from "../api/RecordEvolutionApi";
 import { Evolution } from "../model/RecordEvolution";
 import { millsToDate } from "../util/DateUtil";
-import formatResult from "../util/result.util";
+import formatResult, { getMbldPoints } from "../util/result.util";
 
 const LINES = [
   { key: 1, type: "best", label: "Single", color: "#82ca9d" },
@@ -38,6 +38,9 @@ const getFormattedResult = (
   let result = value[type + key];
   if (!result) {
     return;
+  }
+  if (eventId === "333mbf") {
+    return getMbldPoints(result);
   }
   if (eventId === "333fm" && type === "best") {
     return 100 * result;
@@ -155,13 +158,23 @@ export const RecordEvolutionPage = () => {
 
               <YAxis
                 tickFormatter={(mills) =>
-                  formatResult(mills, eventId!, "average")
+                  formatResult(mills, eventId!, "single")
                 }
               />
               <Tooltip
-                formatter={(time: number, name: string) => {
+                formatter={(time: number, name: string, ...rest: any[]) => {
                   let isAverage = name.startsWith("Average");
                   let isSingleFmc = eventId === "333fm" && !isAverage;
+                  let isMbld = eventId === "333mbf";
+                  if (isMbld) {
+                    let result = rest[0];
+                    let resultType = result.name.replace("Single ", "best");
+                    return formatResult(
+                      result.payload[resultType],
+                      eventId!,
+                      "single"
+                    );
+                  }
                   return formatResult(
                     isSingleFmc ? time / 100 : time,
                     eventId!,
