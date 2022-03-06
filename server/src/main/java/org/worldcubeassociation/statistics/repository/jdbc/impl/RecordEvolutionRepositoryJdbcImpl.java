@@ -20,16 +20,19 @@ import java.util.Map;
 @Repository
 public class RecordEvolutionRepositoryJdbcImpl implements RecordEvolutionRepositoryJdbc {
     private final NamedParameterJdbcTemplate namedJdbcTemplate;
-    private final List<Integer> BEST = List.of(0, 9, 99);
+    private final JsonUtil jsonUtil;
 
-    public RecordEvolutionRepositoryJdbcImpl(NamedParameterJdbcTemplate namedJdbcTemplate) {
+    private static final List<Integer> BEST = List.of(0, 9, 99);
+
+    public RecordEvolutionRepositoryJdbcImpl(NamedParameterJdbcTemplate namedJdbcTemplate, JsonUtil jsonUtil) {
         this.namedJdbcTemplate = namedJdbcTemplate;
+        this.jsonUtil = jsonUtil;
     }
 
     @Override
     @Transactional
     public void upsert(RegionDTO region, String eventId, LocalDate today) {
-        MapSqlParameterSource paramsList = new MapSqlParameterSource().addValue(RecordEvolution.Fields.EVENT_ID.name(), eventId).addValue(RecordEvolution.Fields.EVOLUTION.name(), JsonUtil.convertToJson(workData(region, today)));
+        MapSqlParameterSource paramsList = new MapSqlParameterSource().addValue(RecordEvolution.Fields.EVENT_ID.name(), eventId).addValue(RecordEvolution.Fields.EVOLUTION.name(), jsonUtil.convertToJson(workData(region, today)));
 
         namedJdbcTemplate.update(StatisticsUtil.getQuery("recordevolution/upsert"), paramsList);
     }

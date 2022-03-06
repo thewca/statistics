@@ -1,7 +1,6 @@
 package org.worldcubeassociation.statistics.repository.jdbc.impl;
 
 import org.simpleflatmapper.jdbc.spring.JdbcTemplateMapperFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -21,12 +20,18 @@ import java.util.List;
 
 @Repository
 public class BestEverRanksRepositoryJdbcImpl implements BestEverRanksRepositoryJdbc {
-    @Autowired
-    private NamedParameterJdbcTemplate namedJdbcTemplate;
+
+    private final NamedParameterJdbcTemplate namedJdbcTemplate;
+    private JsonUtil jsonUtil;
 
     private static final String EVENT_ID = "EVENT_ID";
     private static final String DATE = "DATE";
     private static final String COMPETITION = "COMPETITION";
+
+    public BestEverRanksRepositoryJdbcImpl(NamedParameterJdbcTemplate namedJdbcTemplate, JsonUtil jsonUtil) {
+        this.namedJdbcTemplate = namedJdbcTemplate;
+        this.jsonUtil = jsonUtil;
+    }
 
     @Override
     public List<LocalDate> getDates(String eventId) {
@@ -73,7 +78,7 @@ public class BestEverRanksRepositoryJdbcImpl implements BestEverRanksRepositoryJ
                 .stream()
                 .map(ber -> new MapSqlParameterSource()
                         .addValue(BestEverRank.Fields.PERSON_ID.name(), ber.getPersonId())
-                        .addValue(BestEverRank.Fields.EVENT_RANKS.name(), JsonUtil.convertToJsonArray(ber.getEventRanks()))
+                        .addValue(BestEverRank.Fields.EVENT_RANKS.name(), jsonUtil.convertToJsonArray(ber.getEventRanks()))
                 )
                 .toArray(MapSqlParameterSource[]::new);
 

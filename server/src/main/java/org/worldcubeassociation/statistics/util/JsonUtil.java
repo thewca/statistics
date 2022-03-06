@@ -2,27 +2,30 @@ package org.worldcubeassociation.statistics.util;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-public final class JsonUtil {
-    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+@Component
+public class JsonUtil {
+    private final ObjectMapper objectMapper;
 
-    private JsonUtil() {
+    public JsonUtil(ObjectMapper objectMapper) {
+        this.objectMapper = objectMapper;
     }
 
-    public static Object convertToJsonArray(List<? extends Object> objects) {
+    public Object convertToJsonArray(List<? extends Object> objects) {
         try {
-            return OBJECT_MAPPER.writeValueAsString(objects);
+            return objectMapper.writeValueAsString(objects);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
         return "[]";
     }
 
-    public static Object convertToJson(Object object) {
+    public Object convertToJson(Object object) {
         try {
-            return OBJECT_MAPPER.writeValueAsString(object);
+            return objectMapper.writeValueAsString(object);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
