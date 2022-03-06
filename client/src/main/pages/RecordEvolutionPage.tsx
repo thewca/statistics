@@ -157,9 +157,13 @@ export const RecordEvolutionPage = () => {
               />
 
               <YAxis
-                tickFormatter={(mills) =>
-                  formatResult(mills, eventId!, "single")
-                }
+                tickFormatter={(mills) => {
+                  let isMbld = eventId === "333mbf";
+                  if (isMbld) {
+                    return "" + mills;
+                  }
+                  return formatResult(mills, eventId!, "single");
+                }}
               />
               <Tooltip
                 formatter={(time: number, name: string, ...rest: any[]) => {
