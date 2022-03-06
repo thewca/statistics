@@ -29,6 +29,22 @@ const LINES = [
 
 const omitDate = (evolution: Evolution) => omit(evolution, ["date"]);
 
+const getFormattedResult = (
+  value: any,
+  eventId: string,
+  type: string,
+  key: number
+) => {
+  let result = value[type + key];
+  if (!result) {
+    return;
+  }
+  if (eventId === "333fm" && type === "best") {
+    return 100 * result;
+  }
+  return result;
+};
+
 export const RecordEvolutionPage = () => {
   const [data, setData] = useState<Evolution[]>([]);
   const [filteredData, setFilteredData] = useState<Evolution[]>([]);
@@ -137,9 +153,21 @@ export const RecordEvolutionPage = () => {
                 type="number"
               />
 
-              <YAxis tickFormatter={(mills) => formatResult(mills, eventId!)} />
+              <YAxis
+                tickFormatter={(mills) =>
+                  formatResult(mills, eventId!, "average")
+                }
+              />
               <Tooltip
-                formatter={(time: any) => formatResult(time, eventId!)}
+                formatter={(time: number, name: string) => {
+                  let isAverage = name.startsWith("Average");
+                  let isSingleFmc = eventId === "333fm" && !isAverage;
+                  return formatResult(
+                    isSingleFmc ? time / 100 : time,
+                    eventId!,
+                    isAverage ? "average" : "single"
+                  );
+                }}
                 labelFormatter={(mills) => millsToDate(mills)}
               />
               <Legend />
@@ -147,7 +175,9 @@ export const RecordEvolutionPage = () => {
                 <Line
                   key={it.type + it.key}
                   type="monotone"
-                  dataKey={it.type + it.key}
+                  dataKey={(res) =>
+                    getFormattedResult(res, eventId!, it.type, it.key)
+                  }
                   name={`${it.label} ${it.key}`}
                   stroke={it.color}
                   strokeWidth={3}

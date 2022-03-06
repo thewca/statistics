@@ -3,7 +3,7 @@ export type ResultType = "average" | "single";
 const formatResult = (
   result: number,
   event_id: string,
-  type: ResultType = "average"
+  type: ResultType
 ): string => {
   if (result == null) {
     return "";
