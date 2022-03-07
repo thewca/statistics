@@ -29,6 +29,9 @@ const LINES = [
 
 const omitDate = (evolution: Evolution) => omit(evolution, ["date"]);
 
+// Unfortunately, there is a lot of workaround here. This is the price we are paying for using best ever ranks to compute record evolution.
+// All the 'if'
+
 const getFormattedResult = (
   value: any,
   eventId: string,
