@@ -92,11 +92,6 @@ public class BestEverRanksServiceImpl implements BestEverRanksService {
 
         int currentYear = -1;
         for (LocalDate date : dates) {
-            // TODO remove. This is just for speeding up dev
-            if (date.getYear() > 2013){
-                break;
-            }
-
             // Just to get a track of how long it's been
             if (date.getYear() != currentYear) {
                 currentYear = date.getYear();
