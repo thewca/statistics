@@ -1,16 +1,17 @@
 package org.worldcubeassociation.statistics.repository.jdbc.impl;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.simpleflatmapper.jdbc.spring.JdbcTemplateMapperFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import org.worldcubeassociation.statistics.dto.besteverrank.*;
+import org.worldcubeassociation.statistics.dto.besteverrank.CompetitorContinentDTO;
+import org.worldcubeassociation.statistics.dto.besteverrank.CompetitorCountryDTO;
+import org.worldcubeassociation.statistics.dto.besteverrank.CompetitorWorldDTO;
+import org.worldcubeassociation.statistics.dto.besteverrank.ResultsDTO;
 import org.worldcubeassociation.statistics.model.BestEverRank;
 import org.worldcubeassociation.statistics.repository.jdbc.BestEverRanksRepositoryJdbc;
+import org.worldcubeassociation.statistics.util.JsonUtil;
 import org.worldcubeassociation.statistics.util.StatisticsUtil;
 
 import java.time.LocalDate;
@@ -19,15 +20,18 @@ import java.util.List;
 
 @Repository
 public class BestEverRanksRepositoryJdbcImpl implements BestEverRanksRepositoryJdbc {
-    @Autowired
-    private NamedParameterJdbcTemplate namedJdbcTemplate;
 
-    @Autowired
-    private ObjectMapper objectMapper;
+    private final NamedParameterJdbcTemplate namedJdbcTemplate;
+    private JsonUtil jsonUtil;
 
     private static final String EVENT_ID = "EVENT_ID";
     private static final String DATE = "DATE";
     private static final String COMPETITION = "COMPETITION";
+
+    public BestEverRanksRepositoryJdbcImpl(NamedParameterJdbcTemplate namedJdbcTemplate, JsonUtil jsonUtil) {
+        this.namedJdbcTemplate = namedJdbcTemplate;
+        this.jsonUtil = jsonUtil;
+    }
 
     @Override
     public List<LocalDate> getDates(String eventId) {
@@ -74,7 +78,7 @@ public class BestEverRanksRepositoryJdbcImpl implements BestEverRanksRepositoryJ
                 .stream()
                 .map(ber -> new MapSqlParameterSource()
                         .addValue(BestEverRank.Fields.PERSON_ID.name(), ber.getPersonId())
-                        .addValue(BestEverRank.Fields.EVENT_RANKS.name(), convertToJson(ber.getEventRanks()))
+                        .addValue(BestEverRank.Fields.EVENT_RANKS.name(), jsonUtil.convertToJsonArray(ber.getEventRanks()))
                 )
                 .toArray(MapSqlParameterSource[]::new);
 
@@ -90,15 +94,4 @@ public class BestEverRanksRepositoryJdbcImpl implements BestEverRanksRepositoryJ
         return namedJdbcTemplate
                 .update(StatisticsUtil.getQuery("besteverranks/removeAll"), new HashMap<>());
     }
-
-    private Object convertToJson(List<EventRankDTO> eventRanks) {
-        try {
-            return objectMapper.writeValueAsString(eventRanks);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-        return "[]";
-    }
-
-
 }
