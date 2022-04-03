@@ -26,8 +26,10 @@ queries:
               inner join Competitions c on r.competitionId = c.id
               inner join RoundTypes rt on r.roundTypeId = rt.id
               inner join Events e on r.eventId = e.id
+              inner join Formats f on r.formatId = f.id
           where
               e.`rank` < 900 -- Active events
+              and sort_by = 'average'
       ),
       first_results as (
           select
