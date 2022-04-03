@@ -197,9 +197,9 @@ const StatisticsDisplay = () => {
           {!!statistics?.explanation && (
             <h4 className="explanation">{statistics.explanation}</h4>
           )}
-          {statistics?.lastModified && (
+          {statistics?.exportDate && (
             <h4 className="explanation">
-              Computed at: {statistics.lastModified}
+              Export date: {statistics.exportDate}
             </h4>
           )}
         </Col>
