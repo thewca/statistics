@@ -5,14 +5,12 @@ services:
     build:
       context: server
       dockerfile: Dockerfile
-    restart: always
     network_mode: host
 
   client:
     build:
       context: client
       dockerfile: Dockerfile
-    restart: always
     depends_on:
       - server
     network_mode: host
