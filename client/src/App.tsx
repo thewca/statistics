@@ -13,6 +13,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
 import statisticsApi from "./main/api/statistics.api";
 import Footer from "./main/components/Footer";
+import { LoginRequired } from "./main/components/LoginRequired";
 import StatisticsDisplay from "./main/components/StatisticsDisplay";
 import Topbar from "./main/components/Topbar";
 import { errorInterceptor, requestIntercetor } from "./main/config/interceptor";
@@ -103,7 +104,13 @@ function App() {
               <Route
                 key={link.href}
                 path={link.href}
-                element={link.component}
+                element={
+                  !link.requiresLogin || authCtx.isLogged ? (
+                    link.component
+                  ) : (
+                    <LoginRequired />
+                  )
+                }
               />
             ))}
             <Route
