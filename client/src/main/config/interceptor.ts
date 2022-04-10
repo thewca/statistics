@@ -13,7 +13,6 @@ export const errorInterceptor = (response: AxiosError) => {
   } else if (response.response?.status === 401) {
     // Refresh screen so the login process can start
     deleteStorageItems();
-    window.location.href = "/";
   }
   return Promise.reject(response);
 };

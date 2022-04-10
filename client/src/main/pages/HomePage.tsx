@@ -41,9 +41,9 @@ const Home = ({ statisticsList, loading }: HomePageProps) => {
             </p>
 
             <p>
-              We try always to add new statistics. You can suggest one by
-              reaching the WCA Software Team. If that's widely interesting and
-              feasible to implement, we might add it!
+              You can suggest a new statistic by reaching the WCA Software Team.
+              If that's widely interesting and feasible to implement, we might
+              add it!
             </p>
 
             {statisticsList && (
