@@ -9,10 +9,11 @@ import {
 import { message } from "antd";
 import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
 import statisticsApi from "./main/api/statistics.api";
 import Footer from "./main/components/Footer";
+import { LoginRequired } from "./main/components/LoginRequired";
 import StatisticsDisplay from "./main/components/StatisticsDisplay";
 import Topbar from "./main/components/Topbar";
 import { errorInterceptor, requestIntercetor } from "./main/config/interceptor";
@@ -89,35 +90,39 @@ function App() {
       icon: <RiseOutlined />,
       component: <BestEverRanksPage />,
     },
-  ]
-    // Filter logged area
-    .filter((it) => !it.requiresLogin || authCtx.isLogged);
+  ];
 
   useEffect(getStatisticsList, []);
 
   return (
-    <Router>
+    <BrowserRouter>
       <div id="page-container">
         <Topbar links={links} statisticsGroups={statisticsList?.list} />
         <div id="content-wrapper">
-          <Switch>
+          <Routes>
             {links.map((link) => (
-              <Route key={link.href} path={link.href} exact={link.exact}>
-                {link.component}
-              </Route>
+              <Route
+                key={link.href}
+                path={link.href}
+                element={
+                  !link.requiresLogin || authCtx.isLogged ? (
+                    link.component
+                  ) : (
+                    <LoginRequired />
+                  )
+                }
+              />
             ))}
             <Route
               path="/statistics-list/:pathId"
-              component={StatisticsDisplay}
+              element={<StatisticsDisplay />}
             />
-            <Route path="*">
-              <NotFoundPage />
-            </Route>
-          </Switch>
+            <Route path="*" element={<NotFoundPage />} />
+          </Routes>
         </div>
         <Footer />
       </div>
-    </Router>
+    </BrowserRouter>
   );
 }
 

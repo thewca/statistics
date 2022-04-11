@@ -97,10 +97,6 @@ export const AuthContextProvider = (props: any) => {
     setIsLogged(false);
     setToken("");
     setUserInfo(undefined);
-
-    // Return to home after logout
-    // TODO do this only for pages that requires login
-    window.location.href = "/";
   };
 
   const contextValue = {

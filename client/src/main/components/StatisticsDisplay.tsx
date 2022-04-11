@@ -10,12 +10,8 @@ import { getQueryParameter, setQueryParameter } from "../util/query.param.util";
 import "./StatisticsDisplay.css";
 import StatisticsTable from "./StatisticsTable";
 
-interface StatisticsDisplayProps {
-  pathId: string;
-}
-
 const StatisticsDisplay = () => {
-  const { pathId } = useParams<StatisticsDisplayProps>();
+  const { pathId } = useParams();
 
   const authCtx = useContext(AuthContext);
 
@@ -69,6 +65,10 @@ const StatisticsDisplay = () => {
   );
 
   useEffect(() => {
+    if (!pathId) {
+      return;
+    }
+
     setLoading(true);
     statisticsApi
       .getStatistic(pathId)
