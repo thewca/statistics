@@ -15,7 +15,7 @@ import {
 import { CategoricalChartState } from "recharts/types/chart/generateCategoricalChart";
 import recordEvolutionApi from "../api/RecordEvolutionApi";
 import { Evolution } from "../model/RecordEvolution";
-import { millsToDate } from "../util/DateUtil";
+import { formatToDate } from "../util/DateUtil";
 import formatResult, { getMbldPoints } from "../util/result.util";
 
 const LINES = [
@@ -153,7 +153,7 @@ export const RecordEvolutionPage = () => {
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis
                 dataKey={(it) => new Date(it.date).getTime()}
-                tickFormatter={(mills) => millsToDate(mills)}
+                tickFormatter={formatToDate}
                 allowDataOverflow
                 domain={["dataMin", "dataMax"]}
                 type="number"
@@ -188,7 +188,7 @@ export const RecordEvolutionPage = () => {
                     isAverage ? "average" : "single"
                   );
                 }}
-                labelFormatter={(mills) => millsToDate(mills)}
+                labelFormatter={formatToDate}
               />
               <Legend />
               {LINES.map((it) => (

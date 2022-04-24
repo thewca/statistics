@@ -27,7 +27,7 @@ public class BestEverRanksControllerIT extends AbstractTest {
     @Order(1)
     @MethodSource("listArguments")
     @DisplayName("List best ever rank")
-    @ParameterizedTest(name = "index {0} status {1} wcaId {2} reason {3}")
+    @ParameterizedTest(name = "{displayName} {0}: status {1} wcaId {2} reason {3}")
     public void list(int index, HttpStatus status, String wcaId, String reason) {
         Response response = given()
                 .spec(super.SPEC)
@@ -51,7 +51,7 @@ public class BestEverRanksControllerIT extends AbstractTest {
     @Order(2)
     @MethodSource("generateByEventsArguments")
     @DisplayName("Generate best ever rank by event")
-    @ParameterizedTest(name = "index {0} status {1} body {2} reason {3}")
+    @ParameterizedTest(name = "{displayName} {0}: status {1} body {2} reason {3}")
     public void generateByEvents(int index, HttpStatus status, Map<String, Object> body, String reason) {
         Response response = given()
                 .spec(super.SPEC)
@@ -76,7 +76,7 @@ public class BestEverRanksControllerIT extends AbstractTest {
     @Order(3)
     @MethodSource("generateAllArguments")
     @DisplayName("Generate all best ever ranks")
-    @ParameterizedTest(name = "index {0} status {1} reason {2}")
+    @ParameterizedTest(name = "{displayName} {0}: status {1} reason {2}")
     public void generateAll(int index, HttpStatus status, String reason) {
         Response response = given()
                 .spec(super.SPEC)

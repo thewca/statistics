@@ -4,8 +4,8 @@ import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.dao.DataAccessException;
 import org.springframework.data.util.Pair;
-import org.springframework.jdbc.BadSqlGrammarException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.worldcubeassociation.statistics.dto.DatabaseQueryBaseDTO;
@@ -15,6 +15,7 @@ import org.worldcubeassociation.statistics.request.DatabaseQueryRequest;
 import org.worldcubeassociation.statistics.rowmapper.ResultSetRowMapper;
 import org.worldcubeassociation.statistics.service.DatabaseQueryService;
 
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -46,20 +47,17 @@ public class DatabaseQueryServiceImpl implements DatabaseQueryService {
         DatabaseQueryDTO result = null;
         try {
             result = getResultSet(databaseQueryRequest);
-        } catch (BadSqlGrammarException e) {
+        } catch (DataAccessException | SQLException e) {
             log.info("{}", e.toString());
-            removeCachedToken(accessToken);
             throw new InvalidParameterException(e.getMessage());
-        } catch (Exception e) {
+        } finally {
             removeCachedToken(accessToken);
-            throw e;
         }
-        removeCachedToken(accessToken);
 
         return result;
     }
 
-    public DatabaseQueryDTO getResultSet(DatabaseQueryRequest databaseQueryRequest) {
+    public DatabaseQueryDTO getResultSet(DatabaseQueryRequest databaseQueryRequest) throws SQLException {
         String query = databaseQueryRequest.getSqlQuery();
         int page = databaseQueryRequest.getPage();
         int size = databaseQueryRequest.getSize();
@@ -169,7 +167,7 @@ public class DatabaseQueryServiceImpl implements DatabaseQueryService {
     }
 
     @Data
-    private class CachedToken implements Comparable<CachedToken> {
+    private static class CachedToken implements Comparable<CachedToken> {
         private String token;
         private LocalDateTime cacheTime;
 

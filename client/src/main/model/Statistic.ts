@@ -7,5 +7,5 @@ export interface Statistics {
   explanation?: string;
   statistics: StatisticsDetail[];
   title: string;
-  exportDate: Date;
+  exportDate: string;
 }

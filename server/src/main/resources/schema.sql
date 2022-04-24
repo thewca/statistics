@@ -8,6 +8,7 @@ create table if not exists statistics (
     group_name varchar(20) not null,
     statistics json not null,
     last_modified datetime not null,
+    export_date datetime not null,
     primary key (path)
 );
 
