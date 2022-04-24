@@ -239,6 +239,7 @@ public class StatisticsServiceImpl implements StatisticsService {
     private Statistics saveStatistics(StatisticsResponseDTO statisticsResponseDTO) {
         Statistics statistics = MAPPER.convertValue(statisticsResponseDTO, Statistics.class);
         statistics.setLastModified(LocalDateTime.now());
+        statistics.setExportDate(statisticsRepository.getExportDate());
         return statisticsRepository.save(statistics);
     }
 }
