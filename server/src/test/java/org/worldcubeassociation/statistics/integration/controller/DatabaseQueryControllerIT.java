@@ -1,6 +1,7 @@
 package org.worldcubeassociation.statistics.integration.controller;
 
 import io.restassured.response.Response;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -13,12 +14,13 @@ import java.util.stream.Stream;
 
 import static io.restassured.RestAssured.given;
 
+@DisplayName("Database query")
 @Sql({"/test-scripts/cleanTestData.sql", "/test-scripts/BestEverRanksControllerIT.sql"})
 public class DatabaseQueryControllerIT extends AbstractTest {
     private static final String BASE_PATH = "/database/";
 
     @MethodSource("queryArguments")
-    @ParameterizedTest(name = "index {0} status {1} token {2} body {3} reason {4}")
+    @ParameterizedTest(name = "{displayName} {0}: status {1} token {2} body {3} reason {4}")
     public void query(int index, HttpStatus status, String token, Map<String, Object> body, String reason) {
         Response response = given()
                 .spec(super.SPEC)
