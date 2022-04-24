@@ -6,7 +6,7 @@ import statisticsApi from "../api/statistics.api";
 import { DisplayMode, Statistics } from "../model/Statistic";
 import { StatisticsDetail } from "../model/StatisticsDetail";
 import AuthContext from "../store/auth-context";
-import { millsToDate } from "../util/DateUtil";
+import { formatToDate } from "../util/DateUtil";
 import { getQueryParameter, setQueryParameter } from "../util/query.param.util";
 import "./StatisticsDisplay.css";
 import StatisticsTable from "./StatisticsTable";
@@ -200,7 +200,7 @@ const StatisticsDisplay = () => {
           )}
           {statistics?.exportDate && (
             <h4 className="explanation">
-              Results until: {millsToDate(statistics.exportDate)}
+              Results until: {formatToDate(statistics.exportDate)}
             </h4>
           )}
         </Col>
