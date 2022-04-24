@@ -38,7 +38,8 @@ public class StatisticsServiceImpl implements StatisticsService {
     @Autowired
     private StatisticsRepository statisticsRepository;
 
-    private static final ObjectMapper MAPPER = new ObjectMapper();
+    @Autowired
+    private ObjectMapper objectMapper;
 
     private static final Yaml YAML = new Yaml();
 
@@ -192,15 +193,7 @@ public class StatisticsServiceImpl implements StatisticsService {
     public StatisticsResponseDTO getStatistic(String path) {
         Statistics statistics = statisticsRepository.findById(path)
                 .orElseThrow(() -> new NotFoundException(String.format("Statistic %s does not exists", path)));
-        StatisticsResponseDTO statisticsResponseDTO = new StatisticsResponseDTO();
-        statisticsResponseDTO.setStatistics(statistics.getStatistics());
-        statisticsResponseDTO.setExplanation(statistics.getExplanation());
-        statisticsResponseDTO.setDisplayMode(statistics.getDisplayMode());
-        statisticsResponseDTO.setPath(statistics.getPath());
-        statisticsResponseDTO.setLastModified(statistics.getLastModified());
-        statisticsResponseDTO.setTitle(statistics.getTitle());
-        statisticsResponseDTO.setGroupName(statistics.getGroupName());
-        return statisticsResponseDTO;
+        return objectMapper.convertValue(statistics, StatisticsResponseDTO.class);
     }
 
     @Override
@@ -210,7 +203,7 @@ public class StatisticsServiceImpl implements StatisticsService {
         statisticsDTO
                 .setDisplayMode(Optional.ofNullable(statisticsDTO.getDisplayMode()).orElse(DisplayModeEnum.DEFAULT));
 
-        StatisticsResponseDTO statisticsResponseDTO = MAPPER.convertValue(statisticsDTO, StatisticsResponseDTO.class);
+        StatisticsResponseDTO statisticsResponseDTO = objectMapper.convertValue(statisticsDTO, StatisticsResponseDTO.class);
 
         String path = String.join("-",
                         StringUtils.stripAccents(statisticsDTO.getTitle().replaceAll("[^a-zA-Z0-9 ]", "")).split(" "))
@@ -237,7 +230,7 @@ public class StatisticsServiceImpl implements StatisticsService {
     }
 
     private Statistics saveStatistics(StatisticsResponseDTO statisticsResponseDTO) {
-        Statistics statistics = MAPPER.convertValue(statisticsResponseDTO, Statistics.class);
+        Statistics statistics = objectMapper.convertValue(statisticsResponseDTO, Statistics.class);
         statistics.setLastModified(LocalDateTime.now());
         statistics.setExportDate(statisticsRepository.getExportDate());
         return statisticsRepository.save(statistics);

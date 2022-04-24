@@ -5,9 +5,9 @@ import io.swagger.annotations.ApiParam;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.time.LocalDateTime;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -20,4 +20,8 @@ public class StatisticsResponseDTO extends StatisticsDTO {
     @NotNull
     @ApiParam("Statistics computed at")
     private LocalDateTime lastModified;
+
+    @NotNull
+    @ApiParam("An approximation for the latest result considered")
+    private LocalDateTime exportDate;
 }
