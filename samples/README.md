@@ -1,1 +1,0 @@
-This project is also intended to encourage cubers to study programming languages. There is already a lot of public code to get started with, but some approach cumbersome for beginners (like database connection). Inside this folder, there are other approaches to some stats.
