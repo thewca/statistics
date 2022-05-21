@@ -1,0 +1,119 @@
+queries:
+  - headers:
+      - Person
+      - Competition
+      - Couting single
+    keyColumnIndex: 0
+    showPositions: true
+    positionTieBreakerIndex: 2
+    sqlQuery: |-
+      with id_results as (
+          select
+              id,
+              value1 value
+          from
+              Results r
+          where
+              average > 0
+              and r.formatId in ('a', 'm')
+          union
+          all
+          select
+              id,
+              value2 value
+          from
+              Results r
+          where
+              average > 0
+              and r.formatId in ('a', 'm')
+          union
+          all
+          select
+              id,
+              value3 value
+          from
+              Results r
+          where
+              average > 0
+              and r.formatId in ('a', 'm')
+          union
+          all
+          select
+              id,
+              value4 value
+          from
+              Results r
+          where
+              average > 0
+              and r.formatId in ('a', 'm')
+          union
+          all
+          select
+              id,
+              value5 value
+          from
+              Results r
+          where
+              average > 0
+              and r.formatId in ('a', 'm')
+      ),
+      ordered_results as (
+          select
+              r.eventId,
+              r.personId,
+              r.personName,
+              r.competitionId,
+              r.id,
+              value,
+              r.formatId,
+              ROW_NUMBER() over (
+                  partition by r.id
+                  order by
+                      value <= 0,
+                      value
+              ) r_order
+          from
+              Results r
+              inner join id_results ir on r.id = ir.id
+          where
+              average > 0
+              and r.formatId in ('a', 'm')
+      ),
+      end_ranks as (
+          select
+              *,
+              RANK() over (
+                  partition by eventId
+                  order by
+                      value
+              ) end_rank
+          from
+              ordered_results
+          where
+              r_order = case
+                  when formatId = 'a' then 5
+                  else 3
+              end
+              and value > 0
+          order by
+              eventId,
+              value
+      )
+      select
+          e.name key_name,
+          wca_statistics_person_link_format(personId, personName) person,
+          wca_statistics_competition_link_format(c.id, c.cellName) competition,
+          wca_statistics_time_format(value, eventId, 'single') single
+      from
+          end_ranks er
+          inner join Competitions c on er.competitionId = c.id
+          inner join Events e on er.eventId = e.id
+      where
+          end_rank <= 20
+          and e.rank < 900
+      order by
+          e.rank,
+          end_rank
+title: Best worst result
+groupName: Results
+displayMode: SELECTOR
