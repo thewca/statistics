@@ -15,7 +15,7 @@ queries:
               Results r
           where
               average > 0
-              and r.formatId = 'a'
+              and r.formatId in ('a', 'm')
           union
           all
           select
@@ -25,7 +25,7 @@ queries:
               Results r
           where
               average > 0
-              and r.formatId = 'a'
+              and r.formatId in ('a', 'm')
           union
           all
           select
@@ -35,7 +35,7 @@ queries:
               Results r
           where
               average > 0
-              and r.formatId = 'a'
+              and r.formatId in ('a', 'm')
           union
           all
           select
@@ -45,7 +45,7 @@ queries:
               Results r
           where
               average > 0
-              and r.formatId = 'a'
+              and r.formatId in ('a', 'm')
           union
           all
           select
@@ -55,7 +55,7 @@ queries:
               Results r
           where
               average > 0
-              and r.formatId = 'a'
+              and r.formatId in ('a', 'm')
       ),
       ordered_results as (
           select
@@ -65,6 +65,7 @@ queries:
               r.competitionId,
               r.id,
               value,
+              r.formatId,
               ROW_NUMBER() over (
                   partition by r.id
                   order by
@@ -76,7 +77,7 @@ queries:
               inner join id_results ir on r.id = ir.id
           where
               average > 0
-              and r.formatId = 'a'
+              and r.formatId in ('a', 'm')
       ),
       end_ranks as (
           select
@@ -89,7 +90,10 @@ queries:
           from
               ordered_results
           where
-              r_order = 5
+              r_order = case
+                  when formatId = 'a' then 5
+                  else 3
+              end
               and value > 0
           order by
               eventId,
