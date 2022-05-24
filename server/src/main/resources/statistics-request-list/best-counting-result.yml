@@ -89,8 +89,7 @@ queries:
           from
               ordered_results
           where
-              r_order > 1
-              and r_order < 5
+              r_order = 2
               and value > 0
           order by
               eventId,
