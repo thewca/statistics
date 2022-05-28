@@ -1,6 +1,6 @@
 import Axios from "axios";
 import {
-  QueryDatabaseMetaResponse,
+  DatabaseMetaData,
   QueryDatabaseResponse,
 } from "../model/QueryDatabase";
 
@@ -19,7 +19,7 @@ export class DatabaseQueryApi {
 
   queryDatabaseMeta = () => {
     let url = this.BASE_URL + "meta";
-    return Axios.get<QueryDatabaseMetaResponse>(url);
+    return Axios.get<DatabaseMetaData>(url);
   };
 }
 

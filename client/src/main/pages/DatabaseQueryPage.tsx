@@ -1,10 +1,19 @@
-import { Button, Form, Input, message, Pagination, Skeleton } from "antd";
+import { QuestionCircleOutlined } from "@ant-design/icons";
+import {
+  Button,
+  Form,
+  Input,
+  message,
+  Modal,
+  Pagination,
+  Skeleton,
+} from "antd";
 import React, { useCallback, useEffect, useState } from "react";
 import databaseQueryApi from "../api/DatabaseQueryApi";
-import statisticsApi from "../api/statistics.api";
 import DatabaseQueryOptions from "../components/DatabaseQueryOptions";
 import NoContent from "../components/NoContent";
 import StatisticsTable from "../components/StatisticsTable";
+import { DatabaseMetaData } from "../model/QueryDatabase";
 import { getQueryParameter, setQueryParameter } from "../util/query.param.util";
 import "./DatabaseQueryPage.css";
 
@@ -32,12 +41,14 @@ export const DatabaseQueryPage = () => {
     useState<number>();
   const [showPositions, setShowPositions] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
+  const [metaData, setMetaData] = useState<DatabaseMetaData>();
+  const [informationOpen, setInformationOpen] = useState(false);
 
   const toggleModal = () => setModalOpen((f) => !f);
 
   const fetchMeta = useCallback(() => {
     databaseQueryApi.queryDatabaseMeta().then((response) => {
-      console.log(response);
+      setMetaData(response.data);
     });
   }, []);
 
@@ -132,6 +143,23 @@ export const DatabaseQueryPage = () => {
   return (
     <div id="database-query-wrapper">
       <h1 className="page-title">Database Query</h1>
+      {metaData && (
+        <div>
+          <p>
+            Results until {metaData.exportDate}{" "}
+            <QuestionCircleOutlined
+              onClick={() => setInformationOpen((f) => !f)}
+            />
+          </p>
+          <Modal visible={informationOpen}>
+            <div
+              dangerouslySetInnerHTML={{
+                __html: metaData.additionalInformation,
+              }}
+            />
+          </Modal>
+        </div>
+      )}
       <Form onFinish={() => handleSubmit(page, pageSize)}>
         <Form.Item
           rules={[{ required: true, message: "Please, provide a query" }]}
