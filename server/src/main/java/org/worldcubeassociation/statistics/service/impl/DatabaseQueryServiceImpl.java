@@ -12,8 +12,11 @@ import org.worldcubeassociation.statistics.dto.DatabaseQueryBaseDTO;
 import org.worldcubeassociation.statistics.dto.DatabaseQueryDTO;
 import org.worldcubeassociation.statistics.exception.InvalidParameterException;
 import org.worldcubeassociation.statistics.request.DatabaseQueryRequest;
+import org.worldcubeassociation.statistics.response.DatabaseQueryMetaResponse;
 import org.worldcubeassociation.statistics.rowmapper.ResultSetRowMapper;
 import org.worldcubeassociation.statistics.service.DatabaseQueryService;
+import org.worldcubeassociation.statistics.service.StatisticsService;
+import org.worldcubeassociation.statistics.util.LoadResourceUtil;
 
 import java.sql.SQLException;
 import java.time.LocalDateTime;
@@ -32,6 +35,9 @@ public class DatabaseQueryServiceImpl implements DatabaseQueryService {
 
     @Autowired
     private ResultSetRowMapper resultSetRowMapper;
+
+    @Autowired
+    private StatisticsService statisticsService;
 
     @Value("${service.seconds-to-timeout}")
     private int secondsToTimeout;
@@ -118,14 +124,17 @@ public class DatabaseQueryServiceImpl implements DatabaseQueryService {
         LocalDateTime now = LocalDateTime.now();
         long diff = cachedToken.getCacheTime().until(now, ChronoUnit.SECONDS);
         if (diff > secondsToTimeout) {
-            // In this scenario, the controller probably killed a connection. The cache is idle because it was not removed after getting the result set
+            // In this scenario, the controller probably killed a connection. The cache is idle because it was not
+            // removed after getting the result set
 
             cachedToken.setCacheTime(now);
             return;
         }
 
         // We block, in the server, multiple request from the same user
-        throw new InvalidParameterException("You can't get multiple queries running in parallel. Wait for it to finish or until " + cachedToken.getCacheTime().plusSeconds(secondsToTimeout));
+        throw new InvalidParameterException(
+                "You can't get multiple queries running in parallel. Wait for it to finish or until "
+                        + cachedToken.getCacheTime().plusSeconds(secondsToTimeout));
     }
 
     private void removeCachedToken(String accessToken) {
@@ -164,6 +173,12 @@ public class DatabaseQueryServiceImpl implements DatabaseQueryService {
         }
 
         return result;
+    }
+
+    @Override
+    public DatabaseQueryMetaResponse meta(DatabaseQueryRequest databaseQueryRequest, String accessToken) {
+        return DatabaseQueryMetaResponse.builder().exportDate(statisticsService.getExportDate()).additionalInformation(
+                LoadResourceUtil.getResource("databasequery/additionalInformation.html")).build();
     }
 
     @Data

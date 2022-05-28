@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.worldcubeassociation.statistics.dto.ControlItemDTO;
 import org.worldcubeassociation.statistics.model.Statistics;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 public interface StatisticsRepository extends JpaRepository<Statistics, String> {
@@ -16,5 +16,5 @@ public interface StatisticsRepository extends JpaRepository<Statistics, String> 
 
     // Actually, it is just an approximation
     @Query(value = "select max(results_posted_at) from Competitions", nativeQuery = true)
-    LocalDateTime getExportDate();
+    LocalDate getExportDate();
 }

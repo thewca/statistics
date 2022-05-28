@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -229,10 +230,15 @@ public class StatisticsServiceImpl implements StatisticsService {
         log.info("Deleted");
     }
 
+    @Override
+    public LocalDate getExportDate() {
+        return statisticsRepository.getExportDate();
+    }
+
     private Statistics saveStatistics(StatisticsResponseDTO statisticsResponseDTO) {
         Statistics statistics = objectMapper.convertValue(statisticsResponseDTO, Statistics.class);
         statistics.setLastModified(LocalDateTime.now());
-        statistics.setExportDate(statisticsRepository.getExportDate());
+        statistics.setExportDate(getExportDate());
         return statisticsRepository.save(statistics);
     }
 }
