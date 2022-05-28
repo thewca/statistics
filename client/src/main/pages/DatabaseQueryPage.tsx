@@ -149,6 +149,7 @@ export const DatabaseQueryPage = () => {
         <div>
           <p>
             Results until {new Date(metaData.exportDate).toLocaleDateString()}
+            &nbsp;
             <QuestionCircleOutlined onClick={toggleInformationModal} />
           </p>
           <Modal

@@ -1,8 +1,7 @@
-version: '3.1'
+version: "3.1"
 services:
   wca-test-db:
     image: "mysql:8.0.26"
-    restart: always
     environment:
       MYSQL_ALLOW_EMPTY_PASSWORD: "true"
       MYSQL_DATABASE: wca_development
@@ -10,3 +9,11 @@ services:
       - "3307:3306"
     volumes:
       - "./db/migration:/docker-entrypoint-initdb.d/:ro"
+  wca-mock-server:
+    image: "node:16-bullseye-slim"
+    volumes:
+      - "./test-web-server/data.js/:/data.js"
+      - "./test-web-server/package.json/:/package.json"
+      - "./test-web-server/server.js/:/server.js"
+    entrypoint: sh -c "npm install;npm start"
+    network_mode: host

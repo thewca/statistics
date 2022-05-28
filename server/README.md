@@ -73,13 +73,7 @@ This backend project uses integration tests so we need to actually connect to a 
 
     `docker-compose -f server/docker-compose.yaml up -d`
 
-- Run the test web server
-
-    ```
-    cd server/test-web-server
-    yarn install
-    yarn start
-    ```
+This will start the database (port 3307) and also a mocked version of the WCA's api (for getting user info) on port 3500.
 
 - Run the tests
 

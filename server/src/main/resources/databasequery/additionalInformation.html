@@ -61,6 +61,24 @@
     </li>
   </ul>
 
+  <h2>Parameter Substitution</h2>
+
+  <p>
+    You can use <code>:some_parameter</code> or <code>:SOME_PARAMETER</code> in
+    your query for placeholders.
+  </p>
+
+  <p>
+    <code>
+      select * from Results r where eventId = :event_id and personId =
+      :person_id
+    </code>
+  </p>
+
+  <p>
+    You can then fill the placeholder using inputs bellow the query text area.
+  </p>
+
   <h2>Pagination</h2>
 
   <p>
