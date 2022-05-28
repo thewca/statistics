@@ -1,0 +1,22 @@
+-- Events
+INSERT INTO wca_development.Events (id, name, `rank`, format, cellName) VALUES('222', '2x2x2 Cube', 20, 'time', '2x2x2 Cube');
+INSERT INTO wca_development.Events (id, name, `rank`, format, cellName) VALUES('333', '3x3x3 Cube', 10, 'time', '3x3x3 Cube');
+INSERT INTO wca_development.Events (id, name, `rank`, format, cellName) VALUES('333bf', '3x3x3 Blindfolded', 70, 'time', '3x3x3 Blindfolded');
+INSERT INTO wca_development.Events (id, name, `rank`, format, cellName) VALUES('333fm', '3x3x3 Fewest Moves', 80, 'number', '3x3x3 Fewest Moves');
+INSERT INTO wca_development.Events (id, name, `rank`, format, cellName) VALUES('333ft', '3x3x3 With Feet', 996, 'time', '3x3x3 With Feet');
+INSERT INTO wca_development.Events (id, name, `rank`, format, cellName) VALUES('333mbf', '3x3x3 Multi-Blind', 180, 'multi', '3x3x3 Multi-Blind');
+INSERT INTO wca_development.Events (id, name, `rank`, format, cellName) VALUES('333mbo', '3x3x3 Multi-Blind Old Style', 999, 'multi', '3x3x3 Multi-Blind Old Style');
+INSERT INTO wca_development.Events (id, name, `rank`, format, cellName) VALUES('333oh', '3x3x3 One-Handed', 90, 'time', '3x3x3 One-Handed');
+INSERT INTO wca_development.Events (id, name, `rank`, format, cellName) VALUES('444', '4x4x4 Cube', 30, 'time', '4x4x4 Cube');
+INSERT INTO wca_development.Events (id, name, `rank`, format, cellName) VALUES('444bf', '4x4x4 Blindfolded', 160, 'time', '4x4x4 Blindfolded');
+INSERT INTO wca_development.Events (id, name, `rank`, format, cellName) VALUES('555', '5x5x5 Cube', 40, 'time', '5x5x5 Cube');
+INSERT INTO wca_development.Events (id, name, `rank`, format, cellName) VALUES('555bf', '5x5x5 Blindfolded', 170, 'time', '5x5x5 Blindfolded');
+INSERT INTO wca_development.Events (id, name, `rank`, format, cellName) VALUES('666', '6x6x6 Cube', 50, 'time', '6x6x6 Cube');
+INSERT INTO wca_development.Events (id, name, `rank`, format, cellName) VALUES('777', '7x7x7 Cube', 60, 'time', '7x7x7 Cube');
+INSERT INTO wca_development.Events (id, name, `rank`, format, cellName) VALUES('clock', 'Clock', 110, 'time', 'Clock');
+INSERT INTO wca_development.Events (id, name, `rank`, format, cellName) VALUES('magic', 'Magic', 997, 'time', 'Magic');
+INSERT INTO wca_development.Events (id, name, `rank`, format, cellName) VALUES('minx', 'Megaminx', 120, 'time', 'Megaminx');
+INSERT INTO wca_development.Events (id, name, `rank`, format, cellName) VALUES('mmagic', 'Master Magic', 998, 'time', 'Master Magic');
+INSERT INTO wca_development.Events (id, name, `rank`, format, cellName) VALUES('pyram', 'Pyraminx', 130, 'time', 'Pyraminx');
+INSERT INTO wca_development.Events (id, name, `rank`, format, cellName) VALUES('skewb', 'Skewb', 140, 'time', 'Skewb');
+INSERT INTO wca_development.Events (id, name, `rank`, format, cellName) VALUES('sq1', 'Square-1', 150, 'time', 'Square-1');

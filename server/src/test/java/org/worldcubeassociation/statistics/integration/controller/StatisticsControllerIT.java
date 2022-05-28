@@ -1,6 +1,10 @@
 package org.worldcubeassociation.statistics.integration.controller;
 
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.jdbc.Sql;
 import org.worldcubeassociation.statistics.integration.AbstractTest;
@@ -22,8 +26,6 @@ public class StatisticsControllerIT extends AbstractTest {
                 .when()
                 .post(BASE_PATH + "generate-from-sql")
                 .then()
-                .statusCode(HttpStatus.OK.value())
-                .extract()
-                .response();
+                .statusCode(HttpStatus.OK.value());
     }
 }
