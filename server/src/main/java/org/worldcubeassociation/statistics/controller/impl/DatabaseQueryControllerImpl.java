@@ -25,9 +25,9 @@ public class DatabaseQueryControllerImpl implements DatabaseQueryController {
     }
 
     @Override
-    public DatabaseQueryMetaResponse meta(DatabaseQueryRequest databaseQueryRequest, String accessToken) {
+    public DatabaseQueryMetaResponse meta(String accessToken) {
         authorizationService.isLoggedInWca(accessToken);
 
-        return databaseQueryService.meta(databaseQueryRequest, accessToken);
+        return databaseQueryService.meta();
     }
 }

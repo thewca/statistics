@@ -6,7 +6,7 @@ import org.worldcubeassociation.statistics.dto.StatisticsRequestDTO;
 import org.worldcubeassociation.statistics.dto.StatisticsResponseDTO;
 
 import java.io.IOException;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import javax.validation.Valid;
 
 public interface StatisticsService {
@@ -24,5 +24,5 @@ public interface StatisticsService {
 
     void deleteAll();
 
-    LocalDate getExportDate();
+    LocalDateTime getExportDate();
 }

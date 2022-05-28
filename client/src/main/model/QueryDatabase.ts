@@ -15,3 +15,8 @@ export interface QueryDatabaseResponse extends PageResponse {
   content: string[][];
   headers: string[];
 }
+
+export interface QueryDatabaseMetaResponse {
+  exportDate: Date;
+  additionalInformation: String;
+}

@@ -1,5 +1,6 @@
 import { Button, Form, Input, message, Pagination, Skeleton } from "antd";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
+import databaseQueryApi from "../api/DatabaseQueryApi";
 import statisticsApi from "../api/statistics.api";
 import DatabaseQueryOptions from "../components/DatabaseQueryOptions";
 import NoContent from "../components/NoContent";
@@ -16,7 +17,7 @@ interface ReplaceItem {
   value: string;
 }
 
-const DatabaseQueryPage = () => {
+export const DatabaseQueryPage = () => {
   const [query, setQuery] = useState(getQueryParameter(SQL_QUERY) || "");
   const [queryResults, setQueryResults] = useState<string[][]>([]);
   const [headers, setHeaders] = useState<string[]>([]);
@@ -34,11 +35,19 @@ const DatabaseQueryPage = () => {
 
   const toggleModal = () => setModalOpen((f) => !f);
 
+  const fetchMeta = useCallback(() => {
+    databaseQueryApi.queryDatabaseMeta().then((response) => {
+      console.log(response);
+    });
+  }, []);
+
+  useEffect(fetchMeta, [fetchMeta]);
+
   // We allow common replacement with the form :ALL_UPPER
   useEffect(() => {
     // Get all strings matchin :A-Z in the query
     // This is a bit common SQL, I think
-    let toReplace = query.matchAll(/:[A-Z_]+/g);
+    let toReplace = query.matchAll(/(?<!:):(?!:)[a-zA-Z]{1}[a-zA-Z0-9_]+/g);
     let keys = new Set<string>();
     while (true) {
       let item = toReplace.next();
@@ -81,7 +90,7 @@ const DatabaseQueryPage = () => {
     );
 
     setLoading(true);
-    statisticsApi
+    databaseQueryApi
       .queryDatabase(finalQuery, page - 1, pageSize)
       .then((response) => {
         let content = response.data.content;
@@ -206,5 +215,3 @@ const DatabaseQueryPage = () => {
     </div>
   );
 };
-
-export default DatabaseQueryPage;

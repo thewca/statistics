@@ -6,7 +6,6 @@ import org.hibernate.annotations.Type;
 import org.worldcubeassociation.statistics.dto.StatisticsGroupResponseDTO;
 import org.worldcubeassociation.statistics.enums.DisplayModeEnum;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import javax.persistence.Column;
@@ -41,5 +40,5 @@ public class Statistics extends BaseEntity {
     private LocalDateTime lastModified;
 
     @Column(name = "export_date")
-    private LocalDate exportDate;
+    private LocalDateTime exportDate;
 }

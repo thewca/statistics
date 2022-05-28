@@ -3,11 +3,11 @@ package org.worldcubeassociation.statistics.response;
 import lombok.Builder;
 import lombok.Data;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @Builder
 public class DatabaseQueryMetaResponse {
-    private LocalDate exportDate;
+    private LocalDateTime exportDate;
     private String additionalInformation;
 }

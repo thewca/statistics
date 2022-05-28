@@ -21,7 +21,7 @@ import { LinkItem } from "./main/model/LinkItem";
 import { StatisticsList } from "./main/model/StatisticsList";
 import AboutPage from "./main/pages/AboutPage";
 import BestEverRanksPage from "./main/pages/BestEverRanksPage";
-import DatabaseQueryPage from "./main/pages/DatabaseQueryPage";
+import { DatabaseQueryPage } from "./main/pages/DatabaseQueryPage";
 import HomePage from "./main/pages/HomePage";
 import NotFoundPage from "./main/pages/NotFoundPage";
 import { RecordEvolutionPage } from "./main/pages/RecordEvolutionPage";

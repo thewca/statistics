@@ -21,10 +21,9 @@ public interface DatabaseQueryController {
     // Queries can't take more than 2 min to run
     @Transactional(timeout = 120)
     DatabaseQueryDTO getResultSet(@Valid @RequestBody DatabaseQueryRequest databaseQueryRequest,
-                                  @RequestHeader(value = "Authorization", required = false) String token);
+                                  @RequestHeader(value = "Authorization", required = false) String accessToken);
 
     @GetMapping("meta")
-    DatabaseQueryMetaResponse meta(@Valid @RequestBody DatabaseQueryRequest databaseQueryRequest,
-                                   @RequestHeader(value = "Authorization", required = false) String token);
+    DatabaseQueryMetaResponse meta(@RequestHeader(value = "Authorization", required = false) String accessToken);
 
 }

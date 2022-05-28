@@ -10,5 +10,5 @@ public interface DatabaseQueryService {
 
     DatabaseQueryBaseDTO getResultSet(String query);
 
-    DatabaseQueryMetaResponse meta(DatabaseQueryRequest databaseQueryRequest, String accessToken);
+    DatabaseQueryMetaResponse meta();
 }

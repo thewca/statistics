@@ -8,7 +8,15 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.io.support.ResourcePatternUtils;
 import org.springframework.stereotype.Service;
-import org.worldcubeassociation.statistics.dto.*;
+import org.worldcubeassociation.statistics.dto.ControlItemDTO;
+import org.worldcubeassociation.statistics.dto.DatabaseQueryBaseDTO;
+import org.worldcubeassociation.statistics.dto.StatisticsDTO;
+import org.worldcubeassociation.statistics.dto.StatisticsGroupDTO;
+import org.worldcubeassociation.statistics.dto.StatisticsGroupRequestDTO;
+import org.worldcubeassociation.statistics.dto.StatisticsGroupResponseDTO;
+import org.worldcubeassociation.statistics.dto.StatisticsListDTO;
+import org.worldcubeassociation.statistics.dto.StatisticsRequestDTO;
+import org.worldcubeassociation.statistics.dto.StatisticsResponseDTO;
 import org.worldcubeassociation.statistics.enums.DisplayModeEnum;
 import org.worldcubeassociation.statistics.exception.NotFoundException;
 import org.worldcubeassociation.statistics.model.Statistics;
@@ -17,15 +25,19 @@ import org.worldcubeassociation.statistics.service.DatabaseQueryService;
 import org.worldcubeassociation.statistics.service.StatisticsService;
 import org.yaml.snakeyaml.Yaml;
 
-import javax.validation.Valid;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
+import javax.validation.Valid;
 
 @Slf4j
 @Service
@@ -67,7 +79,8 @@ public class StatisticsServiceImpl implements StatisticsService {
         return create(statisticsDTO);
     }
 
-    private void buildStatistics(StatisticsDTO statisticsDTO, StatisticsGroupRequestDTO query, DatabaseQueryBaseDTO sqlResult) {
+    private void buildStatistics(StatisticsDTO statisticsDTO, StatisticsGroupRequestDTO query,
+                                 DatabaseQueryBaseDTO sqlResult) {
         if (query.getKeyColumnIndex() == null) {
             addResult(query, statisticsDTO, query.getKeys(), sqlResult.getContent(), sqlResult.getHeaders());
         } else {
@@ -87,12 +100,14 @@ public class StatisticsServiceImpl implements StatisticsService {
             }
 
             for (var entries : map.entrySet()) {
-                addResult(query, statisticsDTO, List.of(entries.getKey().split(",")), entries.getValue(), sqlResult.getHeaders());
+                addResult(query, statisticsDTO, List.of(entries.getKey().split(",")), entries.getValue(),
+                        sqlResult.getHeaders());
             }
         }
     }
 
-    private void addResult(StatisticsGroupRequestDTO query, StatisticsDTO statisticsDTO, List<String> key, List<List<String>> content, List<String> headers) {
+    private void addResult(StatisticsGroupRequestDTO query, StatisticsDTO statisticsDTO, List<String> key,
+                           List<List<String>> content, List<String> headers) {
         StatisticsGroupResponseDTO statisticsGroupResponseDTO = new StatisticsGroupResponseDTO();
         statisticsGroupResponseDTO.setKeys(key);
         statisticsGroupResponseDTO.setContent(content);
@@ -204,7 +219,8 @@ public class StatisticsServiceImpl implements StatisticsService {
         statisticsDTO
                 .setDisplayMode(Optional.ofNullable(statisticsDTO.getDisplayMode()).orElse(DisplayModeEnum.DEFAULT));
 
-        StatisticsResponseDTO statisticsResponseDTO = objectMapper.convertValue(statisticsDTO, StatisticsResponseDTO.class);
+        StatisticsResponseDTO statisticsResponseDTO =
+                objectMapper.convertValue(statisticsDTO, StatisticsResponseDTO.class);
 
         String path = String.join("-",
                         StringUtils.stripAccents(statisticsDTO.getTitle().replaceAll("[^a-zA-Z0-9 ]", "")).split(" "))
@@ -231,7 +247,7 @@ public class StatisticsServiceImpl implements StatisticsService {
     }
 
     @Override
-    public LocalDate getExportDate() {
+    public LocalDateTime getExportDate() {
         return statisticsRepository.getExportDate();
     }
 
