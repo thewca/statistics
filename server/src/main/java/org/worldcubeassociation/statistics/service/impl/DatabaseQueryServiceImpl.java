@@ -177,8 +177,9 @@ public class DatabaseQueryServiceImpl implements DatabaseQueryService {
 
     @Override
     public DatabaseQueryMetaResponse meta() {
-        return DatabaseQueryMetaResponse.builder().exportDate(statisticsService.getExportDate()).additionalInformation(
-                LoadResourceUtil.getResource("databasequery/additionalInformation.html")).build();
+        return DatabaseQueryMetaResponse.builder().exportDate(statisticsService.getExportDate().toLocalDate())
+                .additionalInformation(
+                        LoadResourceUtil.getResource("databasequery/additionalInformation.html")).build();
     }
 
     @Data

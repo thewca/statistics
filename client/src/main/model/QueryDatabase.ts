@@ -17,6 +17,6 @@ export interface QueryDatabaseResponse extends PageResponse {
 }
 
 export interface DatabaseMetaData {
-  exportDate: Date;
+  exportDate: string;
   additionalInformation: string;
 }

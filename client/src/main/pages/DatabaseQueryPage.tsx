@@ -140,18 +140,24 @@ export const DatabaseQueryPage = () => {
     }
   };
 
+  const toggleInformationModal = () => setInformationOpen((f) => !f);
+
   return (
     <div id="database-query-wrapper">
       <h1 className="page-title">Database Query</h1>
       {metaData && (
         <div>
           <p>
-            Results until {metaData.exportDate}{" "}
-            <QuestionCircleOutlined
-              onClick={() => setInformationOpen((f) => !f)}
-            />
+            Results until {new Date(metaData.exportDate).toLocaleDateString()}
+            <QuestionCircleOutlined onClick={toggleInformationModal} />
           </p>
-          <Modal visible={informationOpen}>
+          <Modal
+            visible={informationOpen}
+            onCancel={toggleInformationModal}
+            footer={<Button onClick={toggleInformationModal}>Close</Button>}
+            title="Information"
+            width={(2.0 / 3) * window.innerWidth}
+          >
             <div
               dangerouslySetInnerHTML={{
                 __html: metaData.additionalInformation,
