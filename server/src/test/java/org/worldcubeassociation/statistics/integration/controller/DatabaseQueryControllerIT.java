@@ -36,7 +36,7 @@ public class DatabaseQueryControllerIT extends AbstractTest {
         super.validateResponse(index, response);
     }
 
-    static Stream<Arguments> queryArguments() {
+    private static Stream<Arguments> queryArguments() {
         return Stream.of(
                 Arguments.of(0, HttpStatus.OK, "Bearer token", Map.of("sqlQuery", "select c.id competition_name, count(1) events from Competitions c inner join competition_events ce on c.id = ce.competition_id group by c.id"), "Happy path"),
                 Arguments.of(1, HttpStatus.BAD_REQUEST, "Bearer token", Map.of("sqlQuery", "celect * from Competitions"), "Querry with error"),

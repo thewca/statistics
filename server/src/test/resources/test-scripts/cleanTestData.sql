@@ -11,3 +11,5 @@ truncate wca_development.Continents;
 truncate wca_development.Countries;
 
 truncate wca_development.Events;
+
+truncate wca_development.record_evolution;
