@@ -1,0 +1,1697 @@
+{
+    "eventId": "444bf",
+    "evolution": [
+        {
+            "date": "2003-08-23",
+            "best1": 135500,
+            "best10": null,
+            "best100": null,
+            "avg1": null,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2004-08-07",
+            "best1": 115400,
+            "best10": null,
+            "best100": null,
+            "avg1": null,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2006-08-04",
+            "best1": 73200,
+            "best10": null,
+            "best100": null,
+            "avg1": null,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2006-10-21",
+            "best1": 48490,
+            "best10": null,
+            "best100": null,
+            "avg1": null,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2007-03-24",
+            "best1": 48490,
+            "best10": null,
+            "best100": null,
+            "avg1": null,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2007-07-14",
+            "best1": 48490,
+            "best10": null,
+            "best100": null,
+            "avg1": null,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2007-07-28",
+            "best1": 48490,
+            "best10": null,
+            "best100": null,
+            "avg1": null,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2007-08-25",
+            "best1": 48490,
+            "best10": null,
+            "best100": null,
+            "avg1": null,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2007-10-05",
+            "best1": 48490,
+            "best10": null,
+            "best100": null,
+            "avg1": null,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2007-11-24",
+            "best1": 38096,
+            "best10": null,
+            "best100": null,
+            "avg1": null,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2007-12-15",
+            "best1": 38096,
+            "best10": null,
+            "best100": null,
+            "avg1": null,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2008-02-02",
+            "best1": 38096,
+            "best10": 233800,
+            "best100": null,
+            "avg1": null,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2008-02-16",
+            "best1": 38096,
+            "best10": 219400,
+            "best100": null,
+            "avg1": null,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2008-03-29",
+            "best1": 38096,
+            "best10": 188800,
+            "best100": null,
+            "avg1": null,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2008-04-19",
+            "best1": 38096,
+            "best10": 136000,
+            "best100": null,
+            "avg1": null,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2008-05-31",
+            "best1": 38096,
+            "best10": 136000,
+            "best100": null,
+            "avg1": null,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2008-07-12",
+            "best1": 38096,
+            "best10": 111600,
+            "best100": null,
+            "avg1": null,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2008-07-19",
+            "best1": 38096,
+            "best10": 107500,
+            "best100": null,
+            "avg1": null,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2008-08-23",
+            "best1": 38096,
+            "best10": 107500,
+            "best100": null,
+            "avg1": null,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2008-09-06",
+            "best1": 38096,
+            "best10": 107500,
+            "best100": null,
+            "avg1": null,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2008-09-19",
+            "best1": 38096,
+            "best10": 107500,
+            "best100": null,
+            "avg1": null,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2008-10-18",
+            "best1": 38096,
+            "best10": 107500,
+            "best100": null,
+            "avg1": null,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2008-10-25",
+            "best1": 38096,
+            "best10": 107000,
+            "best100": null,
+            "avg1": null,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2008-11-08",
+            "best1": 38096,
+            "best10": 107000,
+            "best100": null,
+            "avg1": null,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2008-11-15",
+            "best1": 38096,
+            "best10": 84600,
+            "best100": null,
+            "avg1": null,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2008-12-06",
+            "best1": 36521,
+            "best10": 79200,
+            "best100": null,
+            "avg1": null,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2008-12-13",
+            "best1": 36521,
+            "best10": 79200,
+            "best100": null,
+            "avg1": null,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2009-01-10",
+            "best1": 36521,
+            "best10": 79200,
+            "best100": null,
+            "avg1": null,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2009-01-31",
+            "best1": 36521,
+            "best10": 79200,
+            "best100": null,
+            "avg1": null,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2009-02-07",
+            "best1": 36521,
+            "best10": 79200,
+            "best100": null,
+            "avg1": null,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2009-02-21",
+            "best1": 36521,
+            "best10": 79200,
+            "best100": null,
+            "avg1": null,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2009-03-14",
+            "best1": 36521,
+            "best10": 79200,
+            "best100": null,
+            "avg1": null,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2009-03-21",
+            "best1": 28619,
+            "best10": 79200,
+            "best100": null,
+            "avg1": null,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2009-03-28",
+            "best1": 28619,
+            "best10": 79200,
+            "best100": null,
+            "avg1": null,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2009-04-04",
+            "best1": 28619,
+            "best10": 79200,
+            "best100": null,
+            "avg1": null,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2009-04-11",
+            "best1": 28619,
+            "best10": 79200,
+            "best100": null,
+            "avg1": null,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2009-05-16",
+            "best1": 28619,
+            "best10": 78000,
+            "best100": null,
+            "avg1": null,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2009-06-05",
+            "best1": 28619,
+            "best10": 78000,
+            "best100": null,
+            "avg1": null,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2009-07-17",
+            "best1": 28619,
+            "best10": 78000,
+            "best100": null,
+            "avg1": null,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2009-07-26",
+            "best1": 28619,
+            "best10": 78000,
+            "best100": null,
+            "avg1": null,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2009-08-01",
+            "best1": 28619,
+            "best10": 78000,
+            "best100": null,
+            "avg1": null,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2009-08-08",
+            "best1": 28619,
+            "best10": 78000,
+            "best100": null,
+            "avg1": null,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2009-08-14",
+            "best1": 28619,
+            "best10": 76600,
+            "best100": null,
+            "avg1": null,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2009-09-05",
+            "best1": 28619,
+            "best10": 76600,
+            "best100": null,
+            "avg1": null,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2009-09-26",
+            "best1": 28619,
+            "best10": 73900,
+            "best100": null,
+            "avg1": null,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2009-10-09",
+            "best1": 28619,
+            "best10": 59694,
+            "best100": null,
+            "avg1": null,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2009-10-16",
+            "best1": 28619,
+            "best10": 59694,
+            "best100": null,
+            "avg1": null,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2009-10-31",
+            "best1": 28619,
+            "best10": 59622,
+            "best100": null,
+            "avg1": null,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2009-12-05",
+            "best1": 28619,
+            "best10": 59622,
+            "best100": null,
+            "avg1": null,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2009-12-12",
+            "best1": 28619,
+            "best10": 59622,
+            "best100": null,
+            "avg1": null,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2010-01-16",
+            "best1": 28234,
+            "best10": 59622,
+            "best100": null,
+            "avg1": null,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2010-01-23",
+            "best1": 28234,
+            "best10": 59622,
+            "best100": null,
+            "avg1": null,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2010-01-30",
+            "best1": 28234,
+            "best10": 59622,
+            "best100": null,
+            "avg1": null,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2010-02-12",
+            "best1": 28234,
+            "best10": 59622,
+            "best100": null,
+            "avg1": null,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2010-02-20",
+            "best1": 28234,
+            "best10": 58850,
+            "best100": null,
+            "avg1": null,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2010-02-27",
+            "best1": 28234,
+            "best10": 58530,
+            "best100": null,
+            "avg1": null,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2010-03-20",
+            "best1": 28234,
+            "best10": 58530,
+            "best100": null,
+            "avg1": null,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2010-03-27",
+            "best1": 28234,
+            "best10": 58530,
+            "best100": null,
+            "avg1": null,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2010-04-17",
+            "best1": 28234,
+            "best10": 58530,
+            "best100": null,
+            "avg1": null,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2010-04-25",
+            "best1": 28234,
+            "best10": 58530,
+            "best100": null,
+            "avg1": null,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2010-05-15",
+            "best1": 28234,
+            "best10": 58530,
+            "best100": null,
+            "avg1": null,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2010-05-22",
+            "best1": 28234,
+            "best10": 58530,
+            "best100": null,
+            "avg1": null,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2010-05-23",
+            "best1": 28234,
+            "best10": 58530,
+            "best100": null,
+            "avg1": null,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2010-06-12",
+            "best1": 28234,
+            "best10": 58530,
+            "best100": null,
+            "avg1": null,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2010-06-26",
+            "best1": 28234,
+            "best10": 58530,
+            "best100": null,
+            "avg1": null,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2010-07-03",
+            "best1": 28234,
+            "best10": 57761,
+            "best100": null,
+            "avg1": null,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2010-07-09",
+            "best1": 28234,
+            "best10": 57761,
+            "best100": null,
+            "avg1": null,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2010-07-16",
+            "best1": 28234,
+            "best10": 57761,
+            "best100": null,
+            "avg1": null,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2010-07-24",
+            "best1": 28234,
+            "best10": 55606,
+            "best100": null,
+            "avg1": 36939,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2010-07-26",
+            "best1": 28234,
+            "best10": 55606,
+            "best100": null,
+            "avg1": 36939,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2010-07-31",
+            "best1": 28234,
+            "best10": 55606,
+            "best100": null,
+            "avg1": 36939,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2010-08-06",
+            "best1": 28234,
+            "best10": 55606,
+            "best100": null,
+            "avg1": 36939,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2010-08-14",
+            "best1": 28234,
+            "best10": 55606,
+            "best100": null,
+            "avg1": 36939,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2010-08-21",
+            "best1": 28234,
+            "best10": 55606,
+            "best100": null,
+            "avg1": 36939,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2010-08-28",
+            "best1": 28234,
+            "best10": 55606,
+            "best100": null,
+            "avg1": 36939,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2010-09-03",
+            "best1": 28234,
+            "best10": 55606,
+            "best100": null,
+            "avg1": 36939,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2010-09-11",
+            "best1": 28234,
+            "best10": 55606,
+            "best100": null,
+            "avg1": 36939,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2010-09-12",
+            "best1": 28234,
+            "best10": 52377,
+            "best100": null,
+            "avg1": 36939,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2010-09-18",
+            "best1": 28234,
+            "best10": 52377,
+            "best100": null,
+            "avg1": 36939,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2010-10-01",
+            "best1": 28234,
+            "best10": 50440,
+            "best100": null,
+            "avg1": 36939,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2010-10-02",
+            "best1": 28234,
+            "best10": 50440,
+            "best100": null,
+            "avg1": 36939,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2010-10-09",
+            "best1": 28234,
+            "best10": 50440,
+            "best100": null,
+            "avg1": 36939,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2010-10-29",
+            "best1": 28234,
+            "best10": 50440,
+            "best100": null,
+            "avg1": 36939,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2010-10-30",
+            "best1": 28234,
+            "best10": 50440,
+            "best100": null,
+            "avg1": 36939,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2010-11-06",
+            "best1": 28234,
+            "best10": 49916,
+            "best100": null,
+            "avg1": 36939,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2010-11-13",
+            "best1": 28234,
+            "best10": 49916,
+            "best100": null,
+            "avg1": 36939,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2010-11-20",
+            "best1": 28234,
+            "best10": 49916,
+            "best100": null,
+            "avg1": 36939,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2010-11-27",
+            "best1": 28234,
+            "best10": 49916,
+            "best100": null,
+            "avg1": 36939,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2010-12-11",
+            "best1": 28234,
+            "best10": 49916,
+            "best100": null,
+            "avg1": 36939,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2011-01-04",
+            "best1": 28234,
+            "best10": 49916,
+            "best100": null,
+            "avg1": 36939,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2011-01-14",
+            "best1": 28234,
+            "best10": 49916,
+            "best100": null,
+            "avg1": 36939,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2011-01-22",
+            "best1": 28234,
+            "best10": 49916,
+            "best100": null,
+            "avg1": 36939,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2011-01-29",
+            "best1": 21780,
+            "best10": 47878,
+            "best100": null,
+            "avg1": 36939,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2011-02-19",
+            "best1": 21780,
+            "best10": 47878,
+            "best100": null,
+            "avg1": 36939,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2011-03-05",
+            "best1": 21780,
+            "best10": 47878,
+            "best100": null,
+            "avg1": 36939,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2011-03-12",
+            "best1": 21780,
+            "best10": 47878,
+            "best100": null,
+            "avg1": 36939,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2011-03-19",
+            "best1": 21780,
+            "best10": 47878,
+            "best100": null,
+            "avg1": 36939,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2011-03-26",
+            "best1": 21780,
+            "best10": 47878,
+            "best100": null,
+            "avg1": 36939,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2011-04-02",
+            "best1": 21780,
+            "best10": 47878,
+            "best100": null,
+            "avg1": 36939,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2011-04-09",
+            "best1": 21780,
+            "best10": 47878,
+            "best100": null,
+            "avg1": 36939,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2011-04-21",
+            "best1": 21780,
+            "best10": 47878,
+            "best100": null,
+            "avg1": 36939,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2011-04-22",
+            "best1": 21780,
+            "best10": 47878,
+            "best100": null,
+            "avg1": 36939,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2011-05-07",
+            "best1": 21780,
+            "best10": 47878,
+            "best100": null,
+            "avg1": 36939,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2011-05-28",
+            "best1": 21780,
+            "best10": 47878,
+            "best100": null,
+            "avg1": 36939,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2011-06-10",
+            "best1": 21780,
+            "best10": 47878,
+            "best100": null,
+            "avg1": 36939,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2011-06-11",
+            "best1": 21780,
+            "best10": 46690,
+            "best100": null,
+            "avg1": 36939,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2011-06-18",
+            "best1": 21780,
+            "best10": 45668,
+            "best100": null,
+            "avg1": 36939,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2011-06-25",
+            "best1": 21780,
+            "best10": 45668,
+            "best100": null,
+            "avg1": 36939,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2011-07-09",
+            "best1": 21780,
+            "best10": 45668,
+            "best100": null,
+            "avg1": 36939,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2011-07-15",
+            "best1": 21780,
+            "best10": 42983,
+            "best100": null,
+            "avg1": 36939,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2011-07-22",
+            "best1": 21780,
+            "best10": 41458,
+            "best100": null,
+            "avg1": 36939,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2011-07-30",
+            "best1": 20611,
+            "best10": 37975,
+            "best100": 277200,
+            "avg1": 36939,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2011-08-12",
+            "best1": 20611,
+            "best10": 37975,
+            "best100": 208300,
+            "avg1": 36939,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2011-08-13",
+            "best1": 20611,
+            "best10": 37975,
+            "best100": 187500,
+            "avg1": 36939,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2011-08-19",
+            "best1": 20611,
+            "best10": 37975,
+            "best100": 187500,
+            "avg1": 36939,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2011-08-21",
+            "best1": 20611,
+            "best10": 37777,
+            "best100": 161000,
+            "avg1": 36939,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2011-08-27",
+            "best1": 20611,
+            "best10": 37777,
+            "best100": 160000,
+            "avg1": 36939,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2011-09-03",
+            "best1": 20611,
+            "best10": 37777,
+            "best100": 153300,
+            "avg1": 36939,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2011-09-04",
+            "best1": 20611,
+            "best10": 37777,
+            "best100": 153300,
+            "avg1": 36939,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2011-09-17",
+            "best1": 20611,
+            "best10": 37777,
+            "best100": 153300,
+            "avg1": 36939,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2011-09-18",
+            "best1": 20611,
+            "best10": 37000,
+            "best100": 150000,
+            "avg1": 36939,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2011-09-24",
+            "best1": 20611,
+            "best10": 37000,
+            "best100": 143700,
+            "avg1": 36939,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2011-10-01",
+            "best1": 20611,
+            "best10": 37000,
+            "best100": 142900,
+            "avg1": 36939,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2011-10-08",
+            "best1": 20611,
+            "best10": 37000,
+            "best100": 135800,
+            "avg1": 36939,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2011-10-14",
+            "best1": 20611,
+            "best10": 35456,
+            "best100": 135800,
+            "avg1": 36939,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2011-10-15",
+            "best1": 20611,
+            "best10": 35456,
+            "best100": 135800,
+            "avg1": 36939,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2011-10-22",
+            "best1": 20611,
+            "best10": 35456,
+            "best100": 135800,
+            "avg1": 36939,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2011-10-30",
+            "best1": 20611,
+            "best10": 35456,
+            "best100": 135800,
+            "avg1": 36939,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2011-11-05",
+            "best1": 20611,
+            "best10": 35456,
+            "best100": 135800,
+            "avg1": 36939,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2011-11-12",
+            "best1": 20611,
+            "best10": 35456,
+            "best100": 135800,
+            "avg1": 36939,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2011-11-19",
+            "best1": 20611,
+            "best10": 35456,
+            "best100": 134700,
+            "avg1": 36939,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2011-11-26",
+            "best1": 20611,
+            "best10": 35456,
+            "best100": 129600,
+            "avg1": 36939,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2011-12-10",
+            "best1": 20611,
+            "best10": 35456,
+            "best100": 128000,
+            "avg1": 36939,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2011-12-17",
+            "best1": 20611,
+            "best10": 35456,
+            "best100": 122400,
+            "avg1": 36939,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2012-01-14",
+            "best1": 20611,
+            "best10": 35456,
+            "best100": 118000,
+            "avg1": 36939,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2012-01-21",
+            "best1": 20611,
+            "best10": 35456,
+            "best100": 118000,
+            "avg1": 36939,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2012-02-04",
+            "best1": 20611,
+            "best10": 35456,
+            "best100": 118000,
+            "avg1": 36939,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2012-02-11",
+            "best1": 19741,
+            "best10": 35456,
+            "best100": 118000,
+            "avg1": 36939,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2012-02-18",
+            "best1": 19741,
+            "best10": 35456,
+            "best100": 114200,
+            "avg1": 36939,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2012-03-03",
+            "best1": 19741,
+            "best10": 35456,
+            "best100": 114200,
+            "avg1": 36939,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2012-03-10",
+            "best1": 19741,
+            "best10": 35456,
+            "best100": 114200,
+            "avg1": 36939,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2012-03-17",
+            "best1": 19741,
+            "best10": 35456,
+            "best100": 114200,
+            "avg1": 36939,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2012-03-31",
+            "best1": 19741,
+            "best10": 34415,
+            "best100": 114200,
+            "avg1": 36939,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2012-04-06",
+            "best1": 19741,
+            "best10": 34415,
+            "best100": 112600,
+            "avg1": 36939,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2012-04-07",
+            "best1": 19741,
+            "best10": 33991,
+            "best100": 112500,
+            "avg1": 36939,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2012-04-14",
+            "best1": 19741,
+            "best10": 33991,
+            "best100": 112500,
+            "avg1": 36939,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2012-04-15",
+            "best1": 19741,
+            "best10": 33991,
+            "best100": 112500,
+            "avg1": 36939,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2012-04-21",
+            "best1": 19741,
+            "best10": 33991,
+            "best100": 112500,
+            "avg1": 36939,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2012-04-28",
+            "best1": 19741,
+            "best10": 33991,
+            "best100": 112500,
+            "avg1": 36939,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2012-04-29",
+            "best1": 19741,
+            "best10": 31961,
+            "best100": 112500,
+            "avg1": 36939,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2012-05-12",
+            "best1": 19741,
+            "best10": 31961,
+            "best100": 112400,
+            "avg1": 36939,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2012-05-19",
+            "best1": 19741,
+            "best10": 31961,
+            "best100": 112400,
+            "avg1": 36939,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2012-05-26",
+            "best1": 19741,
+            "best10": 31961,
+            "best100": 112400,
+            "avg1": 36939,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2012-06-02",
+            "best1": 19741,
+            "best10": 31961,
+            "best100": 112400,
+            "avg1": 36939,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2012-06-23",
+            "best1": 19741,
+            "best10": 31961,
+            "best100": 112400,
+            "avg1": 36939,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2012-07-07",
+            "best1": 19741,
+            "best10": 31961,
+            "best100": 112400,
+            "avg1": 36939,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2012-07-13",
+            "best1": 16888,
+            "best10": 31961,
+            "best100": 112400,
+            "avg1": 19756,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2012-07-14",
+            "best1": 16888,
+            "best10": 31961,
+            "best100": 112400,
+            "avg1": 19756,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2012-07-20",
+            "best1": 16888,
+            "best10": 31961,
+            "best100": 112000,
+            "avg1": 19756,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2012-07-21",
+            "best1": 16888,
+            "best10": 31961,
+            "best100": 110500,
+            "avg1": 19756,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2012-07-28",
+            "best1": 16888,
+            "best10": 31961,
+            "best100": 108900,
+            "avg1": 19756,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2012-08-03",
+            "best1": 16888,
+            "best10": 31961,
+            "best100": 105600,
+            "avg1": 19756,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2012-08-04",
+            "best1": 16888,
+            "best10": 31961,
+            "best100": 105600,
+            "avg1": 19756,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2012-08-05",
+            "best1": 16888,
+            "best10": 31961,
+            "best100": 105600,
+            "avg1": 19756,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2012-08-11",
+            "best1": 16888,
+            "best10": 29003,
+            "best100": 105600,
+            "avg1": 19756,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2012-08-12",
+            "best1": 16888,
+            "best10": 29003,
+            "best100": 105100,
+            "avg1": 19756,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2012-08-17",
+            "best1": 16888,
+            "best10": 29003,
+            "best100": 105100,
+            "avg1": 19756,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2012-08-18",
+            "best1": 16888,
+            "best10": 29003,
+            "best100": 104100,
+            "avg1": 19756,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2012-08-25",
+            "best1": 16888,
+            "best10": 29003,
+            "best100": 104100,
+            "avg1": 19756,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2012-09-01",
+            "best1": 16888,
+            "best10": 29003,
+            "best100": 103700,
+            "avg1": 19756,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2012-09-02",
+            "best1": 16888,
+            "best10": 29003,
+            "best100": 103700,
+            "avg1": 19756,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2012-09-08",
+            "best1": 16888,
+            "best10": 29003,
+            "best100": 103700,
+            "avg1": 19756,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2012-09-16",
+            "best1": 16888,
+            "best10": 29003,
+            "best100": 103600,
+            "avg1": 19756,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2012-09-22",
+            "best1": 16888,
+            "best10": 29003,
+            "best100": 103600,
+            "avg1": 19756,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2012-09-29",
+            "best1": 16888,
+            "best10": 29003,
+            "best100": 103100,
+            "avg1": 19756,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2012-10-05",
+            "best1": 16888,
+            "best10": 29003,
+            "best100": 103100,
+            "avg1": 19756,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2012-10-06",
+            "best1": 16888,
+            "best10": 29003,
+            "best100": 102100,
+            "avg1": 19756,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2012-10-12",
+            "best1": 16888,
+            "best10": 28619,
+            "best100": 101800,
+            "avg1": 19756,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2012-10-20",
+            "best1": 16888,
+            "best10": 28619,
+            "best100": 101800,
+            "avg1": 19756,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2012-10-27",
+            "best1": 16888,
+            "best10": 28619,
+            "best100": 101800,
+            "avg1": 19756,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2012-11-03",
+            "best1": 16888,
+            "best10": 28619,
+            "best100": 93500,
+            "avg1": 19756,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2012-11-17",
+            "best1": 16888,
+            "best10": 28619,
+            "best100": 93500,
+            "avg1": 19756,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2012-11-24",
+            "best1": 16888,
+            "best10": 28619,
+            "best100": 92000,
+            "avg1": 19756,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2012-12-08",
+            "best1": 16888,
+            "best10": 28619,
+            "best100": 91800,
+            "avg1": 19756,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2012-12-14",
+            "best1": 16888,
+            "best10": 28619,
+            "best100": 91300,
+            "avg1": 19756,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2012-12-15",
+            "best1": 16888,
+            "best10": 28619,
+            "best100": 91300,
+            "avg1": 19756,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2012-12-22",
+            "best1": 16888,
+            "best10": 28619,
+            "best100": 91300,
+            "avg1": 19756,
+            "avg10": null,
+            "avg100": null
+        },
+        {
+            "date": "2012-12-29",
+            "best1": 16888,
+            "best10": 28619,
+            "best100": 91300,
+            "avg1": 19756,
+            "avg10": null,
+            "avg100": null
+        }
+    ]
+}

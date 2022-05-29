@@ -1,0 +1,98 @@
+<div>
+  <h2>Helper function</h2>
+  <p>You can use the following function to better display your results</p>
+  <b
+    ><code
+      >wca_statistics_time_format(time_result, event_id, result_type)</code
+    ></b
+  >
+
+  <ul>
+    <li>
+      <b><code>time_result</code></b
+      >: is an integer that represents the time in hundredths of seconds. 474
+      means 4.74 s.
+    </li>
+    <li>
+      <b><code>event_id</code></b
+      >: is the WCA event code. You can find all accepted values by running the
+      query <b><code>select id from Events</code></b
+      >.
+    </li>
+    <li>
+      <b><code>result_type</code></b
+      >: either <b><code>single</code></b> or <b><code>average</code></b>
+    </li>
+  </ul>
+
+  Examples:
+  <ul>
+    <li>
+      <code
+        >select wca_statistics_time_format(474, '333', 'single') -- 4.74</code
+      >
+    </li>
+    <li>
+      <code
+        >select wca_statistics_time_format(-1, '222', 'average') -- DNF</code
+      >
+    </li>
+    <li>
+      <code
+        >select wca_statistics_time_format(-2, '333oh', 'single') -- DNS</code
+      >
+    </li>
+    <li>
+      <code
+        >select wca_statistics_time_format(22, '333fm', 'single') -- 22</code
+      >
+    </li>
+    <li>
+      <code
+        >select wca_statistics_time_format(2167, '333fm', 'average') --
+        21.67</code
+      >
+    </li>
+    <li>
+      <code
+        >select wca_statistics_time_format(410358601, '333mbf', 'single') --
+        59/60 (59:46)</code
+      >
+    </li>
+  </ul>
+
+  <h2>Parameter Substitution</h2>
+
+  <p>
+    You can use <code>:some_parameter</code> or <code>:SOME_PARAMETER</code> in
+    your query for placeholders.
+  </p>
+
+  <p>
+    <code>
+      select * from Results r where eventId = :event_id and personId =
+      :person_id
+    </code>
+  </p>
+
+  <p>
+    You can then fill the placeholder using inputs bellow the query text area.
+  </p>
+
+  <h2>Pagination</h2>
+
+  <p>
+    To paginate your results, we wrap your original query into a counter
+    function and then we run it.
+  </p>
+
+  <p>
+    <code>"select count(*) from ({{YOUR QUERY GOES HERE}}) alias"</code>
+  </p>
+
+  <p>
+    This is not something you should be worried about, but is good to know in
+    case you get an error with that <code>alias</code> somewhere (it is likely
+    that the query you submitted has an SQL error in that case).
+  </p>
+</div>

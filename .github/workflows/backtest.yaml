@@ -5,14 +5,14 @@ on:
     branches:
       - main
     paths:
-      - 'server/**'
-      - '.github/workflows/backtest.yaml'
+      - "server/**"
+      - ".github/workflows/backtest.yaml"
   pull_request:
     branches:
       - main
     paths:
-      - 'server/**'
-      - '.github/workflows/backtest.yaml'
+      - "server/**"
+      - ".github/workflows/backtest.yaml"
 
 jobs:
   build:
@@ -47,10 +47,5 @@ jobs:
             sleep 1
           done
           echo Failed waiting for mysql && exit 1
-      - name: Start test web server
-        working-directory: ./server/test-web-server
-        run: |
-          yarn install
-          nohup yarn start &
       - name: Build and test
         run: ./server/gradlew clean build -p server --info

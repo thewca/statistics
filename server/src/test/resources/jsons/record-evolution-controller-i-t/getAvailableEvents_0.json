@@ -1,0 +1,17 @@
+[
+    {
+        "id": "444bf",
+        "name": "4x4x4 Blindfolded",
+        "rank": 160
+    },
+    {
+        "id": "555bf",
+        "name": "5x5x5 Blindfolded",
+        "rank": 170
+    },
+    {
+        "id": "333mbf",
+        "name": "3x3x3 Multi-Blind",
+        "rank": 180
+    }
+]

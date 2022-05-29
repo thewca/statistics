@@ -2,8 +2,8 @@ import { fireEvent } from "@testing-library/dom";
 import React from "react";
 import { render, unmountComponentAtNode } from "react-dom";
 import { act } from "react-dom/test-utils";
-import statisticsApi from "../main/api/statistics.api";
-import DatabaseQueryPage from "../main/pages/DatabaseQueryPage";
+import databaseQueryApi from "../main/api/DatabaseQueryApi";
+import { DatabaseQueryPage } from "../main/pages/DatabaseQueryPage";
 import { defaultQueryResponse } from "./DatabaseQuery.test.mock";
 
 let container = document.createElement("div");
@@ -33,6 +33,8 @@ afterEach(() => {
   unmountComponentAtNode(container);
   container.remove();
   container = document.createElement("div");
+
+  jest.resetAllMocks();
 });
 
 // This is also used for custom query in redirect
@@ -55,7 +57,7 @@ where
   let searchQuery = "";
 
   jest
-    .spyOn(statisticsApi, "queryDatabase")
+    .spyOn(databaseQueryApi, "queryDatabase")
     .mockImplementation((query, page, size) => {
       searchQuery = query;
       return Promise.resolve({ ...axiosResponse, data: defaultQueryResponse });

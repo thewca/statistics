@@ -1,9 +1,19 @@
-import { Button, Form, Input, message, Pagination, Skeleton } from "antd";
-import React, { useEffect, useState } from "react";
-import statisticsApi from "../api/statistics.api";
+import { QuestionCircleOutlined } from "@ant-design/icons";
+import {
+  Button,
+  Form,
+  Input,
+  message,
+  Modal,
+  Pagination,
+  Skeleton,
+} from "antd";
+import React, { useCallback, useEffect, useState } from "react";
+import databaseQueryApi from "../api/DatabaseQueryApi";
 import DatabaseQueryOptions from "../components/DatabaseQueryOptions";
 import NoContent from "../components/NoContent";
 import StatisticsTable from "../components/StatisticsTable";
+import { DatabaseMetaData } from "../model/QueryDatabase";
 import { getQueryParameter, setQueryParameter } from "../util/query.param.util";
 import "./DatabaseQueryPage.css";
 
@@ -16,7 +26,7 @@ interface ReplaceItem {
   value: string;
 }
 
-const DatabaseQueryPage = () => {
+export const DatabaseQueryPage = () => {
   const [query, setQuery] = useState(getQueryParameter(SQL_QUERY) || "");
   const [queryResults, setQueryResults] = useState<string[][]>([]);
   const [headers, setHeaders] = useState<string[]>([]);
@@ -31,14 +41,24 @@ const DatabaseQueryPage = () => {
     useState<number>();
   const [showPositions, setShowPositions] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
+  const [metaData, setMetaData] = useState<DatabaseMetaData>();
+  const [informationOpen, setInformationOpen] = useState(false);
 
   const toggleModal = () => setModalOpen((f) => !f);
+
+  const fetchMeta = useCallback(() => {
+    databaseQueryApi.queryDatabaseMeta().then((response) => {
+      setMetaData(response.data);
+    });
+  }, []);
+
+  useEffect(fetchMeta, [fetchMeta]);
 
   // We allow common replacement with the form :ALL_UPPER
   useEffect(() => {
     // Get all strings matchin :A-Z in the query
     // This is a bit common SQL, I think
-    let toReplace = query.matchAll(/:[A-Z_]+/g);
+    let toReplace = query.matchAll(/(?<!:):(?!:)[a-zA-Z]{1}[a-zA-Z0-9_]+/g);
     let keys = new Set<string>();
     while (true) {
       let item = toReplace.next();
@@ -81,7 +101,7 @@ const DatabaseQueryPage = () => {
     );
 
     setLoading(true);
-    statisticsApi
+    databaseQueryApi
       .queryDatabase(finalQuery, page - 1, pageSize)
       .then((response) => {
         let content = response.data.content;
@@ -120,9 +140,33 @@ const DatabaseQueryPage = () => {
     }
   };
 
+  const toggleInformationModal = () => setInformationOpen((f) => !f);
+
   return (
     <div id="database-query-wrapper">
       <h1 className="page-title">Database Query</h1>
+      {metaData && (
+        <div>
+          <p>
+            Results until {new Date(metaData.exportDate).toLocaleDateString()}
+            &nbsp;
+            <QuestionCircleOutlined onClick={toggleInformationModal} />
+          </p>
+          <Modal
+            visible={informationOpen}
+            onCancel={toggleInformationModal}
+            footer={<Button onClick={toggleInformationModal}>Close</Button>}
+            title="Information"
+            width={(2.0 / 3) * window.innerWidth}
+          >
+            <div
+              dangerouslySetInnerHTML={{
+                __html: metaData.additionalInformation,
+              }}
+            />
+          </Modal>
+        </div>
+      )}
       <Form onFinish={() => handleSubmit(page, pageSize)}>
         <Form.Item
           rules={[{ required: true, message: "Please, provide a query" }]}
@@ -206,5 +250,3 @@ const DatabaseQueryPage = () => {
     </div>
   );
 };
-
-export default DatabaseQueryPage;
