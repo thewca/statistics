@@ -1,6 +1,7 @@
 package org.worldcubeassociation.statistics.controller;
 
 import io.swagger.annotations.ApiOperation;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.worldcubeassociation.statistics.dto.StatisticsDTO;
 import org.worldcubeassociation.statistics.dto.StatisticsListDTO;
 import org.worldcubeassociation.statistics.dto.StatisticsRequestDTO;
@@ -49,7 +51,7 @@ public interface StatisticsController {
     StatisticsResponseDTO createStatistics(@Valid @RequestBody StatisticsDTO statisticsDTO);
 
     @DeleteMapping
-    @ApiOperation(
-            "Deletes all generated statistics")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ApiOperation("Deletes all generated statistics")
     void deleteAll();
 }
