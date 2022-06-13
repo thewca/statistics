@@ -24,6 +24,17 @@ create table if not exists record_evolution (
     evolution json not null
 );
 
+create table if not exists sum_of_ranks (
+  region_rank int default null,
+  region varchar(20) not null,
+  region_type varchar(20) not null,
+  wca_id varchar(10) not null,
+  result_type varchar(7) not null,
+  overall int default null,
+  events json not null,
+  primary key (region, region_type, wca_id)
+);
+
 ----------------------------------------------------------------------------------------------------
 -- Person link
 
