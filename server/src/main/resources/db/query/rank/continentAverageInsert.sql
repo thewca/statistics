@@ -16,7 +16,7 @@ with default_ranks as (
         RanksAverage ra
         inner join Events e on e.`rank` < 900
         and ra.eventId = e.id
-        inner join users u on u.wca_id = rs.personId
+        inner join users u on u.wca_id = ra.personId
         inner join Countries c on c.iso2 = u.country_iso2
         inner join Continents c2 on c.continentId = c2.id
     where
@@ -48,7 +48,7 @@ select
         case
             when continentRank is null
             or continentRank = 0 then default_rank
-            else rs.continentRank
+            else ra.continentRank
         end
     ) overall,
     json_arrayagg(
@@ -59,7 +59,7 @@ select
             case
                 when continentRank is null
                 or continentRank = 0 then default_rank
-                else rs.continentRank
+                else ra.continentRank
             end,
             'completed',
             continentRank is not null
@@ -70,7 +70,7 @@ from
     Events e
     left join users u on e.`rank` < 900 -- Filter by active ranks
     left join RanksAverage ra on ra.eventId = e.id
-    and rs.personId = u.wca_id
+    and ra.personId = u.wca_id
     left join Countries c on c.iso2 = u.country_iso2
     left join Continents c2 on c.continentId = c2.id
     left join default_ranks dr on dr.event_id = e.id

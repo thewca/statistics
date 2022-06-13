@@ -16,10 +16,10 @@ public class RankRepositoryJdbcImpl implements RankRepositoryJdbc {
     @Override
     public void generateWorldRank() {
         log.info("Generate world rank");
-        jdbcTemplate.update(StatisticsUtil.getQuery("rank/generateWorldRankSingle"));
-        jdbcTemplate.update(StatisticsUtil.getQuery("rank/updateWorldRankSingle"));
-        jdbcTemplate.update(StatisticsUtil.getQuery("rank/generateWorldRankAverage"));
-        jdbcTemplate.update(StatisticsUtil.getQuery("rank/updateWorldRankAverage"));
+        jdbcTemplate.update(StatisticsUtil.getQuery("rank/worldSingleInsert"));
+        jdbcTemplate.update(StatisticsUtil.getQuery("rank/worldSingleUpdate"));
+        jdbcTemplate.update(StatisticsUtil.getQuery("rank/worldAverageInsert"));
+        jdbcTemplate.update(StatisticsUtil.getQuery("rank/worldAverageUpdate"));
     }
 
     @Override
@@ -30,10 +30,10 @@ public class RankRepositoryJdbcImpl implements RankRepositoryJdbc {
     @Override
     public void generateContinentRank() {
         log.info("Generate continent rank");
-        jdbcTemplate.update(StatisticsUtil.getQuery("rank/generateContinentRankSingle"));
-        jdbcTemplate.update(StatisticsUtil.getQuery("rank/updateContinentRankSingle"));
-        jdbcTemplate.update(StatisticsUtil.getQuery("rank/generateContinentRankAverage"));
-        jdbcTemplate.update(StatisticsUtil.getQuery("rank/updateContinentRankAverage"));
+        jdbcTemplate.update(StatisticsUtil.getQuery("rank/continentSingleInsert"));
+        jdbcTemplate.update(StatisticsUtil.getQuery("rank/continentSingleUpdate"));
+        jdbcTemplate.update(StatisticsUtil.getQuery("rank/continentAverageInsert"));
+        jdbcTemplate.update(StatisticsUtil.getQuery("rank/continentAverageUpdate"));
     }
 
     @Override
