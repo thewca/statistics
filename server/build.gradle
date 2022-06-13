@@ -15,6 +15,7 @@ ext {
     simpleflatmapperVersion = "8.2.3"
     springfoxVersion = "3.0.0"
     restAssuredVersion = "5.0.1"
+    jacksonVersion = "2.13.3"
 }
 
 repositories {
@@ -77,5 +78,5 @@ dependencies {
 
     testImplementation 'com.google.guava:guava:31.1-jre'
 
-    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.13.2'
+    implementation "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion"
 }

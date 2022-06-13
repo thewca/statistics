@@ -49,7 +49,7 @@ select
     ) overall,
     json_arrayagg(
         json_object(
-            'event_id',
+            'eventId',
             e.id,
             'rank',
             case

@@ -6,25 +6,24 @@ insert into
         result_type,
         overall,
         events
+    ) with default_ranks as (
+        select
+            e.id event_id,
+            c2.name region,
+            count(1) + 1 default_rank
+        from
+            RanksSingle rs
+            inner join Events e on e.`rank` < 900
+            and rs.eventId = e.id
+            inner join users u on u.wca_id = rs.personId
+            inner join Countries c on c.iso2 = u.country_iso2
+            inner join Continents c2 on c.continentId = c2.id
+        where
+            continentRank > 0
+        group by
+            e.id,
+            c2.name
     )
-with default_ranks as (
-    select
-        e.id event_id,
-        c2.name region,
-        count(1) + 1 default_rank
-    from
-        RanksSingle rs
-        inner join Events e on e.`rank` < 900
-        and rs.eventId = e.id
-        inner join users u on u.wca_id = rs.personId
-        inner join Countries c on c.iso2 = u.country_iso2
-        inner join Continents c2 on c.continentId = c2.id
-    where
-        continentRank > 0
-    group by
-        e.id,
-        c2.name
-)
 select
     (
         select
@@ -53,7 +52,7 @@ select
     ) overall,
     json_arrayagg(
         json_object(
-            'event_id',
+            'eventId',
             e.id,
             'rank',
             case
