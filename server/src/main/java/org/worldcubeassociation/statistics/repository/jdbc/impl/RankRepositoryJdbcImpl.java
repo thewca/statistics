@@ -32,6 +32,8 @@ public class RankRepositoryJdbcImpl implements RankRepositoryJdbc {
         log.info("Generate continent rank");
         jdbcTemplate.update(StatisticsUtil.getQuery("rank/generateContinentRankSingle"));
         jdbcTemplate.update(StatisticsUtil.getQuery("rank/updateContinentRankSingle"));
+        jdbcTemplate.update(StatisticsUtil.getQuery("rank/generateContinentRankAverage"));
+        jdbcTemplate.update(StatisticsUtil.getQuery("rank/updateContinentRankAverage"));
     }
 
     @Override
