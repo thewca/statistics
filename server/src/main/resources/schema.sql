@@ -32,7 +32,7 @@ create table if not exists sum_of_ranks (
   result_type varchar(7) not null,
   overall int default null,
   events json not null,
-  primary key (region, region_type, wca_id)
+  primary key (region, region_type, wca_id, result_type)
 );
 
 ----------------------------------------------------------------------------------------------------

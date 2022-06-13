@@ -15,6 +15,8 @@ public class RankRepositoryJdbcImpl implements RankRepositoryJdbc {
     public void generateWorldRank() {
         jdbcTemplate.update(StatisticsUtil.getQuery("rank/generateWorldRankSingle"));
         jdbcTemplate.update(StatisticsUtil.getQuery("rank/updateWorldRankSingle"));
+        jdbcTemplate.update(StatisticsUtil.getQuery("rank/generateWorldRankAverage"));
+        jdbcTemplate.update(StatisticsUtil.getQuery("rank/updateWorldRankAverage"));
     }
 
     @Override
