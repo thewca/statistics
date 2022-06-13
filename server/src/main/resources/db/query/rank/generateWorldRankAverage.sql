@@ -6,22 +6,23 @@ insert into
         result_type,
         overall,
         events
-    ) with default_ranks as (
-        select
-            e.id event_id,
-            (
-                select
-                    count(1) + 1
-                from
-                    RanksAverage ra
-                where
-                    ra.eventId = e.id
-            ) default_rank
-        from
-            Events e
-        where
-            e.`rank` < 900
     )
+with default_ranks as (
+    select
+        e.id event_id,
+        (
+            select
+                count(1) + 1
+            from
+                RanksAverage ra
+            where
+                ra.eventId = e.id
+        ) default_rank
+    from
+        Events e
+    where
+        e.`rank` < 900
+)
 select
     (
         select

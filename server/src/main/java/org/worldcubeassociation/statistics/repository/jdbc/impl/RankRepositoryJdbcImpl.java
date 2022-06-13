@@ -1,11 +1,13 @@
 package org.worldcubeassociation.statistics.repository.jdbc.impl;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.worldcubeassociation.statistics.repository.jdbc.RankRepositoryJdbc;
 import org.worldcubeassociation.statistics.util.StatisticsUtil;
 
+@Slf4j
 @Repository
 @AllArgsConstructor
 public class RankRepositoryJdbcImpl implements RankRepositoryJdbc {
@@ -13,6 +15,7 @@ public class RankRepositoryJdbcImpl implements RankRepositoryJdbc {
 
     @Override
     public void generateWorldRank() {
+        log.info("Generate world rank");
         jdbcTemplate.update(StatisticsUtil.getQuery("rank/generateWorldRankSingle"));
         jdbcTemplate.update(StatisticsUtil.getQuery("rank/updateWorldRankSingle"));
         jdbcTemplate.update(StatisticsUtil.getQuery("rank/generateWorldRankAverage"));
@@ -26,6 +29,7 @@ public class RankRepositoryJdbcImpl implements RankRepositoryJdbc {
 
     @Override
     public void generateContinentRank() {
+        log.info("Generate continent rank");
         jdbcTemplate.update(StatisticsUtil.getQuery("rank/generateContinentRankSingle"));
         jdbcTemplate.update(StatisticsUtil.getQuery("rank/updateContinentRankSingle"));
     }
