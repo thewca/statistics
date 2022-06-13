@@ -38,6 +38,10 @@ public class RankRepositoryJdbcImpl implements RankRepositoryJdbc {
 
     @Override
     public void generateCountryRank() {
-
+        log.info("Generate country rank");
+        jdbcTemplate.update(StatisticsUtil.getQuery("rank/countrySingleInsert"));
+        jdbcTemplate.update(StatisticsUtil.getQuery("rank/countrySingleUpdate"));
+        jdbcTemplate.update(StatisticsUtil.getQuery("rank/countryAverageInsert"));
+        jdbcTemplate.update(StatisticsUtil.getQuery("rank/countryAverageUpdate"));
     }
 }

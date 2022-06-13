@@ -26,7 +26,7 @@ create table if not exists record_evolution (
 
 create table if not exists sum_of_ranks (
   region_rank int default null,
-  region varchar(20) not null,
+  region varchar(100) not null,
   region_type varchar(20) not null,
   wca_id varchar(10) not null,
   result_type varchar(7) not null,
