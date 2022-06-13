@@ -1,8 +1,10 @@
 import {
+  BarChartOutlined,
   DatabaseOutlined,
   HomeOutlined,
   LineChartOutlined,
   OrderedListOutlined,
+  PlusCircleOutlined,
   RiseOutlined,
   SolutionOutlined,
 } from "@ant-design/icons";
@@ -26,6 +28,7 @@ import HomePage from "./main/pages/HomePage";
 import NotFoundPage from "./main/pages/NotFoundPage";
 import { RecordEvolutionPage } from "./main/pages/RecordEvolutionPage";
 import StatisticsListPage from "./main/pages/StatisticsListPage";
+import { SumOfRanksPage } from "./main/pages/SumOfRanksPage";
 import AuthContext from "./main/store/auth-context";
 
 axios.interceptors.response.use(undefined, errorInterceptor);
@@ -55,13 +58,6 @@ function App() {
       component: <HomePage statisticsList={statisticsList} loading={loading} />,
     },
     {
-      name: "Statistics List",
-      href: "/statistics-list",
-      exact: true,
-      icon: <OrderedListOutlined />,
-      component: <StatisticsListPage statisticsList={statisticsList} />,
-    },
-    {
       name: "Database Query",
       href: "/database-query",
       exact: false,
@@ -84,15 +80,39 @@ function App() {
       component: <RecordEvolutionPage />,
     },
     {
-      name: "Best Ever Ranks",
-      href: "/best-ever-ranks",
+      name: "Ranks",
+      href: "#", // Non used anyways
+      exact: false,
+      icon: <BarChartOutlined />,
+      subItems: [
+        {
+          name: "Best Ever Ranks",
+          href: "/best-ever-ranks",
+          exact: true,
+          icon: <RiseOutlined />,
+          component: <BestEverRanksPage />,
+        },
+        {
+          name: "Sum of Ranks",
+          href: "/sum-of-ranks",
+          exact: true,
+          icon: <PlusCircleOutlined />,
+          component: <SumOfRanksPage />,
+        },
+      ],
+    },
+    {
+      name: "Statistics List",
+      href: "/statistics-list",
       exact: true,
-      icon: <RiseOutlined />,
-      component: <BestEverRanksPage />,
+      icon: <OrderedListOutlined />,
+      component: <StatisticsListPage statisticsList={statisticsList} />,
     },
   ];
 
   useEffect(getStatisticsList, []);
+
+  const flatLinks = [...links.flatMap((x) => (x.subItems ? x.subItems : [x]))];
 
   return (
     <BrowserRouter>
@@ -100,7 +120,7 @@ function App() {
         <Topbar links={links} statisticsGroups={statisticsList?.list} />
         <div id="content-wrapper">
           <Routes>
-            {links.map((link) => (
+            {flatLinks.map((link) => (
               <Route
                 key={link.href}
                 path={link.href}

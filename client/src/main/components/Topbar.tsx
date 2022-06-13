@@ -38,14 +38,23 @@ const Topbar = ({ links, statisticsGroups }: TopbarProps) => {
       </Menu.Item>
       {links
         .filter((link) => link.name !== STATISTICS_LIST)
-        .map((link) => (
-          <Menu.Item key={link.href}>
-            <Link to={link.href} className="text-white align-center">
-              <span>{link.icon}</span>
-              {link.name}
-            </Link>
-          </Menu.Item>
-        ))}
+        .map((link) =>
+          link.subItems ? (
+            <SubMenu key={link.href} title={link.name} icon={link.icon}>
+              {link.subItems.map((s) => (
+                <Menu.Item key={s.href} icon={s.icon}>
+                  <Link to={s.href}>{s.name}</Link>
+                </Menu.Item>
+              ))}
+            </SubMenu>
+          ) : (
+            <Menu.Item key={link.href} icon={link.icon}>
+              <Link to={link.href} className="text-white align-center">
+                {link.name}
+              </Link>
+            </Menu.Item>
+          )
+        )}
       <SubMenu
         key="sub2"
         icon={statisticsListLink?.icon}
