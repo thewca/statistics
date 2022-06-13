@@ -20,7 +20,6 @@ update
 set
     s.region_rank = jt.r
 where
-    -- World has no region type
     s.region = 'World'
     and s.region_type = 'World'
     and s.result_type = 'average'

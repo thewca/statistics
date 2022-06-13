@@ -23,4 +23,15 @@ public class RankRepositoryJdbcImpl implements RankRepositoryJdbc {
     public void deleteAll() {
         jdbcTemplate.update("delete from sum_of_ranks where 1=1");
     }
+
+    @Override
+    public void generateContinentRank() {
+        jdbcTemplate.update(StatisticsUtil.getQuery("rank/generateContinentRankSingle"));
+        jdbcTemplate.update(StatisticsUtil.getQuery("rank/updateContinentRankSingle"));
+    }
+
+    @Override
+    public void generateCountryRank() {
+
+    }
 }

@@ -19,5 +19,7 @@ public class RankServiceImpl implements RankService {
         log.info("Generate sum of ranks");
         rankRepository.deleteAll();
         rankRepository.generateWorldRank();
+        rankRepository.generateContinentRank();
+        rankRepository.generateCountryRank();
     }
 }

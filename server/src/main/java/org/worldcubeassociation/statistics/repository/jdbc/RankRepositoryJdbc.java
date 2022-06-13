@@ -4,4 +4,8 @@ public interface RankRepositoryJdbc {
     void generateWorldRank();
 
     void deleteAll();
+
+    void generateContinentRank();
+
+    void generateCountryRank();
 }
