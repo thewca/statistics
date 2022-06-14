@@ -8,4 +8,6 @@ public interface EventService {
     List<EventDto> findAll();
 
     List<EventDto> getEvents(List<String> eventIds);
+
+    List<EventDto> getCurrentEvents();
 }

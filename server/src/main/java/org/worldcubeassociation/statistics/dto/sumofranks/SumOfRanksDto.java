@@ -1,4 +1,4 @@
-package org.worldcubeassociation.statistics.dto.rank;
+package org.worldcubeassociation.statistics.dto.sumofranks;
 
 import lombok.Data;
 

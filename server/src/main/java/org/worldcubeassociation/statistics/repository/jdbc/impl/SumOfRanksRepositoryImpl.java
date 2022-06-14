@@ -8,8 +8,9 @@ import org.simpleflatmapper.map.property.GetterFactoryProperty;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
-import org.worldcubeassociation.statistics.dto.rank.SumOfRankEventDto;
-import org.worldcubeassociation.statistics.dto.rank.SumOfRanksDto;
+import org.worldcubeassociation.statistics.dto.sumofranks.SumOfRankEventDto;
+import org.worldcubeassociation.statistics.dto.sumofranks.SumOfRanksDto;
+import org.worldcubeassociation.statistics.dto.sumofranks.SumOfRanksRegionGroupDto;
 import org.worldcubeassociation.statistics.repository.jdbc.SumOfRanksRepository;
 import org.worldcubeassociation.statistics.util.StatisticsUtil;
 
@@ -66,5 +67,12 @@ public class SumOfRanksRepositoryImpl implements SumOfRanksRepository {
                         .addColumnProperty("events", GetterFactoryProperty.forType(List.class, (rs, i) -> Arrays.asList(
                                 objectMapper.readValue(((ResultSet) rs).getString(i), SumOfRankEventDto[].class))))
                         .newRowMapper(SumOfRanksDto.class));
+    }
+
+    @Override
+    public List<SumOfRanksRegionGroupDto> getRegions() {
+        return namedJdbcTemplate.getJdbcTemplate()
+                .query(StatisticsUtil.getQuery("sumofranks/getRegions"), JdbcTemplateMapperFactory.newInstance()
+                        .newRowMapper(SumOfRanksRegionGroupDto.class));
     }
 }
