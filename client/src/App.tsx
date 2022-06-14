@@ -28,7 +28,7 @@ import HomePage from "./main/pages/HomePage";
 import NotFoundPage from "./main/pages/NotFoundPage";
 import { RecordEvolutionPage } from "./main/pages/RecordEvolutionPage";
 import StatisticsListPage from "./main/pages/StatisticsListPage";
-import { SumOfRanksPage } from "./main/pages/SumOfRanksPage";
+import { SumOfRanksPage } from "./main/pages/SumOfRanks/SumOfRanksPage";
 import AuthContext from "./main/store/auth-context";
 
 axios.interceptors.response.use(undefined, errorInterceptor);

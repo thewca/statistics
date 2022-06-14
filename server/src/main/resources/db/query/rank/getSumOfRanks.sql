@@ -1,7 +1,5 @@
 select
     region_rank,
-    region,
-    region_type,
     wca_id,
     overall,
     events
