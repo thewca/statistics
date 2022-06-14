@@ -7,6 +7,6 @@ import java.util.List;
 
 @Data
 public class SumOfRanksMetaDto {
-    private List<SumOfRanksRegionGroupDto> regions;
+    private List<SumOfRanksResultTypeDto> resultTypes;
     private List<EventDto> availableEvents;
 }

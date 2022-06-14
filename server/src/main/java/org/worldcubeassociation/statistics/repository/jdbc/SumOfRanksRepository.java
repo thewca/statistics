@@ -1,14 +1,14 @@
 package org.worldcubeassociation.statistics.repository.jdbc;
 
 import org.worldcubeassociation.statistics.dto.sumofranks.SumOfRanksDto;
-import org.worldcubeassociation.statistics.dto.sumofranks.SumOfRanksRegionGroupDto;
+import org.worldcubeassociation.statistics.dto.sumofranks.SumOfRanksResultTypeDto;
 
 import java.util.List;
 
 public interface SumOfRanksRepository {
     void generateWorldRank();
 
-    void deleteAll();
+    int deleteAll();
 
     void generateContinentRank();
 
@@ -16,5 +16,9 @@ public interface SumOfRanksRepository {
 
     List<SumOfRanksDto> list(String regionType, String region, String resultType, int page, int pageSize);
 
-    List<SumOfRanksRegionGroupDto> getRegions();
+    List<SumOfRanksResultTypeDto> getResultTypes();
+
+    int deleteAllMeta();
+
+    int insertMeta();
 }

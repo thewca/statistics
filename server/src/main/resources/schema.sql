@@ -35,6 +35,14 @@ create table if not exists sum_of_ranks (
   primary key (region, region_type, wca_id, result_type)
 );
 
+create table if not exists sum_of_ranks_meta (
+  result_type varchar(7) not null,
+  region_type varchar(20) not null,
+  region varchar(100) not null,
+  total_size int not null,
+  primary key (result_type, region, region_type)
+);
+
 ----------------------------------------------------------------------------------------------------
 -- Person link
 

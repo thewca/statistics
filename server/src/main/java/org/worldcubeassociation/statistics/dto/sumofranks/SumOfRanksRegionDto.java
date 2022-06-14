@@ -4,6 +4,6 @@ import lombok.Data;
 
 @Data
 public class SumOfRanksRegionDto {
-    private String name;
-    private int totalElements;
+    private String region;
+    private int totalSize;
 }

@@ -22,10 +22,25 @@ public class SumOfRanksServiceImpl implements SumOfRanksService {
 //    @Transactional // TODO remove
     public void generate() {
         log.info("Generate sum of ranks");
-        sumOfRanksRepository.deleteAll();
+
+        deleteExistingData();
+
         sumOfRanksRepository.generateWorldRank();
         sumOfRanksRepository.generateContinentRank();
         sumOfRanksRepository.generateCountryRank();
+
+        int newMeta = sumOfRanksRepository.insertMeta();
+        log.info("{} meta inserted", newMeta);
+    }
+
+    private void deleteExistingData() {
+        log.info("Deleting existing data");
+
+        int deletedSor = sumOfRanksRepository.deleteAll();
+        log.info("{} SOR deleted", deletedSor);
+
+        int metaDeleted = sumOfRanksRepository.deleteAllMeta();
+        log.info("{} meta deleted", metaDeleted);
     }
 
     @Override
@@ -37,7 +52,7 @@ public class SumOfRanksServiceImpl implements SumOfRanksService {
     public SumOfRanksMetaDto meta() {
         SumOfRanksMetaDto response = new SumOfRanksMetaDto();
         response.setAvailableEvents(eventService.getCurrentEvents());
-        response.setRegions(sumOfRanksRepository.getRegions());
+        response.setResultTypes(sumOfRanksRepository.getResultTypes());
         return response;
     }
 }
