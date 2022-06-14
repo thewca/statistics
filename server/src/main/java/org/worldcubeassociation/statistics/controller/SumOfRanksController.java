@@ -9,13 +9,13 @@ import org.worldcubeassociation.statistics.dto.rank.SumOfRanksDto;
 
 import java.util.List;
 
-@RequestMapping("rank")
+@RequestMapping("sum-of-ranks")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
-public interface RankController {
-    @PostMapping("sum-of-ranks")
-    void generateSumOfRanks();
+public interface SumOfRanksController {
+    @PostMapping
+    void generate();
 
-    @GetMapping("sum-of-ranks/{regionType}/{region}/{resultType}")
-    List<SumOfRanksDto> getSumOfRanks(@PathVariable String regionType, @PathVariable String region,
-                                      @PathVariable String resultType, int page, int pageSize);
+    @GetMapping("{regionType}/{region}/{resultType}")
+    List<SumOfRanksDto> list(@PathVariable String regionType, @PathVariable String region,
+                             @PathVariable String resultType, int page, int pageSize);
 }

@@ -1,11 +1,11 @@
 import Axios from "axios";
 import { SumOfRanks } from "../model/rank/SumOfRanks";
 
-export class RanksApi {
+export class SumOfRanksApi {
   BASE_URL: string;
 
   constructor() {
-    this.BASE_URL = process.env.REACT_APP_BASE_URL! + "/rank";
+    this.BASE_URL = process.env.REACT_APP_BASE_URL! + "/sum-of-ranks";
   }
 
   listSumOfRanks = (
@@ -15,10 +15,10 @@ export class RanksApi {
     page: number,
     pageSize: number
   ) => {
-    let url = `${this.BASE_URL}/sum-of-ranks/${regionType}/${region}/${resultType}`;
+    let url = `${this.BASE_URL}/${regionType}/${region}/${resultType}`;
     let params = { page, pageSize };
     return Axios.get<SumOfRanks[]>(url, { params });
   };
 }
 
-export const ranksApi = new RanksApi();
+export const sumOfRanksApi = new SumOfRanksApi();

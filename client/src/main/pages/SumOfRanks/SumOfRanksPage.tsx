@@ -1,6 +1,6 @@
 import { Skeleton } from "antd";
 import { useCallback, useEffect, useState } from "react";
-import { ranksApi } from "../../api/RankApi";
+import { sumOfRanksApi } from "../../api/SumOfRanksApi";
 import { SumOfRanks } from "../../model/rank/SumOfRanks";
 import styles from "./SumOfRanksPage.module.css";
 
@@ -23,7 +23,7 @@ export const SumOfRanksPage = () => {
       pageSize: number
     ) => {
       setLoading(true);
-      ranksApi
+      sumOfRanksApi
         .listSumOfRanks(region, regionType, resultType, page, pageSize)
         .then((response) => {
           setRanks(response.data);

@@ -10,7 +10,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.worldcubeassociation.statistics.dto.rank.SumOfRankEventDto;
 import org.worldcubeassociation.statistics.dto.rank.SumOfRanksDto;
-import org.worldcubeassociation.statistics.repository.jdbc.RankRepositoryJdbc;
+import org.worldcubeassociation.statistics.repository.jdbc.SumOfRanksRepository;
 import org.worldcubeassociation.statistics.util.StatisticsUtil;
 
 import java.sql.ResultSet;
@@ -20,17 +20,17 @@ import java.util.List;
 @Slf4j
 @Repository
 @AllArgsConstructor
-public class RankRepositoryJdbcImpl implements RankRepositoryJdbc {
+public class SumOfRanksRepositoryImpl implements SumOfRanksRepository {
     private final NamedParameterJdbcTemplate namedJdbcTemplate;
     private final ObjectMapper objectMapper;
 
     @Override
     public void generateWorldRank() {
         log.info("Generate world rank");
-        namedJdbcTemplate.getJdbcTemplate().update(StatisticsUtil.getQuery("rank/worldSingleInsert"));
-        namedJdbcTemplate.getJdbcTemplate().update(StatisticsUtil.getQuery("rank/worldSingleUpdate"));
-        namedJdbcTemplate.getJdbcTemplate().update(StatisticsUtil.getQuery("rank/worldAverageInsert"));
-        namedJdbcTemplate.getJdbcTemplate().update(StatisticsUtil.getQuery("rank/worldAverageUpdate"));
+        namedJdbcTemplate.getJdbcTemplate().update(StatisticsUtil.getQuery("sumofranks/worldSingleInsert"));
+        namedJdbcTemplate.getJdbcTemplate().update(StatisticsUtil.getQuery("sumofranks/worldSingleUpdate"));
+        namedJdbcTemplate.getJdbcTemplate().update(StatisticsUtil.getQuery("sumofranks/worldAverageInsert"));
+        namedJdbcTemplate.getJdbcTemplate().update(StatisticsUtil.getQuery("sumofranks/worldAverageUpdate"));
     }
 
     @Override
@@ -41,25 +41,25 @@ public class RankRepositoryJdbcImpl implements RankRepositoryJdbc {
     @Override
     public void generateContinentRank() {
         log.info("Generate continent rank");
-        namedJdbcTemplate.getJdbcTemplate().update(StatisticsUtil.getQuery("rank/continentSingleInsert"));
-        namedJdbcTemplate.getJdbcTemplate().update(StatisticsUtil.getQuery("rank/continentSingleUpdate"));
-        namedJdbcTemplate.getJdbcTemplate().update(StatisticsUtil.getQuery("rank/continentAverageInsert"));
-        namedJdbcTemplate.getJdbcTemplate().update(StatisticsUtil.getQuery("rank/continentAverageUpdate"));
+        namedJdbcTemplate.getJdbcTemplate().update(StatisticsUtil.getQuery("sumofranks/continentSingleInsert"));
+        namedJdbcTemplate.getJdbcTemplate().update(StatisticsUtil.getQuery("sumofranks/continentSingleUpdate"));
+        namedJdbcTemplate.getJdbcTemplate().update(StatisticsUtil.getQuery("sumofranks/continentAverageInsert"));
+        namedJdbcTemplate.getJdbcTemplate().update(StatisticsUtil.getQuery("sumofranks/continentAverageUpdate"));
     }
 
     @Override
     public void generateCountryRank() {
         log.info("Generate country rank");
-        namedJdbcTemplate.getJdbcTemplate().update(StatisticsUtil.getQuery("rank/countrySingleInsert"));
-        namedJdbcTemplate.getJdbcTemplate().update(StatisticsUtil.getQuery("rank/countrySingleUpdate"));
-        namedJdbcTemplate.getJdbcTemplate().update(StatisticsUtil.getQuery("rank/countryAverageInsert"));
-        namedJdbcTemplate.getJdbcTemplate().update(StatisticsUtil.getQuery("rank/countryAverageUpdate"));
+        namedJdbcTemplate.getJdbcTemplate().update(StatisticsUtil.getQuery("sumofranks/countrySingleInsert"));
+        namedJdbcTemplate.getJdbcTemplate().update(StatisticsUtil.getQuery("sumofranks/countrySingleUpdate"));
+        namedJdbcTemplate.getJdbcTemplate().update(StatisticsUtil.getQuery("sumofranks/countryAverageInsert"));
+        namedJdbcTemplate.getJdbcTemplate().update(StatisticsUtil.getQuery("sumofranks/countryAverageUpdate"));
     }
 
     @Override
-    public List<SumOfRanksDto> getSumOfRanks(String regionType, String region, String resultType, int page,
-                                             int pageSize) {
-        return namedJdbcTemplate.query(StatisticsUtil.getQuery("rank/getSumOfRanks"),
+    public List<SumOfRanksDto> list(String regionType, String region, String resultType, int page,
+                                    int pageSize) {
+        return namedJdbcTemplate.query(StatisticsUtil.getQuery("sumofranks/getSumOfRanks"),
                 new MapSqlParameterSource().addValue("REGION_TYPE", regionType).addValue("REGION", region)
                         .addValue("RESULT_TYPE", resultType).addValue("PAGE_SIZE", pageSize)
                         .addValue("OFFSET", page * pageSize), JdbcTemplateMapperFactory.newInstance()

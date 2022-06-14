@@ -4,7 +4,7 @@ import org.worldcubeassociation.statistics.dto.rank.SumOfRanksDto;
 
 import java.util.List;
 
-public interface RankRepositoryJdbc {
+public interface SumOfRanksRepository {
     void generateWorldRank();
 
     void deleteAll();
@@ -13,5 +13,5 @@ public interface RankRepositoryJdbc {
 
     void generateCountryRank();
 
-    List<SumOfRanksDto> getSumOfRanks(String regionType, String region, String resultType, int page, int pageSize);
+    List<SumOfRanksDto> list(String regionType, String region, String resultType, int page, int pageSize);
 }
