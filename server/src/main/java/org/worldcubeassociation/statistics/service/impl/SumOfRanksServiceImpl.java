@@ -5,11 +5,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.worldcubeassociation.statistics.dto.sumofranks.SumOfRanksDto;
 import org.worldcubeassociation.statistics.dto.sumofranks.SumOfRanksMetaDto;
+import org.worldcubeassociation.statistics.dto.sumofranks.SumOfRanksRegionDto;
 import org.worldcubeassociation.statistics.repository.jdbc.SumOfRanksRepository;
 import org.worldcubeassociation.statistics.service.EventService;
 import org.worldcubeassociation.statistics.service.SumOfRanksService;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -53,6 +56,19 @@ public class SumOfRanksServiceImpl implements SumOfRanksService {
         SumOfRanksMetaDto response = new SumOfRanksMetaDto();
         response.setAvailableEvents(eventService.getCurrentEvents());
         response.setResultTypes(sumOfRanksRepository.getResultTypes());
+
+        // MySql does not a good job when ordering json_arrayagg.
+        // We need to make sure that is organized for consistency
+
+        response.getResultTypes().forEach(rt -> {
+            rt.setRegionGroups(rt.getRegionGroups().stream()
+                    .sorted(Comparator.comparing(a -> (a.getRegions().size())))
+                    .collect(Collectors.toList()));
+
+            rt.getRegionGroups().forEach(rg -> rg.setRegions(rg.getRegions().stream().sorted(Comparator.comparing(
+                    SumOfRanksRegionDto::getRegion)).collect(Collectors.toList())));
+        });
+
         return response;
     }
 }

@@ -22,3 +22,5 @@ from
     ) r
 group by
     result_type
+order by
+    result_type
