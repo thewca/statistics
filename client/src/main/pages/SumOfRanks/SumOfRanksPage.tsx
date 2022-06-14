@@ -1,6 +1,7 @@
-import { Skeleton } from "antd";
+import { message, Select, Skeleton } from "antd";
 import { useCallback, useEffect, useState } from "react";
 import { sumOfRanksApi } from "../../api/SumOfRanksApi";
+import { SorResultType } from "../../model/rank/MetaSorInfo";
 import { SumOfRanks } from "../../model/rank/SumOfRanks";
 import styles from "./SumOfRanksPage.module.css";
 
@@ -13,6 +14,21 @@ export const SumOfRanksPage = () => {
   const [regionType, setRegionType] = useState("World");
   const [ranks, setRanks] = useState<SumOfRanks[]>([]);
   const [loading, setLoading] = useState(false);
+  const [resultTypes, setResultTypes] = useState<SorResultType[]>([]);
+  const [resultType, setResultType] = useState<string>();
+  const [availableEvents, setAvailableEvents] = useState<Event[]>([]);
+
+  const fetchMetaInfor = useCallback(() => {
+    sumOfRanksApi
+      .meta()
+      .then((response) => {
+        setResultTypes(response.data.resultTypes);
+        setResultType(response.data.resultTypes[0].resultType);
+      })
+      .catch(() => {
+        message.error("Error searching for Sum of Ranks information");
+      });
+  }, []);
 
   const fetchSumOfRanks = useCallback(
     (
@@ -33,6 +49,8 @@ export const SumOfRanksPage = () => {
     []
   );
 
+  useEffect(fetchMetaInfor, [fetchMetaInfor]);
+
   useEffect(
     () => fetchSumOfRanks("World", "World", "single", 0, INITIAL_PAGE_SIZE),
     [fetchSumOfRanks]
@@ -41,7 +59,17 @@ export const SumOfRanksPage = () => {
   return (
     <>
       <h1 className="page-title">Sum of Ranks</h1>
-      {loading && <Skeleton />}
+
+      <Select
+        className={styles.regionTypes}
+        value={resultType}
+        onChange={(e) => setResultType(e)}
+        options={resultTypes.map((r) => ({
+          label: r.resultType,
+          value: r.resultType,
+        }))}
+      />
+      <Skeleton loading={loading} />
 
       {ranks.length > 0 && (
         <div className={styles.ranksTable}>
