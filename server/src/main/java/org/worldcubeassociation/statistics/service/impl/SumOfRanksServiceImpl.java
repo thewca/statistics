@@ -31,6 +31,7 @@ public class SumOfRanksServiceImpl implements SumOfRanksService {
         sumOfRanksRepository.generateWorldRank();
         sumOfRanksRepository.generateContinentRank();
         sumOfRanksRepository.generateCountryRank();
+        sumOfRanksRepository.updateRanks();
 
         int newMeta = sumOfRanksRepository.insertMeta();
         log.info("{} meta inserted", newMeta);

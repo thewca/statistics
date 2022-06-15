@@ -3,7 +3,8 @@
   font-size: 11px;
 }
 
-.ranksTable td{
+.ranksTable td,
+.ranksTable th {
   padding: 10px;
   text-align: center;
 }
@@ -12,7 +13,7 @@
   width: 20%;
 }
 
-.top10{
+.top10 {
   color: rgb(0, 221, 0);
   font-weight: bold;
 }

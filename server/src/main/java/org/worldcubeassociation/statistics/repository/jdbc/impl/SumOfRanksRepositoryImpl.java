@@ -32,9 +32,7 @@ public class SumOfRanksRepositoryImpl implements SumOfRanksRepository {
     public void generateWorldRank() {
         log.info("Generate world rank");
         jdbcTemplate.update(StatisticsUtil.getQuery("sumofranks/worldSingleInsert"));
-        jdbcTemplate.update(StatisticsUtil.getQuery("sumofranks/worldSingleUpdate"));
         jdbcTemplate.update(StatisticsUtil.getQuery("sumofranks/worldAverageInsert"));
-        jdbcTemplate.update(StatisticsUtil.getQuery("sumofranks/worldAverageUpdate"));
     }
 
     @Override
@@ -46,18 +44,14 @@ public class SumOfRanksRepositoryImpl implements SumOfRanksRepository {
     public void generateContinentRank() {
         log.info("Generate continent rank");
         jdbcTemplate.update(StatisticsUtil.getQuery("sumofranks/continentSingleInsert"));
-        jdbcTemplate.update(StatisticsUtil.getQuery("sumofranks/continentSingleUpdate"));
         jdbcTemplate.update(StatisticsUtil.getQuery("sumofranks/continentAverageInsert"));
-        jdbcTemplate.update(StatisticsUtil.getQuery("sumofranks/continentAverageUpdate"));
     }
 
     @Override
     public void generateCountryRank() {
         log.info("Generate country rank");
         jdbcTemplate.update(StatisticsUtil.getQuery("sumofranks/countrySingleInsert"));
-        jdbcTemplate.update(StatisticsUtil.getQuery("sumofranks/countrySingleUpdate"));
         jdbcTemplate.update(StatisticsUtil.getQuery("sumofranks/countryAverageInsert"));
-        jdbcTemplate.update(StatisticsUtil.getQuery("sumofranks/countryAverageUpdate"));
     }
 
     @Override
@@ -91,5 +85,10 @@ public class SumOfRanksRepositoryImpl implements SumOfRanksRepository {
     @Override
     public int insertMeta() {
         return jdbcTemplate.update(StatisticsUtil.getQuery("sumofranks/insertMeta"));
+    }
+
+    @Override
+    public void updateRanks() {
+        jdbcTemplate.update(StatisticsUtil.getQuery("sumofranks/updateRank"));
     }
 }

@@ -39,8 +39,8 @@ select
     sum(coalesce(rs.worldRank, default_rank)) overall,
     json_arrayagg(
         json_object(
-            'eventId',
-            e.id,
+            'event',
+            json_object('id', e.id, 'name', e.name, 'rank', e.rank),
             'rank',
             coalesce(rs.worldRank, default_rank),
             'completed',

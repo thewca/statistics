@@ -1,10 +1,11 @@
 package org.worldcubeassociation.statistics.dto.sumofranks;
 
 import lombok.Data;
+import org.worldcubeassociation.statistics.dto.EventDto;
 
 @Data
 public class SumOfRankEventDto {
-    private Integer rank;
-    private String eventId;
+    private EventDto event;
+    private Integer regionRank;
     private Boolean completed;
 }
