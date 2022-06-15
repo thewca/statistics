@@ -1,6 +1,5 @@
 import { message, Pagination, Select, Skeleton, Space, Tooltip } from "antd";
 import { useCallback, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import { sumOfRanksApi } from "../../api/SumOfRanksApi";
 import { MetaSorInfo } from "../../model/rank/MetaSorInfo";
 import { SumOfRanks } from "../../model/rank/SumOfRanks";
@@ -157,7 +156,9 @@ export const SumOfRanksPage = () => {
                           : "-"}
                       </th>
                       <td>
-                        <Link to={getPersonLink(r.wcaId)}>{r.name}</Link>
+                        <a target="_blank" href={getPersonLink(r.wcaId)}>
+                          {r.name}
+                        </a>
                       </td>
                       <td>{r.overall}</td>
                       {r.events.map((e, i) => (

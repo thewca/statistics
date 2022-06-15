@@ -1,6 +1,8 @@
 select
     region_rank,
     wca_id,
+    name,
+    country_iso2,
     overall,
     events
 from
