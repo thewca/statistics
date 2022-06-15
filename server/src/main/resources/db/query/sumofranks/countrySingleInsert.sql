@@ -49,18 +49,18 @@ select
         case
             when countryRank is null
             or countryRank = 0 then default_rank
-            else rs.countryRank
+            else r.countryRank
         end
     ) overall,
     json_arrayagg(
         json_object(
             'event',
             json_object('id', e.id, 'name', e.name, 'rank', e.rank),
-            'rank',
+            'regionalRank',
             case
                 when countryRank is null
                 or countryRank = 0 then default_rank
-                else rs.countryRank
+                else r.countryRank
             end,
             'completed',
             countryRank is not null
@@ -70,8 +70,8 @@ select
 from
     Events e
     left join users u on e.`rank` < 900 -- Filter by active ranks
-    left join RanksSingle rs on rs.eventId = e.id
-    and rs.personId = u.wca_id
+    left join RanksSingle r on r.eventId = e.id
+    and r.personId = u.wca_id
     left join Countries c on c.iso2 = u.country_iso2
     left join default_ranks dr on dr.event_id = e.id
     and dr.region = c.iso2

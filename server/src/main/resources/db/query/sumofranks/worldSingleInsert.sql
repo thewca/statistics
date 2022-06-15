@@ -36,22 +36,22 @@ select
         select
             'single'
     ) result_type,
-    sum(coalesce(rs.worldRank, default_rank)) overall,
+    sum(coalesce(r.worldRank, default_rank)) overall,
     json_arrayagg(
         json_object(
             'event',
             json_object('id', e.id, 'name', e.name, 'rank', e.rank),
-            'rank',
-            coalesce(rs.worldRank, default_rank),
+            'regionalRank',
+            coalesce(r.worldRank, default_rank),
             'completed',
-            rs.worldRank is not null
+            r.worldRank is not null
         )
     ) events
 from
     Events e
     left join users u on e.`rank` < 900 -- Filter by active ranks
-    left join RanksSingle rs on rs.eventId = e.id
-    and rs.personId = u.wca_id
+    left join RanksSingle r on r.eventId = e.id
+    and r.personId = u.wca_id
     left join default_ranks dr on dr.event_id = e.id
 where
     wca_id is not null

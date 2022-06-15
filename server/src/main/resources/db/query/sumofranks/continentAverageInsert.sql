@@ -51,18 +51,18 @@ select
         case
             when continentRank is null
             or continentRank = 0 then default_rank
-            else ra.continentRank
+            else r.continentRank
         end
     ) overall,
     json_arrayagg(
         json_object(
             'event',
             json_object('id', e.id, 'name', e.name, 'rank', e.rank),
-            'rank',
+            'regionalRank',
             case
                 when continentRank is null
                 or continentRank = 0 then default_rank
-                else ra.continentRank
+                else r.continentRank
             end,
             'completed',
             continentRank is not null
@@ -72,8 +72,8 @@ select
 from
     Events e
     left join users u on e.`rank` < 900 -- Filter by active ranks
-    left join RanksAverage ra on ra.eventId = e.id
-    and ra.personId = u.wca_id
+    left join RanksAverage r on r.eventId = e.id
+    and r.personId = u.wca_id
     left join Countries c on c.iso2 = u.country_iso2
     left join Continents c2 on c.continentId = c2.id
     left join default_ranks dr on dr.event_id = e.id

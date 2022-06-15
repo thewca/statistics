@@ -130,12 +130,12 @@ export const SumOfRanksPage = () => {
                       className={
                         !e.completed
                           ? styles.notCompleted
-                          : e.rank <= 10
+                          : e.regionalRank <= 10
                           ? styles.top10
                           : ""
                       }
                     >
-                      {e.rank}
+                      {e.regionalRank}
                     </td>
                   ))}
                 </tr>

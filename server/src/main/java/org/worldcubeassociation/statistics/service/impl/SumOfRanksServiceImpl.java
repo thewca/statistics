@@ -31,6 +31,8 @@ public class SumOfRanksServiceImpl implements SumOfRanksService {
         sumOfRanksRepository.generateWorldRank();
         sumOfRanksRepository.generateContinentRank();
         sumOfRanksRepository.generateCountryRank();
+
+        log.info("Update regional ranks");
         sumOfRanksRepository.updateRanks();
 
         int newMeta = sumOfRanksRepository.insertMeta();
@@ -50,7 +52,10 @@ public class SumOfRanksServiceImpl implements SumOfRanksService {
     @Override
     public List<SumOfRanksDto> list(String resultType, String regionType, String region, int page, int pageSize) {
         List<SumOfRanksDto> sor = sumOfRanksRepository.list(resultType, regionType, region, page, pageSize);
-        sor.forEach(s -> s.getEvents().stream().sorted().collect(Collectors.toList()));
+
+        // MySql does a very poor job when orgnizing json_arrayagg. We need to correct it here.
+        sor.forEach(s -> s.setEvents(s.getEvents().stream().sorted(Comparator.comparing(e -> e.getEvent().getRank()))
+                .collect(Collectors.toList())));
         return sor;
     }
 

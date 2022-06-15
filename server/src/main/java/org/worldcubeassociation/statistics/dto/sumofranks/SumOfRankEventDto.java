@@ -6,6 +6,6 @@ import org.worldcubeassociation.statistics.dto.EventDto;
 @Data
 public class SumOfRankEventDto {
     private EventDto event;
-    private Integer regionRank;
+    private Integer regionalRank;
     private Boolean completed;
 }

@@ -1,7 +1,7 @@
 interface SumOfRanksEvents {
   completed: boolean;
   eventId: string;
-  rank: number;
+  regionalRank: number;
 }
 
 export interface SumOfRanks {
