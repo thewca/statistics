@@ -1,4 +1,4 @@
-import { message, Select, Skeleton } from "antd";
+import { message, Select, Skeleton, Tooltip } from "antd";
 import { useCallback, useEffect, useState } from "react";
 import { sumOfRanksApi } from "../../api/SumOfRanksApi";
 import WcaEvent from "../../model/Event";
@@ -84,6 +84,8 @@ export const SumOfRanksPage = () => {
         className={styles.regionTypes}
         value={selectedRegionGroup}
         onChange={setSelectedRegionGroup}
+        optionFilterProp="children"
+        showSearch
       >
         {resultTypes
           .find((r) => r.resultType === resultType)
@@ -108,7 +110,11 @@ export const SumOfRanksPage = () => {
                 <th>Person</th>
                 <th>Overall</th>
                 {availableEvents.map((e) => (
-                  <th key={e.id}>{e.id}</th>
+                  <th key={e.id}>
+                    <Tooltip title={e.name}>
+                      <span className={`cubing-icon event-${e.id}`} />
+                    </Tooltip>
+                  </th>
                 ))}
               </tr>
             </thead>

@@ -48,7 +48,9 @@ public class SumOfRanksServiceImpl implements SumOfRanksService {
 
     @Override
     public List<SumOfRanksDto> list(String resultType, String regionType, String region, int page, int pageSize) {
-        return sumOfRanksRepository.list(resultType, regionType, region, page, pageSize);
+        List<SumOfRanksDto> sor = sumOfRanksRepository.list(resultType, regionType, region, page, pageSize);
+        sor.forEach(s -> s.getEvents().stream().sorted().collect(Collectors.toList()));
+        return sor;
     }
 
     @Override
