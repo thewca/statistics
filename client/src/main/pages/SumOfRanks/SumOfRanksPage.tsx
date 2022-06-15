@@ -2,7 +2,7 @@ import { message, Select, Skeleton, Tooltip } from "antd";
 import { useCallback, useEffect, useState } from "react";
 import { sumOfRanksApi } from "../../api/SumOfRanksApi";
 import WcaEvent from "../../model/Event";
-import { SorResultType } from "../../model/rank/MetaSorInfo";
+import { MetaSorInfo } from "../../model/rank/MetaSorInfo";
 import { SumOfRanks } from "../../model/rank/SumOfRanks";
 import styles from "./SumOfRanksPage.module.css";
 
@@ -15,20 +15,18 @@ export const SumOfRanksPage = () => {
   const [size, setSize] = useState(INITIAL_PAGE_SIZE);
   const [ranks, setRanks] = useState<SumOfRanks[]>([]);
   const [loading, setLoading] = useState(false);
-  const [resultTypes, setResultTypes] = useState<SorResultType[]>([]);
+  const [metaSor, setMetaSor] = useState<MetaSorInfo[]>([]);
   const [resultType, setResultType] = useState<string>();
-  const [availableEvents, setAvailableEvents] = useState<WcaEvent[]>([]);
   const [selectedRegionGroup, setSelectedRegionGroup] = useState<string>();
 
   const fetchMetaInfor = useCallback(() => {
     sumOfRanksApi
       .meta()
       .then((response) => {
-        setResultTypes(response.data.resultTypes);
-        setResultType(response.data.resultTypes[0].resultType);
-        setAvailableEvents(response.data.availableEvents);
+        setMetaSor(response.data);
+        setResultType(response.data[0].resultType);
         setSelectedRegionGroup(
-          `${response.data.resultTypes[0].regionGroups[0].regionType}-${response.data.resultTypes[0].regionGroups[0].regions[0].region}`
+          `${response.data[0].regionGroups[0].regionType}-${response.data[0].regionGroups[0].regions[0].region}`
         );
       })
       .catch(() => {
@@ -75,7 +73,7 @@ export const SumOfRanksPage = () => {
         className={styles.regionTypes}
         value={resultType}
         onChange={(e) => setResultType(e)}
-        options={resultTypes.map((r) => ({
+        options={metaSor.map((r) => ({
           label: r.resultType,
           value: r.resultType,
         }))}
@@ -87,7 +85,7 @@ export const SumOfRanksPage = () => {
         optionFilterProp="children"
         showSearch
       >
-        {resultTypes
+        {metaSor
           .find((r) => r.resultType === resultType)
           ?.regionGroups.map((g) => (
             <OptGroup key={g.regionType}>
@@ -109,13 +107,15 @@ export const SumOfRanksPage = () => {
                 <th>Rank</th>
                 <th>Person</th>
                 <th>Overall</th>
-                {availableEvents.map((e) => (
-                  <th key={e.id}>
-                    <Tooltip title={e.name}>
-                      <span className={`cubing-icon event-${e.id}`} />
-                    </Tooltip>
-                  </th>
-                ))}
+                {metaSor
+                  .find((m) => m.resultType === resultType)
+                  ?.availableEvents.map((e) => (
+                    <th key={e.id}>
+                      <Tooltip title={e.name}>
+                        <span className={`cubing-icon event-${e.id}`} />
+                      </Tooltip>
+                    </th>
+                  ))}
               </tr>
             </thead>
             <tbody>

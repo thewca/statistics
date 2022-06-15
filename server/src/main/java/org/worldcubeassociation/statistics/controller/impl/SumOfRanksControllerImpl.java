@@ -26,7 +26,7 @@ public class SumOfRanksControllerImpl implements SumOfRanksController {
     }
 
     @Override
-    public SumOfRanksMetaDto meta() {
+    public List<SumOfRanksMetaDto> meta() {
         return sumOfRanksService.meta();
     }
 }

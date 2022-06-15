@@ -9,10 +9,11 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
+import org.worldcubeassociation.statistics.dto.EventDto;
 import org.worldcubeassociation.statistics.dto.sumofranks.SumOfRankEventDto;
 import org.worldcubeassociation.statistics.dto.sumofranks.SumOfRanksDto;
+import org.worldcubeassociation.statistics.dto.sumofranks.SumOfRanksMetaDto;
 import org.worldcubeassociation.statistics.dto.sumofranks.SumOfRanksRegionGroupDto;
-import org.worldcubeassociation.statistics.dto.sumofranks.SumOfRanksResultTypeDto;
 import org.worldcubeassociation.statistics.repository.jdbc.SumOfRanksRepository;
 import org.worldcubeassociation.statistics.util.StatisticsUtil;
 
@@ -67,14 +68,18 @@ public class SumOfRanksRepositoryImpl implements SumOfRanksRepository {
     }
 
     @Override
-    public List<SumOfRanksResultTypeDto> getResultTypes() {
+    public List<SumOfRanksMetaDto> getResultTypes() {
         return jdbcTemplate
-                .query(StatisticsUtil.getQuery("sumofranks/getResultTypes"), JdbcTemplateMapperFactory.newInstance()
+                .query(StatisticsUtil.getQuery("sumofranks/getMeta"), JdbcTemplateMapperFactory.newInstance()
                         .addColumnProperty("regionGroups",
                                 GetterFactoryProperty.forType(List.class, (rs, i) -> Arrays.asList(
                                         objectMapper.readValue(((ResultSet) rs).getString(i),
                                                 SumOfRanksRegionGroupDto[].class))))
-                        .newRowMapper(SumOfRanksResultTypeDto.class));
+                        .addColumnProperty("availableEvents",
+                                GetterFactoryProperty.forType(List.class, (rs, i) -> Arrays.asList(
+                                        objectMapper.readValue(((ResultSet) rs).getString(i),
+                                                EventDto[].class))))
+                        .newRowMapper(SumOfRanksMetaDto.class));
     }
 
     @Override

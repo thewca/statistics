@@ -21,5 +21,5 @@ public interface SumOfRanksController {
                              @PathVariable String region, int page, int pageSize);
 
     @GetMapping("meta")
-    SumOfRanksMetaDto meta();
+    List<SumOfRanksMetaDto> meta();
 }

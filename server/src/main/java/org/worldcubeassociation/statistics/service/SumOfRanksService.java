@@ -10,5 +10,5 @@ public interface SumOfRanksService {
 
     List<SumOfRanksDto> list(String resultType, String regionType, String region, int page, int pageSize);
 
-    SumOfRanksMetaDto meta();
+    List<SumOfRanksMetaDto> meta();
 }

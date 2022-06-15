@@ -10,12 +10,8 @@ interface SorRegionGroup {
   regions: SorRegion[];
 }
 
-export interface SorResultType {
+export interface MetaSorInfo {
   resultType: string;
   regionGroups: SorRegionGroup[];
-}
-
-export interface MetaSorInfo {
   availableEvents: WcaEvent[];
-  resultTypes: SorResultType[];
 }

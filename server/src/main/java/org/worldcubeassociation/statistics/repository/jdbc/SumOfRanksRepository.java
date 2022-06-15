@@ -1,7 +1,7 @@
 package org.worldcubeassociation.statistics.repository.jdbc;
 
 import org.worldcubeassociation.statistics.dto.sumofranks.SumOfRanksDto;
-import org.worldcubeassociation.statistics.dto.sumofranks.SumOfRanksResultTypeDto;
+import org.worldcubeassociation.statistics.dto.sumofranks.SumOfRanksMetaDto;
 
 import java.util.List;
 
@@ -16,7 +16,7 @@ public interface SumOfRanksRepository {
 
     List<SumOfRanksDto> list(String resultType, String regionType, String region, int page, int pageSize);
 
-    List<SumOfRanksResultTypeDto> getResultTypes();
+    List<SumOfRanksMetaDto> getResultTypes();
 
     int deleteAllMeta();
 

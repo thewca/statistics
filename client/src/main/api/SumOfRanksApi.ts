@@ -11,7 +11,7 @@ export class SumOfRanksApi {
 
   meta = () => {
     let url = `${this.BASE_URL}/meta`;
-    return Axios.get<MetaSorInfo>(url);
+    return Axios.get<MetaSorInfo[]>(url);
   };
 
   listSumOfRanks = (
