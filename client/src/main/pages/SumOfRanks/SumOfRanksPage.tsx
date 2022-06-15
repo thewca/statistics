@@ -1,8 +1,10 @@
 import { message, Pagination, Select, Skeleton, Space, Tooltip } from "antd";
 import { useCallback, useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { sumOfRanksApi } from "../../api/SumOfRanksApi";
 import { MetaSorInfo } from "../../model/rank/MetaSorInfo";
 import { SumOfRanks } from "../../model/rank/SumOfRanks";
+import { getPersonLink } from "../../util/WcaUtil";
 import styles from "./SumOfRanksPage.module.css";
 
 const { Option, OptGroup } = Select;
@@ -154,7 +156,9 @@ export const SumOfRanksPage = () => {
                           ? r.regionRank
                           : "-"}
                       </th>
-                      <td>{r.wcaId}</td>
+                      <td>
+                        <Link to={getPersonLink(r.wcaId)}>{r.name}</Link>
+                      </td>
                       <td>{r.overall}</td>
                       {r.events.map((e, i) => (
                         <td

@@ -3,6 +3,8 @@ insert into
         region,
         region_type,
         wca_id,
+        name,
+        country_iso2,
         result_type,
         overall,
         events
@@ -43,6 +45,8 @@ select
             'Continent'
     ) region_type,
     wca_id,
+    u.name,
+    country_iso2,
     (
         select
             'average'

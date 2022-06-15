@@ -11,4 +11,6 @@ export interface SumOfRanks {
   regionRank: number;
   regionType: string;
   wcaId: string;
+  name: string;
+  countryIso2: string;
 }
