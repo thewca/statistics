@@ -15,13 +15,13 @@ export class SumOfRanksApi {
   };
 
   listSumOfRanks = (
-    region: string,
-    regionType: string,
     resultType: string,
+    regionType: string,
+    region: string,
     page: number,
     pageSize: number
   ) => {
-    let url = `${this.BASE_URL}/${regionType}/${region}/${resultType}`;
+    let url = `${this.BASE_URL}/${resultType}/${regionType}/${region}`;
     let params = { page, pageSize };
     return Axios.get<SumOfRanks[]>(url, { params });
   };

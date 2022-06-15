@@ -8,7 +8,7 @@ import java.util.List;
 public interface SumOfRanksService {
     void generate();
 
-    List<SumOfRanksDto> list(String regionType, String region, String resultType, int page, int pageSize);
+    List<SumOfRanksDto> list(String resultType, String regionType, String region, int page, int pageSize);
 
     SumOfRanksMetaDto meta();
 }

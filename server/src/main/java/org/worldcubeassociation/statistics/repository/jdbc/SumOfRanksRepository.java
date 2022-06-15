@@ -14,7 +14,7 @@ public interface SumOfRanksRepository {
 
     void generateCountryRank();
 
-    List<SumOfRanksDto> list(String regionType, String region, String resultType, int page, int pageSize);
+    List<SumOfRanksDto> list(String resultType, String regionType, String region, int page, int pageSize);
 
     List<SumOfRanksResultTypeDto> getResultTypes();
 

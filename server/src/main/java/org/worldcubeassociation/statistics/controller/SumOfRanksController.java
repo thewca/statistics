@@ -16,9 +16,9 @@ public interface SumOfRanksController {
     @PostMapping
     void generate();
 
-    @GetMapping("{regionType}/{region}/{resultType}")
-    List<SumOfRanksDto> list(@PathVariable String regionType, @PathVariable String region,
-                             @PathVariable String resultType, int page, int pageSize);
+    @GetMapping("{resultType}/{regionType}/{region}")
+    List<SumOfRanksDto> list(@PathVariable String resultType, @PathVariable String regionType,
+                             @PathVariable String region, int page, int pageSize);
 
     @GetMapping("meta")
     SumOfRanksMetaDto meta();

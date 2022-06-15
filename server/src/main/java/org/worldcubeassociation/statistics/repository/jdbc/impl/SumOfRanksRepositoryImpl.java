@@ -61,7 +61,7 @@ public class SumOfRanksRepositoryImpl implements SumOfRanksRepository {
     }
 
     @Override
-    public List<SumOfRanksDto> list(String regionType, String region, String resultType, int page,
+    public List<SumOfRanksDto> list(String resultType, String regionType, String region, int page,
                                     int pageSize) {
         return namedJdbcTemplate.query(StatisticsUtil.getQuery("sumofranks/getSumOfRanks"),
                 new MapSqlParameterSource().addValue("REGION_TYPE", regionType).addValue("REGION", region)

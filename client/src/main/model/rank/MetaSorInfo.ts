@@ -1,4 +1,4 @@
-import Event from "../Event";
+import WcaEvent from "../Event";
 
 interface SorRegion {
   region: string;
@@ -16,6 +16,6 @@ export interface SorResultType {
 }
 
 export interface MetaSorInfo {
-  availableEvents: Event[];
+  availableEvents: WcaEvent[];
   resultTypes: SorResultType[];
 }
