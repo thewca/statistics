@@ -10,19 +10,23 @@ insert into
         select
             e.id event_id,
             c2.name region,
-            count(1) + 1 default_rank
+            (
+                select
+                    count(1)
+                from
+                    RanksAverage r
+                    inner join users u on u.wca_id = r.personId
+                    inner join Countries c on c.iso2 = u.country_iso2
+                where
+                    c.continentId = c2.id
+                    and continentRank > 0
+                    and r.eventId = e.id
+            ) + 1 default_rank
         from
-            RanksAverage ra
-            inner join Events e on e.`rank` < 900
-            and ra.eventId = e.id
-            inner join users u on u.wca_id = ra.personId
-            inner join Countries c on c.iso2 = u.country_iso2
-            inner join Continents c2 on c.continentId = c2.id
+            Events e,
+            Continents c2
         where
-            continentRank > 0
-        group by
-            e.id,
-            c2.name
+            e.`rank` < 900
     )
 select
     (

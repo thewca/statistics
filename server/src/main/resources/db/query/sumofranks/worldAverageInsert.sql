@@ -11,12 +11,12 @@ insert into
             e.id event_id,
             (
                 select
-                    count(1) + 1
+                    count(1)
                 from
-                    RanksAverage ra
+                    RanksAverage r
                 where
-                    ra.eventId = e.id
-            ) default_rank
+                    r.eventId = e.id
+            ) + 1 default_rank
         from
             Events e
         where
