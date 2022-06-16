@@ -14,7 +14,6 @@ export const errorInterceptor = (response: AxiosError) => {
     // Refresh screen so the login process can start
     deleteStorageItems();
   } else if (response.response?.status === 400) {
-    console.log(response.toJSON());
     let errors = extractMessages(response);
     errors.forEach((errorMessage) => message.error(errorMessage));
   }

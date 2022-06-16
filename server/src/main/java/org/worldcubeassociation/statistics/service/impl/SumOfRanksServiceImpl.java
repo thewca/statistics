@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.worldcubeassociation.statistics.dto.EventDto;
 import org.worldcubeassociation.statistics.dto.sumofranks.SumOfRanksDto;
 import org.worldcubeassociation.statistics.dto.sumofranks.SumOfRanksMetaDto;
@@ -26,7 +27,7 @@ public class SumOfRanksServiceImpl implements SumOfRanksService {
     private final EventService eventService;
 
     @Override
-//    @Transactional // TODO remove
+    @Transactional
     public void generate() {
         log.info("Generate sum of ranks");
 
