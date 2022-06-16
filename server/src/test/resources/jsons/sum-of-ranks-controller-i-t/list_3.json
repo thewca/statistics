@@ -7,7 +7,7 @@
             "wcaId": "2017SOUZ10",
             "name": "Gabriel Lincon Souza",
             "countryIso2": "BR",
-            "overall": 40326,
+            "overall": 44247,
             "events": [
                 {
                     "event": {
@@ -141,7 +141,7 @@
                         "name": "4x4x4 Blindfolded",
                         "rank": 160
                     },
-                    "regionalRank": 20,
+                    "regionalRank": 1005,
                     "completed": false
                 },
                 {
@@ -150,7 +150,7 @@
                         "name": "5x5x5 Blindfolded",
                         "rank": 170
                     },
-                    "regionalRank": 13,
+                    "regionalRank": 520,
                     "completed": false
                 },
                 {
@@ -159,7 +159,7 @@
                         "name": "3x3x3 Multi-Blind",
                         "rank": 180
                     },
-                    "regionalRank": 25,
+                    "regionalRank": 2454,
                     "completed": false
                 }
             ]
@@ -169,7 +169,7 @@
             "wcaId": "2011LIMA02",
             "name": "Bruno Fonsêca Coelho Lima",
             "countryIso2": "BR",
-            "overall": 41787,
+            "overall": 45708,
             "events": [
                 {
                     "event": {
@@ -303,7 +303,7 @@
                         "name": "4x4x4 Blindfolded",
                         "rank": 160
                     },
-                    "regionalRank": 20,
+                    "regionalRank": 1005,
                     "completed": false
                 },
                 {
@@ -312,7 +312,7 @@
                         "name": "5x5x5 Blindfolded",
                         "rank": 170
                     },
-                    "regionalRank": 13,
+                    "regionalRank": 520,
                     "completed": false
                 },
                 {
@@ -321,7 +321,7 @@
                         "name": "3x3x3 Multi-Blind",
                         "rank": 180
                     },
-                    "regionalRank": 25,
+                    "regionalRank": 2454,
                     "completed": false
                 }
             ]
@@ -331,7 +331,7 @@
             "wcaId": "2011LIMA01",
             "name": "Allyson Dias de Lima",
             "countryIso2": "BR",
-            "overall": 47300,
+            "overall": 47807,
             "events": [
                 {
                     "event": {
@@ -474,7 +474,7 @@
                         "name": "5x5x5 Blindfolded",
                         "rank": 170
                     },
-                    "regionalRank": 13,
+                    "regionalRank": 520,
                     "completed": false
                 },
                 {

@@ -7,7 +7,7 @@
             "wcaId": "2016CETR01",
             "name": "Joel Cetra",
             "countryIso2": "DE",
-            "overall": 10963,
+            "overall": 11470,
             "events": [
                 {
                     "event": {
@@ -150,7 +150,7 @@
                         "name": "5x5x5 Blindfolded",
                         "rank": 170
                     },
-                    "regionalRank": 13,
+                    "regionalRank": 520,
                     "completed": false
                 },
                 {
@@ -169,7 +169,7 @@
             "wcaId": "2013BOTZ01",
             "name": "Alexander Botz",
             "countryIso2": "DE",
-            "overall": 11203,
+            "overall": 11710,
             "events": [
                 {
                     "event": {
@@ -312,7 +312,7 @@
                         "name": "5x5x5 Blindfolded",
                         "rank": 170
                     },
-                    "regionalRank": 13,
+                    "regionalRank": 520,
                     "completed": false
                 },
                 {
@@ -331,7 +331,7 @@
             "wcaId": "2016IHLE01",
             "name": "Malte Ihlefeld",
             "countryIso2": "DE",
-            "overall": 11352,
+            "overall": 11859,
             "events": [
                 {
                     "event": {
@@ -474,7 +474,7 @@
                         "name": "5x5x5 Blindfolded",
                         "rank": 170
                     },
-                    "regionalRank": 13,
+                    "regionalRank": 520,
                     "completed": false
                 },
                 {
@@ -817,7 +817,7 @@
             "wcaId": "2015KOEN01",
             "name": "Christian König",
             "countryIso2": "DE",
-            "overall": 12865,
+            "overall": 13372,
             "events": [
                 {
                     "event": {
@@ -960,7 +960,7 @@
                         "name": "5x5x5 Blindfolded",
                         "rank": 170
                     },
-                    "regionalRank": 13,
+                    "regionalRank": 520,
                     "completed": false
                 },
                 {
