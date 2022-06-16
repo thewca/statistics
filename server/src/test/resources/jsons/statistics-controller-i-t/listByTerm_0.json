@@ -1,0 +1,44 @@
+{
+    "list": [
+        {
+            "group": "Competitors",
+            "statistics": [
+                {
+                    "path": "best-medal-collection",
+                    "title": "Best medal collection"
+                },
+                {
+                    "path": "world-records-in-most-events",
+                    "title": "World records in most events"
+                }
+            ],
+            "size": 2
+        },
+        {
+            "group": "Events",
+            "statistics": [
+                {
+                    "path": "appearances-in-3x3x3-cube-top-100-results",
+                    "title": "Appearances in 3x3x3 Cube top 100 results"
+                }
+            ],
+            "size": 1
+        },
+        {
+            "group": "Results",
+            "statistics": [
+                {
+                    "path": "best-counting-result",
+                    "title": "Best counting result"
+                },
+                {
+                    "path": "best-worst-result",
+                    "title": "Best worst result"
+                }
+            ],
+            "size": 2
+        }
+    ],
+    "groups": 3,
+    "totalSize": 5
+}
