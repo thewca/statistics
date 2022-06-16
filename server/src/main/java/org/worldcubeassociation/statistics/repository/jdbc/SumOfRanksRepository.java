@@ -4,6 +4,7 @@ import org.worldcubeassociation.statistics.dto.sumofranks.SumOfRanksDto;
 import org.worldcubeassociation.statistics.dto.sumofranks.SumOfRanksMetaDto;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface SumOfRanksRepository {
     void generateWorldRank();
@@ -23,4 +24,6 @@ public interface SumOfRanksRepository {
     int insertMeta();
 
     void updateRanks();
+
+    Optional<Integer> getWcaIdPage(String resultType, String regionType, String region, int pageSize, String wcaId);
 }

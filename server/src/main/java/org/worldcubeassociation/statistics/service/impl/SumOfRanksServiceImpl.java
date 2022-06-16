@@ -2,11 +2,13 @@ package org.worldcubeassociation.statistics.service.impl;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.worldcubeassociation.statistics.dto.EventDto;
 import org.worldcubeassociation.statistics.dto.sumofranks.SumOfRanksDto;
 import org.worldcubeassociation.statistics.dto.sumofranks.SumOfRanksMetaDto;
 import org.worldcubeassociation.statistics.dto.sumofranks.SumOfRanksRegionDto;
+import org.worldcubeassociation.statistics.exception.InvalidParameterException;
 import org.worldcubeassociation.statistics.repository.jdbc.SumOfRanksRepository;
 import org.worldcubeassociation.statistics.service.EventService;
 import org.worldcubeassociation.statistics.service.SumOfRanksService;
@@ -51,7 +53,14 @@ public class SumOfRanksServiceImpl implements SumOfRanksService {
     }
 
     @Override
-    public List<SumOfRanksDto> list(String resultType, String regionType, String region, int page, int pageSize) {
+    public List<SumOfRanksDto> list(String resultType, String regionType, String region, int page, int pageSize,
+                                    String wcaId) {
+        if (!StringUtils.isBlank(wcaId)) {
+            page = sumOfRanksRepository.getWcaIdPage(resultType, regionType, region, pageSize, wcaId)
+                    .orElseThrow(() -> new InvalidParameterException(
+                            String.format("WCA ID %s not found for region type %s and region %s", wcaId, regionType,
+                                    region)));
+        }
         List<SumOfRanksDto> sor = sumOfRanksRepository.list(resultType, regionType, region, page, pageSize);
 
         // MySql does a very poor job when orgnizing json_arrayagg. We need to correct it here.

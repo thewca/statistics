@@ -20,6 +20,7 @@ import org.worldcubeassociation.statistics.util.StatisticsUtil;
 import java.sql.ResultSet;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Repository
@@ -95,5 +96,18 @@ public class SumOfRanksRepositoryImpl implements SumOfRanksRepository {
     @Override
     public void updateRanks() {
         jdbcTemplate.update(StatisticsUtil.getQuery("sumofranks/updateRank"));
+    }
+
+    @Override
+    public Optional<Integer> getWcaIdPage(String resultType, String regionType, String region, int pageSize,
+                                          String wcaId) {
+        List<Integer> list = namedJdbcTemplate.queryForList(StatisticsUtil.getQuery("sumofranks/getWcaIdPage"),
+                new MapSqlParameterSource()
+                        .addValue("RESULT_TYPE", resultType)
+                        .addValue("REGION_TYPE", regionType)
+                        .addValue("REGION", region)
+                        .addValue("PAGE_SIZE", pageSize), Integer.class);
+
+        return Optional.ofNullable(list.size() != 1 ? null : list.get(0));
     }
 }

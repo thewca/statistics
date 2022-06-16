@@ -21,8 +21,9 @@ public class SumOfRanksControllerImpl implements SumOfRanksController {
     }
 
     @Override
-    public List<SumOfRanksDto> list(String resultType, String regionType, String region, int page, int pageSize) {
-        return sumOfRanksService.list(resultType, regionType, region, page, pageSize);
+    public List<SumOfRanksDto> list(String resultType, String regionType, String region, int page, int pageSize,
+                                    String wcaId) {
+        return sumOfRanksService.list(resultType, regionType, region, page, pageSize, wcaId);
     }
 
     @Override

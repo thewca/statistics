@@ -19,10 +19,11 @@ export class SumOfRanksApi {
     regionType: string,
     region: string,
     page: number,
-    pageSize: number
+    pageSize: number,
+    wcaId?: string
   ) => {
     let url = `${this.BASE_URL}/${resultType}/${regionType}/${region}`;
-    let params = { page, pageSize };
+    let params = { page, pageSize, wcaId };
     return Axios.get<SumOfRanks[]>(url, { params });
   };
 }

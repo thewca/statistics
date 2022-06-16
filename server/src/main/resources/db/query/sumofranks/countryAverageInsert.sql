@@ -89,7 +89,6 @@ where
             RanksAverage ra2
         where
             ra2.eventId = e.id
-    ) r2.eventId = e.id
-)
+    )
 group by
     wca_id

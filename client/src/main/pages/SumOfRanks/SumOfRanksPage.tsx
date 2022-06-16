@@ -1,9 +1,19 @@
-import { message, Pagination, Select, Skeleton, Space, Tooltip } from "antd";
+import {
+  Col,
+  Input,
+  message,
+  Pagination,
+  Row,
+  Select,
+  Skeleton,
+  Space,
+  Tooltip,
+} from "antd";
 import { useCallback, useEffect, useState } from "react";
 import { sumOfRanksApi } from "../../api/SumOfRanksApi";
 import { MetaSorInfo } from "../../model/rank/MetaSorInfo";
 import { SumOfRanks } from "../../model/rank/SumOfRanks";
-import { getPersonLink } from "../../util/WcaUtil";
+import { getPersonLink, WCA_ID_MAX_LENGTH } from "../../util/WcaUtil";
 import styles from "./SumOfRanksPage.module.css";
 
 const { Option, OptGroup } = Select;
@@ -21,6 +31,7 @@ export const SumOfRanksPage = () => {
   const [selectedRegionGroup, setSelectedRegionGroup] = useState<string>();
   const [regionType, setRegionType] = useState<string>();
   const [region, setRegion] = useState<string>();
+  const [wcaId, setWcaId] = useState("");
 
   const fetchMetaInfor = useCallback(() => {
     sumOfRanksApi
@@ -43,11 +54,12 @@ export const SumOfRanksPage = () => {
       regionType: string,
       region: string,
       page: number,
-      pageSize: number
+      pageSize: number,
+      wcaId?: string
     ) => {
       setLoading(true);
       sumOfRanksApi
-        .listSumOfRanks(resultType, regionType, region, page, pageSize)
+        .listSumOfRanks(resultType, regionType, region, page, pageSize, wcaId)
         .then((response) => {
           setRanks(response.data);
           setPage(page);
@@ -81,54 +93,80 @@ export const SumOfRanksPage = () => {
     <>
       <h1 className="page-title">Sum of Ranks</h1>
       <Space direction="vertical" className={styles.contentContainer}>
-        <div>
-          <Select
-            className={styles.regionTypes}
-            value={resultType}
-            onChange={setResultType}
-            options={metaSor.map((r) => ({
-              label: r.resultType,
-              value: r.resultType,
-            }))}
-          />
-          <Select
-            className={styles.regionTypes}
-            value={selectedRegionGroup}
-            onChange={setSelectedRegionGroup}
-            optionFilterProp="children"
-            showSearch
-          >
-            {metaSor
-              .find((r) => r.resultType === resultType)
-              ?.regionGroups.map((g) => (
-                <OptGroup key={g.regionType}>
-                  {g.regions.map((r) => (
-                    <Option
-                      key={r.region}
-                      value={`${g.regionType}-${r.region}`}
-                    >
-                      {r.region}
-                    </Option>
-                  ))}
-                </OptGroup>
-              ))}
-          </Select>
-        </div>
+        <Row gutter={16} justify="center">
+          <Col span={6} className={styles.contentContainer}>
+            <Select
+              className={styles.contentContainer}
+              value={resultType}
+              onChange={setResultType}
+              options={metaSor.map((r) => ({
+                label: r.resultType,
+                value: r.resultType,
+              }))}
+            />
+          </Col>
+          <Col span={6} className={styles.contentContainer}>
+            <Select
+              className={styles.contentContainer}
+              value={selectedRegionGroup}
+              onChange={setSelectedRegionGroup}
+              optionFilterProp="children"
+              showSearch
+            >
+              {metaSor
+                .find((r) => r.resultType === resultType)
+                ?.regionGroups.map((g) => (
+                  <OptGroup key={g.regionType}>
+                    {g.regions.map((r) => (
+                      <Option
+                        key={r.region}
+                        value={`${g.regionType}-${r.region}`}
+                      >
+                        {r.region}
+                      </Option>
+                    ))}
+                  </OptGroup>
+                ))}
+            </Select>
+          </Col>
+          <Col span={6} className={styles.contentContainer}>
+            <Input
+              placeholder="Find by WCA ID"
+              className={styles.contentContainer}
+              disabled={!resultType || !region}
+              value={wcaId}
+              onChange={(e) => setWcaId(e.target.value)}
+              maxLength={WCA_ID_MAX_LENGTH}
+              onPressEnter={() =>
+                fetchSumOfRanks(
+                  resultType!,
+                  regionType!,
+                  region!,
+                  page,
+                  pageSize,
+                  wcaId
+                )
+              }
+            />
+          </Col>
+        </Row>
         <Skeleton loading={loading} />
 
         {!loading && (
           <>
-            <Pagination
-              total={totalSize}
-              pageSize={pageSize}
-              current={page + 1}
-              showQuickJumper
-              onChange={(p, s) => {
-                fetchSumOfRanks(resultType!, regionType!, region!, p - 1, s);
-              }}
-            />
-            <div className={styles.ranksTable}>
-              <table>
+            {(page > 0 || ranks.length > 0) && (
+              <Pagination
+                total={totalSize}
+                pageSize={pageSize}
+                current={page + 1}
+                showQuickJumper
+                onChange={(p, s) => {
+                  fetchSumOfRanks(resultType!, regionType!, region!, p - 1, s);
+                }}
+              />
+            )}
+            {ranks.length > 0 && (
+              <table className={styles.ranksTable}>
                 <thead>
                   <tr>
                     <th>Rank</th>
@@ -181,7 +219,7 @@ export const SumOfRanksPage = () => {
                   ))}
                 </tbody>
               </table>
-            </div>
+            )}
           </>
         )}
       </Space>
