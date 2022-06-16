@@ -70,4 +70,59 @@ public class StatisticsControllerIT extends AbstractTest {
                 .then()
                 .statusCode(HttpStatus.NO_CONTENT.value());
     }
+
+    @Order(4)
+    @DisplayName("List stats by term")
+    @MethodSource("listByTermArguments")
+    @ParameterizedTest(name = "{displayName} {0}: status {1} term {2} reason {3}")
+    public void listByTerm(int index, HttpStatus status, String term, String reason) {
+        // Script clears the database everytime, this generates
+        generateAll();
+
+        Response response = given()
+                .spec(super.SPEC)
+                .param("term", term)
+                .when()
+                .get(BASE_PATH + "list")
+                .then()
+                .statusCode(status.value())
+                .extract()
+                .response();
+
+        super.validateResponse(index, response);
+    }
+
+    private static Stream<Arguments> listByTermArguments() {
+        return Stream.of(
+                Arguments.of(0, HttpStatus.OK, "2003KNIG01", "Happy path"),
+                Arguments.of(1, HttpStatus.OK, "2015CAMP17", "Nothing to return")
+        );
+    }
+
+    @Order(4)
+    @DisplayName("List stats by term")
+    @MethodSource("byPathArguments")
+    @ParameterizedTest(name = "{displayName} {0}: status {1} path {2} reason {3}")
+    public void byPath(int index, HttpStatus status, String path, String reason) {
+        // Script clears the database everytime, this generates
+        generateAll();
+
+        Response response = given()
+                .spec(super.SPEC)
+                .when()
+                .get(BASE_PATH + "list/{pathId}", path)
+                .then()
+                .statusCode(status.value())
+                .extract()
+                .response();
+
+        super.validateResponseIgnoreAttribute(index, response, "lastModified");
+    }
+
+    private static Stream<Arguments> byPathArguments() {
+        return Stream.of(
+                Arguments.of(0, HttpStatus.OK, "best-medal-collection", "Happy path"),
+                Arguments.of(1, HttpStatus.NOT_FOUND, "not-found-path", "Not found")
+        );
+    }
 }

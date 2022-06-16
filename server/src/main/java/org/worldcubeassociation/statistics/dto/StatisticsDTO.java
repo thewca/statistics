@@ -2,7 +2,7 @@ package org.worldcubeassociation.statistics.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import org.worldcubeassociation.statistics.enums.DisplayModeEnum;
 
@@ -18,10 +18,10 @@ public class StatisticsDTO {
     private static final String VERSION = "v1";
 
     @NotBlank
-    @ApiModelProperty(value = "Statistics display title.", example = "Countries with most competitions")
+    @Schema(title = "Statistics display title.", example = "Countries with most competitions")
     private String title;
 
-    @ApiModelProperty(value = "Explanation about the current statistic.",
+    @Schema(title = "Explanation about the current statistic.",
             example = "Number of competitions in each country sorted from the highest to the lowest.")
     private String explanation;
 
@@ -29,13 +29,13 @@ public class StatisticsDTO {
     private List<@Valid StatisticsGroupResponseDTO> statistics;
 
     @NotNull
-    @ApiModelProperty(
-            value = "In case of grouped statistics, you can select DEFAULT to display all of them in the frontend or "
+    @Schema(
+            title = "In case of grouped statistics, you can select DEFAULT to display all of them in the frontend or "
                     + "'SELECTOR' to group them in a selector.",
             example = "DEFAULT")
     private DisplayModeEnum displayMode;
 
     @NotBlank
-    @ApiModelProperty(value = "Group statistics for better searching/navigating")
+    @Schema(title = "Group statistics for better searching/navigating")
     private String groupName;
 }

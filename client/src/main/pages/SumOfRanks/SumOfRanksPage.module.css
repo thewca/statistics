@@ -1,0 +1,30 @@
+.ranksTable {
+  overflow-x: auto;
+  font-size: 12px;
+}
+
+.ranksTable td,
+.ranksTable th {
+  padding: 10px;
+  text-align: center;
+}
+
+.top10 {
+  color: rgb(0, 221, 0);
+  font-weight: bold;
+}
+
+.notCompleted {
+  color: rgb(255, 0, 0);
+  font-weight: bold;
+}
+
+.contentContainer {
+  text-align: center;
+  width: 100%;
+}
+
+.highlight {
+  background-color: yellow;
+  font-weight: bold;
+}

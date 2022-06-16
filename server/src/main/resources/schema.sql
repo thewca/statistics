@@ -24,9 +24,29 @@ create table if not exists record_evolution (
     evolution json not null
 );
 
+create table if not exists sum_of_ranks (
+    region_rank int default null,
+    region varchar(100) not null,
+    region_type varchar(20) not null,
+    wca_id varchar(10) not null,
+    name varchar(255),
+    country_iso2 varchar(2),
+    result_type varchar(7) not null,
+    overall int default null,
+    events json not null,
+    primary key (region, region_type, wca_id, result_type)
+);
+
+create table if not exists sum_of_ranks_meta (
+    result_type varchar(7) not null,
+    region_type varchar(20) not null,
+    region varchar(100) not null,
+    total_size int not null,
+    primary key (result_type, region, region_type)
+);
+
 ----------------------------------------------------------------------------------------------------
 -- Person link
-
 drop function if exists wca_statistics_person_link_format;
 
 create function wca_statistics_person_link_format(
@@ -42,7 +62,6 @@ create function wca_statistics_person_link_format(
 
 ----------------------------------------------------------------------------------------------------
 -- Competition link
-
 drop function if exists wca_statistics_competition_link_format;
 
 create function wca_statistics_competition_link_format(
@@ -58,7 +77,6 @@ create function wca_statistics_competition_link_format(
 
 ----------------------------------------------------------------------------------------------------
 -- Time format
-
 drop function if exists wca_statistics_time_format;
 
 create function wca_statistics_time_format(

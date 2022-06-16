@@ -5,6 +5,7 @@ export interface LinkItem {
   href: string;
   exact: boolean;
   icon: ReactElement;
-  component: ReactElement;
+  component?: ReactElement;
   requiresLogin?: boolean;
+  subItems?: LinkItem[];
 }

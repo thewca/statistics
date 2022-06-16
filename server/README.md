@@ -87,3 +87,12 @@ In  a new terminal, from the repository root, run
     docker-compose -f server/docker-compose.yaml down --volumes
     docker-compose -f server/docker-compose.yaml up -d
     ```
+
+## Code format
+
+### Intelij
+
+- `File/Settings`
+- `Editor/Code style`
+- `Scheme actions/Import schemes/IntelliJ IDEA...`
+- Import file `server/codequality-config/checkstyle/intellij-java-google-style.xml`

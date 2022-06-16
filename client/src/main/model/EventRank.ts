@@ -1,8 +1,8 @@
 import Competitor from "./Competitor";
-import Event from "./Event";
+import WcaEvent from "./Event";
 
 export default interface EventRank {
-  event: Event;
+  event: WcaEvent;
   worlds: Competitor[];
   continents: Competitor[];
   countries: Competitor[];
