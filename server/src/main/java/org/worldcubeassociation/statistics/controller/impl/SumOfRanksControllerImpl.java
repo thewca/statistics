@@ -8,6 +8,7 @@ import org.worldcubeassociation.statistics.dto.sumofranks.SumOfRanksMetaDto;
 import org.worldcubeassociation.statistics.request.sumofranks.SumOfRanksListRequest;
 import org.worldcubeassociation.statistics.response.PageResponse;
 import org.worldcubeassociation.statistics.response.rank.SumOfRanksResponse;
+import org.worldcubeassociation.statistics.service.AuthorizationService;
 import org.worldcubeassociation.statistics.service.SumOfRanksService;
 
 import java.util.List;
@@ -16,10 +17,13 @@ import java.util.List;
 @AllArgsConstructor
 public class SumOfRanksControllerImpl implements SumOfRanksController {
 
-    private SumOfRanksService sumOfRanksService;
+    private final SumOfRanksService sumOfRanksService;
+
+    private final AuthorizationService authorizationService;
 
     @Override
     public SumOfRanksResponse generate() {
+        authorizationService.disableInProd();
         return sumOfRanksService.generate();
     }
 
