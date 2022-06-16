@@ -11,6 +11,7 @@ import org.worldcubeassociation.statistics.dto.sumofranks.SumOfRanksMetaDto;
 import org.worldcubeassociation.statistics.dto.sumofranks.SumOfRanksRegionDto;
 import org.worldcubeassociation.statistics.exception.InvalidParameterException;
 import org.worldcubeassociation.statistics.repository.jdbc.SumOfRanksRepository;
+import org.worldcubeassociation.statistics.request.sumofranks.SumOfRanksListRequest;
 import org.worldcubeassociation.statistics.response.PageResponse;
 import org.worldcubeassociation.statistics.response.rank.SumOfRanksResponse;
 import org.worldcubeassociation.statistics.service.EventService;
@@ -60,8 +61,12 @@ public class SumOfRanksServiceImpl implements SumOfRanksService {
     }
 
     @Override
-    public PageResponse<SumOfRanksDto> list(String resultType, String regionType, String region, int page, int pageSize,
-                                            String wcaId) {
+    public PageResponse<SumOfRanksDto> list(String resultType, String regionType, String region,
+                                            SumOfRanksListRequest request) {
+        int page = request.getPage();
+        int pageSize = request.getPageSize();
+        String wcaId = request.getWcaId();
+
         if (!StringUtils.isBlank(wcaId)) {
             page = sumOfRanksRepository.getWcaIdPage(resultType, regionType, region, pageSize, wcaId)
                     .orElseThrow(() -> new InvalidParameterException(
