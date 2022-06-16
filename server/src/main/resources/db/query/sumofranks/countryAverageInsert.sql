@@ -14,13 +14,12 @@ insert into
             c2.iso2 region,
             (
                 select
-                    count(1)
+                    coalesce(max(countryRank), 0)
                 from
                     RanksAverage r
                     inner join users u on u.wca_id = r.personId
                 where
-                    countryRank > 0
-                    and r.eventId = e.id
+                    r.eventId = e.id
                     and u.country_iso2 = c2.iso2
             ) + 1 default_rank
         from

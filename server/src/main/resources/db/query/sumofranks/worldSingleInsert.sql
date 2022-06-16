@@ -13,7 +13,7 @@ insert into
             e.id event_id,
             (
                 select
-                    count(1)
+                    coalesce(max(worldRank), 0)
                 from
                     RanksSingle r
                 where
