@@ -1,6 +1,6 @@
 package org.worldcubeassociation.statistics.dto;
 
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 import java.util.List;
@@ -9,12 +9,12 @@ import java.util.List;
 public class StatisticsListDTO {
     private List<StatisticsGroupDTO> list;
 
-    @ApiModelProperty("Number of groups")
+    @Schema(title = "Number of groups")
     public Integer getGroups() {
         return list.size();
     }
 
-    @ApiModelProperty("Number of statistics")
+    @Schema(title = "Number of statistics")
     public Integer getTotalSize() {
         return list.stream().map(StatisticsGroupDTO::getSize).reduce(0, Integer::sum);
     }

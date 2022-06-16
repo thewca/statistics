@@ -11,11 +11,11 @@ import org.springframework.stereotype.Service;
 import org.worldcubeassociation.statistics.dto.DatabaseQueryBaseDTO;
 import org.worldcubeassociation.statistics.dto.DatabaseQueryDTO;
 import org.worldcubeassociation.statistics.exception.InvalidParameterException;
+import org.worldcubeassociation.statistics.repository.StatisticsRepository;
 import org.worldcubeassociation.statistics.request.DatabaseQueryRequest;
 import org.worldcubeassociation.statistics.response.DatabaseQueryMetaResponse;
 import org.worldcubeassociation.statistics.rowmapper.ResultSetRowMapper;
 import org.worldcubeassociation.statistics.service.DatabaseQueryService;
-import org.worldcubeassociation.statistics.service.StatisticsService;
 import org.worldcubeassociation.statistics.util.LoadResourceUtil;
 
 import java.sql.SQLException;
@@ -37,7 +37,7 @@ public class DatabaseQueryServiceImpl implements DatabaseQueryService {
     private ResultSetRowMapper resultSetRowMapper;
 
     @Autowired
-    private StatisticsService statisticsService;
+    private StatisticsRepository statisticsRepository;
 
     @Value("${service.seconds-to-timeout}")
     private int secondsToTimeout;
@@ -177,7 +177,7 @@ public class DatabaseQueryServiceImpl implements DatabaseQueryService {
 
     @Override
     public DatabaseQueryMetaResponse meta() {
-        return DatabaseQueryMetaResponse.builder().exportDate(statisticsService.getExportDate().toLocalDate())
+        return DatabaseQueryMetaResponse.builder().exportDate(statisticsRepository.getExportDate().toLocalDate())
                 .additionalInformation(
                         LoadResourceUtil.getResource("databasequery/additionalInformation.html")).build();
     }
