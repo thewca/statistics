@@ -118,17 +118,15 @@ export const SumOfRanksPage = () => {
 
         {!loading && (
           <>
-            <div>
-              <Pagination
-                total={totalSize}
-                pageSize={pageSize}
-                current={page + 1}
-                showQuickJumper
-                onChange={(p, s) => {
-                  fetchSumOfRanks(resultType!, regionType!, region!, p - 1, s);
-                }}
-              />
-            </div>
+            <Pagination
+              total={totalSize}
+              pageSize={pageSize}
+              current={page + 1}
+              showQuickJumper
+              onChange={(p, s) => {
+                fetchSumOfRanks(resultType!, regionType!, region!, p - 1, s);
+              }}
+            />
             <div className={styles.ranksTable}>
               <table>
                 <thead>

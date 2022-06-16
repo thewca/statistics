@@ -81,5 +81,15 @@ from
     and dr.region = c.iso2
 where
     wca_id is not null
+    and exists (
+        -- Some events has no averages and this excludes them to avoid adding 1 into the sum
+        select
+            1
+        from
+            RanksAverage ra2
+        where
+            ra2.eventId = e.id
+    ) r2.eventId = e.id
+)
 group by
     wca_id
