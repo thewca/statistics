@@ -7,13 +7,13 @@ import java.util.List;
 import java.util.Optional;
 
 public interface SumOfRanksRepository {
-    void generateWorldRank();
+    int generateWorldRank();
 
     int deleteAll();
 
-    void generateContinentRank();
+    int generateContinentRank();
 
-    void generateCountryRank();
+    int generateCountryRank();
 
     List<SumOfRanksDto> list(String resultType, String regionType, String region, int page, int pageSize);
 

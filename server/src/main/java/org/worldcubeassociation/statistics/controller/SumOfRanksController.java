@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.worldcubeassociation.statistics.dto.sumofranks.SumOfRanksDto;
 import org.worldcubeassociation.statistics.dto.sumofranks.SumOfRanksMetaDto;
 import org.worldcubeassociation.statistics.response.PageResponse;
+import org.worldcubeassociation.statistics.response.rank.SumOfRanksResponse;
 
 import java.util.List;
 
@@ -15,7 +16,7 @@ import java.util.List;
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public interface SumOfRanksController {
     @PostMapping
-    void generate();
+    SumOfRanksResponse generate();
 
     @GetMapping("{resultType}/{regionType}/{region}")
     PageResponse<SumOfRanksDto> list(@PathVariable String resultType, @PathVariable String regionType,

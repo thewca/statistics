@@ -12,6 +12,7 @@ import org.worldcubeassociation.statistics.dto.sumofranks.SumOfRanksRegionDto;
 import org.worldcubeassociation.statistics.exception.InvalidParameterException;
 import org.worldcubeassociation.statistics.repository.jdbc.SumOfRanksRepository;
 import org.worldcubeassociation.statistics.response.PageResponse;
+import org.worldcubeassociation.statistics.response.rank.SumOfRanksResponse;
 import org.worldcubeassociation.statistics.service.EventService;
 import org.worldcubeassociation.statistics.service.SumOfRanksService;
 
@@ -28,20 +29,24 @@ public class SumOfRanksServiceImpl implements SumOfRanksService {
 
     @Override
     @Transactional
-    public void generate() {
+    public SumOfRanksResponse generate() {
         log.info("Generate sum of ranks");
 
         deleteExistingData();
 
-        sumOfRanksRepository.generateWorldRank();
-        sumOfRanksRepository.generateContinentRank();
-        sumOfRanksRepository.generateCountryRank();
+        SumOfRanksResponse response = new SumOfRanksResponse();
+
+        response.setWorldRank(sumOfRanksRepository.generateWorldRank());
+        response.setContinentRank(sumOfRanksRepository.generateContinentRank());
+        response.setCountryRank(sumOfRanksRepository.generateCountryRank());
 
         log.info("Update regional ranks");
         sumOfRanksRepository.updateRanks();
 
-        int newMeta = sumOfRanksRepository.insertMeta();
-        log.info("{} meta inserted", newMeta);
+        log.info("Insert meta inserted");
+        response.setMeta(sumOfRanksRepository.insertMeta());
+
+        return response;
     }
 
     private void deleteExistingData() {

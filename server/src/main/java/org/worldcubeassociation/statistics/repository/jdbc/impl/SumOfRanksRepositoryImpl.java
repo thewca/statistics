@@ -30,11 +30,16 @@ public class SumOfRanksRepositoryImpl implements SumOfRanksRepository {
     private final NamedParameterJdbcTemplate namedJdbcTemplate;
     private final ObjectMapper objectMapper;
 
+    private int baseRank(String singleQuery, String avgQuery) {
+        int single = jdbcTemplate.update(StatisticsUtil.getQuery(String.format("sumofranks/%s", singleQuery)));
+        int avg = jdbcTemplate.update(StatisticsUtil.getQuery(String.format("sumofranks/%s", avgQuery)));
+        return single + avg;
+    }
+
     @Override
-    public void generateWorldRank() {
+    public int generateWorldRank() {
         log.info("Generate world rank");
-        jdbcTemplate.update(StatisticsUtil.getQuery("sumofranks/worldSingleInsert"));
-        jdbcTemplate.update(StatisticsUtil.getQuery("sumofranks/worldAverageInsert"));
+        return baseRank("worldSingleInsert", "worldAverageInsert");
     }
 
     @Override
@@ -43,17 +48,15 @@ public class SumOfRanksRepositoryImpl implements SumOfRanksRepository {
     }
 
     @Override
-    public void generateContinentRank() {
+    public int generateContinentRank() {
         log.info("Generate continent rank");
-        jdbcTemplate.update(StatisticsUtil.getQuery("sumofranks/continentSingleInsert"));
-        jdbcTemplate.update(StatisticsUtil.getQuery("sumofranks/continentAverageInsert"));
+        return baseRank("continentSingleInsert", "continentAverageInsert");
     }
 
     @Override
-    public void generateCountryRank() {
+    public int generateCountryRank() {
         log.info("Generate country rank");
-        jdbcTemplate.update(StatisticsUtil.getQuery("sumofranks/countrySingleInsert"));
-        jdbcTemplate.update(StatisticsUtil.getQuery("sumofranks/countryAverageInsert"));
+        return baseRank("countrySingleInsert", "countryAverageInsert");
     }
 
     @Override
