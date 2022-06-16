@@ -116,7 +116,7 @@ export const SumOfRanksPage = () => {
         </div>
         <Skeleton loading={loading} />
 
-        {!loading && ranks.length > 0 && (
+        {!loading && (
           <>
             <div>
               <Pagination
@@ -156,7 +156,11 @@ export const SumOfRanksPage = () => {
                           : "-"}
                       </th>
                       <td>
-                        <a target="_blank" href={getPersonLink(r.wcaId)}>
+                        <a
+                          target="_blank"
+                          rel="noreferrer"
+                          href={getPersonLink(r.wcaId)}
+                        >
                           {r.name}
                         </a>
                       </td>

@@ -1,97 +1,44 @@
 insert into
     sum_of_ranks_meta (result_type, region_type, region, total_size)
 select
-    'Single' resultType,
+    result_type,
     'World' regionType,
     'World' regionName,
     count(1) totalSize
 from
-    RanksSingle r
+    sum_of_ranks
 where
-    r.worldRank > 0
+    region_type = 'World'
+    and region = 'World'
+group by
+    result_type
 union
 all (
     select
-        'Average' resultType,
-        'World' regionType,
-        'World' regionName,
-        count(1) totalSize
-    from
-        RanksAverage r
-    where
-        r.worldRank > 0
-)
-union
-all (
-    select
-        'Single' resultType,
+        result_type resultType,
         'Continent' regionType,
-        c2.name regionName,
+        region regionName,
         count(1) totalSize
     from
-        RanksSingle r
-        inner join users u on r.personId = u.wca_id
-        inner join Countries c on u.country_iso2 = c.iso2
-        inner join Continents c2 on c2.id = c.continentId
+        sum_of_ranks
     where
-        r.continentRank > 0
+        region_type = 'Continent'
     group by
-        c2.name
-    order by
-        c2.name
+        result_type,
+        region
 )
 union
 all (
     select
-        'Average' resultType,
+        result_type resultType,
         'Continent' regionType,
-        c2.name regionName,
+        region regionName,
         count(1) totalSize
     from
-        RanksAverage r
-        inner join users u on r.personId = u.wca_id
-        inner join Countries c on u.country_iso2 = c.iso2
-        inner join Continents c2 on c2.id = c.continentId
+        sum_of_ranks
     where
-        r.continentRank > 0
+        region_type = 'Country'
     group by
-        c2.name
-    order by
-        c2.name
-)
-union
-all (
-    select
-        'Single' resultType,
-        'Country' regionType,
-        c.name regionName,
-        count(1) totalSize
-    from
-        RanksSingle r
-        inner join users u on r.personId = u.wca_id
-        inner join Countries c on u.country_iso2 = c.iso2
-    where
-        r.continentRank > 0
-    group by
-        c.name
-    order by
-        c.name
-)
-union
-all (
-    select
-        'Average' resultType,
-        'Country' regionType,
-        c.name regionName,
-        count(1) totalSize
-    from
-        RanksAverage r
-        inner join users u on r.personId = u.wca_id
-        inner join Countries c on u.country_iso2 = c.iso2
-    where
-        r.continentRank > 0
-    group by
-        c.name
-    order by
-        c.name
+        result_type,
+        region
 )

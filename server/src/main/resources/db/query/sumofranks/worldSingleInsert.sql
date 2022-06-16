@@ -38,7 +38,7 @@ select
     country_iso2,
     (
         select
-            'single'
+            'Single'
     ) result_type,
     sum(coalesce(r.worldRank, default_rank)) overall,
     json_arrayagg(

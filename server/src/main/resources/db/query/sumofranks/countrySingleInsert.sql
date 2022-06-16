@@ -47,7 +47,7 @@ select
     country_iso2,
     (
         select
-            'single'
+            'Single'
     ) result_type,
     sum(
         case

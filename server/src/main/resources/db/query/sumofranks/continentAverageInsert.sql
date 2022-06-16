@@ -49,7 +49,7 @@ select
     country_iso2,
     (
         select
-            'average'
+            'Average'
     ) result_type,
     sum(
         case
