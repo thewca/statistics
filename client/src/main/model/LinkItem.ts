@@ -7,5 +7,5 @@ export interface LinkItem {
   icon: ReactElement;
   component?: ReactElement;
   requiresLogin?: boolean;
-  subItems?: LinkItem[]
+  subItems?: LinkItem[];
 }
