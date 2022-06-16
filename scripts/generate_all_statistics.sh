@@ -18,3 +18,6 @@ source scripts/generate_python_statistics.sh
 
 echo "Generate best ever ranks"
 curl -X POST "http://localhost:${port}/best-ever-rank/generate/all" -H "accept: */*" -d ""
+
+echo "Generate sum of ranks"
+curl -X POST "http://localhost:${port}/sum-of-ranks" -H "accept: */*" -d ""
