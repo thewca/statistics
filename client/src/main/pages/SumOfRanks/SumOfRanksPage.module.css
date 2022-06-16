@@ -23,3 +23,8 @@
   text-align: center;
   width: 100%;
 }
+
+.highlight {
+  background-color: yellow;
+  font-weight: bold;
+}

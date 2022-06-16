@@ -1,4 +1,5 @@
 import Axios from "axios";
+import { PageResponse } from "../model/PageResponse";
 import { MetaSorInfo } from "../model/rank/MetaSorInfo";
 import { SumOfRanks } from "../model/rank/SumOfRanks";
 
@@ -24,7 +25,7 @@ export class SumOfRanksApi {
   ) => {
     let url = `${this.BASE_URL}/${resultType}/${regionType}/${region}`;
     let params = { page, pageSize, wcaId };
-    return Axios.get<SumOfRanks[]>(url, { params });
+    return Axios.get<PageResponse<SumOfRanks>>(url, { params });
   };
 }
 

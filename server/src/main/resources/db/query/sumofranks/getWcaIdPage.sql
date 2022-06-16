@@ -6,4 +6,4 @@ where
     result_type = :RESULT_TYPE
     and region_type = :REGION_TYPE
     and region = :REGION
-    and wca_id = '2015CAMP17'
+    and wca_id = :WCA_ID

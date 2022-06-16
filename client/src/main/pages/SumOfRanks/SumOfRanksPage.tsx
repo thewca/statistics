@@ -61,9 +61,9 @@ export const SumOfRanksPage = () => {
       sumOfRanksApi
         .listSumOfRanks(resultType, regionType, region, page, pageSize, wcaId)
         .then((response) => {
-          setRanks(response.data);
-          setPage(page);
-          setPageSize(pageSize);
+          setRanks(response.data.content);
+          setPage(response.data.page);
+          setPageSize(response.data.pageSize);
         })
         .finally(() => setLoading(false));
     },
@@ -185,7 +185,14 @@ export const SumOfRanksPage = () => {
                 </thead>
                 <tbody>
                   {ranks.map((r, i) => (
-                    <tr key={r.wcaId}>
+                    <tr
+                      key={r.wcaId}
+                      className={
+                        r.wcaId.toUpperCase() === wcaId.toUpperCase()
+                          ? styles.highlight
+                          : ""
+                      }
+                    >
                       <th>
                         {i === 0 || ranks[i].overall !== ranks[i - 1].overall
                           ? r.regionRank

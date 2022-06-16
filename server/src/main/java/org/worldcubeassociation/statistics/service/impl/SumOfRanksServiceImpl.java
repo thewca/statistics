@@ -10,6 +10,7 @@ import org.worldcubeassociation.statistics.dto.sumofranks.SumOfRanksMetaDto;
 import org.worldcubeassociation.statistics.dto.sumofranks.SumOfRanksRegionDto;
 import org.worldcubeassociation.statistics.exception.InvalidParameterException;
 import org.worldcubeassociation.statistics.repository.jdbc.SumOfRanksRepository;
+import org.worldcubeassociation.statistics.response.PageResponse;
 import org.worldcubeassociation.statistics.service.EventService;
 import org.worldcubeassociation.statistics.service.SumOfRanksService;
 
@@ -53,8 +54,8 @@ public class SumOfRanksServiceImpl implements SumOfRanksService {
     }
 
     @Override
-    public List<SumOfRanksDto> list(String resultType, String regionType, String region, int page, int pageSize,
-                                    String wcaId) {
+    public PageResponse<SumOfRanksDto> list(String resultType, String regionType, String region, int page, int pageSize,
+                                            String wcaId) {
         if (!StringUtils.isBlank(wcaId)) {
             page = sumOfRanksRepository.getWcaIdPage(resultType, regionType, region, pageSize, wcaId)
                     .orElseThrow(() -> new InvalidParameterException(
@@ -66,7 +67,12 @@ public class SumOfRanksServiceImpl implements SumOfRanksService {
         // MySql does a very poor job when orgnizing json_arrayagg. We need to correct it here.
         sor.forEach(s -> s.setEvents(s.getEvents().stream().sorted(Comparator.comparing(e -> e.getEvent().getRank()))
                 .collect(Collectors.toList())));
-        return sor;
+
+        PageResponse<SumOfRanksDto> response = new PageResponse<>();
+        response.setPage(page);
+        response.setPageSize(pageSize);
+        response.setContent(sor);
+        return response;
     }
 
     @Override

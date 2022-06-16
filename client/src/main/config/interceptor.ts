@@ -13,6 +13,10 @@ export const errorInterceptor = (response: AxiosError) => {
   } else if (response.response?.status === 401) {
     // Refresh screen so the login process can start
     deleteStorageItems();
+  } else if (response.response?.status === 400) {
+    console.log(response.toJSON());
+    let errors = extractMessages(response);
+    errors.forEach((errorMessage) => message.error(errorMessage));
   }
   return Promise.reject(response);
 };
@@ -24,4 +28,21 @@ export const requestIntercetor = (item: AxiosRequestConfig) => {
     item.headers.Authorization = token;
   }
   return item;
+};
+
+const extractMessages = (object: any, errors: string[] = []): string[] => {
+  for (let key in object) {
+    if (typeof object[key] === "object") {
+      let res = extractMessages(object[key]);
+      errors.push(...res);
+    }
+    if (key === "message") {
+      if (typeof object[key] === "string") {
+        errors.push(object[key]);
+      } else {
+        errors.push(JSON.stringify(object[key]));
+      }
+    }
+  }
+  return errors;
 };
