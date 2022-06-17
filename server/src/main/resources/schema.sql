@@ -158,3 +158,15 @@ create function wca_statistics_time_format(
         ) -2
     )
 end;
+
+create user if not exists 'read_only' identified by '';
+
+grant execute on function `wca_development`.`wca_statistics_person_link_format` to 'read_only';
+
+grant execute on function `wca_development`.`wca_statistics_competition_link_format` to 'read_only';
+
+grant execute on function `wca_development`.`wca_statistics_time_format` to 'read_only';
+
+grant
+select
+    on wca_development.* to 'read_only';
