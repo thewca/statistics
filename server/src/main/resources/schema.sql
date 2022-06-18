@@ -34,7 +34,8 @@ create table if not exists sum_of_ranks (
     result_type varchar(7) not null,
     overall int default null,
     events json not null,
-    primary key (region, region_type, wca_id, result_type)
+    primary key (region, region_type, wca_id, result_type),
+    key `sor_where_clause_idx` (`region`, `region_type`, `result_type`)
 );
 
 create table if not exists sum_of_ranks_meta (
@@ -158,3 +159,15 @@ create function wca_statistics_time_format(
         ) -2
     )
 end;
+
+create user if not exists 'read_only' identified by '';
+
+grant execute on function `wca_development`.`wca_statistics_person_link_format` to 'read_only';
+
+grant execute on function `wca_development`.`wca_statistics_competition_link_format` to 'read_only';
+
+grant execute on function `wca_development`.`wca_statistics_time_format` to 'read_only';
+
+grant
+select
+    on wca_development.* to 'read_only';
