@@ -58,7 +58,12 @@ export const DatabaseQueryPage = () => {
   useEffect(() => {
     // Get all strings matchin :A-Z in the query
     // This is a bit common SQL, I think
-    let toReplace = query.matchAll(/(?<!:):(?!:)[a-zA-Z]{1}[a-zA-Z0-9_]+/g);
+
+    // TODO when safari supports looking around, use the first line
+    // https://caniuse.com/js-regexp-lookbehind
+    // let toReplace = query.matchAll(/(?<!:):(?!:)[a-zA-Z]{1}[a-zA-Z0-9_]+/g);
+    let toReplace = query.matchAll(/:[a-zA-Z_]+/g);
+
     let keys = new Set<string>();
     while (true) {
       let item = toReplace.next();
