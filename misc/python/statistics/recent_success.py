@@ -3,7 +3,6 @@
 import bisect
 import datetime
 
-from dateutil.relativedelta import relativedelta
 from misc.python.model.competitor import Competitor as Comp
 from misc.python.util.database_util import get_database_connection
 from misc.python.util.event_util import get_current_events
@@ -99,7 +98,7 @@ def recent_success():
     LIMIT = 10
     MIN_SOLVES = 6
 
-    min_date = datetime.date.today() - relativedelta(years=1)
+    min_date = datetime.date.today() - datetime.timedelta(days=365)
     log.info("Min date: %s" % min_date)
 
     out = {}
