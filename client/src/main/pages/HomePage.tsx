@@ -36,13 +36,13 @@ const Home = ({ statisticsList, loading }: HomePageProps) => {
           <div className="stat-card">
             <h3>Statistics List</h3>
             <p>
-              Check our <Link to="statistics-list">list with interesting</Link>{" "}
-              statistics.
+              Check out our <Link to="statistics-list">list of interesting
+              statistics.</Link>
             </p>
 
             <p>
-              You can suggest a new statistic by reaching the WCA Software Team.
-              If that's widely interesting and feasible to implement, we might
+              You can suggest a new statistic by reaching out to the WCA Software Team.
+              If it's widely interesting and feasible to implement, we might
               add it!
             </p>
 
@@ -63,7 +63,7 @@ const Home = ({ statisticsList, loading }: HomePageProps) => {
         </Col>
         <Col xs={20} md={6}>
           <div className="stat-card">
-            <h3>Take me to a random statistics</h3>
+            <h3>Take me to a random statistic</h3>
             <p>
               Click <Link to={randomLink}>here</Link> to be redirected to a
               random page.
@@ -72,11 +72,11 @@ const Home = ({ statisticsList, loading }: HomePageProps) => {
         </Col>
         <Col xs={20} md={6}>
           <div className="stat-card">
-            <h3>Logged Feature</h3>
+            <h3>Extra Features</h3>
             {authCtx.isLogged && (
               <>
                 <p>
-                  Since you are logged, you can check exclusive features like{" "}
+                  Since you are logged in, you can use exclusive features like{" "}
                   <Link to="database-query">Database Query</Link> (in case you
                   have SQL skills or a query).
                 </p>
