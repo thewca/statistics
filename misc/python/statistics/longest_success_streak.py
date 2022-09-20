@@ -39,13 +39,13 @@ from
     Results r
 inner join Competitions c on
 	r.competitionId = c.id
-inner join Events e on
-	r.eventId = e.id
+inner join RoundTypes rt on
+	r.roundTypeId = rt.id
 where
     eventId = %(event_id)s
 order by
 	start_date,
-	e.`rank`"""
+	rt.`rank`"""
 
 
 def longest_streaks():
