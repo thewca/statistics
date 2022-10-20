@@ -36,14 +36,14 @@ const Home = ({ statisticsList, loading }: HomePageProps) => {
           <div className="stat-card">
             <h3>Statistics List</h3>
             <p>
-              Check out our <Link to="statistics-list">list of interesting
-              statistics.</Link>
+              Check out our{" "}
+              <Link to="statistics-list">list of interesting statistics.</Link>
             </p>
 
             <p>
-              You can suggest a new statistic by reaching out to the WCA Software Team.
-              If it's widely interesting and feasible to implement, we might
-              add it!
+              You can suggest a new statistic by reaching out to the WCA
+              Software Team. If it's widely interesting and feasible to
+              implement, we might add it!
             </p>
 
             {statisticsList && (
