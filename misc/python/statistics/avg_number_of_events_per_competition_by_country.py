@@ -32,6 +32,7 @@ from
 	where
 		year(c.start_date) <= %(max_year)s
 		and year(c.start_date) >= %(min_year)s
+		and results_posted_at is not null
 	group by
 		countryId) result
 order by

@@ -37,6 +37,7 @@ from
                     countryId = c.id
                     and year(c2.start_date) >= %(min_year)s
                     and year(c2.start_date) <= %(max_year)s
+                    and results_posted_at is not null
             ) average,%(sub_queries)s
         from
             Countries c
@@ -54,6 +55,7 @@ sub_query = """
 			Competitions c2
 		where
 			c2.countryId = c.id
+            and results_posted_at is not null
 			and c2.`year` = year(current_date())-%(diff)s) m%(diff)s"""
 
 
