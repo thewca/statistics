@@ -2,7 +2,7 @@ queries:
   - headers:
       - Person
       - Competition
-      - Couting single
+      - Counting single
     keyColumnIndex: 0
     showPositions: true
     positionTieBreakerIndex: 2
