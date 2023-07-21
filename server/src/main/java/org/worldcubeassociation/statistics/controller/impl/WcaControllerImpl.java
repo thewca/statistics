@@ -16,8 +16,8 @@ public class WcaControllerImpl implements WcaController {
     private WCAService wcaService;
 
     @Override
-    public AuthenticationResponse getWcaAuthenticationUrl(String frontendHost) {
-        return wcaService.getWcaAuthenticationUrl(frontendHost);
+    public AuthenticationResponse getWcaAuthenticationUrl(String frontendHost, String redirect) {
+        return wcaService.getWcaAuthenticationUrl(frontendHost, redirect);
     }
 
     @Override

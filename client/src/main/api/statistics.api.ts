@@ -14,9 +14,9 @@ export class StatisticsApi {
     this.queryDatabaseEndpoint = "/database/query";
   }
 
-  getWcaAuthenticationUrl = (frontendHost: string) =>
+  getWcaAuthenticationUrl = (frontendHost: string, redirect: string) => 
     Axios.get<AuthenticationResponse>(this.BASE_URL + "/wca/authentication", {
-      params: { frontendHost },
+      params: { frontendHost, redirect },
     });
 
   getUserInfo = () => Axios.get<UserInfo>(this.BASE_URL + "/wca/user");
