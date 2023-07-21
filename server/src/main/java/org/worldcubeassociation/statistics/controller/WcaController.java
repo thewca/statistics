@@ -14,7 +14,7 @@ import javax.validation.constraints.NotBlank;
 public interface WcaController {
 
     @GetMapping("authentication")
-    AuthenticationResponse getWcaAuthenticationUrl(@Valid @NotBlank(message = "Frontend can not be blank") @RequestParam String frontendHost, @Valid @NotBlank(message = "Frontend can not be blank") @RequestParam String redirect);
+    AuthenticationResponse getWcaAuthenticationUrl(@Valid @NotBlank(message = "Frontend can not be blank") @RequestParam String frontendHost, @Valid @NotBlank(message = "Redirect can not be blank") @RequestParam String redirect);
 
     @GetMapping("user")
     UserInfoDTO getUserInfo(@RequestHeader(value = "Authorization", required = false) String token);
