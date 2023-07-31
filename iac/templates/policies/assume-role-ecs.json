@@ -2,11 +2,9 @@
   "Version": "2012-10-17",
   "Statement": [
     {
-      "sid": "",
-      "Effect": "Allow",
       "Action": "sts:AssumeRole",
+      "Effect": "Allow",
       "Principal": {
-        "Type": "Service",
         "Service": "ecs-tasks.amazonaws.com"
       }
     }
