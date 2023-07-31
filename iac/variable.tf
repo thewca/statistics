@@ -18,3 +18,7 @@ variable "type" {
 variable "type_subnet" {
   default = "Subnet"
 }
+
+variable "default_mysql_port" {
+  default = 3306
+}
