@@ -1,7 +1,7 @@
 terraform {
   backend "s3" {
     bucket = "NON-EXISTING-BUCKET"
-    key    = "statistics-iac"
+    key    = "statistics-standalone-iac"
     region = "us-west-2"
   }
 }
