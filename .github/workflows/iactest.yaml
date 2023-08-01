@@ -1,0 +1,34 @@
+name: Test terraform
+
+env:
+  STAGE: prod
+  ENV: -prod
+  AWS_DEFAULT_REGION: ${{ env.AWS_DEFAULT_REGION }}
+  AWS_ACCESS_KEY_ID: ${{ secrets.CI_CD_AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.CI_CD_AWS_SECRET_ACCESS_KEY }}
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "iac/**"
+      - ".github/workflows/iactest.yaml"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: hashicorp/setup-terraform@v2
+      - name: Replace bucket name
+        run: |
+          sed -i "s|bucket = \"NON-EXISTING-BUCKET\"|bucket = \"${{ env.IAC_BUCKET_NAME }}\"|g" iac/main.tf
+      - run: terraform init
+      - name: Change workspace
+        run: |
+          terraform workspace select $STAGE || terraform workspace new $STAGE
+      - name: Plan
+        run: |
+          terraform plan -out tfapply
