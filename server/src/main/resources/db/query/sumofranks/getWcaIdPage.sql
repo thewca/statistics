@@ -1,5 +1,5 @@
 select
-    floor(region_rank / :PAGE_SIZE)
+    floor((region_rank - 1) / :PAGE_SIZE)
 from
     sum_of_ranks sor
 where

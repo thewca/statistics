@@ -112,6 +112,6 @@ public class SumOfRanksRepositoryImpl implements SumOfRanksRepository {
                         .addValue("PAGE_SIZE", pageSize)
                         .addValue("WCA_ID", wcaId), Integer.class);
 
-        return Optional.ofNullable(list.size() != 1 ? null : list.get(0) - 1);
+        return Optional.ofNullable(list.size() != 1 ? null : list.get(0));
     }
 }
