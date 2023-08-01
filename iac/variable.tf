@@ -23,6 +23,10 @@ variable "type_ecr" {
   default = "ECR"
 }
 
+variable "type_ssm" {
+  default = "SSM"
+}
+
 variable "type_sg" {
   default = "SG"
 }
