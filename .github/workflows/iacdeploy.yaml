@@ -1,0 +1,32 @@
+name: IAC Deploy
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "iac/**"
+      - ".github/workflows/iacdeploy.yaml"
+
+env:
+  STAGE: prod
+  AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+  AWS_ACCESS_KEY_ID: ${{ secrets.CI_CD_AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.CI_CD_AWS_SECRET_ACCESS_KEY }}
+
+defaults:
+  run:
+    working-directory: iac
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: hashicorp/setup-terraform@v2
+      - run: terraform init
+      - name: Select workspace and apply app
+        run: |
+          terraform workspace select $STAGE || terraform workspace new $STAGE
+          terraform apply --auto-approve
