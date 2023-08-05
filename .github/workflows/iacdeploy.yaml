@@ -27,7 +27,7 @@ jobs:
       - uses: hashicorp/setup-terraform@v2
       - name: Replace bucket name
         run: |
-          sed -i "s|bucket = \"NON-EXISTING-BUCKET\"|bucket = \"${{ env.IAC_BUCKET_NAME }}\"|g" iac/main.tf
+          sed -i "s|bucket = \"NON-EXISTING-BUCKET\"|bucket = \"${{ env.IAC_BUCKET_NAME }}\"|g" main.tf
       - run: terraform init
       - name: Select workspace and apply app
         run: |
