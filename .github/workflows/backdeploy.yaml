@@ -41,13 +41,31 @@ jobs:
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
-      - name: Build and push
+      - name: Build and push to ECR
         uses: docker/build-push-action@v2
-        with:
-          context: ./server
-          file: ./server/Dockerfile
-          push: true
-          tags: thewca/statistics-server:latest
+        run: |
+          cd server
+          ./gradlew clean build --info -x test
+
+          export STAGE=prod
+          GIT_HASH=$(git rev-parse --short HEAD)
+
+          # Get value from ssm and export it
+          ECR_URL_PARAM=$(aws ssm get-parameter --name "/$STAGE/ecr/url/statistics_server")
+          ECR_URL=$(echo $ECR_URL_PARAM | jq -r '.Parameter.Value')
+
+          # Before and after the bar
+          ECR_URL_ROOT="${ECR_URL%%/*}"
+          ECR_URL_SPEC="${ECR_URL##*/}"
+
+          aws ecr get-login-password --region ${{ env.AWS_DEFAULT_REGION }} | docker login --username AWS --password-stdin $ECR_URL_ROOT
+          docker build -t $ECR_URL_SPEC .
+
+          docker tag $ECR_URL_SPEC:latest $ECR_URL:latest
+          docker tag $ECR_URL_SPEC:latest $ECR_URL:$GIT_HASH
+          docker push $ECR_URL:latest
+          docker push $ECR_URL:$GIT_HASH
+
       - name: Blue green deployment
         run: |
           export AWS_ACCESS_KEY_ID=${{ secrets.CI_CD_AWS_ACCESS_KEY_ID }}
