@@ -13,7 +13,7 @@ env:
   AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
   AWS_ACCESS_KEY_ID: ${{ secrets.CI_CD_AWS_ACCESS_KEY_ID }}
   AWS_SECRET_ACCESS_KEY: ${{ secrets.CI_CD_AWS_SECRET_ACCESS_KEY }}
-  IAC_BUCKET_NAME: ${{ env.IAC_BUCKET_NAME }}
+  IAC_BUCKET_NAME: ${{ vars.IAC_BUCKET_NAME }}
 
 defaults:
   run:
