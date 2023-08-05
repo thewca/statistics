@@ -9,6 +9,8 @@ This is the IAC for the statistics project, using terraform and AWS.
 
 ## Setup
 
+- Create a bucket and replace its name in `iac/main.tf`.
+
 - Install [terraform](https://learn.hashicorp.com/tutorials/terraform/install-cli?in=terraform/aws-get-started)
 
 - Start terraform
