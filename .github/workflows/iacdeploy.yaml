@@ -29,7 +29,6 @@ jobs:
       - name: Replace bucket name
         run: |
           sed -i "s|bucket = \"NON-EXISTING-BUCKET\"|bucket = \"$IAC_BUCKET_NAME\"|g" main.tf
-          cat main.tf
       - run: terraform init
       - name: Select workspace and apply app
         run: |

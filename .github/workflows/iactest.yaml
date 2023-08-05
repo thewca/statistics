@@ -1,13 +1,10 @@
 name: Test terraform
 
-env:
-  STAGE: prod
-  ENV: -prod
-  AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
-  AWS_ACCESS_KEY_ID: ${{ secrets.CI_CD_AWS_ACCESS_KEY_ID }}
-  AWS_SECRET_ACCESS_KEY: ${{ secrets.CI_CD_AWS_SECRET_ACCESS_KEY }}
-
 on:
+  push:
+    branches:
+      - main
+      - ".github/workflows/iacdeploy.yaml"
   pull_request:
     branches:
       - main
@@ -15,20 +12,29 @@ on:
       - "iac/**"
       - ".github/workflows/iactest.yaml"
 
+env:
+  STAGE: prod
+  AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+  AWS_ACCESS_KEY_ID: ${{ secrets.CI_CD_AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.CI_CD_AWS_SECRET_ACCESS_KEY }}
+  IAC_BUCKET_NAME: ${{ vars.IAC_BUCKET_NAME }}
+
+defaults:
+  run:
+    working-directory: iac
+
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: hashicorp/setup-terraform@v2
       - name: Replace bucket name
         run: |
-          sed -i "s|bucket = \"NON-EXISTING-BUCKET\"|bucket = \"${{ env.IAC_BUCKET_NAME }}\"|g" iac/main.tf
+          sed -i "s|bucket = \"NON-EXISTING-BUCKET\"|bucket = \"$IAC_BUCKET_NAME\"|g" main.tf
       - run: terraform init
-      - name: Change workspace
-        run: |
-          terraform workspace select $STAGE || terraform workspace new $STAGE
       - name: Plan
         run: |
+          terraform workspace select $STAGE || terraform workspace new $STAGE
           terraform plan -out tfapply
