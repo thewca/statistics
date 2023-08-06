@@ -1,11 +1,6 @@
 name: Test terraform
 
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - ".github/workflows/iacdeploy.yaml"
   pull_request:
     branches:
       - main
