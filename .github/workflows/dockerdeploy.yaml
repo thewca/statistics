@@ -1,0 +1,39 @@
+name: Docker backend
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "Dockerfile"
+      - ".github/workflows/dockerdeploy.yaml"
+
+env:
+  STAGE: prod
+  AWS_DEFAULT_REGION: ${{ vars.AWS_DEFAULT_REGION }}
+  AWS_ACCESS_KEY_ID: ${{ secrets.CI_CD_AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.CI_CD_AWS_SECRET_ACCESS_KEY }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Build and push to ECR
+        run: |
+          # Get value from ssm and export it
+          ECR_URL_PARAM=$(aws ssm get-parameter --name "/$STAGE/ecr/url/statistics_cron")
+          ECR_URL=$(echo $ECR_URL_PARAM | jq -r '.Parameter.Value')
+
+          # Before and after the bar
+          ECR_URL_ROOT="${ECR_URL%%/*}"
+          ECR_URL_SPEC="${ECR_URL##*/}"
+
+          aws ecr get-login-password --region ${{ env.AWS_DEFAULT_REGION }} | docker login --username AWS --password-stdin $ECR_URL_ROOT
+          docker build -t $ECR_URL_SPEC .
+
+          docker tag $ECR_URL_SPEC:latest $ECR_URL:latest
+          docker tag $ECR_URL_SPEC:latest $ECR_URL:$GIT_HASH
+          docker push $ECR_URL:latest
+          docker push $ECR_URL:$GIT_HASH
