@@ -46,3 +46,15 @@ variable "https_port" {
 variable "default_tomcat_port" {
   default = 8080
 }
+
+variable "statistics_fargate_cpu" {
+  default = "1024"
+}
+
+variable "statistics_fargate_memory" {
+  default = "2048"
+}
+
+variable "dumped_db_name" {
+  default = "wca_development"
+}

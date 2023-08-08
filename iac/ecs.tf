@@ -12,22 +12,21 @@ resource "aws_ecs_task_definition" "statistics_server_task_definition" {
   family                   = "statistics-server-family-${terraform.workspace}"
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
-  cpu                      = 1024 // 1 vCPU = 1024 CPU units
-  memory                   = 2048
+  cpu                      = var.statistics_fargate_cpu
+  memory                   = var.statistics_fargate_memory
   execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
-  task_role_arn            = aws_iam_role.ecs_task_execution_role.arn
 
   container_definitions = templatefile("./templates/ecs/statistics_server_app.json.tpl", {
     app_image      = aws_ecr_repository.statistics_server.repository_url
-    app_port       = 8080
-    fargate_cpu    = 1024
-    fargate_memory = 2048
+    app_port       = var.default_tomcat_port
+    fargate_cpu    = var.statistics_fargate_cpu
+    fargate_memory = var.statistics_fargate_memory
     aws_region     = var.aws_region
     spring_profile = terraform.workspace
     app_id         = data.aws_ssm_parameter.statistics_app_id.value
-    db_port        = "3306"
+    db_port        = var.default_mysql_port
     db_host        = aws_db_instance.dumped_db.address
-    db_name        = "wca_development"
+    db_name        = var.dumped_db_name
     db_username    = data.aws_ssm_parameter.dumped_db_read_user.value
     db_password    = data.aws_ssm_parameter.dumped_db_read_password.value
   })
@@ -55,6 +54,4 @@ resource "aws_ecs_service" "statistics_server_service" {
   deployment_controller {
     type = "CODE_DEPLOY"
   }
-
-  #   depends_on = [aws_iam_role_policy_attachment.ecs_task_execution_role]
 }

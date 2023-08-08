@@ -1,7 +1,7 @@
 [
   {
     "name": "statistics-server-app",
-    "image": "${app_image}:latest",
+    "image": "${app_image}",
     "cpu": ${fargate_cpu},
     "memory": ${fargate_memory},
     "networkMode": "awsvpc",
