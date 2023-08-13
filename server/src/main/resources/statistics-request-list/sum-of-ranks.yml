@@ -12,7 +12,7 @@ queries:
       - R3
     sqlQuery: |-
       select
-          wca_statistics_person_link_format(id, name),
+          wca_statistics_person_link_format(wca_id, name),
           countryId Country,
           r3 + r4 + r5 Sum,
           r3 '3x3',
@@ -21,7 +21,7 @@ queries:
       from
           (
               select
-                  id,
+                  wca_id,
                   p.name,
                   p.countryId,
                   (
@@ -30,7 +30,7 @@ queries:
                       from
                           RanksSingle
                       where
-                          personId = p.id
+                          personId = p.wca_id
                           and eventId = '333'
                   ) r3,
                   (
@@ -39,7 +39,7 @@ queries:
                       from
                           RanksSingle
                       where
-                          personId = p.id
+                          personId = p.wca_id
                           and eventId = '444'
                   ) r4,
                   (
@@ -48,7 +48,7 @@ queries:
                       from
                           RanksSingle
                       where
-                          personId = p.id
+                          personId = p.wca_id
                           and eventId = '555'
                   ) r5
               from
@@ -73,7 +73,7 @@ queries:
       from
           (
           select
-              id,
+              wca_id,
               p.name,
               p.countryId,
               (
@@ -82,7 +82,7 @@ queries:
               from
                   RanksSingle
               where
-                  personId = p.id
+                  personId = p.wca_id
                   and eventId = '333') r3,
               (
               select
@@ -90,7 +90,7 @@ queries:
               from
                   RanksSingle
               where
-                  personId = p.id
+                  personId = p.wca_id
                   and eventId = '444') r4,
               (
               select
@@ -98,7 +98,7 @@ queries:
               from
                   RanksSingle
               where
-                  personId = p.id
+                  personId = p.wca_id
                   and eventId = '555') r5
           from
               Persons p) r
@@ -106,7 +106,7 @@ queries:
           r3 is not null
           and r4 is not null
           and r5 is not null
-          and id = ':WCA_ID'
+          and wca_id = ':WCA_ID'
       order by
           Sum asc
       limit 10
@@ -123,7 +123,7 @@ queries:
       - R3
     sqlQuery: |-
       select
-          wca_statistics_person_link_format(id, name),
+          wca_statistics_person_link_format(wca_id, name),
           countryId Country,
           r3 + r4 + r5 Sum,
           r3 '3x3',
@@ -132,7 +132,7 @@ queries:
       from
           (
               select
-                  id,
+                  wca_id,
                   p.name,
                   p.countryId,
                   (
@@ -141,7 +141,7 @@ queries:
                       from
                           RanksAverage
                       where
-                          personId = p.id
+                          personId = p.wca_id
                           and eventId = '333'
                   ) r3,
                   (
@@ -150,7 +150,7 @@ queries:
                       from
                           RanksAverage
                       where
-                          personId = p.id
+                          personId = p.wca_id
                           and eventId = '444'
                   ) r4,
                   (
@@ -159,7 +159,7 @@ queries:
                       from
                           RanksAverage
                       where
-                          personId = p.id
+                          personId = p.wca_id
                           and eventId = '555'
                   ) r5
               from
@@ -184,7 +184,7 @@ queries:
       from
           (
           select
-              id,
+              wca_id,
               p.name,
               p.countryId,
               (
@@ -193,7 +193,7 @@ queries:
               from
                   RanksAverage
               where
-                  personId = p.id
+                  personId = p.wca_id
                   and eventId = '333') r3,
               (
               select
@@ -201,7 +201,7 @@ queries:
               from
                   RanksAverage
               where
-                  personId = p.id
+                  personId = p.wca_id
                   and eventId = '444') r4,
               (
               select
@@ -209,7 +209,7 @@ queries:
               from
                   RanksAverage
               where
-                  personId = p.id
+                  personId = p.wca_id
                   and eventId = '555') r5
           from
               Persons p) r
@@ -217,7 +217,7 @@ queries:
           r3 is not null
           and r4 is not null
           and r5 is not null
-          and id = ':WCA_ID'
+          and wca_id = ':WCA_ID'
       order by
           Sum asc
       limit 10
