@@ -36,7 +36,7 @@ order by
     `rank`
 """
 
-# Repalce %s with Average or Single for different table
+# Replace %s with Average or Single for different table
 competitors_query = """
 select
     personId,
@@ -45,7 +45,7 @@ select
     p.name
 from
     Ranks%s r
-    inner join Persons p on r.personId = p.id
+    inner join Persons p on r.personId = p.wca_id
 where
     eventId in (
         select
@@ -65,7 +65,7 @@ from Persons p
     inner join
     (
         select%(custom_sub_queries)s
-    ) my_ranks on p.id = ':WCA_ID'
+    ) my_ranks on p.wca_id = ':WCA_ID'
 """
 
 custom_sub_query = """
