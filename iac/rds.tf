@@ -4,7 +4,7 @@ resource "aws_db_instance" "dumped_db" {
   engine                 = "mysql"
   engine_version         = "8.0.33"
   storage_type           = "gp2"
-  instance_class         = "db.t3.small"
+  instance_class         = "db.t3.medium"
   db_name                = "dumped_db"
   username               = data.aws_ssm_parameter.dumped_db_write_user.value
   password               = data.aws_ssm_parameter.dumped_db_write_password.value
