@@ -17,7 +17,7 @@ import java.util.stream.Stream;
 
 import static io.restassured.RestAssured.given;
 
-@DisplayName("Best ever rank")
+@DisplayName("Statistics")
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @Sql({"/test-scripts/cleanTestData.sql", "/test-scripts/StatisticsControllerIT.sql"})
 public class StatisticsControllerIT extends AbstractTest {

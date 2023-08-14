@@ -56,7 +56,7 @@ sub_query = """
 		where
 			c2.countryId = c.id
             and results_posted_at is not null
-			and c2.`year` = year(current_date())-%(diff)s) m%(diff)s"""
+			and year(c2.start_date) = year(current_date())-%(diff)s) m%(diff)s"""
 
 
 def avg_competitions():

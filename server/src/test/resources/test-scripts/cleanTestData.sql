@@ -1,3 +1,5 @@
+set foreign_key_checks = 0;
+
 truncate wca_development.best_ever_rank;
 
 truncate wca_development.Competitions;
@@ -27,3 +29,5 @@ truncate wca_development.Continents;
 truncate wca_development.RanksSingle;
 
 truncate wca_development.RanksAverage;
+
+set foreign_key_checks = 1;
