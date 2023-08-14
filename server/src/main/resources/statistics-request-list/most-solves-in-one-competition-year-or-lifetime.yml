@@ -113,14 +113,14 @@ queries:
     sqlQuery: |-
       select
           wca_statistics_person_link_format(personId, personName),
-          year,
+          the_year year,
           concat(solves, ' / ', attempts)
       from
           (
               SELECT
                   personId,
                   personName,
-                  year,
+                  year(competition.start_date) the_year,
                   sum(
                       IF(value1 > 0, 1, 0) + IF(value2 > 0, 1, 0) + IF(value3 > 0, 1, 0) + IF(value4 > 0, 1, 0) + IF(value5 > 0, 1, 0)
                   ) solves,
@@ -158,7 +158,7 @@ queries:
               GROUP BY
                   personId,
                   personName,
-                  year
+                  year(competition.start_date)
               ORDER BY
                   solves DESC,
                   attempts
@@ -168,7 +168,7 @@ queries:
     sqlQueryCustom: |-
       SELECT
           personName,
-          year whereId,
+          year(competition.start_date) the_year,
           sum(
               IF(value1 > 0, 1, 0) + IF(value2 > 0, 1, 0) + IF(value3 > 0, 1, 0) + IF(value4 > 0, 1, 0) + IF(value5 > 0, 1, 0)
           ) solves,
@@ -209,7 +209,7 @@ queries:
       GROUP BY
           personId,
           personName,
-          year
+          year(competition.start_date)
       ORDER BY
           solves DESC,
           attempts
