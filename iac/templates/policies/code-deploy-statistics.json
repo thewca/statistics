@@ -1,0 +1,10 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": ["ecs:DescribeServices"],
+      "Effect": "Allow",
+      "Resource": "arn:aws:ecs:*:*:service/${cluster_name}/${service_name}"
+    }
+  ]
+}

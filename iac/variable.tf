@@ -1,12 +1,3 @@
-variable "environment_to_suffix_map" {
-  type = map(any)
-  default = {
-    dev     = "-dev"
-    staging = "-stg"
-    prod    = ""
-  }
-}
-
 variable "aws_region" {
   default = "us-west-2"
 }
@@ -57,4 +48,8 @@ variable "statistics_fargate_memory" {
 
 variable "dumped_db_name" {
   default = "wca_development"
+}
+
+variable "container_name" {
+  default = "statistics-server-app"
 }

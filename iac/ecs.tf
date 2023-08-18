@@ -18,6 +18,7 @@ resource "aws_ecs_task_definition" "statistics_server_task_definition" {
 
   container_definitions = templatefile("./templates/ecs/statistics_server_app.json.tpl", {
     app_image      = aws_ecr_repository.statistics_server.repository_url
+    container_name = var.container_name
     app_port       = var.default_tomcat_port
     fargate_cpu    = var.statistics_fargate_cpu
     fargate_memory = var.statistics_fargate_memory
