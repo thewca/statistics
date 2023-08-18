@@ -4,8 +4,11 @@ resource "aws_iam_role" "statistics_server_code_deploy_role" {
   inline_policy {
     name = "statistics-inline-cd-${terraform.workspace}"
     policy = templatefile("${path.module}/templates/policies/code-deploy-statistics.json", {
-      cluster_name = aws_ecs_cluster.statistics_server_cluster.name
-      service_name = aws_ecs_service.statistics_server_service.name
+      bucket_name     = var.bucket_name
+      aws_region      = var.aws_region
+      app_spec_folder = var.app_spec_folder
+      cluster_name    = aws_ecs_cluster.statistics_server_cluster.name
+      service_name    = aws_ecs_service.statistics_server_service.name
     })
   }
 
@@ -25,7 +28,7 @@ resource "aws_codedeploy_app" "statistics_server_code_deploy_app" {
 resource "aws_codedeploy_deployment_group" "statistics_server_code_deployment_group" {
   app_name               = aws_codedeploy_app.statistics_server_code_deploy_app.name
   deployment_config_name = "CodeDeployDefault.ECSAllAtOnce"
-  deployment_group_name  = "statistics-server-code-deployment-group"
+  deployment_group_name  = "statistics-server-code-deployment-group-${terraform.workspace}"
   service_role_arn       = aws_iam_role.statistics_server_code_deploy_role.arn
 
   auto_rollback_configuration {
@@ -84,7 +87,7 @@ Resources:
           ContainerPort: "${var.default_tomcat_port}"
         PlatformVersion: "LATEST"
 EOF
-  filename = "app-spec/statistics-spec-${terraform.workspace}.yaml"
+  filename = "${var.app_spec_folder}/statistics-spec-${terraform.workspace}.yaml"
 }
 
 resource "aws_s3_object" "api_app_spec_file" {

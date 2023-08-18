@@ -53,3 +53,8 @@ variable "dumped_db_name" {
 variable "container_name" {
   default = "statistics-server-app"
 }
+
+variable "app_spec_folder" {
+  default = "app-spec"
+
+}

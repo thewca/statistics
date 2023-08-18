@@ -4,7 +4,12 @@
     {
       "Action": ["ecs:DescribeServices"],
       "Effect": "Allow",
-      "Resource": "arn:aws:ecs:*:*:service/${cluster_name}/${service_name}"
+      "Resource": "arn:aws:ecs:${aws_region}:*:service/${cluster_name}/${service_name}"
+    },
+    {
+      "Action": ["s3:GetObject"],
+      "Effect": "Allow",
+      "Resource": "arn:aws:s3:::${bucket_name}/${app_spec_folder}/*"
     }
   ]
 }
