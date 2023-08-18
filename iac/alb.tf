@@ -1,8 +1,8 @@
 resource "aws_alb" "statistics_server_load_balancer" {
-  name               = "statistics-server-alb-${terraform.workspace}"
-  subnets            = [aws_default_subnet.default_az1.id, aws_default_subnet.default_az2.id]
-  security_groups    = [aws_security_group.http_security_group.id, aws_security_group.allow_tomcat.id]
-  load_balancer_type = "application"
+  name            = "statistics-server-alb-${terraform.workspace}"
+  subnets         = [aws_default_subnet.default_az1.id, aws_default_subnet.default_az2.id]
+  security_groups = [aws_security_group.http_security_group.id, aws_security_group.allow_tomcat.id]
+  idle_timeout    = 300
 }
 
 resource "aws_alb_target_group" "statistics_server_target_group" {
@@ -57,7 +57,7 @@ data "aws_acm_certificate" "statistics_server_cetificate" {
 resource "aws_alb_listener" "statistics_server_https_listener" {
   load_balancer_arn = aws_alb.statistics_server_load_balancer.arn
   port              = var.http_port
-  # protocol          = "HTTPS"
+  protocol          = "HTTP"
   # ssl_policy        = "ELBSecurityPolicy-TLS13-1-2-2021-06"
   # certificate_arn   = data.aws_acm_certificate.statistics_server_cetificate.arn
 

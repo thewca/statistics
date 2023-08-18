@@ -44,7 +44,7 @@ variable "https_port" {
 }
 
 variable "default_tomcat_port" {
-  default = 8080
+  default = "8080"
 }
 
 variable "statistics_fargate_cpu" {

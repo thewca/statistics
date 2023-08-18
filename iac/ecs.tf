@@ -41,7 +41,7 @@ resource "aws_ecs_service" "statistics_server_service" {
 
   network_configuration {
     subnets          = [aws_default_subnet.default_az1.id, aws_default_subnet.default_az2.id]
-    security_groups  = [aws_security_group.http_security_group.id]
+    security_groups  = [aws_security_group.http_security_group.id, aws_security_group.allow_tomcat.id]
     assign_public_ip = true
   }
 
