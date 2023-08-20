@@ -12,19 +12,19 @@ queries:
       from
           Persons p
           inner join (
-              SELECT
+              select
                   personId,
-                  count(DISTINCT competitionId) numberOfCompetitions
-              FROM
-                  Results
-              GROUP BY
+                  count(distinct competitionId) numberOfCompetitions
+              from
+                  Results r
+              group by
                   personId
-              ORDER BY
-                  numberOfCompetitions DESC,
+              order by
+                  numberOfCompetitions desc,
                   personId
-              LIMIT
+              limit
                   10
-          ) c on c.personId = p.id
+          ) c on c.personId = p.wca_id
     sqlQueryCustom: |-
       select
       	personName Name, count(distinct competitionId) Competitions
