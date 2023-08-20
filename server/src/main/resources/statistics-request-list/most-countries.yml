@@ -7,29 +7,29 @@ queries:
       - Person
       - Countries
     sqlQuery: |-
-      SELECT
+      select
           wca_statistics_person_link_format(personId, person.name),
-          COUNT(competition_countries_by_person.countryId) numberOfCountries
-      FROM
+          count(competition_countries_by_person.countryId) numberOfCountries
+      from
           (
-              SELECT
-                  DISTINCT personId,
+              select
+                  distinct personId,
                   competition.countryId
-              FROM
+              from
                   Results
-                  JOIN Competitions competition ON competition.id = competitionId
-              WHERE
-                  competition.countryId NOT REGEXP '^X[A-Z]{1}$'
-          ) AS competition_countries_by_person
-          JOIN Persons person ON person.id = personId
-          AND subId = 1
-      GROUP BY
+                  join Competitions competition on competition.id = competitionId
+              where
+                  competition.countryId not regexp '^X[A-Z]{1}$'
+          ) as competition_countries_by_person
+          join Persons person on person.wca_id = personId
+          and subId = 1
+      group by
           person.name,
           personId
-      ORDER BY
-          numberOfCountries DESC,
+      order by
+          numberOfCountries desc,
           person.name
-      LIMIT
+      limit
           10
     sqlQueryCustom: |-
       select
