@@ -6,7 +6,7 @@ terraform {
   }
 }
 
-variable "container_name" {
+variable "bucket_name" {
   default = "NON-EXISTING-BUCKET"
 }
 
