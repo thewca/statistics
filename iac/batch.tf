@@ -71,7 +71,7 @@ resource "aws_iam_role" "ecs_task_execution_role" {
   assume_role_policy = templatefile("${path.module}/templates/policies/assume-role-ecs.json", {})
 
   inline_policy {
-    name = "grading-assistant-task-execution-role-policy-${terraform.workspace}"
+    name = "statistics-task-execution-role-policy-${terraform.workspace}"
 
     policy = jsonencode({
       Version = "2012-10-17"
