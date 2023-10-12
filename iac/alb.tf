@@ -56,10 +56,10 @@ data "aws_acm_certificate" "statistics_server_cetificate" {
 
 resource "aws_alb_listener" "statistics_server_https_listener" {
   load_balancer_arn = aws_alb.statistics_server_load_balancer.arn
-  port              = var.http_port
-  protocol          = "HTTP"
-  # ssl_policy        = "ELBSecurityPolicy-TLS13-1-2-2021-06"
-  # certificate_arn   = data.aws_acm_certificate.statistics_server_cetificate.arn
+  port              = var.https_port
+  protocol          = "HTTPS"
+  ssl_policy        = "ELBSecurityPolicy-TLS13-1-2-2021-06"
+  certificate_arn   = data.aws_acm_certificate.statistics_server_cetificate.arn
 
   default_action {
     target_group_arn = aws_alb_target_group.statistics_server_target_group.id
