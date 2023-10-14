@@ -67,3 +67,25 @@ resource "aws_security_group" "http_security_group" {
     (var.type) = var.type_sg
   }
 }
+
+resource "aws_security_group" "allow_tomcat" {
+  name        = "default-tomcat-${terraform.workspace}}"
+  description = "Default tomcat"
+  vpc_id      = aws_default_vpc.default.id
+
+  ingress {
+    description = "HTTP"
+    from_port   = var.default_tomcat_port
+    to_port     = var.default_tomcat_port
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
+}

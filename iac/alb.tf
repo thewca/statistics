@@ -1,8 +1,8 @@
 resource "aws_alb" "statistics_server_load_balancer" {
-  name               = "statistics-server-alb-${terraform.workspace}"
-  subnets            = [aws_default_subnet.default_az1.id, aws_default_subnet.default_az2.id]
-  security_groups    = [aws_security_group.http_security_group.id]
-  load_balancer_type = "application"
+  name            = "statistics-server-alb-${terraform.workspace}"
+  subnets         = [aws_default_subnet.default_az1.id, aws_default_subnet.default_az2.id]
+  security_groups = [aws_security_group.http_security_group.id, aws_security_group.allow_tomcat.id]
+  idle_timeout    = 300
 }
 
 resource "aws_alb_target_group" "statistics_server_target_group" {

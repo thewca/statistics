@@ -59,7 +59,7 @@ resource "aws_batch_job_definition" "statistics_cron_job_definition" {
     statistics_port = "8080"
     db_port         = "3306"
     db_host         = aws_db_instance.dumped_db.address
-    db_name         = "wca_development"
+    db_name         = var.dumped_db_name
     db_username     = data.aws_ssm_parameter.dumped_db_write_user.value
     db_password     = data.aws_ssm_parameter.dumped_db_write_password.value
     execution_role  = aws_iam_role.ecs_task_execution_role.arn
@@ -69,4 +69,24 @@ resource "aws_batch_job_definition" "statistics_cron_job_definition" {
 resource "aws_iam_role" "ecs_task_execution_role" {
   name               = "ecs-task-execution-role-${terraform.workspace}"
   assume_role_policy = templatefile("${path.module}/templates/policies/assume-role-ecs.json", {})
+
+  inline_policy {
+    name = "statistics-task-execution-role-policy-${terraform.workspace}"
+
+    policy = jsonencode({
+      Version = "2012-10-17"
+      Statement = [
+        {
+          Action   = ["logs:*"]
+          Effect   = "Allow"
+          Resource = "*"
+        },
+        {
+          Action   = ["ecr:*"]
+          Effect   = "Allow"
+          Resource = "*"
+        }
+      ]
+    })
+  }
 }

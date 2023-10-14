@@ -1,12 +1,3 @@
-variable "environment_to_suffix_map" {
-  type = map(any)
-  default = {
-    dev     = "-dev"
-    staging = "-stg"
-    prod    = ""
-  }
-}
-
 variable "aws_region" {
   default = "us-west-2"
 }
@@ -44,5 +35,26 @@ variable "https_port" {
 }
 
 variable "default_tomcat_port" {
-  default = 8080
+  default = "8080"
+}
+
+variable "statistics_fargate_cpu" {
+  default = "1024"
+}
+
+variable "statistics_fargate_memory" {
+  default = "2048"
+}
+
+variable "dumped_db_name" {
+  default = "wca_development"
+}
+
+variable "container_name" {
+  default = "statistics-server-app"
+}
+
+variable "app_spec_folder" {
+  default = "app-spec"
+
 }

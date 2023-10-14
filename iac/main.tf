@@ -6,6 +6,10 @@ terraform {
   }
 }
 
+variable "bucket_name" {
+  default = "NON-EXISTING-BUCKET"
+}
+
 terraform {
   required_providers {
     aws = {
