@@ -20,10 +20,10 @@ public class WCAServiceImpl implements WCAService {
     private WCAApi wcaApi;
 
     @Override
-    public AuthenticationResponse getWcaAuthenticationUrl(String frontendHost) {
+    public AuthenticationResponse getWcaAuthenticationUrl(String frontendHost, String redirect) {
         return AuthenticationResponse.builder().frontendHost(frontendHost).url(String
-                .format("%s/oauth/authorize?client_id=%s&redirect_uri=%s&response_type=token&scope=public", wcaBaseUrl,
-                        wcaAppId, frontendHost)).build();
+                .format("%s/oauth/authorize?client_id=%s&redirect_uri=%s?redirect=%s&response_type=token&scope=public", wcaBaseUrl,
+                        wcaAppId, frontendHost, redirect)).build();
     }
 
     @Override

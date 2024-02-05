@@ -113,9 +113,17 @@ function App() {
   useEffect(getStatisticsList, []);
 
   const flatLinks = [...links.flatMap((x) => (x.subItems ? x.subItems : [x]))];
+  
+  // Redirect if query parameter is set
+  let params = new URLSearchParams(window.location.search);
+  let redirect =  params.get("redirect");
+  if (redirect) {
+    window.location.href = atob(redirect);
+  }
 
-  return (
-    <BrowserRouter>
+  // Only render the page if we are not being redirected
+  return redirect ? <BrowserRouter></BrowserRouter> : 
+    (<BrowserRouter>
       <div id="page-container">
         <Topbar links={links} statisticsGroups={statisticsList?.list} />
         <div id="content-wrapper">

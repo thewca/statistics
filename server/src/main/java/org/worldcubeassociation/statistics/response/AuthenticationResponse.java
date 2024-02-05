@@ -8,4 +8,5 @@ import lombok.Data;
 public class AuthenticationResponse {
     private String url;
     private String frontendHost;
+    private String redirect;
 }

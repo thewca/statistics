@@ -5,7 +5,9 @@ export class WcaApi {
     // We get the url from the server
     statisticsApi
       .getWcaAuthenticationUrl(
-        window.location.protocol + "//" + window.location.host
+        window.location.protocol + "//" + window.location.host,
+        // Redirect is encoded to base 64 to avoid problems with query strings
+        btoa(window.location.href)
       )
       .then((response) => {
         // Navigante to the url
