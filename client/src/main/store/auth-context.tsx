@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import statisticsApi from "../api/statistics.api";
-import wcaApi from "../api/wca.api";
 import UserInfo from "../model/UserInfo";
+import { getWcaAuthenticationUrl } from "../util/WcaUtil";
 import { deleteParameter, getHashParameter } from "../util/query.param.util";
 
 const TOKEN_TYPE = "token_type";
@@ -55,7 +55,7 @@ if (!!hashAccessToken && !!hashTokenType && !!hashExpiresIn) {
 
 export const checkIsLogged = (
   token: string | null,
-  expiresIn?: number | string | null
+  expiresIn?: number | string | null,
 ) => !!token && !!expiresIn && new Date() < new Date(Number(expiresIn));
 
 const initialIsLogged = checkIsLogged(initialToken, initialExpiresIn);
@@ -73,7 +73,7 @@ export const deleteStorageItems = () => {
 export const AuthContextProvider = (props: any) => {
   const [token, setToken] = useState(initialToken);
   const [userInfo, setUserInfo] = useState<UserInfo | undefined>(
-    initialUserInfo
+    initialUserInfo,
   );
   const [isLogged, setIsLogged] = useState(initialIsLogged);
 
@@ -87,7 +87,8 @@ export const AuthContextProvider = (props: any) => {
   }, [isLogged, userInfo]);
 
   const loginHandler = () => {
-    wcaApi.login();
+    const url = getWcaAuthenticationUrl();
+    window.location.href = url;
   };
 
   const logoutHandler = () => {

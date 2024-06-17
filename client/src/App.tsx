@@ -118,7 +118,7 @@ function App() {
   let params = new URLSearchParams(window.location.search);
   let redirect = params.get("redirect");
   if (redirect) {
-    window.location.href = atob(redirect);
+    window.location.href = redirect;
   }
 
   // Only render the page if we are not being redirected

@@ -53,7 +53,7 @@ const Topbar = ({ links, statisticsGroups }: TopbarProps) => {
                 {link.name}
               </Link>
             </Menu.Item>
-          )
+          ),
         )}
       <SubMenu
         key="sub2"
