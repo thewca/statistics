@@ -4,7 +4,7 @@ import {
   UserOutlined,
 } from "@ant-design/icons";
 import "@cubing/icons";
-import { Col, Form, Input, message, Popover, Row, Tag, Tooltip } from "antd";
+import { Col, Form, Input, Popover, Row, Tag, Tooltip, message } from "antd";
 import React, { useCallback, useEffect, useState } from "react";
 import statisticsApi from "../api/statistics.api";
 import BestEverRank from "../model/BestEverRank";
@@ -41,7 +41,7 @@ const BestEverRanksPage = () => {
 
   const getCompetitionLink = (
     compeitionId: string,
-    competitionName?: string
+    competitionName?: string,
   ) => (
     <a
       href={`https://www.worldcubeassociation.org/competitions/${compeitionId}`}
@@ -64,7 +64,7 @@ const BestEverRanksPage = () => {
     competitor: Competitor,
     event_id: string,
     rank_type: string,
-    tooltip?: string
+    tooltip?: string,
   ) => (
     <>
       <th>
@@ -171,7 +171,7 @@ const BestEverRanksPage = () => {
                       continent,
                       eventRank.event.id,
                       "CR",
-                      continent.continent
+                      continent.continent,
                     )}
                   </tr>
                 ))}
@@ -181,7 +181,7 @@ const BestEverRanksPage = () => {
                       country,
                       eventRank.event.id,
                       "NR",
-                      country.country
+                      country.country,
                     )}
                   </tr>
                 ))}

@@ -8,7 +8,7 @@ import {
   Pagination,
   Skeleton,
 } from "antd";
-import React, { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import databaseQueryApi from "../api/DatabaseQueryApi";
 import DatabaseQueryOptions from "../components/DatabaseQueryOptions";
 import NoContent from "../components/NoContent";
@@ -77,7 +77,7 @@ export const DatabaseQueryPage = () => {
       sortedKeys.map((key) => {
         let value = oldList.find((it) => it.key === key)?.value || "";
         return { key, value };
-      })
+      }),
     );
   }, [query]);
 
@@ -101,8 +101,8 @@ export const DatabaseQueryPage = () => {
       (replaceItem) =>
         (finalQuery = finalQuery.replace(
           new RegExp(replaceItem.key, "g"),
-          replaceItem.value
-        ))
+          replaceItem.value,
+        )),
     );
 
     setLoading(true);
@@ -134,7 +134,7 @@ export const DatabaseQueryPage = () => {
   const handleReplaceChange = (value: string, key: string) => {
     // We replace just the current value
     setReplaceList((oldList) =>
-      oldList.map((it) => (it.key === key ? { key, value } : it))
+      oldList.map((it) => (it.key === key ? { key, value } : it)),
     );
   };
 

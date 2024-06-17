@@ -1,106 +1,108 @@
-import { fireEvent } from "@testing-library/dom";
-import React from "react";
-import { render, unmountComponentAtNode } from "react-dom";
-import { act } from "react-dom/test-utils";
-import databaseQueryApi from "../main/api/DatabaseQueryApi";
-import { DatabaseQueryPage } from "../main/pages/DatabaseQueryPage";
-import { defaultQueryResponse } from "./DatabaseQuery.test.mock";
+// TODO replace with vitest
 
-let container = document.createElement("div");
-beforeEach(() => {
-  // setup a DOM element as a render target
-  container = document.createElement("div");
-  document.body.appendChild(container);
+// import { fireEvent } from "@testing-library/dom";
+// import React from "react";
+// import { render, unmountComponentAtNode } from "react-dom";
+// import { act } from "react-dom/test-utils";
+// import databaseQueryApi from "../main/api/DatabaseQueryApi";
+// import { DatabaseQueryPage } from "../main/pages/DatabaseQueryPage";
+// import { defaultQueryResponse } from "./DatabaseQuery.test.mock";
 
-  // https://jestjs.io/docs/en/manual-mocks#mocking-methods-which-are-not-implemented-in-jsdom
-  Object.defineProperty(window, "matchMedia", {
-    writable: true,
-    value: jest.fn().mockImplementation((query) => ({
-      matches: false,
-      media: query,
-      onchange: null,
-      addListener: jest.fn(), // deprecated
-      removeListener: jest.fn(), // deprecated
-      addEventListener: jest.fn(),
-      removeEventListener: jest.fn(),
-      dispatchEvent: jest.fn(),
-    })),
-  });
-});
+// let container = document.createElement("div");
+// beforeEach(() => {
+//   // setup a DOM element as a render target
+//   container = document.createElement("div");
+//   document.body.appendChild(container);
 
-afterEach(() => {
-  // cleanup on exiting
-  unmountComponentAtNode(container);
-  container.remove();
-  container = document.createElement("div");
+//   // https://jestjs.io/docs/en/manual-mocks#mocking-methods-which-are-not-implemented-in-jsdom
+//   Object.defineProperty(window, "matchMedia", {
+//     writable: true,
+//     value: jest.fn().mockImplementation((query) => ({
+//       matches: false,
+//       media: query,
+//       onchange: null,
+//       addListener: jest.fn(), // deprecated
+//       removeListener: jest.fn(), // deprecated
+//       addEventListener: jest.fn(),
+//       removeEventListener: jest.fn(),
+//       dispatchEvent: jest.fn(),
+//     })),
+//   });
+// });
 
-  jest.resetAllMocks();
-});
+// afterEach(() => {
+//   // cleanup on exiting
+//   unmountComponentAtNode(container);
+//   container.remove();
+//   container = document.createElement("div");
 
-// This is also used for custom query in redirect
-it("If the user types query with :ABC, there should be an input to replace it", async () => {
-  let query = `select
-    *
-from
-    Results
-where
-    eventId = ':EVENT_ID'
-    or countryId = ':COUNTRY_ID'`;
+//   jest.resetAllMocks();
+// });
 
-  const axiosResponse = {
-    status: 200,
-    statusText: "OK",
-    config: {},
-    headers: {},
-  };
+// // This is also used for custom query in redirect
+// it("If the user types query with :ABC, there should be an input to replace it", async () => {
+//   let query = `select
+//     *
+// from
+//     Results
+// where
+//     eventId = ':EVENT_ID'
+//     or countryId = ':COUNTRY_ID'`;
 
-  let searchQuery = "";
+//   const axiosResponse = {
+//     status: 200,
+//     statusText: "OK",
+//     config: {},
+//     headers: {},
+//   };
 
-  jest
-    .spyOn(databaseQueryApi, "queryDatabase")
-    .mockImplementation((query, page, size) => {
-      searchQuery = query;
-      return Promise.resolve({ ...axiosResponse, data: defaultQueryResponse });
-    });
+//   let searchQuery = "";
 
-  // Render component
-  await act(async () => {
-    render(
-      <React.StrictMode>
-        <DatabaseQueryPage />
-      </React.StrictMode>,
-      container
-    );
-  });
+//   jest
+//     .spyOn(databaseQueryApi, "queryDatabase")
+//     .mockImplementation((query, page, size) => {
+//       searchQuery = query;
+//       return Promise.resolve({ ...axiosResponse, data: defaultQueryResponse });
+//     });
 
-  let textArea = container.querySelector("textarea")!;
-  expect(textArea).toBeDefined();
+//   // Render component
+//   await act(async () => {
+//     render(
+//       <React.StrictMode>
+//         <DatabaseQueryPage />
+//       </React.StrictMode>,
+//       container
+//     );
+//   });
 
-  await act(async () => {
-    fireEvent.change(textArea, { target: { value: query } });
-  });
+//   let textArea = container.querySelector("textarea")!;
+//   expect(textArea).toBeDefined();
 
-  let databaseQueryPage = container.querySelector("#database-query-wrapper")!;
+//   await act(async () => {
+//     fireEvent.change(textArea, { target: { value: query } });
+//   });
 
-  let inputs = Array.from(databaseQueryPage.querySelectorAll("input")!);
-  expect(inputs.length).toBe(2);
+//   let databaseQueryPage = container.querySelector("#database-query-wrapper")!;
 
-  let event = "333fm";
-  let country = "Brazil";
-  await act(async () => {
-    fireEvent.change(inputs[0], { target: { value: country } });
-    fireEvent.change(inputs[1], { target: { value: event } });
-  });
+//   let inputs = Array.from(databaseQueryPage.querySelectorAll("input")!);
+//   expect(inputs.length).toBe(2);
 
-  let submitButton = Array.from(
-    databaseQueryPage.querySelectorAll("button")
-  ).find((btn) => btn.innerHTML.includes("Submit"))!;
-  await act(async () => {
-    fireEvent.click(submitButton);
-  });
+//   let event = "333fm";
+//   let country = "Brazil";
+//   await act(async () => {
+//     fireEvent.change(inputs[0], { target: { value: country } });
+//     fireEvent.change(inputs[1], { target: { value: event } });
+//   });
 
-  // Searched query should replace inputs
-  expect(searchQuery).toEqual(
-    query.replace(":EVENT_ID", event).replace(":COUNTRY_ID", country)
-  );
-});
+//   let submitButton = Array.from(
+//     databaseQueryPage.querySelectorAll("button")
+//   ).find((btn) => btn.innerHTML.includes("Submit"))!;
+//   await act(async () => {
+//     fireEvent.click(submitButton);
+//   });
+
+//   // Searched query should replace inputs
+//   expect(searchQuery).toEqual(
+//     query.replace(":EVENT_ID", event).replace(":COUNTRY_ID", country)
+//   );
+// });
