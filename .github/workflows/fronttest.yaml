@@ -20,8 +20,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-
-        uses: actions/cache@v3
+      - uses: actions/cache@v3
         with:
           path: "**/client/node_modules"
           key: ${{ runner.os }}-v2-${{ hashFiles('**/client/package-lock.json') }}
