@@ -8,7 +8,7 @@ export class DatabaseQueryApi {
   BASE_URL: string;
 
   constructor() {
-    this.BASE_URL = process.env.REACT_APP_BASE_URL! + "/database/";
+    this.BASE_URL = import.meta.env.VITE_BASE_URL! + "/database/";
   }
 
   queryDatabase = (sqlQuery: string, page: number, size: number) => {

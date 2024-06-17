@@ -1,4 +1,5 @@
 import Axios from "axios";
+import { API_URL } from "../config/EnvVarConfig";
 import { PageResponse } from "../model/PageResponse";
 import { MetaSorInfo } from "../model/rank/MetaSorInfo";
 import { SumOfRanks } from "../model/rank/SumOfRanks";
@@ -7,7 +8,7 @@ export class SumOfRanksApi {
   BASE_URL: string;
 
   constructor() {
-    this.BASE_URL = process.env.REACT_APP_BASE_URL! + "/sum-of-ranks";
+    this.BASE_URL = API_URL! + "/sum-of-ranks";
   }
 
   meta = () => {

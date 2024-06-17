@@ -10,7 +10,7 @@ import {
 } from "@ant-design/icons";
 import { message } from "antd";
 import axios from "axios";
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
 import statisticsApi from "./main/api/statistics.api";
@@ -31,7 +31,7 @@ import StatisticsListPage from "./main/pages/StatisticsListPage";
 import { SumOfRanksPage } from "./main/pages/SumOfRanks/SumOfRanksPage";
 import AuthContext from "./main/store/auth-context";
 
-axios.interceptors.response.use(undefined, errorInterceptor);
+axios.interceptors.response.use((res) => res, errorInterceptor);
 axios.interceptors.request.use(requestIntercetor);
 
 function App() {
@@ -113,17 +113,19 @@ function App() {
   useEffect(getStatisticsList, []);
 
   const flatLinks = [...links.flatMap((x) => (x.subItems ? x.subItems : [x]))];
-  
+
   // Redirect if query parameter is set
   let params = new URLSearchParams(window.location.search);
-  let redirect =  params.get("redirect");
+  let redirect = params.get("redirect");
   if (redirect) {
     window.location.href = atob(redirect);
   }
 
   // Only render the page if we are not being redirected
-  return redirect ? <BrowserRouter></BrowserRouter> : 
-    (<BrowserRouter>
+  return redirect ? (
+    <BrowserRouter></BrowserRouter>
+  ) : (
+    <BrowserRouter>
       <div id="page-container">
         <Topbar links={links} statisticsGroups={statisticsList?.list} />
         <div id="content-wrapper">

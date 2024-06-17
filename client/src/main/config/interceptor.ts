@@ -1,10 +1,10 @@
 import { message } from "antd";
-import { AxiosError, AxiosRequestConfig } from "axios";
+import { AxiosError, InternalAxiosRequestConfig } from "axios";
 import {
-  checkIsLogged,
-  deleteStorageItems,
   EXPIRES_IN,
   TOKEN,
+  checkIsLogged,
+  deleteStorageItems,
 } from "../store/auth-context";
 
 export const errorInterceptor = (response: AxiosError) => {
@@ -20,10 +20,10 @@ export const errorInterceptor = (response: AxiosError) => {
   return Promise.reject(response);
 };
 
-export const requestIntercetor = (item: AxiosRequestConfig) => {
+export const requestIntercetor = (item: InternalAxiosRequestConfig<any>) => {
   let token = localStorage.getItem(TOKEN);
   let expiresIn = localStorage.getItem(EXPIRES_IN);
-  if (checkIsLogged(token, expiresIn)) {
+  if (checkIsLogged(token, expiresIn) && !!item.headers) {
     item.headers.Authorization = token;
   }
   return item;

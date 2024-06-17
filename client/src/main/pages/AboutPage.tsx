@@ -1,3 +1,4 @@
+import { APP_DATE_VERSION, APP_VERSION } from "../config/EnvVarConfig";
 import "./AboutPage.css";
 
 const AboutPage = () => {
@@ -9,10 +10,10 @@ const AboutPage = () => {
         database.
       </p>
       <p>
-        <strong>Version:</strong> {process.env.REACT_APP_VERSION}
+        <strong>Version:</strong> {APP_VERSION}
       </p>
       <p>
-        <strong>Date:</strong> {process.env.REACT_APP_DATE_VERSION}
+        <strong>Date:</strong> {APP_DATE_VERSION}
       </p>
     </div>
   );
