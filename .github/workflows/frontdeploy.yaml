@@ -13,44 +13,31 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
-      - uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: "**/client/node_modules"
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/client/yarn.lock') }}
+          key: ${{ runner.os }}-v2-${{ hashFiles('**/client/package-lock.json') }}
 
-      - name: Use Node.js 14
-        uses: actions/setup-node@v2
+      - name: Use Node.js
+        uses: actions/setup-node@v3
         with:
-          node-version: "14"
+          node-version: "21.x"
 
-      - name: Yarn Install
+      - name: Install dependencies
         working-directory: ./client
-        run: yarn install
+        run: npm install
       - name: Production build
         working-directory: ./client
-        run: yarn build
-        env:
-          REACT_APP_BASE_URL: ${{ secrets.REACT_APP_BASE_URL }}
-          PUBLIC_URL: ${{ secrets.PUBLIC_URL }}
-      - name: Unit Tests
+        run: npm run build
+      - name: Synchronize files
         working-directory: ./client
-        run: yarn test
-      - name: Deploy to S3
-        uses: jakejarvis/s3-sync-action@master
-        with:
-          args: --acl public-read --delete
-        env:
-          AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
-          AWS_ACCESS_KEY_ID: ${{ secrets.CI_CD_AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.CI_CD_AWS_SECRET_ACCESS_KEY }}
-          AWS_REGION: us-west-2
-          SOURCE_DIR: "client/build"
-      - name: Create cloudfront invalidation
         run: |
           export AWS_ACCESS_KEY_ID=${{ secrets.CI_CD_AWS_ACCESS_KEY_ID }}
           export AWS_SECRET_ACCESS_KEY=${{ secrets.CI_CD_AWS_SECRET_ACCESS_KEY }}
           export AWS_DEFAULT_REGION=${{ secrets.AWS_DEFAULT_REGION }}
 
-          aws cloudfront create-invalidation --distribution-id ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }} --paths '/*'
+          aws configure set preview.cloudfront true
+          aws s3 sync dist ${{ secrets.AWS_S3_BUCKET }} --delete
+          aws cloudfront create-invalidation --distribution-id ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }} --paths /\*
