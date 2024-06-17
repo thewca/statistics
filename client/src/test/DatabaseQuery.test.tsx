@@ -1,108 +1,68 @@
-// TODO replace with vitest
+import { fireEvent, render, screen } from "@testing-library/react";
+import React, { act } from "react";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import databaseQueryApi from "../main/api/DatabaseQueryApi";
+import { DatabaseQueryPage } from "../main/pages/DatabaseQueryPage";
 
-// import { fireEvent } from "@testing-library/dom";
-// import React from "react";
-// import { render, unmountComponentAtNode } from "react-dom";
-// import { act } from "react-dom/test-utils";
-// import databaseQueryApi from "../main/api/DatabaseQueryApi";
-// import { DatabaseQueryPage } from "../main/pages/DatabaseQueryPage";
-// import { defaultQueryResponse } from "./DatabaseQuery.test.mock";
+beforeEach(() => {
+  // https://jestjs.io/docs/en/manual-mocks#mocking-methods-which-are-not-implemented-in-jsdom
+  Object.defineProperty(window, "matchMedia", {
+    writable: true,
+    value: vi.fn().mockImplementation((query) => ({
+      matches: false,
+      media: query,
+      onchange: null,
+      addListener: vi.fn(), // deprecated
+      removeListener: vi.fn(), // deprecated
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+      dispatchEvent: vi.fn(),
+    })),
+  });
+});
 
-// let container = document.createElement("div");
-// beforeEach(() => {
-//   // setup a DOM element as a render target
-//   container = document.createElement("div");
-//   document.body.appendChild(container);
+let query = `select
+    *
+from
+    Results
+where
+    eventId = ':EVENT_ID'
+    or countryId = ':COUNTRY_ID'`;
+const event = "333fm";
+const country = "brazil";
 
-//   // https://jestjs.io/docs/en/manual-mocks#mocking-methods-which-are-not-implemented-in-jsdom
-//   Object.defineProperty(window, "matchMedia", {
-//     writable: true,
-//     value: jest.fn().mockImplementation((query) => ({
-//       matches: false,
-//       media: query,
-//       onchange: null,
-//       addListener: jest.fn(), // deprecated
-//       removeListener: jest.fn(), // deprecated
-//       addEventListener: jest.fn(),
-//       removeEventListener: jest.fn(),
-//       dispatchEvent: jest.fn(),
-//     })),
-//   });
-// });
+describe("Database query page", () => {
+  it("Should accept placeholders and submit them with the query", async () => {
+    const apiCall = vi.spyOn(databaseQueryApi, "queryDatabase");
 
-// afterEach(() => {
-//   // cleanup on exiting
-//   unmountComponentAtNode(container);
-//   container.remove();
-//   container = document.createElement("div");
+    render(
+      <React.StrictMode>
+        <DatabaseQueryPage />
+      </React.StrictMode>,
+    );
 
-//   jest.resetAllMocks();
-// });
+    const textArea = screen.getByTestId("query-input");
+    expect(textArea).toBeDefined();
 
-// // This is also used for custom query in redirect
-// it("If the user types query with :ABC, there should be an input to replace it", async () => {
-//   let query = `select
-//     *
-// from
-//     Results
-// where
-//     eventId = ':EVENT_ID'
-//     or countryId = ':COUNTRY_ID'`;
+    fireEvent.change(textArea, { target: { value: query } });
 
-//   const axiosResponse = {
-//     status: 200,
-//     statusText: "OK",
-//     config: {},
-//     headers: {},
-//   };
+    const inputs = screen.getAllByTestId("replace-item");
+    expect(inputs.length).toBe(2);
 
-//   let searchQuery = "";
+    fireEvent.change(inputs[0], { target: { value: country } });
+    fireEvent.change(inputs[1], { target: { value: event } });
 
-//   jest
-//     .spyOn(databaseQueryApi, "queryDatabase")
-//     .mockImplementation((query, page, size) => {
-//       searchQuery = query;
-//       return Promise.resolve({ ...axiosResponse, data: defaultQueryResponse });
-//     });
+    const submitButton = screen.getByTestId("submit-button");
+    expect(submitButton).toBeDefined();
 
-//   // Render component
-//   await act(async () => {
-//     render(
-//       <React.StrictMode>
-//         <DatabaseQueryPage />
-//       </React.StrictMode>,
-//       container
-//     );
-//   });
+    await act(async () => {
+      fireEvent.click(submitButton);
+    });
 
-//   let textArea = container.querySelector("textarea")!;
-//   expect(textArea).toBeDefined();
-
-//   await act(async () => {
-//     fireEvent.change(textArea, { target: { value: query } });
-//   });
-
-//   let databaseQueryPage = container.querySelector("#database-query-wrapper")!;
-
-//   let inputs = Array.from(databaseQueryPage.querySelectorAll("input")!);
-//   expect(inputs.length).toBe(2);
-
-//   let event = "333fm";
-//   let country = "Brazil";
-//   await act(async () => {
-//     fireEvent.change(inputs[0], { target: { value: country } });
-//     fireEvent.change(inputs[1], { target: { value: event } });
-//   });
-
-//   let submitButton = Array.from(
-//     databaseQueryPage.querySelectorAll("button")
-//   ).find((btn) => btn.innerHTML.includes("Submit"))!;
-//   await act(async () => {
-//     fireEvent.click(submitButton);
-//   });
-
-//   // Searched query should replace inputs
-//   expect(searchQuery).toEqual(
-//     query.replace(":EVENT_ID", event).replace(":COUNTRY_ID", country)
-//   );
-// });
+    expect(apiCall).toHaveBeenLastCalledWith(
+      query.replace(":EVENT_ID", event).replace(":COUNTRY_ID", country),
+      0,
+      20,
+    );
+  });
+});

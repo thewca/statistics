@@ -17,6 +17,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./client
 
     steps:
       - uses: actions/checkout@v4
@@ -31,14 +34,10 @@ jobs:
           node-version: "21.x"
 
       - name: Install dependencies
-        working-directory: ./client
         run: npm install
       - name: Check style
-        working-directory: ./client
         run: npx prettier --check .
       - name: Build
-        working-directory: ./client
         run: npm run build
       - name: Unit Tests
-        working-directory: ./client
-        run: echo TODO
+        run: npm test

@@ -177,6 +177,7 @@ export const DatabaseQueryPage = () => {
           rules={[{ required: true, message: "Please, provide a query" }]}
         >
           <TextArea
+            data-testid="query-input"
             onChange={(evt) => setQuery(evt.target.value)}
             value={query}
             placeholder="Type your query here"
@@ -188,6 +189,7 @@ export const DatabaseQueryPage = () => {
         {replaceList.map((replaceItem) => (
           <Input
             required
+            data-testid="replace-item"
             className="replace-item"
             key={replaceItem.key}
             // Substring for removing the :
@@ -198,6 +200,7 @@ export const DatabaseQueryPage = () => {
           />
         ))}
         <Button
+          data-testid="submit-button"
           htmlType="submit"
           type="primary"
           shape="round"
