@@ -40,7 +40,7 @@ export const SumOfRanksPage = () => {
         setMetaSor(response.data);
         setResultType(response.data[0].resultType);
         setSelectedRegionGroup(
-          `${response.data[0].regionGroups[0].regionType}-${response.data[0].regionGroups[0].regions[0].region}`
+          `${response.data[0].regionGroups[0].regionType}-${response.data[0].regionGroups[0].regions[0].region}`,
         );
       })
       .catch(() => {
@@ -55,7 +55,7 @@ export const SumOfRanksPage = () => {
       region: string,
       page: number,
       pageSize: number,
-      wcaId?: string
+      wcaId?: string,
     ) => {
       setLoading(true);
       sumOfRanksApi
@@ -67,7 +67,7 @@ export const SumOfRanksPage = () => {
         })
         .finally(() => setLoading(false));
     },
-    []
+    [],
   );
 
   useEffect(fetchMetaInfor, [fetchMetaInfor]);
@@ -144,7 +144,7 @@ export const SumOfRanksPage = () => {
                   region!,
                   page,
                   pageSize,
-                  wcaId
+                  wcaId,
                 )
               }
             />
@@ -215,8 +215,8 @@ export const SumOfRanksPage = () => {
                             !e.completed
                               ? styles.notCompleted
                               : e.regionalRank <= 10
-                              ? styles.top10
-                              : ""
+                                ? styles.top10
+                                : ""
                           }
                         >
                           {e.regionalRank}

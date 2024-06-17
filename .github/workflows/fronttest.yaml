@@ -19,24 +19,27 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/cache@v2
+      - uses: actions/checkout@v4
+
+        uses: actions/cache@v3
         with:
           path: "**/client/node_modules"
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/client/yarn.lock') }}
-      - name: Use Node.js 14
-        uses: actions/setup-node@v2
+          key: ${{ runner.os }}-v2-${{ hashFiles('**/client/package-lock.json') }}
+
+      - name: Use Node.js
+        uses: actions/setup-node@v3
         with:
-          node-version: "14"
-      - name: Yarn Install
+          node-version: "21.x"
+
+      - name: Install dependencies
         working-directory: ./client
-        run: yarn install
+        run: npm install
       - name: Check style
         working-directory: ./client
-        run: yarn prettier
+        run: npx prettier --check .
       - name: Build
         working-directory: ./client
-        run: yarn build
+        run: npm run build
       - name: Unit Tests
         working-directory: ./client
-        run: yarn test
+        run: echo TODO

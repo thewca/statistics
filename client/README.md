@@ -5,9 +5,7 @@
 
 ## Requirements
 
-- [Node](https://nodejs.org/)
-
-- [Yarn](https://classic.yarnpkg.com/en/docs/install)
+- [NVM](https://github.com/nvm-sh/nvm) or [the correct node version](.nvmrc).
 
 ## How to run it
 
@@ -17,38 +15,24 @@ The commands listed here should work in Unix systems or in Windows (using GitBas
 
 `git clone https://github.com/thewca/statistics.git`
 
-- Navigate to the clients's folder
+- Navigate to the clients folder
 
 `cd statistics/client`
 
+- Select the correct node version (you can skip this step if your `node -v` results the same as [the expected one](.nvmrc))
+
+`nvm use`
+
+If that fails, maybe you will need to run `nvm install`
+
 - Install dependencies
 
-`yarn install`
+`npm install`
 
 - Run the client
 
-`yarn start`
-
-- Run local
-
-`yarn start:local`
-
-## Run with docker
-
-- Build an image
-
-`docker build -t user/statistics-client .`
-
-- Run the image
-
-`docker run -d -p 3000:3000 --name statistics-client user/statistics-client:latest`
-
-The `-d` part means "detached", so you'll have to stop by killing the process running on port 3000.
-
-## Deploy
-
-Deploy is made using GH Actions.
+`npm start`
 
 ## Checkstyle
 
-We use prettier for checking style. After code, you can run `yarn prettier_write` for auto formatting or `yarn prettier` for simple check.
+We use prettier for checking style. After code, you can run `npx prettier --check .` for simple check.

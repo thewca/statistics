@@ -41,24 +41,6 @@ chmod +x scripts/generate_all_statistics.sh
 ./scripts/generate_all_statistics.sh
 ```
 
-## Deploy
-
-- Frontend
-
-GitHub actions will deploy after merging to main. Anyways, if you wanna do it manually, you can
-
-```
-cd client
-export PUBLIC_URL="https://statistics-api.worldcubeassociation.org"
-export REACT_APP_BASE_URL="https://statistics-api.worldcubeassociation.org"
-yarn build
-aws s3 cp build s3://{{STATISTICS_WEBSITE_BUCKET}} --recursive
-```
-
-- Backend
-
-GitHub actions will deploy after merging to main.
-
 ## Docker cron
 
 The file `scripts/cron-docker.sh` is used to make a fresh new download of the ropository and run the statistics over it. In the process or calculating statistics, the other `sh` files inside of `scripts` are used.

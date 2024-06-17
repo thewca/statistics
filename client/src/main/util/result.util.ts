@@ -4,7 +4,7 @@ const getMbldResult = (result: number) => {
   let resultString = "" + result;
 
   let missed = Number(
-    resultString.slice(resultString.length - 2, resultString.length)
+    resultString.slice(resultString.length - 2, resultString.length),
   );
   let DD = Number(resultString.slice(0, 2));
   let difference = 99 - DD;
@@ -28,7 +28,7 @@ export const getMbldPoints = (result: number) => {
 const formatResult = (
   result: number,
   event_id: string,
-  type: ResultType
+  type: ResultType,
 ): string => {
   if (result == null) {
     return "";

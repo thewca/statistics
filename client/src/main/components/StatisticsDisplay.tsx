@@ -18,7 +18,7 @@ const StatisticsDisplay = () => {
 
   const [statistics, setStatistics] = useState<Statistics>();
   const [selectedKeys, setSelectedKeys] = useState<string | undefined>(
-    getQueryParameter("selectedKeys") || undefined
+    getQueryParameter("selectedKeys") || undefined,
   );
   const [filteredStatistics, setFilteredStatistics] =
     useState<StatisticsDetail[]>();
@@ -36,8 +36,8 @@ const StatisticsDisplay = () => {
           if (!!key) {
             setFilteredStatistics(
               statistics.statistics.filter(
-                (stat) => !!stat.keys && stat.keys[0] === key
-              )
+                (stat) => !!stat.keys && stat.keys[0] === key,
+              ),
             );
             setSelectedKeys(key);
           } else {
@@ -46,7 +46,7 @@ const StatisticsDisplay = () => {
           break;
         case "SELECTOR":
           let filtered = statistics.statistics.filter(
-            (it) => joinKeys(it.keys) === selectedKeys
+            (it) => joinKeys(it.keys) === selectedKeys,
           );
 
           // Display stats based on query parameter
@@ -62,7 +62,7 @@ const StatisticsDisplay = () => {
           setFilteredStatistics(statistics.statistics);
       }
     },
-    []
+    [],
   );
 
   useEffect(() => {
@@ -77,18 +77,18 @@ const StatisticsDisplay = () => {
         setStatistics(response.data);
         handleFilteredStatistics(
           response.data,
-          getQueryParameter("selectedKeys")
+          getQueryParameter("selectedKeys"),
         );
       })
       .catch(() =>
-        message.error("Could not get statistics result for " + pathId)
+        message.error("Could not get statistics result for " + pathId),
       )
       .finally(() => setLoading(false));
   }, [pathId, handleFilteredStatistics]);
 
   useEffect(
     () => setQueryParameter("selectedKeys", selectedKeys),
-    [selectedKeys]
+    [selectedKeys],
   );
 
   const getIcon = (statisticsDetail: StatisticsDetail) => {
@@ -109,7 +109,7 @@ const StatisticsDisplay = () => {
 
   const showKeys = (
     statisticsDetail: StatisticsDetail,
-    displayMode?: DisplayMode
+    displayMode?: DisplayMode,
   ) => {
     if (
       !statisticsDetail.keys ||
@@ -137,8 +137,8 @@ const StatisticsDisplay = () => {
           // For selector
           it.keys + "" === jointKeys ||
           // For grouped
-          (!!it.keys && it.keys[0] === jointKeys)
-      )
+          (!!it.keys && it.keys[0] === jointKeys),
+      ),
     );
   };
 

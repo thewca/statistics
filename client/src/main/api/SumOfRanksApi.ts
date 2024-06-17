@@ -22,7 +22,7 @@ export class SumOfRanksApi {
     region: string,
     page: number,
     pageSize: number,
-    wcaId?: string
+    wcaId?: string,
   ) => {
     let url = `${this.BASE_URL}/${resultType}/${regionType}/${region}`;
     let params = { page, pageSize, wcaId };
