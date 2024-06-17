@@ -27,6 +27,13 @@ jobs:
       - name: Install dependencies
         working-directory: ./client
         run: npm install
+      - name: Replace version
+        working-directory: ./client
+        run: |
+          export GIT_HASH=$(git rev-parse --short HEAD)
+          export VITE_APP_DATE_VERSION=$(date -u +'%Y-%m-%d')
+          sed -i "s|VITE_APP_DATE_VERSION=local|VITE_APP_DATE_VERSION=${GIT_HASH}|g" .env
+          sed -i "s|VITE_APP_VERSION=local|VITE_APP_VERSION=${GIT_HASH}|g" .env
       - name: Production build
         working-directory: ./client
         run: npm run build
