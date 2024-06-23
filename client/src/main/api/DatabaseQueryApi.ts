@@ -3,12 +3,13 @@ import {
   DatabaseMetaData,
   QueryDatabaseResponse,
 } from "../model/QueryDatabase";
+import { API_URL } from "../config/EnvVarConfig";
 
 export class DatabaseQueryApi {
   BASE_URL: string;
 
   constructor() {
-    this.BASE_URL = process.env.REACT_APP_BASE_URL! + "/database/";
+    this.BASE_URL = API_URL + "/database/";
   }
 
   queryDatabase = (sqlQuery: string, page: number, size: number) => {

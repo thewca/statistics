@@ -12,7 +12,6 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { CategoricalChartState } from "recharts/types/chart/generateCategoricalChart";
 import recordEvolutionApi from "../api/RecordEvolutionApi";
 import { Evolution } from "../model/RecordEvolution";
 import { formatToDate } from "../util/DateUtil";
@@ -36,7 +35,7 @@ const getFormattedResult = (
   value: any,
   eventId: string,
   type: string,
-  key: number
+  key: number,
 ) => {
   let result = value[type + key];
   if (!result) {
@@ -56,7 +55,7 @@ export const RecordEvolutionPage = () => {
   const [filteredData, setFilteredData] = useState<Evolution[]>([]);
   const [eventId, setEventId] = useState<string>();
   const [options, setOptions] = useState<{ label: string; value: string }[]>(
-    []
+    [],
   );
   const [leftChartDate, setLeftChartDate] = useState<number>();
   const [rightChartDate, setRightChartDate] = useState<number>();
@@ -69,7 +68,7 @@ export const RecordEvolutionPage = () => {
         let nonRedundant = response.data.evolution.filter(
           (it, i) =>
             i === 0 ||
-            !isEqual(omitDate(it), omitDate(response.data.evolution[i - 1]))
+            !isEqual(omitDate(it), omitDate(response.data.evolution[i - 1])),
         );
         setData(nonRedundant);
         setFilteredData(nonRedundant);
@@ -83,7 +82,7 @@ export const RecordEvolutionPage = () => {
       .then((response) => {
         setEventId(response.data[0].id);
         setOptions(
-          response.data.map((it) => ({ label: it.name, value: it.id }))
+          response.data.map((it) => ({ label: it.name, value: it.id })),
         );
       })
       .catch(() => message.error("Failed to search."));
@@ -94,17 +93,6 @@ export const RecordEvolutionPage = () => {
     setEventId(eventId);
   }, []);
 
-  const handleMouseDown = useCallback((e: CategoricalChartState) => {
-    setLeftChartDate(Number(e.activeLabel));
-  }, []);
-
-  const handleMouseMove = (e: CategoricalChartState) => {
-    if (!leftChartDate) {
-      return;
-    }
-    setRightChartDate(Number(e.activeLabel));
-  };
-
   const handleMouseUp = (leftChartDate?: number, rightChartDate?: number) => {
     if (!leftChartDate || !rightChartDate) {
       return;
@@ -114,7 +102,7 @@ export const RecordEvolutionPage = () => {
     setFilteredData(
       data
         .filter((it) => new Date(it.date).getTime() >= left)
-        .filter((it) => new Date(it.date).getTime() <= right)
+        .filter((it) => new Date(it.date).getTime() <= right),
     );
     setLeftChartDate(undefined);
     setRightChartDate(undefined);
@@ -146,8 +134,15 @@ export const RecordEvolutionPage = () => {
               height={0.6 * window.innerHeight}
               data={filteredData}
               style={{ margin: "0 auto" }}
-              onMouseDown={handleMouseDown}
-              onMouseMove={handleMouseMove}
+              onMouseDown={(e) => {
+                setLeftChartDate(Number(e.activeLabel));
+              }}
+              onMouseMove={(e) => {
+                if (!leftChartDate) {
+                  return;
+                }
+                setRightChartDate(Number(e.activeLabel));
+              }}
               onMouseUp={() => handleMouseUp(leftChartDate, rightChartDate)}
             >
               <CartesianGrid strokeDasharray="3 3" />
@@ -179,13 +174,13 @@ export const RecordEvolutionPage = () => {
                     return formatResult(
                       result.payload[resultType],
                       eventId!,
-                      "single"
+                      "single",
                     );
                   }
                   return formatResult(
                     isSingleFmc ? time / 100 : time,
                     eventId!,
-                    isAverage ? "average" : "single"
+                    isAverage ? "average" : "single",
                   );
                 }}
                 labelFormatter={formatToDate}

@@ -1,7 +1,7 @@
 export default interface Result {
-  end: Date;
+  end: string;
   rank: number;
-  start: Date;
+  start: string;
   result: number;
   competition: string;
 }

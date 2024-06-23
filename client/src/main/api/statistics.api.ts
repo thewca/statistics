@@ -4,17 +4,18 @@ import BestEverRank from "../model/BestEverRank";
 import { Statistics } from "../model/Statistic";
 import { StatisticsList } from "../model/StatisticsList";
 import UserInfo from "../model/UserInfo";
+import { API_URL } from "../config/EnvVarConfig";
 
 export class StatisticsApi {
   BASE_URL: string;
   queryDatabaseEndpoint: string;
 
   constructor() {
-    this.BASE_URL = process.env.REACT_APP_BASE_URL!;
+    this.BASE_URL = API_URL!;
     this.queryDatabaseEndpoint = "/database/query";
   }
 
-  getWcaAuthenticationUrl = (frontendHost: string, redirect: string) => 
+  getWcaAuthenticationUrl = (frontendHost: string, redirect: string) =>
     Axios.get<AuthenticationResponse>(this.BASE_URL + "/wca/authentication", {
       params: { frontendHost, redirect },
     });

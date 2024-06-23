@@ -5,7 +5,7 @@ let rows = Math.floor(Math.random() * 20) + 1;
 export const defaultQueryResponse: QueryDatabaseResponse = {
   headers: Array.from({ length: columns }, (_, id) => "Header " + id),
   content: Array.from({ length: rows }, (_, i) =>
-    Array.from({ length: columns }, (_, j) => `Result ${i} ${j}`)
+    Array.from({ length: columns }, (_, j) => `Result ${i} ${j}`),
   ),
   number: 0,
   numberOfElements: 20,

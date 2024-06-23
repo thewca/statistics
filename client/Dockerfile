@@ -1,19 +1,18 @@
-# pull official base image
-FROM node:14.16.0-alpine3.10
+FROM node:21-alpine as build
 
-# set working directory
 WORKDIR /app
 
-# add `/app/node_modules/.bin` to $PATH
-ENV PATH /app/node_modules/.bin:$PATH
+COPY package.json package-lock.json ./
+RUN npm install
 
-# install app dependencies
-COPY package.json ./
-COPY yarn.lock ./
-RUN yarn install
+COPY . .
 
-# add app
-COPY . ./
+RUN npm run build
 
-# start app
-CMD ["yarn", "start"]
+FROM nginx:stable-alpine
+
+COPY --from=build /app/dist /usr/share/nginx/html
+
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]

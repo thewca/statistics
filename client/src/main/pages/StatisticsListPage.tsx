@@ -9,7 +9,7 @@ import {
   Switch,
   Tag,
 } from "antd";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import statisticsApi from "../api/statistics.api";
 import NoContent from "../components/NoContent";
@@ -100,7 +100,7 @@ const StatisticsListPage = ({ statisticsList }: StatisticsListPageProps) => {
           defaultActiveKey={searchedList?.list?.map((stat) => stat.group)}
         >
           {(searchedList?.list.length || 0) > 0 &&
-            searchedList?.list.map((statisticsGroup, i) => (
+            searchedList?.list.map((statisticsGroup) => (
               <Panel
                 key={statisticsGroup.group}
                 header={

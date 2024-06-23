@@ -1,106 +1,68 @@
-import { fireEvent } from "@testing-library/dom";
-import React from "react";
-import { render, unmountComponentAtNode } from "react-dom";
-import { act } from "react-dom/test-utils";
+import { fireEvent, render, screen } from "@testing-library/react";
+import React, { act } from "react";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import databaseQueryApi from "../main/api/DatabaseQueryApi";
 import { DatabaseQueryPage } from "../main/pages/DatabaseQueryPage";
-import { defaultQueryResponse } from "./DatabaseQuery.test.mock";
 
-let container = document.createElement("div");
 beforeEach(() => {
-  // setup a DOM element as a render target
-  container = document.createElement("div");
-  document.body.appendChild(container);
-
   // https://jestjs.io/docs/en/manual-mocks#mocking-methods-which-are-not-implemented-in-jsdom
   Object.defineProperty(window, "matchMedia", {
     writable: true,
-    value: jest.fn().mockImplementation((query) => ({
+    value: vi.fn().mockImplementation((query) => ({
       matches: false,
       media: query,
       onchange: null,
-      addListener: jest.fn(), // deprecated
-      removeListener: jest.fn(), // deprecated
-      addEventListener: jest.fn(),
-      removeEventListener: jest.fn(),
-      dispatchEvent: jest.fn(),
+      addListener: vi.fn(), // deprecated
+      removeListener: vi.fn(), // deprecated
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+      dispatchEvent: vi.fn(),
     })),
   });
 });
 
-afterEach(() => {
-  // cleanup on exiting
-  unmountComponentAtNode(container);
-  container.remove();
-  container = document.createElement("div");
-
-  jest.resetAllMocks();
-});
-
-// This is also used for custom query in redirect
-it("If the user types query with :ABC, there should be an input to replace it", async () => {
-  let query = `select
+let query = `select
     *
 from
     Results
 where
     eventId = ':EVENT_ID'
     or countryId = ':COUNTRY_ID'`;
+const event = "333fm";
+const country = "brazil";
 
-  const axiosResponse = {
-    status: 200,
-    statusText: "OK",
-    config: {},
-    headers: {},
-  };
+describe("Database query page", () => {
+  it("Should accept placeholders and submit them with the query", async () => {
+    const apiCall = vi.spyOn(databaseQueryApi, "queryDatabase");
 
-  let searchQuery = "";
-
-  jest
-    .spyOn(databaseQueryApi, "queryDatabase")
-    .mockImplementation((query, page, size) => {
-      searchQuery = query;
-      return Promise.resolve({ ...axiosResponse, data: defaultQueryResponse });
-    });
-
-  // Render component
-  await act(async () => {
     render(
       <React.StrictMode>
         <DatabaseQueryPage />
       </React.StrictMode>,
-      container
     );
-  });
 
-  let textArea = container.querySelector("textarea")!;
-  expect(textArea).toBeDefined();
+    const textArea = screen.getByTestId("query-input");
+    expect(textArea).toBeDefined();
 
-  await act(async () => {
     fireEvent.change(textArea, { target: { value: query } });
-  });
 
-  let databaseQueryPage = container.querySelector("#database-query-wrapper")!;
+    const inputs = screen.getAllByTestId("replace-item");
+    expect(inputs.length).toBe(2);
 
-  let inputs = Array.from(databaseQueryPage.querySelectorAll("input")!);
-  expect(inputs.length).toBe(2);
-
-  let event = "333fm";
-  let country = "Brazil";
-  await act(async () => {
     fireEvent.change(inputs[0], { target: { value: country } });
     fireEvent.change(inputs[1], { target: { value: event } });
-  });
 
-  let submitButton = Array.from(
-    databaseQueryPage.querySelectorAll("button")
-  ).find((btn) => btn.innerHTML.includes("Submit"))!;
-  await act(async () => {
-    fireEvent.click(submitButton);
-  });
+    const submitButton = screen.getByTestId("submit-button");
+    expect(submitButton).toBeDefined();
 
-  // Searched query should replace inputs
-  expect(searchQuery).toEqual(
-    query.replace(":EVENT_ID", event).replace(":COUNTRY_ID", country)
-  );
+    await act(async () => {
+      fireEvent.click(submitButton);
+    });
+
+    expect(apiCall).toHaveBeenLastCalledWith(
+      query.replace(":EVENT_ID", event).replace(":COUNTRY_ID", country),
+      0,
+      20,
+    );
+  });
 });
