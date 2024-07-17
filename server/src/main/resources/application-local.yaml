@@ -8,4 +8,3 @@ spring:
 api:
   wca:
     baseurl: https://staging.worldcubeassociation.org
-    appid: example-application-id
