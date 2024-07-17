@@ -1,20 +1,16 @@
 package org.worldcubeassociation.statistics.controller;
 
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.worldcubeassociation.statistics.dto.UserInfoDTO;
-import org.worldcubeassociation.statistics.response.AuthenticationResponse;
-
-import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
 
 @Validated
 @RequestMapping("wca")
 @CrossOrigin(origins = "*", allowedHeaders = "*") // Enable this for testing
 public interface WcaController {
-
-    @GetMapping("authentication")
-    AuthenticationResponse getWcaAuthenticationUrl(@Valid @NotBlank(message = "Frontend can not be blank") @RequestParam String frontendHost, @Valid @NotBlank(message = "Redirect can not be blank") @RequestParam String redirect);
 
     @GetMapping("user")
     UserInfoDTO getUserInfo(@RequestHeader(value = "Authorization", required = false) String token);

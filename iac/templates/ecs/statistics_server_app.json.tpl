@@ -21,10 +21,6 @@
     ],
     "environment": [
       {
-        "name": "APP_ID",
-        "value": "${app_id}"
-      },
-      {
         "name": "DB_USERNAME",
         "value": "${db_username}"
       },

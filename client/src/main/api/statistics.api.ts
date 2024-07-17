@@ -1,10 +1,9 @@
 import Axios from "axios";
-import { AuthenticationResponse } from "../model/AuthenticationResponse";
+import { API_URL } from "../config/EnvVarConfig";
 import BestEverRank from "../model/BestEverRank";
 import { Statistics } from "../model/Statistic";
 import { StatisticsList } from "../model/StatisticsList";
 import UserInfo from "../model/UserInfo";
-import { API_URL } from "../config/EnvVarConfig";
 
 export class StatisticsApi {
   BASE_URL: string;
@@ -14,11 +13,6 @@ export class StatisticsApi {
     this.BASE_URL = API_URL!;
     this.queryDatabaseEndpoint = "/database/query";
   }
-
-  getWcaAuthenticationUrl = (frontendHost: string, redirect: string) =>
-    Axios.get<AuthenticationResponse>(this.BASE_URL + "/wca/authentication", {
-      params: { frontendHost, redirect },
-    });
 
   getUserInfo = () => Axios.get<UserInfo>(this.BASE_URL + "/wca/user");
 

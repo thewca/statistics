@@ -8,6 +8,5 @@ spring:
 api:
   wca:
     baseurl: http://localhost:3500
-    appid: example-application-id
 server:
   port: 8081

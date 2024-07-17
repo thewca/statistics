@@ -7,5 +7,4 @@ spring:
     initialization-mode: always
 api:
   wca:
-    baseurl: https://staging.worldcubeassociation.org
-    appid: example-application-id
+    baseurl: https://www.worldcubeassociation.org

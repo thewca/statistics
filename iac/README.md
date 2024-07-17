@@ -41,7 +41,6 @@ export read_password="ANOTHER_STRONG_PASSWORD_HERE"
 ```
 
 ```bash
-aws ssm put-parameter --name "/config/$environment/statistics/app/id"                   --value $app_id          --overwrite --region $region --type String
 aws ssm put-parameter --name "/config/$environment/statistics/dumped_db/write_user"     --value $write_user      --overwrite --region $region --type String
 aws ssm put-parameter --name "/config/$environment/statistics/dumped_db/write_password" --value $write_password  --overwrite --region $region --type String
 aws ssm put-parameter --name "/config/$environment/statistics/dumped_db/read_user"      --value $read_user       --overwrite --region $region --type String
