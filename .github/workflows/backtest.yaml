@@ -23,7 +23,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: "**/server/test-web-server/node_modules"
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/server/test-web-server/yarn.lock') }}
+          key: ${{ runner.os }}-v2-${{ hashFiles('**/server/test-web-server/package-lock.json') }}
       - name: Restore gradle dependencies
         uses: actions/cache@v2
         with:
@@ -37,7 +37,7 @@ jobs:
       - name: Validate Gradle wrapper
         uses: gradle/wrapper-validation-action@e6e38bacfdf1a337459f332974bb2327a31aaf4b
       - name: Run containers
-        run: docker-compose -f server/docker-compose.yaml up -d
+        run: docker-compose -f server/docker-compose-test.yaml up -d
       - name: Wait for database to start
         run: |
           for i in `seq 1 60`;
