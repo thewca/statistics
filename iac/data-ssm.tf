@@ -1,7 +1,3 @@
-data "aws_ssm_parameter" "statistics_app_id" {
-  name = "/config/${terraform.workspace}/statistics/app/id"
-}
-
 data "aws_ssm_parameter" "dumped_db_write_user" {
   name = "/config/${terraform.workspace}/statistics/dumped_db/write_user"
 }

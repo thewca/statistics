@@ -24,7 +24,6 @@ resource "aws_ecs_task_definition" "statistics_server_task_definition" {
     fargate_memory = var.statistics_fargate_memory
     aws_region     = var.aws_region
     spring_profile = terraform.workspace
-    app_id         = data.aws_ssm_parameter.statistics_app_id.value
     db_port        = var.default_mysql_port
     db_host        = aws_db_instance.dumped_db.address
     db_name        = var.dumped_db_name
