@@ -7,4 +7,3 @@ spring:
 api:
   wca:
     baseurl: https://www.worldcubeassociation.org
-    appid: ${APP_ID}
