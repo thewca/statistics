@@ -1,12 +1,6 @@
 name: Backend
 
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - "server/**"
-      - ".github/workflows/backtest.yaml"
   pull_request:
     branches:
       - main
