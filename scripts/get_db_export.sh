@@ -7,10 +7,7 @@
 
 export_file_zip="wca-developer-database-dump.zip"
 export_file_sql="wca-developer-database-dump.sql"
-temp_database="wca_development_temp"
-new_database="wca_development"
-
-mysqlconn="mysql -h ${DB_HOST:-localhost} -u ${DB_USERNAME:-root} -P ${DB_PORT:-3306} --password=${DB_PASSWORD:-}"
+database_name="wca_development"
 
 download=true
 
@@ -50,18 +47,8 @@ fi
 
 echo "Executing the .sql"
 echo "This can take a few hours"
-$mysqlconn -e "create database if not exists $temp_database; use $temp_database; source $export_file_sql;"
 
-echo "Rename databases"
-
-$mysqlconn -e "create database if not exists $new_database;"
-params=$($mysqlconn -N -e "select table_name from information_schema.tables where table_schema='$temp_database'")
-
-for name in $params; do
-      $mysqlconn -e "drop table if exists $new_database.$name; rename table $temp_database.$name to $new_database.$name;";
-      echo "Renamed $temp_database.$name to $new_database.$name";
-done;
-
-$mysqlconn -e "drop database $temp_database"
+mysql -h ${DB_HOST:-localhost} -u ${DB_USERNAME:-root} -P ${DB_PORT:-3306} --password=${DB_PASSWORD:-} \
+    -e "start transaction; drop database if exists $database_name; create database $database_name; use $database_name; source $export_file_sql; commit;"
 
 echo "Complete"

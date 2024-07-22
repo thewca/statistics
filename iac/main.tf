@@ -28,3 +28,8 @@ provider "aws" {
     }
   }
 }
+
+provider "aws" {
+  region = var.aws_region
+  alias  = "no_tags"
+}

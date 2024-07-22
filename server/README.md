@@ -8,7 +8,13 @@
 
 ## Setup local database
 
-You should use an internal database for handling WCA data.
+### Using docker
+
+If you are in the `server` folder, you can just run `docker-compose up -d`. This will spin up an empty MySQL database running on port 3306.
+
+### Your own local copy of WCA's database
+
+You can also use an internal database for handling WCA data.
 
 In case you do not have it installed yet, you will need to get MySQL.
 
@@ -23,8 +29,6 @@ create database wca_development;
 
 The database `wca_development` will be populated with WCA data. If you want to change password, username or others, make sure to also change on `application-local.properties`.
 
-You should also create the best ever ranks table using the file `server/db/migration/V20220122.1600__best_ever_ranks.sql`.
-
 ## Before you run this
 
 You need your copy of the database from WCA. If you already have it (with a user 'root' with no password), you can skip this.
@@ -37,13 +41,19 @@ From the root folder, use
 
 ## How to run it
 
-The commands listed here should work in Unix systems or in Windows (using GitBash commandline) with maven set.
-
 - Clone this repository
 
 `git clone https://github.com/thewca/statistics.git`
 
-- Navigate to the server's folder
+### With your IDE
+
+- Open the `server` folder in your favorite IDE (not the root folder)
+- The project uses gradle and your IDE should recognize that.
+- You can hit the run (or debug) button to run it.
+
+### With CLI
+
+Navigate to the server's folder (Unix systems)
 
 `cd statistics/server`
 
@@ -52,6 +62,8 @@ The commands listed here should work in Unix systems or in Windows (using GitBas
 `./gradlew bootRun`
 
 An address should be logged. Probably http://localhost:8080/swagger-ui.html#/, if you did not change port. Visit it to read the documentation. You can run in another port (let's say 8001) by using `./gradlew bootRun --args='--spring.profiles.active=local --server.port=8001'`.
+
+For Windows, I think you need to use `.\gradlew.bat bootRun`.
 
 ## Run with docker
 
@@ -71,22 +83,22 @@ This backend project uses integration tests so we need to actually connect to a 
 
 - Preparing the database for tests (from the repository root)
 
-    `docker-compose -f server/docker-compose.yaml up -d`
+  `docker-compose -f server/docker-compose-test.yaml up -d`
 
 This will start the database (port 3307) and also a mocked version of the WCA's api (for getting user info) on port 3500.
 
 - Run the tests
 
-In  a new terminal, from the repository root, run
+In a new terminal, from the repository root, run
 
     ./server/gradlew clean build -p server --info
 
 - If you need to change migrations, run
 
-    ```
-    docker-compose -f server/docker-compose.yaml down --volumes
-    docker-compose -f server/docker-compose.yaml up -d
-    ```
+  ```
+  docker-compose -f server/docker-compose-test.yaml down --volumes
+  docker-compose -f server/docker-compose-test.yaml up -d
+  ```
 
 ## Code format
 
