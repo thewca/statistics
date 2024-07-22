@@ -1,12 +1,28 @@
 package org.worldcubeassociation.statistics.service.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import javax.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.io.support.ResourcePatternUtils;
+import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 import org.worldcubeassociation.statistics.dto.ControlItemDTO;
 import org.worldcubeassociation.statistics.dto.DatabaseQueryBaseDTO;
@@ -25,23 +41,10 @@ import org.worldcubeassociation.statistics.service.DatabaseQueryService;
 import org.worldcubeassociation.statistics.service.StatisticsService;
 import org.yaml.snakeyaml.Yaml;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-import javax.validation.Valid;
-
 @Slf4j
 @Service
 public class StatisticsServiceImpl implements StatisticsService {
+
     @Autowired
     private DatabaseQueryService databaseQueryService;
 
@@ -55,6 +58,11 @@ public class StatisticsServiceImpl implements StatisticsService {
     private ObjectMapper objectMapper;
 
     private static final Yaml YAML = new Yaml();
+
+    // Website loading is taking 1min. This is a temporary solution to cache the statistics
+    // We should move to redis to cache the statistics instead
+    private static final Map<String, Pair<LocalDateTime, Object>> CACHE = new HashMap<>();
+    private static final String MAIN_LIST_CACHE = "MAIN_LIST_CACHE";
 
     @Override
     public StatisticsResponseDTO sqlToStatistics(StatisticsRequestDTO statisticsRequestDTO) {
@@ -70,8 +78,9 @@ public class StatisticsServiceImpl implements StatisticsService {
         }
 
         statisticsDTO
-                .setDisplayMode(
-                        Optional.ofNullable(statisticsRequestDTO.getDisplayMode()).orElse(DisplayModeEnum.DEFAULT));
+            .setDisplayMode(
+                Optional.ofNullable(statisticsRequestDTO.getDisplayMode())
+                    .orElse(DisplayModeEnum.DEFAULT));
         statisticsDTO.setExplanation(statisticsRequestDTO.getExplanation());
         statisticsDTO.setTitle(statisticsRequestDTO.getTitle());
         statisticsDTO.setGroupName(statisticsRequestDTO.getGroupName());
@@ -80,9 +89,10 @@ public class StatisticsServiceImpl implements StatisticsService {
     }
 
     private void buildStatistics(StatisticsDTO statisticsDTO, StatisticsGroupRequestDTO query,
-                                 DatabaseQueryBaseDTO sqlResult) {
+        DatabaseQueryBaseDTO sqlResult) {
         if (query.getKeyColumnIndex() == null) {
-            addResult(query, statisticsDTO, query.getKeys(), sqlResult.getContent(), sqlResult.getHeaders());
+            addResult(query, statisticsDTO, query.getKeys(), sqlResult.getContent(),
+                sqlResult.getHeaders());
         } else {
             var map = new LinkedHashMap<String, List<List<String>>>();
 
@@ -100,14 +110,16 @@ public class StatisticsServiceImpl implements StatisticsService {
             }
 
             for (var entries : map.entrySet()) {
-                addResult(query, statisticsDTO, List.of(entries.getKey().split(",")), entries.getValue(),
-                        sqlResult.getHeaders());
+                addResult(query, statisticsDTO, List.of(entries.getKey().split(",")),
+                    entries.getValue(),
+                    sqlResult.getHeaders());
             }
         }
     }
 
-    private void addResult(StatisticsGroupRequestDTO query, StatisticsDTO statisticsDTO, List<String> key,
-                           List<List<String>> content, List<String> headers) {
+    private void addResult(StatisticsGroupRequestDTO query, StatisticsDTO statisticsDTO,
+        List<String> key,
+        List<List<String>> content, List<String> headers) {
         StatisticsGroupResponseDTO statisticsGroupResponseDTO = new StatisticsGroupResponseDTO();
         statisticsGroupResponseDTO.setKeys(key);
         statisticsGroupResponseDTO.setContent(content);
@@ -116,10 +128,10 @@ public class StatisticsServiceImpl implements StatisticsService {
         statisticsGroupResponseDTO.setExplanation(query.getExplanation());
         statisticsGroupResponseDTO.setSqlQueryCustom(query.getSqlQueryCustom());
         statisticsGroupResponseDTO.setHeaders(
-                // First option is the headers provided in this key
-                Optional.ofNullable(query.getHeaders())
-                        // Then, the one provided by the query
-                        .orElse(headers));
+            // First option is the headers provided in this key
+            Optional.ofNullable(query.getHeaders())
+                // Then, the one provided by the query
+                .orElse(headers));
 
         statisticsDTO.getStatistics().add(statisticsGroupResponseDTO);
     }
@@ -129,8 +141,8 @@ public class StatisticsServiceImpl implements StatisticsService {
         log.info("Find all statistics");
 
         List<Resource> resources =
-                Arrays.asList(ResourcePatternUtils.getResourcePatternResolver(resourceLoader)
-                        .getResources("classpath:statistics-request-list/*.yml"));
+            Arrays.asList(ResourcePatternUtils.getResourcePatternResolver(resourceLoader)
+                .getResources("classpath:statistics-request-list/*.yml"));
 
         resourcesToStatistics(resources);
         log.info("Generated");
@@ -141,8 +153,8 @@ public class StatisticsServiceImpl implements StatisticsService {
         log.info("Generate statistics from the file {}", filename);
 
         List<Resource> resources =
-                Arrays.asList(ResourcePatternUtils.getResourcePatternResolver(resourceLoader)
-                        .getResources(String.format("classpath:statistics-request-list/%s.yml", filename)));
+            Arrays.asList(ResourcePatternUtils.getResourcePatternResolver(resourceLoader)
+                .getResources(String.format("classpath:statistics-request-list/%s.yml", filename)));
 
         if (resources.isEmpty()) {
             throw new NotFoundException(String.format("Resource %s not found", filename));
@@ -184,32 +196,52 @@ public class StatisticsServiceImpl implements StatisticsService {
         order by
             group_name */
 
+        if (StringUtils.isBlank(term)) {
+            var cache = CACHE.get(MAIN_LIST_CACHE);
+            if (cache != null && cache.getFirst().plusDays(1).isBefore(LocalDateTime.now())) {
+                return objectMapper.convertValue(cache.getSecond(), StatisticsListDTO.class);
+            }
+        }
+
         List<ControlItemDTO> controlList = statisticsRepository.list(term);
 
         List<StatisticsGroupDTO> list =
-                controlList.stream().collect(Collectors.groupingBy(it -> it.getGroupName(), Collectors.toList()))
-                        .entrySet()
-                        .stream()
-                        .map((k) -> StatisticsGroupDTO.builder().group(k.getKey())
-                                .statistics(k.getValue()
-                                        // Sort inner statistics based on title
-                                        .stream().sorted(Comparator.comparing(ControlItemDTO::getTitle))
-                                        .collect(Collectors.toList())).build())
-                        // Sorts groups based on group name
-                        .sorted(Comparator.comparing(StatisticsGroupDTO::getGroup))
-                        .collect(Collectors.toList());
+            controlList.stream()
+                .collect(Collectors.groupingBy(ControlItemDTO::getGroupName, Collectors.toList()))
+                .entrySet()
+                .stream()
+                .map(k -> StatisticsGroupDTO.builder().group(k.getKey())
+                    .statistics(k.getValue()
+                        // Sort inner statistics based on title
+                        .stream().sorted(Comparator.comparing(ControlItemDTO::getTitle))
+                        .collect(Collectors.toList())).build())
+                // Sorts groups based on group name
+                .sorted(Comparator.comparing(StatisticsGroupDTO::getGroup))
+                .collect(Collectors.toList());
 
         StatisticsListDTO statisticsListDTO = new StatisticsListDTO();
         statisticsListDTO.setList(list);
+
+        if (StringUtils.isBlank(term)) {
+            CACHE.put(MAIN_LIST_CACHE, Pair.of(LocalDateTime.now(), statisticsListDTO));
+        }
 
         return statisticsListDTO;
     }
 
     @Override
     public StatisticsResponseDTO getStatistic(String path) {
+        var cache = CACHE.get(path);
+        if (cache != null && cache.getFirst().plusDays(1).isBefore(LocalDateTime.now())) {
+            return objectMapper.convertValue(cache.getSecond(), StatisticsResponseDTO.class);
+        }
+
         Statistics statistics = statisticsRepository.findById(path)
-                .orElseThrow(() -> new NotFoundException(String.format("Statistic %s does not exists", path)));
-        return objectMapper.convertValue(statistics, StatisticsResponseDTO.class);
+            .orElseThrow(
+                () -> new NotFoundException(String.format("Statistic %s does not exists", path)));
+        var toReturn = objectMapper.convertValue(statistics, StatisticsResponseDTO.class);
+        CACHE.put(path, Pair.of(LocalDateTime.now(), toReturn));
+        return toReturn;
     }
 
     @Override
@@ -217,21 +249,23 @@ public class StatisticsServiceImpl implements StatisticsService {
         log.info("Create statistics from {}", statisticsDTO);
 
         statisticsDTO
-                .setDisplayMode(Optional.ofNullable(statisticsDTO.getDisplayMode()).orElse(DisplayModeEnum.DEFAULT));
+            .setDisplayMode(Optional.ofNullable(statisticsDTO.getDisplayMode())
+                .orElse(DisplayModeEnum.DEFAULT));
 
         StatisticsResponseDTO statisticsResponseDTO =
-                objectMapper.convertValue(statisticsDTO, StatisticsResponseDTO.class);
+            objectMapper.convertValue(statisticsDTO, StatisticsResponseDTO.class);
 
         String path = String.join("-",
-                        StringUtils.stripAccents(statisticsDTO.getTitle().replaceAll("[^a-zA-Z0-9 ]", "")).split(" "))
-                .toLowerCase();
+                StringUtils.stripAccents(statisticsDTO.getTitle().replaceAll("[^a-zA-Z0-9 ]", ""))
+                    .split(" "))
+            .toLowerCase();
 
         statisticsResponseDTO.setPath(path);
         statisticsResponseDTO.setGroupName(statisticsDTO.getGroupName());
 
         statisticsResponseDTO.getStatistics().forEach(stat -> {
             Optional.ofNullable(stat.getSqlQueryCustom()).ifPresent(q -> stat.setSqlQueryCustom(
-                    URLEncoder.encode(q, StandardCharsets.UTF_8)));
+                URLEncoder.encode(q, StandardCharsets.UTF_8)));
         });
 
         saveStatistics(statisticsResponseDTO);
