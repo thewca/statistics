@@ -15,6 +15,7 @@ resource "aws_ecs_task_definition" "statistics_server_task_definition" {
   cpu                      = var.statistics_fargate_cpu
   memory                   = var.statistics_fargate_memory
   execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
+  task_role_arn            = aws_iam_role.ecs_task_execution_role.arn
 
   container_definitions = templatefile("./templates/ecs/statistics_server_app.json.tpl", {
     app_image      = aws_ecr_repository.statistics_server.repository_url

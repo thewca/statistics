@@ -9,6 +9,7 @@ resource "aws_iam_role" "statistics_server_code_deploy_role" {
       app_spec_folder = var.app_spec_folder
       cluster_name    = aws_ecs_cluster.statistics_server_cluster.name
       service_name    = aws_ecs_service.statistics_server_service.name
+      task_role_arn   = aws_iam_role.ecs_task_execution_role.arn
     })
   }
 

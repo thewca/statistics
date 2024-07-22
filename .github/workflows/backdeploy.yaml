@@ -12,6 +12,7 @@ env:
   AWS_DEFAULT_REGION: ${{ vars.AWS_DEFAULT_REGION }}
   AWS_ACCESS_KEY_ID: ${{ secrets.CI_CD_AWS_ACCESS_KEY_ID }}
   AWS_SECRET_ACCESS_KEY: ${{ secrets.CI_CD_AWS_SECRET_ACCESS_KEY }}
+  S3_BUCKET: ${{ vars.IAC_BUCKET_NAME }}
 
 jobs:
   build:
@@ -64,6 +65,6 @@ jobs:
       - name: Blue green deployment
         run: |
           aws deploy create-deployment \
-            --application-name ${{ secrets.APPLICATION_NAME }} \
-            --deployment-group-name ${{ secrets.DEPLOYMENT_GROUP }} \
-            --s3-location ${{ secrets.S3_LOCATION }}
+            --application-name statistics-server-code-deploy-app-prod \
+            --deployment-group-name statistics-server-code-deployment-group-prod \
+            --s3-location bucket=$S3_BUCKET,key=app-spec/statistics-spec-prod.yaml,bundleType=YAML
