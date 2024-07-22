@@ -63,6 +63,7 @@ public class StatisticsServiceImpl implements StatisticsService {
     // We should move to redis to cache the statistics instead
     private static final Map<String, Pair<LocalDateTime, Object>> CACHE = new HashMap<>();
     private static final String MAIN_LIST_CACHE = "MAIN_LIST_CACHE";
+    private static final int CACHING_TIME = 6;
 
     @Override
     public StatisticsResponseDTO sqlToStatistics(StatisticsRequestDTO statisticsRequestDTO) {
@@ -198,7 +199,8 @@ public class StatisticsServiceImpl implements StatisticsService {
 
         if (StringUtils.isBlank(term)) {
             var cache = CACHE.get(MAIN_LIST_CACHE);
-            if (cache != null && cache.getFirst().plusDays(1).isAfter(LocalDateTime.now())) {
+            if (cache != null && cache.getFirst().plusHours(CACHING_TIME)
+                .isAfter(LocalDateTime.now())) {
                 return (StatisticsListDTO) cache.getSecond();
             }
         }
@@ -232,7 +234,8 @@ public class StatisticsServiceImpl implements StatisticsService {
     @Override
     public StatisticsResponseDTO getStatistic(String path) {
         var cache = CACHE.get(path);
-        if (cache != null && cache.getFirst().plusDays(1).isAfter(LocalDateTime.now())) {
+        if (cache != null && cache.getFirst().plusHours(CACHING_TIME)
+            .isAfter(LocalDateTime.now())) {
             return (StatisticsResponseDTO) cache.getSecond();
         }
 
