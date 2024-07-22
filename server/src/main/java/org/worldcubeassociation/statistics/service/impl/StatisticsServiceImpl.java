@@ -198,8 +198,8 @@ public class StatisticsServiceImpl implements StatisticsService {
 
         if (StringUtils.isBlank(term)) {
             var cache = CACHE.get(MAIN_LIST_CACHE);
-            if (cache != null && cache.getFirst().plusDays(1).isBefore(LocalDateTime.now())) {
-                return objectMapper.convertValue(cache.getSecond(), StatisticsListDTO.class);
+            if (cache != null && cache.getFirst().plusDays(1).isAfter(LocalDateTime.now())) {
+                return (StatisticsListDTO) cache.getSecond();
             }
         }
 
@@ -232,8 +232,8 @@ public class StatisticsServiceImpl implements StatisticsService {
     @Override
     public StatisticsResponseDTO getStatistic(String path) {
         var cache = CACHE.get(path);
-        if (cache != null && cache.getFirst().plusDays(1).isBefore(LocalDateTime.now())) {
-            return objectMapper.convertValue(cache.getSecond(), StatisticsResponseDTO.class);
+        if (cache != null && cache.getFirst().plusDays(1).isAfter(LocalDateTime.now())) {
+            return (StatisticsResponseDTO) cache.getSecond();
         }
 
         Statistics statistics = statisticsRepository.findById(path)
@@ -263,10 +263,9 @@ public class StatisticsServiceImpl implements StatisticsService {
         statisticsResponseDTO.setPath(path);
         statisticsResponseDTO.setGroupName(statisticsDTO.getGroupName());
 
-        statisticsResponseDTO.getStatistics().forEach(stat -> {
-            Optional.ofNullable(stat.getSqlQueryCustom()).ifPresent(q -> stat.setSqlQueryCustom(
-                URLEncoder.encode(q, StandardCharsets.UTF_8)));
-        });
+        statisticsResponseDTO.getStatistics().forEach(
+            stat -> Optional.ofNullable(stat.getSqlQueryCustom()).ifPresent(
+                q -> stat.setSqlQueryCustom(URLEncoder.encode(q, StandardCharsets.UTF_8))));
 
         saveStatistics(statisticsResponseDTO);
 
