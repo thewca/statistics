@@ -3,6 +3,9 @@
 # This process runs in a different port so it has endpoints that are not protected and can,
 # therefore, be used to create statistics
 
+# Download db export
+source scripts/get_db_export.sh
+
 port=${STATISTICS_PORT:-8080}
 
 LIMIT=60 # 60 seconds waiting for a response
