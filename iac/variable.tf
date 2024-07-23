@@ -43,7 +43,7 @@ variable "statistics_fargate_cpu" {
 }
 
 variable "statistics_fargate_memory" {
-  default = "2048"
+  default = "4096"
 }
 
 variable "dumped_db_name" {
