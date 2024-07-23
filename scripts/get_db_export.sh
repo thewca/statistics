@@ -45,8 +45,13 @@ if [ "$download" = true ]; then
     rm $export_file_zip
 fi
 
+# https://jira.mariadb.org/browse/MDEV-34183
+# mariadb generates a strange first line. we ignore it
+python3 scripts/remove_first_line.py
+
 echo "Executing the .sql"
 echo "This can take a few hours"
+
 
 mysql -h ${DB_HOST:-localhost} -u ${DB_USERNAME:-root} -P ${DB_PORT:-3306} --password=${DB_PASSWORD:-} -e "start transaction; drop database if exists $database_name; create database $database_name; use $database_name; source $export_file_sql; commit;"
 
