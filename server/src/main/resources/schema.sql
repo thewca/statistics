@@ -46,7 +46,6 @@ create table if not exists sum_of_ranks_meta (
     primary key (result_type, region, region_type)
 );
 
-----------------------------------------------------------------------------------------------------
 -- Person link
 drop function if exists wca_statistics_person_link_format;
 
@@ -61,7 +60,6 @@ create function wca_statistics_person_link_format(
     '</a>'
 );
 
-----------------------------------------------------------------------------------------------------
 -- Competition link
 drop function if exists wca_statistics_competition_link_format;
 
@@ -76,7 +74,6 @@ create function wca_statistics_competition_link_format(
     '</a>'
 );
 
-----------------------------------------------------------------------------------------------------
 -- Time format
 drop function if exists wca_statistics_time_format;
 

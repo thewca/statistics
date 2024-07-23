@@ -48,7 +48,6 @@ fi
 echo "Executing the .sql"
 echo "This can take a few hours"
 
-mysql -h ${DB_HOST:-localhost} -u ${DB_USERNAME:-root} -P ${DB_PORT:-3306} --password=${DB_PASSWORD:-} \
-    -e "start transaction; drop database if exists $database_name; create database $database_name; use $database_name; source $export_file_sql; commit;"
+mysql -h ${DB_HOST:-localhost} -u ${DB_USERNAME:-root} -P ${DB_PORT:-3306} --password=${DB_PASSWORD:-} -e "start transaction; drop database if exists $database_name; create database $database_name; use $database_name; source $export_file_sql; commit;"
 
 echo "Complete"
