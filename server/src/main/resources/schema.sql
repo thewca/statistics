@@ -14,6 +14,7 @@ create table if not exists statistics (
 
 create table if not exists statistics_control (
     path varchar(100),
+    status varchar(20) not null,
     message varchar(200),
     created_at datetime not null,
     completed_at datetime,

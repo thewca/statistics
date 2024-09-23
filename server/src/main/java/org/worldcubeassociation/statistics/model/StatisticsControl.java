@@ -27,6 +27,8 @@ public class StatisticsControl extends BaseEntity {
 
     private String message;
 
+    private String status;
+
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 

@@ -33,6 +33,7 @@ import org.worldcubeassociation.statistics.dto.StatisticsListDTO;
 import org.worldcubeassociation.statistics.dto.StatisticsRequestDTO;
 import org.worldcubeassociation.statistics.dto.StatisticsResponseDTO;
 import org.worldcubeassociation.statistics.enums.DisplayModeEnum;
+import org.worldcubeassociation.statistics.enums.StatisticsControlStatus;
 import org.worldcubeassociation.statistics.exception.NotFoundException;
 import org.worldcubeassociation.statistics.model.Statistics;
 import org.worldcubeassociation.statistics.model.StatisticsControl;
@@ -180,6 +181,7 @@ public class StatisticsServiceImpl implements StatisticsService {
             var statisticsControl = new StatisticsControl();
             statisticsControl.setPath(resource.getFilename());
             statisticsControl.setCreatedAt(LocalDateTime.now());
+            statisticsControl.setStatus(StatisticsControlStatus.STARTED.name());
             statisticsControlRepository.save(statisticsControl);
 
             try {
@@ -190,10 +192,12 @@ public class StatisticsServiceImpl implements StatisticsService {
                 sqlToStatistics(request);
 
                 statisticsControl.setCompletedAt(LocalDateTime.now());
+                statisticsControl.setStatus(StatisticsControlStatus.COMPLETED.name());
                 statisticsControlRepository.save(statisticsControl);
             } catch (Exception e) {
                 log.error("Error while processing {}", resource.getFilename(), e);
                 statisticsControl.setMessage(StringUtils.abbreviate(e.getMessage(), 200));
+                statisticsControl.setStatus(StatisticsControlStatus.FAILED.name());
                 statisticsControlRepository.save(statisticsControl);
             }
         }
