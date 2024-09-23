@@ -1,16 +1,30 @@
-version: "3.7"
+version: "3.8"
 
 services:
-  server:
-    build:
-      context: server
-      dockerfile: Dockerfile
-    network_mode: host
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "true"
+      MYSQL_DATABASE: wca_development
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
 
-  client:
-    build:
-      context: client
-      dockerfile: Dockerfile
+  db_restore:
+    image: ubuntu:20.04
     depends_on:
-      - server
-    network_mode: host
+      - mysql
+    entrypoint: >
+      sh -c "
+      apt update && apt install curl unzip mysql-client wget -y &&
+      echo 'Downloading WCA database dump, this may take a while...' &&
+      wget -q https://www.worldcubeassociation.org/wst/wca-developer-database-dump.zip &&
+      unzip wca-developer-database-dump.zip &&
+      mysql -h mysql -u root -e 'drop database if exists wca_development; create database wca_development; use wca_development; source wca-developer-database-dump.sql;'
+      "
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+volumes:
+  mysql-data:
