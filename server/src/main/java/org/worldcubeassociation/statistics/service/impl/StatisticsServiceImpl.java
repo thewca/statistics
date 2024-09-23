@@ -18,7 +18,6 @@ import java.util.stream.Collectors;
 import javax.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.io.support.ResourcePatternUtils;
@@ -36,6 +35,8 @@ import org.worldcubeassociation.statistics.dto.StatisticsResponseDTO;
 import org.worldcubeassociation.statistics.enums.DisplayModeEnum;
 import org.worldcubeassociation.statistics.exception.NotFoundException;
 import org.worldcubeassociation.statistics.model.Statistics;
+import org.worldcubeassociation.statistics.model.StatisticsControl;
+import org.worldcubeassociation.statistics.repository.StatisticsControlRepository;
 import org.worldcubeassociation.statistics.repository.StatisticsRepository;
 import org.worldcubeassociation.statistics.service.DatabaseQueryService;
 import org.worldcubeassociation.statistics.service.StatisticsService;
@@ -45,17 +46,11 @@ import org.yaml.snakeyaml.Yaml;
 @Service
 public class StatisticsServiceImpl implements StatisticsService {
 
-    @Autowired
-    private DatabaseQueryService databaseQueryService;
-
-    @Autowired
-    private ResourceLoader resourceLoader;
-
-    @Autowired
-    private StatisticsRepository statisticsRepository;
-
-    @Autowired
-    private ObjectMapper objectMapper;
+    private final DatabaseQueryService databaseQueryService;
+    private final ResourceLoader resourceLoader;
+    private final StatisticsRepository statisticsRepository;
+    private final ObjectMapper objectMapper;
+    private final StatisticsControlRepository statisticsControlRepository;
 
     private static final Yaml YAML = new Yaml();
 
@@ -64,6 +59,16 @@ public class StatisticsServiceImpl implements StatisticsService {
     private static final Map<String, Pair<LocalDateTime, Object>> CACHE = new HashMap<>();
     private static final String MAIN_LIST_CACHE = "MAIN_LIST_CACHE";
     private static final int CACHING_TIME = 6;
+
+    public StatisticsServiceImpl(DatabaseQueryService databaseQueryService,
+        ResourceLoader resourceLoader, StatisticsRepository statisticsRepository,
+        ObjectMapper objectMapper, StatisticsControlRepository statisticsControlRepository) {
+        this.databaseQueryService = databaseQueryService;
+        this.resourceLoader = resourceLoader;
+        this.statisticsRepository = statisticsRepository;
+        this.objectMapper = objectMapper;
+        this.statisticsControlRepository = statisticsControlRepository;
+    }
 
     @Override
     public StatisticsResponseDTO sqlToStatistics(StatisticsRequestDTO statisticsRequestDTO) {
@@ -172,11 +177,25 @@ public class StatisticsServiceImpl implements StatisticsService {
 
             log.info("Statistic {}", resource.getDescription());
 
-            InputStream inputStream = resource.getInputStream();
+            var statisticsControl = new StatisticsControl();
+            statisticsControl.setPath(resource.getFilename());
+            statisticsControl.setCreatedAt(LocalDateTime.now());
+            statisticsControlRepository.save(statisticsControl);
 
-            StatisticsRequestDTO request = YAML.loadAs(inputStream, StatisticsRequestDTO.class);
+            try {
+                InputStream inputStream = resource.getInputStream();
 
-            sqlToStatistics(request);
+                StatisticsRequestDTO request = YAML.loadAs(inputStream, StatisticsRequestDTO.class);
+
+                sqlToStatistics(request);
+
+                statisticsControl.setCompletedAt(LocalDateTime.now());
+                statisticsControlRepository.save(statisticsControl);
+            } catch (Exception e) {
+                log.error("Error while processing {}", resource.getFilename(), e);
+            }
+
+
         }
     }
 
@@ -279,6 +298,7 @@ public class StatisticsServiceImpl implements StatisticsService {
     public void deleteAll() {
         log.info("Delete all statistics");
         statisticsRepository.deleteAll();
+        statisticsControlRepository.deleteAll();
         log.info("Deleted");
     }
 

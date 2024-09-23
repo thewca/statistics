@@ -21,7 +21,9 @@ services:
       echo 'Downloading WCA database dump, this may take a while...' &&
       wget -q https://www.worldcubeassociation.org/wst/wca-developer-database-dump.zip &&
       unzip wca-developer-database-dump.zip &&
-      mysql -h mysql -u root -e 'drop database if exists wca_development; create database wca_development; use wca_development; source wca-developer-database-dump.sql;'
+      echo 'Restoring WCA database. This also may take a while...' &&
+      mysql -h mysql -u root -e 'drop database if exists wca_development; create database wca_development; use wca_development; source wca-developer-database-dump.sql;' &&
+      echo 'Restoration complete!'"
       "
     volumes:
       - mysql-data:/var/lib/mysql
