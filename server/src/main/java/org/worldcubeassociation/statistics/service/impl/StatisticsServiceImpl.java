@@ -193,9 +193,9 @@ public class StatisticsServiceImpl implements StatisticsService {
                 statisticsControlRepository.save(statisticsControl);
             } catch (Exception e) {
                 log.error("Error while processing {}", resource.getFilename(), e);
+                statisticsControl.setMessage(StringUtils.abbreviate(e.getMessage(), 200));
+                statisticsControlRepository.save(statisticsControl);
             }
-
-
         }
     }
 
