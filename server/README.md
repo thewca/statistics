@@ -10,7 +10,7 @@
 
 ### Using docker
 
-If you are in the root folder, you can just run `docker-compose up -d`. This will spin up an empty MySQL database running on port 3306, it will also download the latest WCA dump and apply it for you.
+If you are in the root folder, you can just run `docker compose up -d`. This will spin up an empty MySQL database running on port 3306, it will also download the latest WCA dump and apply it for you.
 
 ### Your own local copy of WCA's database
 
@@ -60,7 +60,7 @@ This backend project uses integration tests so we need to actually connect to a 
 
 - Preparing the database for tests (from the repository root)
 
-  `docker-compose -f server/docker-compose-test.yaml up -d`
+  `docker compose -f server/docker-compose-test.yaml up -d`
 
 This will start the database (port 3307) and also a mocked version of the WCA's api (for getting user info) on port 3500.
 
@@ -73,8 +73,8 @@ In a new terminal, from the repository root, run
 - If you need to change migrations, run
 
   ```
-  docker-compose -f server/docker-compose-test.yaml down --volumes
-  docker-compose -f server/docker-compose-test.yaml up -d
+  docker compose -f server/docker-compose-test.yaml down --volumes
+  docker compose -f server/docker-compose-test.yaml up -d
   ```
 
 ## Code format

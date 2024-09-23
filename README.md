@@ -30,7 +30,7 @@ source server/get_db_export.sh
 
 - Run docker
 
-`docker-compose up`
+`docker compose up`
 
 ## Generate all statistics
 
