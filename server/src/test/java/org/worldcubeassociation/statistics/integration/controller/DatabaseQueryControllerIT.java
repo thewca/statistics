@@ -23,7 +23,7 @@ public class DatabaseQueryControllerIT extends AbstractTest {
     @ParameterizedTest(name = "{displayName} {0}: status {1} token {2} body {3} reason {4}")
     public void query(int index, HttpStatus status, String token, Map<String, Object> body, String reason) {
         Response response = given()
-                .spec(super.SPEC)
+                .spec(super.createRequestSpecification())
                 .header("Authorization", token)
                 .body(body)
                 .when()

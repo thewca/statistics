@@ -31,7 +31,7 @@ public class SumOfRanksControllerIT extends AbstractTest {
 
     private Response generateSor() {
         return given()
-                .spec(super.SPEC)
+                .spec(super.createRequestSpecification())
                 .when()
                 .post(BASE_PATH)
                 .then()
@@ -59,7 +59,7 @@ public class SumOfRanksControllerIT extends AbstractTest {
         generateSor();
 
         Response response = given()
-                .spec(super.SPEC)
+                .spec(super.createRequestSpecification())
                 .params(params)
                 .when()
                 .get(BASE_PATH + "{resultType}/{regionType}/{region}", resultType, regionType, region)
@@ -101,7 +101,7 @@ public class SumOfRanksControllerIT extends AbstractTest {
         generateSor();
 
         Response response = given()
-                .spec(super.SPEC)
+                .spec(super.createRequestSpecification())
                 .when()
                 .get(BASE_PATH + "meta")
                 .then()

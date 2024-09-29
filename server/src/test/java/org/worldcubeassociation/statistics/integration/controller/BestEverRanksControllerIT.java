@@ -30,7 +30,7 @@ public class BestEverRanksControllerIT extends AbstractTest {
     @ParameterizedTest(name = "{displayName} {0}: status {1} wcaId {2} reason {3}")
     public void list(int index, HttpStatus status, String wcaId, String reason) {
         Response response = given()
-                .spec(super.SPEC)
+                .spec(super.createRequestSpecification())
                 .when()
                 .get(BASE_PATH + "{wca_id}", wcaId)
                 .then()
@@ -54,7 +54,7 @@ public class BestEverRanksControllerIT extends AbstractTest {
     @ParameterizedTest(name = "{displayName} {0}: status {1} body {2} reason {3}")
     public void generateByEvents(int index, HttpStatus status, Map<String, Object> body, String reason) {
         Response response = given()
-                .spec(super.SPEC)
+                .spec(super.createRequestSpecification())
                 .body(body)
                 .when()
                 .post(BASE_PATH + "generate")
@@ -79,7 +79,7 @@ public class BestEverRanksControllerIT extends AbstractTest {
     @ParameterizedTest(name = "{displayName} {0}: status {1} reason {2}")
     public void generateAll(int index, HttpStatus status, String reason) {
         Response response = given()
-                .spec(super.SPEC)
+                .spec(super.createRequestSpecification())
                 .when()
                 .post(BASE_PATH + "generate/all")
                 .then()

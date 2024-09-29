@@ -21,7 +21,7 @@ public class WcaControllerIT extends AbstractTest {
     @ParameterizedTest(name = "index {0} status {1} token {2} reason {3}")
     public void userInfo(int index, HttpStatus status, String token, String reason) {
         Response response = given()
-            .spec(super.SPEC)
+            .spec(super.createRequestSpecification())
             .header("Authorization", token)
             .when()
             .get(BASE_PATH + "user")

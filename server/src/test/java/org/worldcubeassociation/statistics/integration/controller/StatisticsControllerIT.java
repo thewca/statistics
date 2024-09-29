@@ -28,7 +28,7 @@ public class StatisticsControllerIT extends AbstractTest {
     @DisplayName("Test statistics generated from yaml files")
     public void generateAll() {
         given()
-                .spec(super.SPEC)
+                .spec(super.createRequestSpecification())
                 .when()
                 .post(BASE_PATH + "generate-from-sql")
                 .then()
@@ -41,7 +41,7 @@ public class StatisticsControllerIT extends AbstractTest {
     @DisplayName("Test statistics generated from specific yaml file")
     public void generateFromFile(int index, HttpStatus status, String fileName) {
         Response response = given()
-                .spec(super.SPEC)
+                .spec(super.createRequestSpecification())
                 .when()
                 .post(BASE_PATH + "generate-from-sql/" + fileName)
                 .then()
@@ -64,7 +64,7 @@ public class StatisticsControllerIT extends AbstractTest {
     @DisplayName("Test statistics generated from yaml files")
     public void deleteAll() {
         given()
-                .spec(super.SPEC)
+                .spec(super.createRequestSpecification())
                 .when()
                 .delete(BASE_PATH)
                 .then()
@@ -80,7 +80,7 @@ public class StatisticsControllerIT extends AbstractTest {
         generateAll();
 
         Response response = given()
-                .spec(super.SPEC)
+                .spec(super.createRequestSpecification())
                 .param("term", term)
                 .when()
                 .get(BASE_PATH + "list")
@@ -108,7 +108,7 @@ public class StatisticsControllerIT extends AbstractTest {
         generateAll();
 
         Response response = given()
-                .spec(super.SPEC)
+                .spec(super.createRequestSpecification())
                 .when()
                 .get(BASE_PATH + "list/{pathId}", path)
                 .then()
