@@ -1,5 +1,6 @@
 package org.worldcubeassociation.statistics.integration;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.platform.commons.function.Try.success;
 
 import com.google.common.base.CaseFormat;
@@ -19,7 +20,6 @@ import org.skyscreamer.jsonassert.JSONAssert;
 import org.skyscreamer.jsonassert.JSONCompareMode;
 import org.skyscreamer.jsonassert.comparator.CustomComparator;
 import org.skyscreamer.jsonassert.comparator.DefaultComparator;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.context.ActiveProfiles;
@@ -63,6 +63,7 @@ public class AbstractTest {
             index.toString());
 
         final String actualPayload = response.getBody().prettyPrint();
+        assertFalse(actualPayload.trim().isEmpty(), "Response body is empty");
 
         try {
 

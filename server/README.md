@@ -56,13 +56,13 @@ The `-d` part means "detached", so you'll have to stop by killing the process ru
 
 ## Tests
 
-This backend project uses integration tests so we need to actually connect to a database and fetch data from somewhere.
+This backend project uses integration tests so we need to actually connect to a database. We mock WCA profile response.
 
 - Preparing the database for tests (from the repository root)
 
   `docker compose -f server/docker-compose-test.yaml up -d`
 
-This will start the database (port 3307) and also a mocked version of the WCA's api (for getting user info) on port 3500.
+This will start the database (port 3307).
 
 - Run the tests
 

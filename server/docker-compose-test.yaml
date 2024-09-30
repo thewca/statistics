@@ -9,11 +9,7 @@ services:
       - "3307:3306"
     volumes:
       - "./db/migration:/docker-entrypoint-initdb.d/:ro"
-  wca-mock-server:
-    image: "node:16-bullseye-slim"
-    volumes:
-      - "./test-web-server/data.js/:/data.js"
-      - "./test-web-server/package.json/:/package.json"
-      - "./test-web-server/server.js/:/server.js"
-    entrypoint: sh -c "npm install;npm start"
-    network_mode: host
+      - wca-test-db-data:/var/lib/mysql
+
+volumes:
+  wca-test-db-data:
