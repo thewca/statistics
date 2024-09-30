@@ -32,7 +32,7 @@ public class WcaControllerIT extends AbstractTest {
     @MockBean
     private RestTemplate restTemplate;
 
-    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+    protected static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     @DisplayName("WCA user info")
     @MethodSource("userInfoArguments")

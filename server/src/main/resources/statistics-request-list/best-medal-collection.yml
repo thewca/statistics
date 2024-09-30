@@ -69,6 +69,7 @@ queries:
           medals_rank
       where
           medal_rank <= 20
+      order by golds desc, silvers desc, bronzes desc
     sqlQueryCustom: |
       select
           personName,

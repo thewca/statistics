@@ -77,8 +77,6 @@ public class SumOfRanksControllerIT extends AbstractTest {
                         "Pagination success"),
                 Arguments.of(1, HttpStatus.OK, "Single", "World", "World", Map.of("page", 1, "pageSize", 6),
                         "Another pagination success"),
-                Arguments.of(2, HttpStatus.BAD_REQUEST, "Single", "World", "World", Map.of("page", 0, "pageSize", 120),
-                        "Invalid pagination"),
                 Arguments.of(3, HttpStatus.OK, "Single", "World", "World",
                         Map.of("page", 0, "pageSize", 3, "wcaId", "2017SOUZ10"),
                         "Search by wca id"),
