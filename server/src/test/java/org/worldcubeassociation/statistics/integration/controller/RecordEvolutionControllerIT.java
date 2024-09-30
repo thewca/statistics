@@ -22,7 +22,7 @@ public class RecordEvolutionControllerIT extends AbstractTest {
     @Test
     public void getAvailableEvents() {
         Response response = given()
-                .spec(super.SPEC)
+                .spec(super.createRequestSpecification())
                 .when()
                 .get(BASE_PATH + "event")
                 .then()
@@ -38,7 +38,7 @@ public class RecordEvolutionControllerIT extends AbstractTest {
     @ParameterizedTest(name = "{displayName} {0}: status {1} reason {2}")
     public void getByEvent(int index, HttpStatus status, String event) {
         Response response = given()
-                .spec(super.SPEC)
+                .spec(super.createRequestSpecification())
                 .when()
                 .get(BASE_PATH + event)
                 .then()

@@ -32,7 +32,7 @@ jobs:
       - name: Validate Gradle wrapper
         uses: gradle/wrapper-validation-action@v1
       - name: Run containers
-        run: docker-compose -f server/docker-compose-test.yaml up -d
+        run: docker compose -f server/docker-compose-test.yaml up -d
       - name: Wait for database to start
         run: |
           for i in `seq 1 60`;

@@ -10,34 +10,11 @@
 
 ### Using docker
 
-If you are in the `server` folder, you can just run `docker-compose up -d`. This will spin up an empty MySQL database running on port 3306.
+If you are in the root folder, you can just run `docker compose up -d`. This will spin up an empty MySQL database running on port 3306, it will also download the latest WCA dump and apply it for you.
 
 ### Your own local copy of WCA's database
 
-You can also use an internal database for handling WCA data.
-
-In case you do not have it installed yet, you will need to get MySQL.
-
-- Install [MySQL 8.0](https://dev.mysql.com/doc/refman/8.0/en/linux-installation.html), and set it up with a user with username "root" with an empty password.
-
-```
-sudo mysql -u root
-ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '';
-
-create database wca_development;
-```
-
-The database `wca_development` will be populated with WCA data. If you want to change password, username or others, make sure to also change on `application-local.properties`.
-
-## Before you run this
-
-You need your copy of the database from WCA. If you already have it (with a user 'root' with no password), you can skip this.
-
-Download [the latest export](https://www.worldcubeassociation.org/wst/wca-developer-database-dump.zip) and execute the sql (as stated in the last step). If you wish, you can execute the file `get_db_export.sh` in the scripts folder.
-
-From the root folder, use
-
-    source scripts/get_db_export.sh
+If you are familiar with the development for the WCA ecosystem, it is likely that you have your own database running. You can reuse that. Just make sure that the connection string in `server/src/main/resources/application-local.yaml` fits your case.
 
 ## How to run it
 
@@ -79,13 +56,13 @@ The `-d` part means "detached", so you'll have to stop by killing the process ru
 
 ## Tests
 
-This backend project uses integration tests so we need to actually connect to a database and fetch data from somewhere.
+This backend project uses integration tests so we need to actually connect to a database. We mock WCA profile response.
 
 - Preparing the database for tests (from the repository root)
 
-  `docker-compose -f server/docker-compose-test.yaml up -d`
+  `docker compose -f server/docker-compose-test.yaml up -d`
 
-This will start the database (port 3307) and also a mocked version of the WCA's api (for getting user info) on port 3500.
+This will start the database (port 3307).
 
 - Run the tests
 
@@ -96,8 +73,8 @@ In a new terminal, from the repository root, run
 - If you need to change migrations, run
 
   ```
-  docker-compose -f server/docker-compose-test.yaml down --volumes
-  docker-compose -f server/docker-compose-test.yaml up -d
+  docker compose -f server/docker-compose-test.yaml down --volumes
+  docker compose -f server/docker-compose-test.yaml up -d
   ```
 
 ## Code format

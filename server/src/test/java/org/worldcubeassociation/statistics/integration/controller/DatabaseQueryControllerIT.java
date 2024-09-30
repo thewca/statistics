@@ -1,29 +1,55 @@
 package org.worldcubeassociation.statistics.integration.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import io.restassured.response.Response;
+import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.mockito.Mockito;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.jdbc.Sql;
+import org.springframework.web.client.RestTemplate;
+import org.worldcubeassociation.statistics.dto.UserInfoWrapperDTO;
 import org.worldcubeassociation.statistics.integration.AbstractTest;
 
 import java.util.Map;
 import java.util.stream.Stream;
+import org.worldcubeassociation.statistics.util.LoadResourceUtil;
 
 import static io.restassured.RestAssured.given;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.worldcubeassociation.statistics.integration.controller.WcaControllerIT.OBJECT_MAPPER;
 
 @DisplayName("Database query")
 @Sql({"/test-scripts/cleanTestData.sql", "/test-scripts/BestEverRanksControllerIT.sql"})
 public class DatabaseQueryControllerIT extends AbstractTest {
     private static final String BASE_PATH = "/database/";
 
+    @MockBean
+    private RestTemplate restTemplate;
+
     @MethodSource("queryArguments")
     @ParameterizedTest(name = "{displayName} {0}: status {1} token {2} body {3} reason {4}")
-    public void query(int index, HttpStatus status, String token, Map<String, Object> body, String reason) {
+    public void query(int index, HttpStatus status, String token, Map<String, Object> body, String reason)
+        throws JsonProcessingException {
+        var resource = LoadResourceUtil.getResource("mocks/userInfo.json");
+        var userInfoWrapper = OBJECT_MAPPER.readValue(resource, UserInfoWrapperDTO.class);
+
+        Mockito.when(
+                restTemplate.exchange(anyString(), any(HttpMethod.class), any(HttpEntity.class),
+                    any(Class.class)))
+            .thenReturn(ResponseEntity.of(Optional.of(userInfoWrapper)));
+
+
         Response response = given()
-                .spec(super.SPEC)
+                .spec(super.createRequestSpecification())
                 .header("Authorization", token)
                 .body(body)
                 .when()

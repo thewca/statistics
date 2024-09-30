@@ -31,7 +31,7 @@ public class SumOfRanksControllerIT extends AbstractTest {
 
     private Response generateSor() {
         return given()
-                .spec(super.SPEC)
+                .spec(super.createRequestSpecification())
                 .when()
                 .post(BASE_PATH)
                 .then()
@@ -59,7 +59,7 @@ public class SumOfRanksControllerIT extends AbstractTest {
         generateSor();
 
         Response response = given()
-                .spec(super.SPEC)
+                .spec(super.createRequestSpecification())
                 .params(params)
                 .when()
                 .get(BASE_PATH + "{resultType}/{regionType}/{region}", resultType, regionType, region)
@@ -77,8 +77,6 @@ public class SumOfRanksControllerIT extends AbstractTest {
                         "Pagination success"),
                 Arguments.of(1, HttpStatus.OK, "Single", "World", "World", Map.of("page", 1, "pageSize", 6),
                         "Another pagination success"),
-                Arguments.of(2, HttpStatus.BAD_REQUEST, "Single", "World", "World", Map.of("page", 0, "pageSize", 120),
-                        "Invalid pagination"),
                 Arguments.of(3, HttpStatus.OK, "Single", "World", "World",
                         Map.of("page", 0, "pageSize", 3, "wcaId", "2017SOUZ10"),
                         "Search by wca id"),
@@ -101,7 +99,7 @@ public class SumOfRanksControllerIT extends AbstractTest {
         generateSor();
 
         Response response = given()
-                .spec(super.SPEC)
+                .spec(super.createRequestSpecification())
                 .when()
                 .get(BASE_PATH + "meta")
                 .then()

@@ -12,6 +12,15 @@ create table if not exists statistics (
     primary key (path)
 );
 
+create table if not exists statistics_control (
+    path varchar(100),
+    status varchar(20) not null,
+    message varchar(200),
+    created_at datetime not null,
+    completed_at datetime,
+    primary key (path)
+);
+
 create table if not exists best_ever_rank (
     person_id varchar(10),
     best_ever_rank json not null,

@@ -1,6 +1,7 @@
 package org.worldcubeassociation.statistics.api;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -14,7 +15,9 @@ import org.worldcubeassociation.statistics.dto.UserInfoWrapperDTO;
 @Slf4j
 @Component
 public class WCAApi {
-    private static final RestTemplate REST_TEMPLATE = new RestTemplate();
+
+    @Autowired
+    private RestTemplate restTemplate;
 
     @Value("${api.wca.baseurl}")
     private String wcaBaseUrl;
@@ -30,7 +33,7 @@ public class WCAApi {
         headers.set("Content-Type", "application/json");
         HttpEntity<String> entity = new HttpEntity<>("body", headers);
         ResponseEntity<UserInfoWrapperDTO> response =
-                REST_TEMPLATE.exchange(url, HttpMethod.GET, entity, UserInfoWrapperDTO.class);
+            restTemplate.exchange(url, HttpMethod.GET, entity, UserInfoWrapperDTO.class);
         return response.getBody().getMe();
     }
 }

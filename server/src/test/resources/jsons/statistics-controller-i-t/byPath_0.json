@@ -16,7 +16,7 @@
             "showPositions": true,
             "content": [
                 [
-                    "<a href=\"https://www.worldcubeassociation.org/persons/1982THAI01\">Minh Thai</a>",
+                    "<a href=\"https://www.worldcubeassociation.org/persons/2003KNIG01\">Dan Knights</a>",
                     "1",
                     "0",
                     "0"
@@ -28,7 +28,7 @@
                     "0"
                 ],
                 [
-                    "<a href=\"https://www.worldcubeassociation.org/persons/2003KNIG01\">Dan Knights</a>",
+                    "<a href=\"https://www.worldcubeassociation.org/persons/1982THAI01\">Minh Thai</a>",
                     "1",
                     "0",
                     "0"
@@ -68,6 +68,90 @@
                     "0",
                     "0",
                     "1"
+                ],
+                [
+                    "<a href=\"https://www.worldcubeassociation.org/persons/1982TENE01\">Svilen Tenev</a>",
+                    "0",
+                    "0",
+                    "0"
+                ],
+                [
+                    "<a href=\"https://www.worldcubeassociation.org/persons/1982SEBE01\">Piotr Serbeński</a>",
+                    "0",
+                    "0",
+                    "0"
+                ],
+                [
+                    "<a href=\"https://www.worldcubeassociation.org/persons/1982GALR01\">Manuel Galrinho</a>",
+                    "0",
+                    "0",
+                    "0"
+                ],
+                [
+                    "<a href=\"https://www.worldcubeassociation.org/persons/1982SAND01\">Jari Sandqvist</a>",
+                    "0",
+                    "0",
+                    "0"
+                ],
+                [
+                    "<a href=\"https://www.worldcubeassociation.org/persons/1982BRIN01\">Roland Brinkmann</a>",
+                    "0",
+                    "0",
+                    "0"
+                ],
+                [
+                    "<a href=\"https://www.worldcubeassociation.org/persons/1982LAET01\">Luc Van Laethem</a>",
+                    "0",
+                    "0",
+                    "0"
+                ],
+                [
+                    "<a href=\"https://www.worldcubeassociation.org/persons/1982VALD01\">Eduardo Valdivia Chacon</a>",
+                    "0",
+                    "0",
+                    "0"
+                ],
+                [
+                    "<a href=\"https://www.worldcubeassociation.org/persons/1982ROME01\">Giuseppe Romeo</a>",
+                    "0",
+                    "0",
+                    "0"
+                ],
+                [
+                    "<a href=\"https://www.worldcubeassociation.org/persons/1982CHIL01\">Julian Chilvers</a>",
+                    "0",
+                    "0",
+                    "0"
+                ],
+                [
+                    "<a href=\"https://www.worldcubeassociation.org/persons/1982JEAN01\">Jerome Jean-Charles</a>",
+                    "0",
+                    "0",
+                    "0"
+                ],
+                [
+                    "<a href=\"https://www.worldcubeassociation.org/persons/2003BOND01\">Jess Bonde</a>",
+                    "0",
+                    "0",
+                    "0"
+                ],
+                [
+                    "<a href=\"https://www.worldcubeassociation.org/persons/1982BORS01\">Jozsef Borsos</a>",
+                    "0",
+                    "0",
+                    "0"
+                ],
+                [
+                    "<a href=\"https://www.worldcubeassociation.org/persons/2003ALLE01\">David Allen</a>",
+                    "0",
+                    "0",
+                    "0"
+                ],
+                [
+                    "<a href=\"https://www.worldcubeassociation.org/persons/2003MEAN01\">Gene Means</a>",
+                    "0",
+                    "0",
+                    "0"
                 ],
                 [
                     "<a href=\"https://www.worldcubeassociation.org/persons/1982TRIN01\">Duc Trinh</a>",
@@ -112,128 +196,10 @@
                     "0"
                 ],
                 [
-                    "<a href=\"https://www.worldcubeassociation.org/persons/2003MEAN01\">Gene Means</a>",
-                    "0",
-                    "0",
-                    "0"
-                ],
-                [
-                    "<a href=\"https://www.worldcubeassociation.org/persons/2003ALLE01\">David Allen</a>",
-                    "0",
-                    "0",
-                    "0"
-                ],
-                [
-                    "<a href=\"https://www.worldcubeassociation.org/persons/2003BOND01\">Jess Bonde</a>",
-                    "0",
-                    "0",
-                    "0"
-                ],
-                [
-                    "<a href=\"https://www.worldcubeassociation.org/persons/1982JEAN01\">Jerome Jean-Charles</a>",
-                    "0",
-                    "0",
-                    "0"
-                ],
-                [
-                    "<a href=\"https://www.worldcubeassociation.org/persons/1982CHIL01\">Julian Chilvers</a>",
-                    "0",
-                    "0",
-                    "0"
-                ],
-                [
-                    "<a href=\"https://www.worldcubeassociation.org/persons/1982ROME01\">Giuseppe Romeo</a>",
-                    "0",
-                    "0",
-                    "0"
-                ],
-                [
-                    "<a href=\"https://www.worldcubeassociation.org/persons/1982VALD01\">Eduardo Valdivia Chacon</a>",
-                    "0",
-                    "0",
-                    "0"
-                ],
-                [
-                    "<a href=\"https://www.worldcubeassociation.org/persons/1982LAET01\">Luc Van Laethem</a>",
-                    "0",
-                    "0",
-                    "0"
-                ],
-                [
-                    "<a href=\"https://www.worldcubeassociation.org/persons/1982BORS01\">Jozsef Borsos</a>",
-                    "0",
-                    "0",
-                    "0"
-                ],
-                [
-                    "<a href=\"https://www.worldcubeassociation.org/persons/1982BRIN01\">Roland Brinkmann</a>",
-                    "0",
-                    "0",
-                    "0"
-                ],
-                [
-                    "<a href=\"https://www.worldcubeassociation.org/persons/1982SAND01\">Jari Sandqvist</a>",
-                    "0",
-                    "0",
-                    "0"
-                ],
-                [
-                    "<a href=\"https://www.worldcubeassociation.org/persons/1982GALR01\">Manuel Galrinho</a>",
-                    "0",
-                    "0",
-                    "0"
-                ],
-                [
-                    "<a href=\"https://www.worldcubeassociation.org/persons/1982SEBE01\">Piotr Serbeński</a>",
-                    "0",
-                    "0",
-                    "0"
-                ],
-                [
-                    "<a href=\"https://www.worldcubeassociation.org/persons/1982TENE01\">Svilen Tenev</a>",
-                    "0",
-                    "0",
-                    "0"
-                ],
-                [
                     "<a href=\"https://www.worldcubeassociation.org/persons/1982TRAJ01\">Josef Trajber</a>",
                     "0",
                     "0",
                     "0"
-                ]
-            ]
-        },
-        {
-            "positionTieBreakerIndex": 2,
-            "keys": [
-                "4x4x4 Cube"
-            ],
-            "sqlQueryCustom": "select%0A++++personName%2C%0A++++sum%28+case+when+pos+%3D+1+then+1+else+0+end+%29+Golds%2C%0A++++sum%28+case+when+pos+%3D+2+then+1+else+0+end+%29+Silvers%2C%0A++++sum%28+case+when+pos+%3D+3+then+1+else+0+end+%29+Bronzes%0Afrom%0A++++Results%0Awhere%0A++++roundTypeId+in+%28%27c%27%2C+%27f%27%29%0A++++and+best+%3E+0%0A++++and+eventId+%3D+%27%3AEVENT_ID%27%0A++++and+personId+%3D+%27%3AWCA_ID%27%0Agroup+by%0A++++personName%0Aorder+by%0A++++Golds+desc%0Alimit+20%0A",
-            "headers": [
-                "Person",
-                "Golds",
-                "Silvers",
-                "Bronzes"
-            ],
-            "showPositions": true,
-            "content": [
-                [
-                    "<a href=\"https://www.worldcubeassociation.org/persons/2003AKIM01\">Masayuki Akimoto (秋元正行)</a>",
-                    "1",
-                    "0",
-                    "0"
-                ],
-                [
-                    "<a href=\"https://www.worldcubeassociation.org/persons/2003WESL01\">David Wesley</a>",
-                    "0",
-                    "1",
-                    "0"
-                ],
-                [
-                    "<a href=\"https://www.worldcubeassociation.org/persons/2003BRUC01\">Ron van Bruchem</a>",
-                    "0",
-                    "0",
-                    "1"
                 ]
             ]
         },
@@ -296,6 +262,40 @@
                     "0",
                     "1",
                     "0"
+                ]
+            ]
+        },
+        {
+            "positionTieBreakerIndex": 2,
+            "keys": [
+                "4x4x4 Cube"
+            ],
+            "sqlQueryCustom": "select%0A++++personName%2C%0A++++sum%28+case+when+pos+%3D+1+then+1+else+0+end+%29+Golds%2C%0A++++sum%28+case+when+pos+%3D+2+then+1+else+0+end+%29+Silvers%2C%0A++++sum%28+case+when+pos+%3D+3+then+1+else+0+end+%29+Bronzes%0Afrom%0A++++Results%0Awhere%0A++++roundTypeId+in+%28%27c%27%2C+%27f%27%29%0A++++and+best+%3E+0%0A++++and+eventId+%3D+%27%3AEVENT_ID%27%0A++++and+personId+%3D+%27%3AWCA_ID%27%0Agroup+by%0A++++personName%0Aorder+by%0A++++Golds+desc%0Alimit+20%0A",
+            "headers": [
+                "Person",
+                "Golds",
+                "Silvers",
+                "Bronzes"
+            ],
+            "showPositions": true,
+            "content": [
+                [
+                    "<a href=\"https://www.worldcubeassociation.org/persons/2003AKIM01\">Masayuki Akimoto (秋元正行)</a>",
+                    "1",
+                    "0",
+                    "0"
+                ],
+                [
+                    "<a href=\"https://www.worldcubeassociation.org/persons/2003WESL01\">David Wesley</a>",
+                    "0",
+                    "1",
+                    "0"
+                ],
+                [
+                    "<a href=\"https://www.worldcubeassociation.org/persons/2003BRUC01\">Ron van Bruchem</a>",
+                    "0",
+                    "0",
+                    "1"
                 ]
             ]
         },
@@ -366,7 +366,31 @@
                     "0"
                 ],
                 [
-                    "<a href=\"https://www.worldcubeassociation.org/persons/2003WESL01\">David Wesley</a>",
+                    "<a href=\"https://www.worldcubeassociation.org/persons/2003LITT01\">Heath Litton</a>",
+                    "0",
+                    "0",
+                    "0"
+                ],
+                [
+                    "<a href=\"https://www.worldcubeassociation.org/persons/2003MORG01\">Brent Morgan</a>",
+                    "0",
+                    "0",
+                    "0"
+                ],
+                [
+                    "<a href=\"https://www.worldcubeassociation.org/persons/2003BABC01\">Peter Babcock</a>",
+                    "0",
+                    "0",
+                    "0"
+                ],
+                [
+                    "<a href=\"https://www.worldcubeassociation.org/persons/2003BLON01\">Michiel van der Blonk</a>",
+                    "0",
+                    "0",
+                    "0"
+                ],
+                [
+                    "<a href=\"https://www.worldcubeassociation.org/persons/2003ALLE01\">David Allen</a>",
                     "0",
                     "0",
                     "0"
@@ -384,31 +408,7 @@
                     "0"
                 ],
                 [
-                    "<a href=\"https://www.worldcubeassociation.org/persons/2003ALLE01\">David Allen</a>",
-                    "0",
-                    "0",
-                    "0"
-                ],
-                [
-                    "<a href=\"https://www.worldcubeassociation.org/persons/2003BLON01\">Michiel van der Blonk</a>",
-                    "0",
-                    "0",
-                    "0"
-                ],
-                [
-                    "<a href=\"https://www.worldcubeassociation.org/persons/2003BABC01\">Peter Babcock</a>",
-                    "0",
-                    "0",
-                    "0"
-                ],
-                [
-                    "<a href=\"https://www.worldcubeassociation.org/persons/2003MORG01\">Brent Morgan</a>",
-                    "0",
-                    "0",
-                    "0"
-                ],
-                [
-                    "<a href=\"https://www.worldcubeassociation.org/persons/2003LITT01\">Heath Litton</a>",
+                    "<a href=\"https://www.worldcubeassociation.org/persons/2003WESL01\">David Wesley</a>",
                     "0",
                     "0",
                     "0"
@@ -500,13 +500,13 @@
                     "1"
                 ],
                 [
-                    "<a href=\"https://www.worldcubeassociation.org/persons/2003TREG01\">Betty Tregay</a>",
+                    "<a href=\"https://www.worldcubeassociation.org/persons/2003RUET01\">Jake Rueth</a>",
                     "0",
                     "0",
                     "0"
                 ],
                 [
-                    "<a href=\"https://www.worldcubeassociation.org/persons/2003RUET01\">Jake Rueth</a>",
+                    "<a href=\"https://www.worldcubeassociation.org/persons/2003TREG01\">Betty Tregay</a>",
                     "0",
                     "0",
                     "0"
@@ -546,7 +546,7 @@
                     "1"
                 ],
                 [
-                    "<a href=\"https://www.worldcubeassociation.org/persons/2003PATT01\">Richard Patterson</a>",
+                    "<a href=\"https://www.worldcubeassociation.org/persons/2003HARR01\">Dan Harris</a>",
                     "0",
                     "0",
                     "0"
@@ -558,7 +558,7 @@
                     "0"
                 ],
                 [
-                    "<a href=\"https://www.worldcubeassociation.org/persons/2003HARR01\">Dan Harris</a>",
+                    "<a href=\"https://www.worldcubeassociation.org/persons/2003PATT01\">Richard Patterson</a>",
                     "0",
                     "0",
                     "0"
@@ -660,7 +660,7 @@
                     "1"
                 ],
                 [
-                    "<a href=\"https://www.worldcubeassociation.org/persons/2003BLON01\">Michiel van der Blonk</a>",
+                    "<a href=\"https://www.worldcubeassociation.org/persons/2003BRUC01\">Ron van Bruchem</a>",
                     "0",
                     "0",
                     "0"
@@ -672,7 +672,7 @@
                     "0"
                 ],
                 [
-                    "<a href=\"https://www.worldcubeassociation.org/persons/2003BRUC01\">Ron van Bruchem</a>",
+                    "<a href=\"https://www.worldcubeassociation.org/persons/2003BLON01\">Michiel van der Blonk</a>",
                     "0",
                     "0",
                     "0"
@@ -712,13 +712,13 @@
                     "1"
                 ],
                 [
-                    "<a href=\"https://www.worldcubeassociation.org/persons/2003RUET01\">Jake Rueth</a>",
+                    "<a href=\"https://www.worldcubeassociation.org/persons/2003MORR02\">Jon Morris</a>",
                     "0",
                     "0",
                     "0"
                 ],
                 [
-                    "<a href=\"https://www.worldcubeassociation.org/persons/2003MORR02\">Jon Morris</a>",
+                    "<a href=\"https://www.worldcubeassociation.org/persons/2003RUET01\">Jake Rueth</a>",
                     "0",
                     "0",
                     "0"
@@ -805,6 +805,6 @@
     "displayMode": "SELECTOR",
     "groupName": "Competitors",
     "path": "best-medal-collection",
-    "lastModified": "2022-06-16T16:04:47",
+    "lastModified": "2024-09-30T00:25:08",
     "exportDate": "2003-10-11T00:00:00"
 }

@@ -1,9 +1,0 @@
-version: "3.1"
-services:
-  wca-db:
-    image: "mysql:8.0.26"
-    environment:
-      MYSQL_ALLOW_EMPTY_PASSWORD: "true"
-      MYSQL_DATABASE: wca_development
-    ports:
-      - "3306:3306"
