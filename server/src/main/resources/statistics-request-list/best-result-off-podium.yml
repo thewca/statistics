@@ -45,6 +45,7 @@ queries:
           averages
       where
           the_rank <= 20
+      order by the_rank
   - headers:
       - Person
       - Single
@@ -91,6 +92,7 @@ queries:
           singles
       where
           the_rank <= 20
+      order by the_rank
 title: Best result not providing a podium
 groupName: Results
 displayMode: SELECTOR
