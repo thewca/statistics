@@ -5,8 +5,10 @@ import bisect
 from misc.python.model.competitor import Competitor as Comp
 from misc.python.util.database_util import get_database_connection
 from misc.python.util.event_util import get_current_events
-from misc.python.util.html_util import (get_competition_html_link,
-                                        get_competitor_html_link)
+from misc.python.util.html_util import (
+    get_competition_html_link,
+    get_competitor_html_link,
+)
 from misc.python.util.log_util import log
 from misc.python.util.statistics_api_util import create_statistics
 
@@ -45,7 +47,9 @@ where
     eventId = %(event_id)s
 order by
 	start_date,
-	rt.`rank`"""
+    competitionId,
+	rt.`rank`
+    """
 
 
 def longest_streaks():
@@ -54,10 +58,12 @@ def longest_streaks():
 
     out = {}
     out["title"] = title
+    out["explanation"] = (
+        "If two competitions start on the same day, the one with the lower competition ID is considered to be the first one."
+    )
     out["groupName"] = "Results"
     out["displayMode"] = "SELECTOR"
-    headers = ["Streak", "Person",
-               "Country", "Streak Start", "Streak End"]
+    headers = ["Streak", "Person", "Country", "Streak Start", "Streak End"]
     out["statistics"] = []
 
     log.info("Get database connection")
@@ -72,7 +78,17 @@ def longest_streaks():
 
         cursor.execute(query, {"event_id": event_id})
 
-        for wca_id, person_name, country_id, competition_id, v1, v2, v3, v4, v5 in cursor:
+        for (
+            wca_id,
+            person_name,
+            country_id,
+            competition_id,
+            v1,
+            v2,
+            v3,
+            v4,
+            v5,
+        ) in cursor:
 
             competitor = Competitor(wca_id, person_name, country_id)
 
@@ -108,14 +124,32 @@ def longest_streaks():
             current = competitor.count
 
             link = get_competitor_html_link(competitor.wca_id, competitor.name)
-            table.append([streak, link, competitor.country,
-                          get_competition_html_link(competitor.max_range_start), "-" if streak == current else get_competition_html_link(competitor.max_range_end)])
+            table.append(
+                [
+                    streak,
+                    link,
+                    competitor.country,
+                    get_competition_html_link(competitor.max_range_start),
+                    (
+                        "-"
+                        if streak == current
+                        else get_competition_html_link(competitor.max_range_end)
+                    ),
+                ]
+            )
 
             count += 1
             prev = streak
 
-        out["statistics"].append({"keys": [event.name], "content": table,
-                                  "headers": headers, "showPositions": True, "positionTieBreakerIndex": 0})
+        out["statistics"].append(
+            {
+                "keys": [event.name],
+                "content": table,
+                "headers": headers,
+                "showPositions": True,
+                "positionTieBreakerIndex": 0,
+            }
+        )
     cnx.close()
 
     return out
