@@ -13,7 +13,7 @@ queries:
     sqlQuery: |-
       select days,
       	e.name,
-        wca_statistics_time_format(record, eventId, record) record,
+        wca_statistics_time_format(record, eventId, record_type) record,
       	record_type,
       	wca_statistics_person_link_format(personId, personName),
       	wca_statistics_competition_link_format(competitionId, records.cellName)
