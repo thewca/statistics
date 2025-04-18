@@ -1,6 +1,5 @@
 package org.worldcubeassociation.statistics.repository.jdbc.impl;
 
-import org.simpleflatmapper.jdbc.spring.JdbcTemplateMapperFactory;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -11,6 +10,7 @@ import org.worldcubeassociation.statistics.model.RecordEvolution;
 import org.worldcubeassociation.statistics.repository.jdbc.RecordEvolutionRepositoryJdbc;
 import org.worldcubeassociation.statistics.util.JsonUtil;
 import org.worldcubeassociation.statistics.util.StatisticsUtil;
+import org.simpleflatmapper.jdbc.spring.JdbcTemplateMapperFactory;
 
 import java.time.LocalDate;
 import java.util.HashMap;

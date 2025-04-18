@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.jdbc.Sql;
-import org.worldcubeassociation.statistics.integration.AbstractTest;
+import org.worldcubeassociation.statistics.integration.AbstractIT;
 
 import java.util.Map;
 import java.util.stream.Stream;
@@ -23,8 +23,8 @@ import static io.restassured.RestAssured.given;
 @DisplayName("Sum of Ranks")
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @Sql({"/test-scripts/cleanTestData.sql", "/test-scripts/SumOfRanksControllerIT.sql"})
-public class SumOfRanksControllerIT extends AbstractTest {
-    private static final String BASE_PATH = "/sum-of-ranks/";
+public class SumOfRanksControllerIT extends AbstractIT {
+    private static final String BASE_PATH = "/sum-of-ranks";
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -62,7 +62,7 @@ public class SumOfRanksControllerIT extends AbstractTest {
                 .spec(super.createRequestSpecification())
                 .params(params)
                 .when()
-                .get(BASE_PATH + "{resultType}/{regionType}/{region}", resultType, regionType, region)
+                .get(BASE_PATH + "/{resultType}/{regionType}/{region}", resultType, regionType, region)
                 .then()
                 .statusCode(status.value())
                 .extract()
@@ -101,7 +101,7 @@ public class SumOfRanksControllerIT extends AbstractTest {
         Response response = given()
                 .spec(super.createRequestSpecification())
                 .when()
-                .get(BASE_PATH + "meta")
+                .get(BASE_PATH + "/meta")
                 .then()
                 .statusCode(HttpStatus.OK.value())
                 .extract()

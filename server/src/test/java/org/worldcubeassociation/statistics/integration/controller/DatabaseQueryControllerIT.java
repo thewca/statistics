@@ -8,15 +8,15 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mockito;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.web.client.RestTemplate;
 import org.worldcubeassociation.statistics.dto.UserInfoWrapperDTO;
-import org.worldcubeassociation.statistics.integration.AbstractTest;
+import org.worldcubeassociation.statistics.integration.AbstractIT;
 
 import java.util.Map;
 import java.util.stream.Stream;
@@ -29,10 +29,10 @@ import static org.worldcubeassociation.statistics.integration.controller.WcaCont
 
 @DisplayName("Database query")
 @Sql({"/test-scripts/cleanTestData.sql", "/test-scripts/BestEverRanksControllerIT.sql"})
-public class DatabaseQueryControllerIT extends AbstractTest {
-    private static final String BASE_PATH = "/database/";
+public class DatabaseQueryControllerIT extends AbstractIT {
+    private static final String BASE_PATH = "/database";
 
-    @MockBean
+    @MockitoBean
     private RestTemplate restTemplate;
 
     @MethodSource("queryArguments")
@@ -53,7 +53,7 @@ public class DatabaseQueryControllerIT extends AbstractTest {
                 .header("Authorization", token)
                 .body(body)
                 .when()
-                .post(BASE_PATH + "query")
+                .post(BASE_PATH + "/query")
                 .then()
                 .statusCode(status.value())
                 .extract()

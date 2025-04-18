@@ -16,9 +16,10 @@ public class Swagger2Config {
     @Bean
     public OpenAPI publicApi() {
         return new OpenAPI()
-                .info(new Info().title("WCA Statistics API")
-                        .description("An API for serving WCA Statistics project.")
-                        .version(version)
-                        .license(new License().name("GPLv3").url("https://www.gnu.org/licenses/gpl-3.0.html")));
+            .info(new Info().title("WCA Statistics API")
+                .description("An API for serving WCA Statistics project.")
+                .version(version)
+                .license(
+                    new License().name("GPLv3").url("https://www.gnu.org/licenses/gpl-3.0.html")));
     }
 }

@@ -10,7 +10,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.jdbc.Sql;
-import org.worldcubeassociation.statistics.integration.AbstractTest;
+import org.worldcubeassociation.statistics.integration.AbstractIT;
 
 import java.util.List;
 import java.util.Map;
@@ -21,7 +21,7 @@ import static io.restassured.RestAssured.given;
 @DisplayName("Best ever rank")
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @Sql({"/test-scripts/cleanTestData.sql", "/test-scripts/BestEverRanksControllerIT.sql"})
-public class BestEverRanksControllerIT extends AbstractTest {
+public class BestEverRanksControllerIT extends AbstractIT {
     private static final String BASE_PATH = "/best-ever-rank/";
 
     @Order(1)

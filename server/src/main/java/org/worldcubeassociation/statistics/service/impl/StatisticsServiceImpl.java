@@ -1,6 +1,7 @@
 package org.worldcubeassociation.statistics.service.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.validation.Valid;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URLEncoder;
@@ -15,7 +16,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import javax.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.io.Resource;
@@ -23,6 +23,8 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.io.support.ResourcePatternUtils;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 import org.worldcubeassociation.statistics.dto.ControlItemDTO;
 import org.worldcubeassociation.statistics.dto.DatabaseQueryBaseDTO;
 import org.worldcubeassociation.statistics.dto.StatisticsDTO;
@@ -204,6 +206,7 @@ public class StatisticsServiceImpl implements StatisticsService {
     }
 
     @Override
+    @Transactional(isolation = Isolation.READ_UNCOMMITTED)
     public StatisticsListDTO list(String term) {
         /* It would be better if we could write a query to retrieve the items ordered already, but mysql does not
         support it
@@ -239,10 +242,10 @@ public class StatisticsServiceImpl implements StatisticsService {
                     .statistics(k.getValue()
                         // Sort inner statistics based on title
                         .stream().sorted(Comparator.comparing(ControlItemDTO::getTitle))
-                        .collect(Collectors.toList())).build())
+                        .toList()).build())
                 // Sorts groups based on group name
                 .sorted(Comparator.comparing(StatisticsGroupDTO::getGroup))
-                .collect(Collectors.toList());
+                .toList();
 
         StatisticsListDTO statisticsListDTO = new StatisticsListDTO();
         statisticsListDTO.setList(list);

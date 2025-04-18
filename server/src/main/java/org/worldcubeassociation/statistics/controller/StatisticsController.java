@@ -16,7 +16,7 @@ import org.worldcubeassociation.statistics.dto.StatisticsRequestDTO;
 import org.worldcubeassociation.statistics.dto.StatisticsResponseDTO;
 
 import java.io.IOException;
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 @RequestMapping("statistics")
 @CrossOrigin(origins = "*", allowedHeaders = "*") // Enable this for testing

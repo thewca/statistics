@@ -1,22 +1,21 @@
 package org.worldcubeassociation.statistics.model;
 
+import io.hypersistence.utils.hibernate.type.json.JsonType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import java.time.LocalDateTime;
+import java.util.List;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.experimental.FieldNameConstants;
 import org.hibernate.annotations.Type;
 import org.worldcubeassociation.statistics.dto.besteverrank.EventRankDTO;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import java.time.LocalDateTime;
-import java.util.List;
-
 @Data
 @Entity
 @FieldNameConstants(asEnum = true)
-@EqualsAndHashCode(callSuper = true)
-public class BestEverRank extends BaseEntity implements Comparable<BestEverRank> {
+public class BestEverRank implements Comparable<BestEverRank> {
+
     @Id
     @Column(name = "person_id")
     private String personId;
@@ -24,7 +23,7 @@ public class BestEverRank extends BaseEntity implements Comparable<BestEverRank>
     @Column(name = "last_modified")
     private LocalDateTime lastModified;
 
-    @Type(type = "json")
+    @Type(JsonType.class)
     @Column(columnDefinition = "json", name = "best_ever_rank")
     private List<EventRankDTO> eventRanks;
 

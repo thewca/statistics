@@ -11,7 +11,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.jdbc.Sql;
-import org.worldcubeassociation.statistics.integration.AbstractTest;
+import org.worldcubeassociation.statistics.integration.AbstractIT;
 
 import java.util.stream.Stream;
 
@@ -20,8 +20,8 @@ import static io.restassured.RestAssured.given;
 @DisplayName("Statistics")
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @Sql({"/test-scripts/cleanTestData.sql", "/test-scripts/StatisticsControllerIT.sql"})
-public class StatisticsControllerIT extends AbstractTest {
-    private static final String BASE_PATH = "/statistics/";
+public class StatisticsControllerIT extends AbstractIT {
+    private static final String BASE_PATH = "/statistics";
 
     @Test
     @Order(1)
@@ -30,7 +30,7 @@ public class StatisticsControllerIT extends AbstractTest {
         given()
                 .spec(super.createRequestSpecification())
                 .when()
-                .post(BASE_PATH + "generate-from-sql")
+                .post(BASE_PATH + "/generate-from-sql")
                 .then()
                 .statusCode(HttpStatus.OK.value());
     }
@@ -43,7 +43,7 @@ public class StatisticsControllerIT extends AbstractTest {
         Response response = given()
                 .spec(super.createRequestSpecification())
                 .when()
-                .post(BASE_PATH + "generate-from-sql/" + fileName)
+                .post(BASE_PATH + "/generate-from-sql/" + fileName)
                 .then()
                 .statusCode(status.value())
                 .extract()
@@ -85,7 +85,7 @@ public class StatisticsControllerIT extends AbstractTest {
                 .spec(super.createRequestSpecification())
                 .param("term", term)
                 .when()
-                .get(BASE_PATH + "list")
+                .get(BASE_PATH + "/list")
                 .then()
                 .statusCode(status.value())
                 .extract()
@@ -112,7 +112,7 @@ public class StatisticsControllerIT extends AbstractTest {
         Response response = given()
                 .spec(super.createRequestSpecification())
                 .when()
-                .get(BASE_PATH + "list/{pathId}", path)
+                .get(BASE_PATH + "/list/{pathId}", path)
                 .then()
                 .statusCode(status.value())
                 .extract()
