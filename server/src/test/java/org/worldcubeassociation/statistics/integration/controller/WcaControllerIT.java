@@ -21,11 +21,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 import org.worldcubeassociation.statistics.dto.UserInfoWrapperDTO;
-import org.worldcubeassociation.statistics.integration.AbstractTest;
+import org.worldcubeassociation.statistics.integration.AbstractIT;
 import org.worldcubeassociation.statistics.util.LoadResourceUtil;
 
 @DisplayName("WCA")
-public class WcaControllerIT extends AbstractTest {
+public class WcaControllerIT extends AbstractIT {
 
     private static final String BASE_PATH = "/wca/";
 

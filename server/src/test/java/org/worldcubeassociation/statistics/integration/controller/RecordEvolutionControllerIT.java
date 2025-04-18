@@ -8,7 +8,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.jdbc.Sql;
-import org.worldcubeassociation.statistics.integration.AbstractTest;
+import org.worldcubeassociation.statistics.integration.AbstractIT;
 
 import java.util.stream.Stream;
 
@@ -16,7 +16,7 @@ import static io.restassured.RestAssured.given;
 
 @DisplayName("Database query")
 @Sql({"/test-scripts/cleanTestData.sql", "/test-scripts/RecordEvolutionControllerIT.sql"})
-public class RecordEvolutionControllerIT extends AbstractTest {
+public class RecordEvolutionControllerIT extends AbstractIT {
     private static final String BASE_PATH = "record-evolution/";
 
     @Test
