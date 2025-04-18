@@ -11,7 +11,7 @@ import org.worldcubeassociation.statistics.dto.DatabaseQueryDTO;
 import org.worldcubeassociation.statistics.request.DatabaseQueryRequest;
 import org.worldcubeassociation.statistics.response.DatabaseQueryMetaResponse;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 @RequestMapping("database")
 @CrossOrigin(origins = "*", allowedHeaders = "*") // Enable this for testing

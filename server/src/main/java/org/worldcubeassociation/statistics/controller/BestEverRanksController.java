@@ -5,7 +5,7 @@ import org.worldcubeassociation.statistics.dto.besteverrank.BestEverRankDTO;
 import org.worldcubeassociation.statistics.request.BestEverRanksRequest;
 import org.worldcubeassociation.statistics.response.BestEverRanksResponse;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 @RequestMapping("best-ever-rank")
 @CrossOrigin(origins = "*", allowedHeaders = "*") // Enable this for testing
