@@ -9,17 +9,17 @@ queries:
     sqlQuery: |-
       select
           e.name,
-          count(distinct personId) qt
+          count(distinct person_id) qt
       from
-          RanksSingle rs
-          inner join Events e on rs.eventId = e.id
+          ranks_single rs
+          inner join Events e on rs.event_id = e.id
       where
           e.`rank` < 900
       group by
-          eventId
+          event_id
       order by
           qt desc,
-          eventId
+          event_id
   - keys:
       - Competition
     headers:
