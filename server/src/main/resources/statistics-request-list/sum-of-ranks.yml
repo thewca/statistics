@@ -26,30 +26,30 @@ queries:
                   p.countryId,
                   (
                       select
-                          worldRank
+                          world_rank
                       from
-                          RanksSingle
+                          ranks_single
                       where
-                          personId = p.wca_id
-                          and eventId = '333'
+                          person_id = p.wca_id
+                          and event_id = '333'
                   ) r3,
                   (
                       select
-                          worldRank
+                          world_rank
                       from
-                          RanksSingle
+                          ranks_single
                       where
-                          personId = p.wca_id
-                          and eventId = '444'
+                          person_id = p.wca_id
+                          and event_id = '444'
                   ) r4,
                   (
                       select
-                          worldRank
+                          world_rank
                       from
-                          RanksSingle
+                          ranks_single
                       where
-                          personId = p.wca_id
-                          and eventId = '555'
+                          person_id = p.wca_id
+                          and event_id = '555'
                   ) r5
               from
                   Persons p
@@ -78,28 +78,28 @@ queries:
               p.countryId,
               (
               select
-                  worldRank
+                  world_rank
               from
-                  RanksSingle
+                  ranks_single
               where
-                  personId = p.wca_id
-                  and eventId = '333') r3,
+                  person_id = p.wca_id
+                  and event_id = '333') r3,
               (
               select
-                  worldRank
+                  world_rank
               from
-                  RanksSingle
+                  ranks_single
               where
-                  personId = p.wca_id
-                  and eventId = '444') r4,
+                  person_id = p.wca_id
+                  and event_id = '444') r4,
               (
               select
-                  worldRank
+                  world_rank
               from
-                  RanksSingle
+                  ranks_single
               where
-                  personId = p.wca_id
-                  and eventId = '555') r5
+                  person_id = p.wca_id
+                  and event_id = '555') r5
           from
               Persons p) r
       where
@@ -137,30 +137,30 @@ queries:
                   p.countryId,
                   (
                       select
-                          worldRank
+                          world_rank
                       from
-                          RanksAverage
+                          ranks_average
                       where
-                          personId = p.wca_id
-                          and eventId = '333'
+                          person_id = p.wca_id
+                          and event_id = '333'
                   ) r3,
                   (
                       select
-                          worldRank
+                          world_rank
                       from
-                          RanksAverage
+                          ranks_average
                       where
-                          personId = p.wca_id
-                          and eventId = '444'
+                          person_id = p.wca_id
+                          and event_id = '444'
                   ) r4,
                   (
                       select
-                          worldRank
+                          world_rank
                       from
-                          RanksAverage
+                          ranks_average
                       where
-                          personId = p.wca_id
-                          and eventId = '555'
+                          person_id = p.wca_id
+                          and event_id = '555'
                   ) r5
               from
                   Persons p
@@ -189,28 +189,28 @@ queries:
               p.countryId,
               (
               select
-                  worldRank
+                  world_rank
               from
-                  RanksAverage
+                  ranks_average
               where
-                  personId = p.wca_id
-                  and eventId = '333') r3,
+                  person_id = p.wca_id
+                  and event_id = '333') r3,
               (
               select
-                  worldRank
+                  world_rank
               from
-                  RanksAverage
+                  ranks_average
               where
-                  personId = p.wca_id
-                  and eventId = '444') r4,
+                  person_id = p.wca_id
+                  and event_id = '444') r4,
               (
               select
-                  worldRank
+                  world_rank
               from
-                  RanksAverage
+                  ranks_average
               where
-                  personId = p.wca_id
-                  and eventId = '555') r5
+                  person_id = p.wca_id
+                  and event_id = '555') r5
           from
               Persons p) r
       where
