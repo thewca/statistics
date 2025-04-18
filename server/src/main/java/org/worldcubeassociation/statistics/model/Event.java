@@ -3,8 +3,8 @@ package org.worldcubeassociation.statistics.model;
 import lombok.Data;
 import lombok.experimental.FieldNameConstants;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 
 @Data
 @Entity

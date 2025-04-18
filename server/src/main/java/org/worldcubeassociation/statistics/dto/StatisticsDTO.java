@@ -1,19 +1,20 @@
 package org.worldcubeassociation.statistics.dto;
 
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import java.util.List;
 import lombok.Data;
 import org.worldcubeassociation.statistics.enums.DisplayModeEnum;
-
-import java.util.List;
-import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class StatisticsDTO {
+
     @JsonProperty("version")
     private static final String VERSION = "v1";
 
@@ -22,7 +23,7 @@ public class StatisticsDTO {
     private String title;
 
     @Schema(title = "Explanation about the current statistic.",
-            example = "Number of competitions in each country sorted from the highest to the lowest.")
+        example = "Number of competitions in each country sorted from the highest to the lowest.")
     private String explanation;
 
     @NotNull
@@ -30,9 +31,10 @@ public class StatisticsDTO {
 
     @NotNull
     @Schema(
-            title = "In case of grouped statistics, you can select DEFAULT to display all of them in the frontend or "
-                    + "'SELECTOR' to group them in a selector.",
-            example = "DEFAULT")
+        title =
+            "In case of grouped statistics, you can select DEFAULT to display all of them in the frontend or "
+                + "'SELECTOR' to group them in a selector.",
+        example = "DEFAULT")
     private DisplayModeEnum displayMode;
 
     @NotBlank

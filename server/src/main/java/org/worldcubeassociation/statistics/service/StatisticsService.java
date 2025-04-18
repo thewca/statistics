@@ -7,7 +7,7 @@ import org.worldcubeassociation.statistics.dto.StatisticsResponseDTO;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 public interface StatisticsService {
     StatisticsResponseDTO sqlToStatistics(StatisticsRequestDTO statisticsRequestDTO) throws IOException;

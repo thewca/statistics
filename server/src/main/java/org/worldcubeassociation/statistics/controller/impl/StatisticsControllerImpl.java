@@ -10,7 +10,7 @@ import org.worldcubeassociation.statistics.dto.StatisticsResponseDTO;
 import org.worldcubeassociation.statistics.service.AuthorizationService;
 import org.worldcubeassociation.statistics.service.StatisticsService;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.io.IOException;
 
 @RestController

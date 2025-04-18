@@ -1,27 +1,19 @@
 package org.worldcubeassociation.statistics.model;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import java.time.LocalDateTime;
-import java.util.List;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.Type;
-import org.worldcubeassociation.statistics.dto.StatisticsGroupResponseDTO;
-import org.worldcubeassociation.statistics.enums.DisplayModeEnum;
 
 @Getter
 @Setter
 @Entity
-@EqualsAndHashCode(callSuper = true)
 @Table(name = "statistics_control")
-public class StatisticsControl extends BaseEntity {
+public class StatisticsControl {
+
     @Id
     private String path;
 

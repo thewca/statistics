@@ -11,8 +11,8 @@ import org.worldcubeassociation.statistics.exception.InvalidParameterException;
 import org.worldcubeassociation.statistics.exception.NotFoundException;
 import org.worldcubeassociation.statistics.exception.UnauthorizedException;
 
-import javax.validation.ConstraintViolation;
-import javax.validation.ConstraintViolationException;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
 import java.util.stream.Collectors;
 
 @ControllerAdvice

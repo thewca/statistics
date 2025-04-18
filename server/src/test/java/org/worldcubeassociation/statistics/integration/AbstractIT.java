@@ -21,7 +21,7 @@ import org.skyscreamer.jsonassert.JSONCompareMode;
 import org.skyscreamer.jsonassert.comparator.CustomComparator;
 import org.skyscreamer.jsonassert.comparator.DefaultComparator;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.worldcubeassociation.statistics.util.LoadResourceUtil;
@@ -29,18 +29,18 @@ import org.worldcubeassociation.statistics.util.LoadResourceUtil;
 @ActiveProfiles("test")
 @TestPropertySource(locations = "classpath:application-test.yaml")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class AbstractTest {
+public class AbstractIT {
 
     private static final String PROTOCOL_HTTP = "http://";
     private static final String TEST_HOST = "localhost";
 
     @LocalServerPort
-    private int API_PORT;
+    private int apiPort;
 
     protected RequestSpecification createRequestSpecification() {
         return new RequestSpecBuilder()
             .setContentType(ContentType.JSON)
-            .setBaseUri(String.format("%s%s:%s", PROTOCOL_HTTP, TEST_HOST, API_PORT))
+            .setBaseUri(String.format("%s%s:%s", PROTOCOL_HTTP, TEST_HOST, apiPort))
             .addFilter(new ResponseLoggingFilter())
             .addFilter(new RequestLoggingFilter())
             .build();
@@ -69,8 +69,8 @@ public class AbstractTest {
 
             final String expectedPayload = LoadResourceUtil.getResource(resource);
 
-            JSONAssert.assertEquals(
-                expectedPayload, actualPayload, comparator);
+            JSONAssert.assertEquals(String.format("File %s", resource), expectedPayload,
+                actualPayload, comparator);
 
         } catch (UncheckedIOException | JSONException ex) {
             if (ex.getCause() instanceof FileNotFoundException) {
@@ -81,7 +81,7 @@ public class AbstractTest {
                     success("Test file did not exist. File created and test succeeded");
 
                 } catch (Exception e) {
-                    throw new AbstractTest.TestCasePayloadGeneratedException(actualPayload,
+                    throw new AbstractIT.TestCasePayloadGeneratedException(actualPayload,
                         resource);
                 }
             }

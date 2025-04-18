@@ -15,9 +15,7 @@ const Footer = () => {
             <a href="https://www.worldcubeassociation.org/faq">FAQ</a>
           </li>
           <li>
-            <a href="https://www.worldcubeassociation.org/contact">
-              Contact
-            </a>
+            <a href="https://www.worldcubeassociation.org/contact">Contact</a>
           </li>
           <li>
             <a href="https://github.com/thewca/statistics">

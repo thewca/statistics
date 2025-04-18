@@ -12,7 +12,7 @@ import org.worldcubeassociation.statistics.response.PageResponse;
 import org.worldcubeassociation.statistics.response.rank.SumOfRanksResponse;
 
 import java.util.List;
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 @RequestMapping("sum-of-ranks")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
