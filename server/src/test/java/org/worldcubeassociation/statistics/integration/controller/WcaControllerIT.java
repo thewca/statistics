@@ -14,11 +14,11 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mockito;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.web.client.RestTemplate;
 import org.worldcubeassociation.statistics.dto.UserInfoWrapperDTO;
 import org.worldcubeassociation.statistics.integration.AbstractIT;
@@ -29,7 +29,7 @@ public class WcaControllerIT extends AbstractIT {
 
     private static final String BASE_PATH = "/wca/";
 
-    @MockBean
+    @MockitoBean
     private RestTemplate restTemplate;
 
     protected static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
