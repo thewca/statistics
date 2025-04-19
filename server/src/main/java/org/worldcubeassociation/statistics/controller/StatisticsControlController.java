@@ -1,5 +1,6 @@
 package org.worldcubeassociation.statistics.controller;
 
+import jakarta.validation.constraints.NotBlank;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -8,11 +9,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public interface StatisticsControlController {
 
     @PostMapping
-    void start(String path);
+    void start(@NotBlank String path);
 
     @PatchMapping
-    void complete(String path);
+    void complete(@NotBlank String path);
 
     @PostMapping("error")
-    void error(String path, String message);
+    void error(@NotBlank String path, String message);
 }
