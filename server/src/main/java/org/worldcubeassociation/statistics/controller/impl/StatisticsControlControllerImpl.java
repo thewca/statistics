@@ -29,8 +29,8 @@ public class StatisticsControlControllerImpl implements StatisticsControlControl
     }
 
     @Override
-    public void error(String path, String errorMessage) {
+    public void error(String path, String message) {
         authorizationService.disableInProd();
-        service.error(path, errorMessage);
+        service.error(path, message);
     }
 }

@@ -14,5 +14,5 @@ public interface StatisticsControlController {
     void complete(String path);
 
     @PostMapping("error")
-    void error(String path, String errorMessage);
+    void error(String path, String message);
 }
