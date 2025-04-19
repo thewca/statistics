@@ -35,13 +35,11 @@ import org.worldcubeassociation.statistics.dto.StatisticsListDTO;
 import org.worldcubeassociation.statistics.dto.StatisticsRequestDTO;
 import org.worldcubeassociation.statistics.dto.StatisticsResponseDTO;
 import org.worldcubeassociation.statistics.enums.DisplayModeEnum;
-import org.worldcubeassociation.statistics.enums.StatisticsControlStatus;
 import org.worldcubeassociation.statistics.exception.NotFoundException;
 import org.worldcubeassociation.statistics.model.Statistics;
-import org.worldcubeassociation.statistics.model.StatisticsControl;
-import org.worldcubeassociation.statistics.repository.StatisticsControlRepository;
 import org.worldcubeassociation.statistics.repository.StatisticsRepository;
 import org.worldcubeassociation.statistics.service.DatabaseQueryService;
+import org.worldcubeassociation.statistics.service.StatisticsControlService;
 import org.worldcubeassociation.statistics.service.StatisticsService;
 import org.yaml.snakeyaml.Yaml;
 
@@ -53,7 +51,7 @@ public class StatisticsServiceImpl implements StatisticsService {
     private final ResourceLoader resourceLoader;
     private final StatisticsRepository statisticsRepository;
     private final ObjectMapper objectMapper;
-    private final StatisticsControlRepository statisticsControlRepository;
+    private final StatisticsControlService statisticsControlService;
 
     private static final Yaml YAML = new Yaml();
 
@@ -65,12 +63,12 @@ public class StatisticsServiceImpl implements StatisticsService {
 
     public StatisticsServiceImpl(DatabaseQueryService databaseQueryService,
         ResourceLoader resourceLoader, StatisticsRepository statisticsRepository,
-        ObjectMapper objectMapper, StatisticsControlRepository statisticsControlRepository) {
+        ObjectMapper objectMapper, StatisticsControlService statisticsControlService) {
         this.databaseQueryService = databaseQueryService;
         this.resourceLoader = resourceLoader;
         this.statisticsRepository = statisticsRepository;
         this.objectMapper = objectMapper;
-        this.statisticsControlRepository = statisticsControlRepository;
+        this.statisticsControlService = statisticsControlService;
     }
 
     @Override
@@ -180,11 +178,7 @@ public class StatisticsServiceImpl implements StatisticsService {
 
             log.info("Statistic {}", resource.getDescription());
 
-            var statisticsControl = new StatisticsControl();
-            statisticsControl.setPath(resource.getFilename());
-            statisticsControl.setCreatedAt(LocalDateTime.now());
-            statisticsControl.setStatus(StatisticsControlStatus.STARTED.name());
-            statisticsControlRepository.save(statisticsControl);
+            var statisticsControl = statisticsControlService.start(resource.getFilename());
 
             try {
                 InputStream inputStream = resource.getInputStream();
@@ -193,14 +187,10 @@ public class StatisticsServiceImpl implements StatisticsService {
 
                 sqlToStatistics(request);
 
-                statisticsControl.setCompletedAt(LocalDateTime.now());
-                statisticsControl.setStatus(StatisticsControlStatus.COMPLETED.name());
-                statisticsControlRepository.save(statisticsControl);
+                statisticsControlService.complete(statisticsControl);
             } catch (Exception e) {
                 log.error("Error while processing {}", resource.getFilename(), e);
-                statisticsControl.setMessage(StringUtils.abbreviate(e.getMessage(), 200));
-                statisticsControl.setStatus(StatisticsControlStatus.FAILED.name());
-                statisticsControlRepository.save(statisticsControl);
+                statisticsControlService.error(statisticsControl, e.getMessage());
             }
         }
     }
@@ -305,7 +295,7 @@ public class StatisticsServiceImpl implements StatisticsService {
     public void deleteAll() {
         log.info("Delete all statistics");
         statisticsRepository.deleteAll();
-        statisticsControlRepository.deleteAll();
+        statisticsControlService.deleteAll();
         log.info("Deleted");
     }
 

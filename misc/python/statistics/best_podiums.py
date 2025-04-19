@@ -1,11 +1,17 @@
 # python3 -m misc.python.statistics.best_podiums
 
 from misc.python.util.time_util import time_format
-from misc.python.util.html_util import get_competition_html_link, get_competitor_html_link
+from misc.python.util.html_util import (
+    get_competition_html_link,
+    get_competitor_html_link,
+)
 from misc.python.util.database_util import get_database_connection
 from misc.python.util.event_util import get_current_events
 from misc.python.util.log_util import log
-from misc.python.util.statistics_api_util import create_statistics
+from misc.python.util.statistics_api_util import (
+    create_statistics,
+    handle_statistics_control,
+)
 
 title = "Best podiums"
 
@@ -54,8 +60,16 @@ def best_podiums():
     statistics["statistics"] = []
     statistics["displayMode"] = "SELECTOR"
 
-    headers = ["Competition", "Sum", "First",
-               "Result", "Second", "Result", "Third", "Result"]
+    headers = [
+        "Competition",
+        "Sum",
+        "First",
+        "Result",
+        "Second",
+        "Result",
+        "Third",
+        "Result",
+    ]
 
     current_events = get_current_events()
 
@@ -77,26 +91,42 @@ def best_podiums():
         stat = []
         for line in lines:
 
-            result = [get_competition_html_link(
-                line[0], line[1]), str(int(line[2])) if current_event.event_id == '333mbf' else time_format(line[2], current_event.event_id, "average")]
+            result = [
+                get_competition_html_link(line[0], line[1]),
+                (
+                    str(int(line[2]))
+                    if current_event.event_id == "333mbf"
+                    else time_format(line[2], current_event.event_id, "average")
+                ),
+            ]
 
             # Each competitor
             for i in range(podium_length):
-                result.append(get_competitor_html_link(
-                    line[3+3*i], line[4+3*i]))
-                result.append(time_format(
-                    line[5+3*i], current_event.event_id, "average"))
+                result.append(
+                    get_competitor_html_link(line[3 + 3 * i], line[4 + 3 * i])
+                )
+                result.append(
+                    time_format(line[5 + 3 * i], current_event.event_id, "average")
+                )
 
             stat.append(result)
 
         statistics["statistics"].append(
-            {"keys": [current_event.name], "content": stat, "headers": headers, "showPositions": True, "positionTieBreakerIndex": 1})
+            {
+                "keys": [current_event.name],
+                "content": stat,
+                "headers": headers,
+                "showPositions": True,
+                "positionTieBreakerIndex": 1,
+            }
+        )
 
     cnx.close()
 
     return statistics
 
 
+@handle_statistics_control
 def main():
     log.info(" ========== %s ==========" % title)
 

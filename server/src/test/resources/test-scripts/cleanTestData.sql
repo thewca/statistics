@@ -30,4 +30,6 @@ truncate wca_development.RanksSingle;
 
 truncate wca_development.RanksAverage;
 
+truncate wca_development.statistics_control;
+
 set foreign_key_checks = 1;

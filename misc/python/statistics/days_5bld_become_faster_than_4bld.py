@@ -5,10 +5,15 @@ import bisect
 
 from misc.python.model.competitor import Competitor as Comp
 from misc.python.util.database_util import get_database_connection
-from misc.python.util.html_util import (get_competition_html_link,
-                                        get_competitor_html_link)
+from misc.python.util.html_util import (
+    get_competition_html_link,
+    get_competitor_html_link,
+)
 from misc.python.util.log_util import log
-from misc.python.util.statistics_api_util import create_statistics
+from misc.python.util.statistics_api_util import (
+    create_statistics,
+    handle_statistics_control,
+)
 from misc.python.util.time_util import time_format
 
 title = "5bld became faster than 4bld"
@@ -60,7 +65,16 @@ def compare_results(ev1, ev2):
 
     cursor.execute(query % (ev1, ev2))
 
-    for wca_id, country_id, name, best, start_date, competition_id, competition_name, event_id in cursor:
+    for (
+        wca_id,
+        country_id,
+        name,
+        best,
+        start_date,
+        competition_id,
+        competition_name,
+        event_id,
+    ) in cursor:
         competitor = Competitor(wca_id, country_id, name)
         i = bisect.bisect_left(competitors, competitor)
         if i == len(competitors) or competitors[i] != competitor:
@@ -70,41 +84,76 @@ def compare_results(ev1, ev2):
         # first ev1 result ever
         if event_id == ev1 and not competitor.first_results[0]:
             competitor.first_results[0] = best
-            competitor.first_competitions[0] = [
-                competition_id, competition_name]
+            competitor.first_competitions[0] = [competition_id, competition_name]
             competitor.first_dates[0] = start_date
-        elif event_id == ev2 and not competitor.first_results[1] and competitor.first_results[0] and best < competitor.first_results[0]:
+        elif (
+            event_id == ev2
+            and not competitor.first_results[1]
+            and competitor.first_results[0]
+            and best < competitor.first_results[0]
+        ):
             competitor.first_results[1] = best
-            competitor.first_competitions[1] = [
-                competition_id, competition_name]
+            competitor.first_competitions[1] = [competition_id, competition_name]
 
             competitor.first_dates[1] = start_date
 
             competitor.diff = (
-                competitor.first_dates[1] - competitor.first_dates[0]).days
+                competitor.first_dates[1] - competitor.first_dates[0]
+            ).days
 
     table = []
 
     sorted_competitors = sorted(
-        filter(lambda c: c.diff and c.diff > 0, competitors), key=lambda c: c.diff)
+        filter(lambda c: c.diff and c.diff > 0, competitors), key=lambda c: c.diff
+    )
 
     for competitor in sorted_competitors:
 
-        table.append([competitor.diff, get_competitor_html_link(competitor.wca_id, competitor.name), time_format(competitor.first_results[0]), get_competition_html_link(competitor.first_competitions[0]
-                                                                                                                                                                         [0], competitor.first_competitions[0][1]), time_format(competitor.first_results[1]), get_competition_html_link(competitor.first_competitions[1][0], competitor.first_competitions[1][1])])
+        table.append(
+            [
+                competitor.diff,
+                get_competitor_html_link(competitor.wca_id, competitor.name),
+                time_format(competitor.first_results[0]),
+                get_competition_html_link(
+                    competitor.first_competitions[0][0],
+                    competitor.first_competitions[0][1],
+                ),
+                time_format(competitor.first_results[1]),
+                get_competition_html_link(
+                    competitor.first_competitions[1][0],
+                    competitor.first_competitions[1][1],
+                ),
+            ]
+        )
 
     out = {}
-    out["explanation"] = "In case of multiple first results (eg. ao3), best one is taken."
+    out["explanation"] = (
+        "In case of multiple first results (eg. ao3), best one is taken."
+    )
     out["title"] = title
     out["displayMode"] = "DEFAULT"
     out["groupName"] = "Competitors"
-    headers = ["Days", "Name", "First %s result" %
-               ev1, "Competition", "First faster %s result" % ev2, "Competition"]
-    out["statistics"] = [{"keys": [], "content": table,
-                          "headers": headers, "showPositions": True, "positionTieBreakerIndex": 0}]
+    headers = [
+        "Days",
+        "Name",
+        "First %s result" % ev1,
+        "Competition",
+        "First faster %s result" % ev2,
+        "Competition",
+    ]
+    out["statistics"] = [
+        {
+            "keys": [],
+            "content": table,
+            "headers": headers,
+            "showPositions": True,
+            "positionTieBreakerIndex": 0,
+        }
+    ]
     return out
 
 
+@handle_statistics_control
 def main():
     log.info(" ========== %s ==========" % title)
 

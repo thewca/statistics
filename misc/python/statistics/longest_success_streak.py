@@ -10,7 +10,10 @@ from misc.python.util.html_util import (
     get_competitor_html_link,
 )
 from misc.python.util.log_util import log
-from misc.python.util.statistics_api_util import create_statistics
+from misc.python.util.statistics_api_util import (
+    create_statistics,
+    handle_statistics_control,
+)
 
 title = "Longest success streak"
 
@@ -155,6 +158,7 @@ def longest_streaks():
     return out
 
 
+@handle_statistics_control
 def main():
     log.info("========== %s ==========" % title)
     statistics = longest_streaks()
