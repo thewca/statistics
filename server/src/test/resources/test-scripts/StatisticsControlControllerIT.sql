@@ -1,0 +1,1 @@
+insert into wca_development.statistics_control (`path`, status, message, created_at, completed_at) values ('existing_stat.py', 'COMPLETED', null, '2025-04-19 10:25:53', null);
