@@ -4,7 +4,10 @@ from datetime import datetime
 
 from misc.python.util.database_util import get_database_connection
 from misc.python.util.log_util import log
-from misc.python.util.statistics_api_util import create_statistics
+from misc.python.util.statistics_api_util import (
+    create_statistics,
+    handle_statistics_control,
+)
 
 current_year = datetime.now().year
 range = 5
@@ -13,7 +16,9 @@ min_year = current_year - range
 max_year = current_year - 1
 
 title = "Average number of events in a competition for each country from %s to %s" % (
-    min_year, max_year)
+    min_year,
+    max_year,
+)
 
 query = """select
 	format(average, 2),
@@ -54,13 +59,21 @@ def avg_events():
     out["displayMode"] = "DEFAULT"
     headers = ["Avg", "Country"]
     out["statistics"] = [
-        {"keys": [], "content": content, "headers": headers, "showPositions": True, "positionTieBreakerIndex": 0}]
+        {
+            "keys": [],
+            "content": content,
+            "headers": headers,
+            "showPositions": True,
+            "positionTieBreakerIndex": 0,
+        }
+    ]
 
     cnx.close()
 
     return out
 
 
+@handle_statistics_control
 def main():
     log.info(" ========== %s ==========" % title)
 
