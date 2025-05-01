@@ -1,6 +1,10 @@
 package org.worldcubeassociation.statistics.repository.jdbc.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.sql.ResultSet;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.simpleflatmapper.jdbc.spring.JdbcTemplateMapperFactory;
@@ -15,24 +19,22 @@ import org.worldcubeassociation.statistics.dto.sumofranks.SumOfRanksDto;
 import org.worldcubeassociation.statistics.dto.sumofranks.SumOfRanksMetaDto;
 import org.worldcubeassociation.statistics.dto.sumofranks.SumOfRanksRegionGroupDto;
 import org.worldcubeassociation.statistics.repository.jdbc.SumOfRanksRepository;
-import org.worldcubeassociation.statistics.util.StatisticsUtil;
-
-import java.sql.ResultSet;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import org.worldcubeassociation.statistics.util.LoadResourceUtil;
 
 @Slf4j
 @Repository
 @AllArgsConstructor
 public class SumOfRanksRepositoryImpl implements SumOfRanksRepository {
+
     private final JdbcTemplate jdbcTemplate;
     private final NamedParameterJdbcTemplate namedJdbcTemplate;
     private final ObjectMapper objectMapper;
 
     private int baseRank(String singleQuery, String avgQuery) {
-        int single = jdbcTemplate.update(StatisticsUtil.getQuery(String.format("sumofranks/%s", singleQuery)));
-        int avg = jdbcTemplate.update(StatisticsUtil.getQuery(String.format("sumofranks/%s", avgQuery)));
+        int single = jdbcTemplate.update(
+            LoadResourceUtil.getResource(String.format("db/query/sumofranks/%s.sql", singleQuery)));
+        int avg = jdbcTemplate.update(
+            LoadResourceUtil.getResource(String.format("db/query/sumofranks/%s.sql", avgQuery)));
         return single + avg;
     }
 
@@ -61,29 +63,33 @@ public class SumOfRanksRepositoryImpl implements SumOfRanksRepository {
 
     @Override
     public List<SumOfRanksDto> list(String resultType, String regionType, String region, int page,
-                                    int pageSize) {
-        return namedJdbcTemplate.query(StatisticsUtil.getQuery("sumofranks/getSumOfRanks"),
-                new MapSqlParameterSource().addValue("REGION_TYPE", regionType).addValue("REGION", region)
-                        .addValue("RESULT_TYPE", resultType).addValue("PAGE_SIZE", pageSize)
-                        .addValue("OFFSET", page * pageSize), JdbcTemplateMapperFactory.newInstance()
-                        .addColumnProperty("events", GetterFactoryProperty.forType(List.class, (rs, i) -> Arrays.asList(
-                                objectMapper.readValue(((ResultSet) rs).getString(i), SumOfRankEventDto[].class))))
-                        .newRowMapper(SumOfRanksDto.class));
+        int pageSize) {
+        return namedJdbcTemplate.query(LoadResourceUtil.getResource("db/query/sumofranks/getSumOfRanks.sql"),
+            new MapSqlParameterSource().addValue("REGION_TYPE", regionType)
+                .addValue("REGION", region)
+                .addValue("RESULT_TYPE", resultType).addValue("PAGE_SIZE", pageSize)
+                .addValue("OFFSET", page * pageSize), JdbcTemplateMapperFactory.newInstance()
+                .addColumnProperty("events",
+                    GetterFactoryProperty.forType(List.class, (rs, i) -> Arrays.asList(
+                        objectMapper.readValue(((ResultSet) rs).getString(i),
+                            SumOfRankEventDto[].class))))
+                .newRowMapper(SumOfRanksDto.class));
     }
 
     @Override
     public List<SumOfRanksMetaDto> getResultTypes() {
         return jdbcTemplate
-                .query(StatisticsUtil.getQuery("sumofranks/getMeta"), JdbcTemplateMapperFactory.newInstance()
-                        .addColumnProperty("regionGroups",
-                                GetterFactoryProperty.forType(List.class, (rs, i) -> Arrays.asList(
-                                        objectMapper.readValue(((ResultSet) rs).getString(i),
-                                                SumOfRanksRegionGroupDto[].class))))
-                        .addColumnProperty("availableEvents",
-                                GetterFactoryProperty.forType(List.class, (rs, i) -> Arrays.asList(
-                                        objectMapper.readValue(((ResultSet) rs).getString(i),
-                                                EventDto[].class))))
-                        .newRowMapper(SumOfRanksMetaDto.class));
+            .query(LoadResourceUtil.getResource("db/query/sumofranks/getMeta.sql"),
+                JdbcTemplateMapperFactory.newInstance()
+                    .addColumnProperty("regionGroups",
+                        GetterFactoryProperty.forType(List.class, (rs, i) -> Arrays.asList(
+                            objectMapper.readValue(((ResultSet) rs).getString(i),
+                                SumOfRanksRegionGroupDto[].class))))
+                    .addColumnProperty("availableEvents",
+                        GetterFactoryProperty.forType(List.class, (rs, i) -> Arrays.asList(
+                            objectMapper.readValue(((ResultSet) rs).getString(i),
+                                EventDto[].class))))
+                    .newRowMapper(SumOfRanksMetaDto.class));
     }
 
     @Override
@@ -93,24 +99,26 @@ public class SumOfRanksRepositoryImpl implements SumOfRanksRepository {
 
     @Override
     public int insertMeta() {
-        return jdbcTemplate.update(StatisticsUtil.getQuery("sumofranks/insertMeta"));
+        return jdbcTemplate.update(LoadResourceUtil.getResource("db/query/sumofranks/insertMeta.sql"));
     }
 
     @Override
     public void updateRanks() {
-        jdbcTemplate.update(StatisticsUtil.getQuery("sumofranks/updateRank"));
+        jdbcTemplate.update(LoadResourceUtil.getResource("db/query/sumofranks/updateRank.sql"));
     }
 
     @Override
-    public Optional<Integer> getWcaIdPage(String resultType, String regionType, String region, int pageSize,
-                                          String wcaId) {
-        List<Integer> list = namedJdbcTemplate.queryForList(StatisticsUtil.getQuery("sumofranks/getWcaIdPage"),
-                new MapSqlParameterSource()
-                        .addValue("RESULT_TYPE", resultType)
-                        .addValue("REGION_TYPE", regionType)
-                        .addValue("REGION", region)
-                        .addValue("PAGE_SIZE", pageSize)
-                        .addValue("WCA_ID", wcaId), Integer.class);
+    public Optional<Integer> getWcaIdPage(String resultType, String regionType, String region,
+        int pageSize,
+        String wcaId) {
+        List<Integer> list = namedJdbcTemplate.queryForList(
+            LoadResourceUtil.getResource("db/query/sumofranks/getWcaIdPage.sql"),
+            new MapSqlParameterSource()
+                .addValue("RESULT_TYPE", resultType)
+                .addValue("REGION_TYPE", regionType)
+                .addValue("REGION", region)
+                .addValue("PAGE_SIZE", pageSize)
+                .addValue("WCA_ID", wcaId), Integer.class);
 
         return Optional.ofNullable(list.size() != 1 ? null : list.get(0));
     }
