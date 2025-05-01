@@ -5,20 +5,20 @@ queries:
     positionTieBreakerIndex: 2
     sqlQuery: |-
       select
-          wca_statistics_person_link_format(personId, personName) Name,
+          wca_statistics_person_link_format(person_id, person_name) Name,
           Country,
           count(*) Apperances
       from
           (
               select
-                  personName,
-                  personId,
+                  person_name,
+                  person_id,
                   average,
-                  countryId Country
+                  country_id Country
               from
-                  Results r
+                  results r
               where
-                  eventId = '333'
+                  event_id = '333'
                   and average > 0
               order by
                   average
@@ -26,8 +26,8 @@ queries:
                   100
           ) r
       group by
-          personName,
-          personId,
+          person_name,
+          person_id,
           Country
       order by
           Apperances desc
@@ -37,7 +37,7 @@ queries:
     positionTieBreakerIndex: 2
     sqlQuery: |-
       select
-          wca_statistics_person_link_format(personId, personName) Name,
+          wca_statistics_person_link_format(person_id, person_name) Name,
           Country,
           count(*) Apperances
       from
@@ -47,62 +47,62 @@ queries:
               from
                   (
                       select
-                          personName,
-                          personId,
+                          person_name,
+                          person_id,
                           value1 result,
-                          countryId Country
+                          country_id Country
                       from
-                          Results
+                          results
                       where
-                          eventId = '333'
+                          event_id = '333'
                           and value1 > 0
                       union
                       all
                       select
-                          personName,
-                          personId,
+                          person_name,
+                          person_id,
                           value2 result,
-                          countryId Country
+                          country_id Country
                       from
-                          Results
+                          results
                       where
-                          eventId = '333'
+                          event_id = '333'
                           and value2 > 0
                       union
                       all
                       select
-                          personName,
-                          personId,
+                          person_name,
+                          person_id,
                           value3 result,
-                          countryId Country
+                          country_id Country
                       from
-                          Results
+                          results
                       where
-                          eventId = '333'
+                          event_id = '333'
                           and value3 > 0
                       union
                       all
                       select
-                          personName,
-                          personId,
+                          person_name,
+                          person_id,
                           value4 result,
-                          countryId Country
+                          country_id Country
                       from
-                          Results
+                          results
                       where
-                          eventId = '333'
+                          event_id = '333'
                           and value4 > 0
                       union
                       all
                       select
-                          personName,
-                          personId,
+                          person_name,
+                          person_id,
                           value5 result,
-                          countryId Country
+                          country_id Country
                       from
-                          Results
+                          results
                       where
-                          eventId = '333'
+                          event_id = '333'
                           and value5 > 0
                   ) r
               order by
@@ -111,8 +111,8 @@ queries:
                   100
           ) final
       group by
-          personName,
-          personId,
+          person_name,
+          person_id,
           Country
       order by
           Apperances desc
