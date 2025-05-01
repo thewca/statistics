@@ -23,16 +23,16 @@ select
     e.name,
     max_ranks.max_rank
 from
-    Events e
+    events e
     inner join (
         select
-            eventId,
-            max(worldRank) + 1 max_rank
+            event_id,
+            max(world_rank) + 1 max_rank
         from
-            Ranks%s
+            ranks_%s
         group by
-            eventId
-    ) max_ranks on max_ranks.eventId = e.id -- Exclude inactive events
+            event_id
+    ) max_ranks on max_ranks.event_id = e.id -- Exclude inactive events
 where
     `rank` < 900
 order by
@@ -42,19 +42,19 @@ order by
 # Replace %s with Average or Single for different table
 competitors_query = """
 select
-    personId,
-    worldRank,
-    eventId,
+    person_id,
+    world_rank,
+    event_id,
     p.name
 from
-    Ranks%s r
-    inner join Persons p on r.personId = p.wca_id
+    ranks_%s r
+    inner join persons p on r.person_id = p.wca_id
 where
-    eventId in (
+    event_id in (
         select
             id
         from
-            Events
+            events
         where
             `rank` < 900
     )
@@ -80,12 +80,12 @@ custom_sub_query = """
                                 ifnull(
                                     (
                                         select
-                                            worldRank
+                                            world_rank
                                         from
-                                            Ranks%(result_type)s
+                                            ranks%(result_type)s
                                         where
-                                            eventId = '%(event_id)s'
-                                            and personId = ':WCA_ID'
+                                            event_id = '%(event_id)s'
+                                            and person_id = ':WCA_ID'
                                     ),
                                     null
                                 )
@@ -150,7 +150,7 @@ def sum_of_all_ranks():
     statistics["statistics"] = []
     statistics["displayMode"] = "DEFAULT"
 
-    for result_type in ["Average", "Single"]:
+    for result_type in ["average", "single"]:
 
         events = []
         cursor.execute(events_query % result_type)  # Not an sql replacement
