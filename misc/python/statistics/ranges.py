@@ -40,9 +40,9 @@ query = """select
 	value4,
 	value5
 from
-	Results
+	results
 where
-	eventId = '%s'
+	event_id = '%s'
 """
 
 

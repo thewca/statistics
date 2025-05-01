@@ -30,7 +30,7 @@ class Competitor(Comp):
 query = """select
     person_id,
     person_name,
-    r.countryId,
+    r.country_id,
     value1,
     value2,
     value3,
@@ -38,7 +38,7 @@ query = """select
     value5
 from
     results r
-    inner join competitions c on r.competitionId = c.id
+    inner join competitions c on r.competition_id = c.id
 where
     event_id = %(event_id)s
     and c.start_date >= date(%(min_date)s)"""
@@ -84,7 +84,7 @@ from
             ) attempts
         from
             results r
-            inner join competitions c on r.competitionId = c.id
+            inner join competitions c on r.competition_id = c.id
         where
             c.start_date >= date('%(min_date)s')
             and person_id = ':WCA_ID'

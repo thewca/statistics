@@ -44,14 +44,12 @@ from
     results r
 inner join competitions c on
 	r.competition_id = c.id
-inner join round_types rt on
-	r.round_type_id = rt.id
 where
     event_id = %(event_id)s
 order by
 	start_date,
     competition_id,
-	rt.`rank`
+	round_type_id
     """
 
 

@@ -19,7 +19,7 @@ title = "Competitors who got 5BLD before 4BLD"
 
 query = """select
 	person_id,
-	personName,
+	person_name,
 	r.country_id,
     event_id,
 	best,

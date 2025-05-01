@@ -43,7 +43,7 @@ from
                     and results_posted_at is not null
             ) average,%(sub_queries)s
         from
-            Countries c
+            countries c
     ) result
 where
     average > 0

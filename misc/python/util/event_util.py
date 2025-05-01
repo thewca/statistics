@@ -9,7 +9,7 @@ select
     id,
     name
 from
-    Events e
+    events e
 where
     -- Exclude inactive
     `rank` < 900

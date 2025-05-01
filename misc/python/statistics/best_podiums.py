@@ -27,7 +27,7 @@ query = """
           third_id, third_name,
           third_result
       from (
-          select competitionId comp_id, 
+          select competition_id comp_id, 
               max(case when row_num=1 then person_id end) first_id, 
               max(case when row_num=1 then person_name end) first_name,
               max(case when row_num=1 then best_results end) first_result, 
@@ -39,14 +39,14 @@ query = """
               max(case when row_num=3 then best_results end) third_result,
               event_id
           from (
-              select competitionId, person_id, person_name, case when event_id in ('333bf', '444bf', '555bf', '333mbf') then best else average end best_results, event_id,
-                  row_number() over (partition by competitionId order by case when event_id in ('333bf', '444bf', '555bf', '333mbf') then best else average end) row_num
-              from Results
-              where event_id = '%s' and roundTypeId in ('c', 'f') and (case when event_id in ('333bf', '444bf', '555bf', '333mbf') then best else average end) > 0
+              select competition_id, person_id, person_name, case when event_id in ('333bf', '444bf', '555bf', '333mbf') then best else average end best_results, event_id,
+                  row_number() over (partition by competition_id order by case when event_id in ('333bf', '444bf', '555bf', '333mbf') then best else average end) row_num
+              from results
+              where event_id = '%s' and round_type_id in ('c', 'f') and (case when event_id in ('333bf', '444bf', '555bf', '333mbf') then best else average end) > 0
               ) final_podiums_without_ties
-          group by competitionId
+          group by competition_id
       ) podiums_pivotted
-      inner join Competitions as c on podiums_pivotted.comp_id = c.id
+      inner join competitions as c on podiums_pivotted.comp_id = c.id
       where third_result is not null
       order by case when event_id = '333mbf' then avg_sum end desc, case when event_id != '333mbf' then convert(avg_sum, float) end
       limit 10

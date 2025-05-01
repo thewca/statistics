@@ -43,13 +43,12 @@ query = """select
 from
     results r
     inner join competitions c on r.competition_id = c.id
-    inner join round_types rt on r.round_type_id = rt.id
 where
-    eventId in ('%s', '%s')
+    event_id in ('%s', '%s')
     and best > 0
 order by
     c.start_date,
-    rt.`rank`"""
+    round_type_id"""
 
 
 def compare_results(ev1, ev2):

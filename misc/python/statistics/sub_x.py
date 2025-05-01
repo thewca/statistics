@@ -41,7 +41,7 @@ query_results = """select
 from
 	results
 where
-	eventId = '%s'
+	event_id = '%s'
 """
 
 query_custom = """select
