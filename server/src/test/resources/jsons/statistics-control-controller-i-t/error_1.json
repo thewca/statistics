@@ -1,0 +1,8 @@
+{
+    "type": "about:blank",
+    "title": "Bad Request",
+    "status": 400,
+    "detail": "Validation failure",
+    "instance": "/statistics-control/error",
+    "properties": null
+}

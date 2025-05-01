@@ -8,7 +8,10 @@ from misc.python.statistics.sub_x import Competitor as Comp
 from misc.python.util.database_util import get_database_connection
 from misc.python.util.html_util import get_competitor_html_link
 from misc.python.util.log_util import log
-from misc.python.util.statistics_api_util import create_statistics
+from misc.python.util.statistics_api_util import (
+    create_statistics,
+    handle_statistics_control,
+)
 
 title = "Sum of all ranks"
 
@@ -101,7 +104,11 @@ class Competitor(Comp):
         self.sum_of_ranks = None
 
     def __repr__(self) -> str:
-        return "Competitor[id=%s, name=%s, sum_of_ranks=%s]" % (self.wca_id, self.name, self.sum_of_ranks)
+        return "Competitor[id=%s, name=%s, sum_of_ranks=%s]" % (
+            self.wca_id,
+            self.name,
+            self.sum_of_ranks,
+        )
 
 
 class Event(Ev):
@@ -114,12 +121,22 @@ def get_custom_query(result_type, events: List[Event]):
     custom_sub_queries = []
 
     for event in events:
-        custom_sub_queries.append(custom_sub_query % {"max_rank": event.max_rank,
-                                                      "result_type": result_type, "event_id": event.event_id, "event_name": event.name})
+        custom_sub_queries.append(
+            custom_sub_query
+            % {
+                "max_rank": event.max_rank,
+                "result_type": result_type,
+                "event_id": event.event_id,
+                "event_name": event.name,
+            }
+        )
 
     event_names = " + ".join(list(map(lambda e: "`%s`" % e.name, events)))
 
-    return custom_query % {"event_names": event_names, "custom_sub_queries": ",".join(custom_sub_queries)}
+    return custom_query % {
+        "event_names": event_names,
+        "custom_sub_queries": ",".join(custom_sub_queries),
+    }
 
 
 def sum_of_all_ranks():
@@ -145,8 +162,7 @@ def sum_of_all_ranks():
 
         event_ids = list(map(lambda e: e.event_id, events))
 
-        cursor.execute(competitors_query %
-                       result_type)  # Not an sql replacement
+        cursor.execute(competitors_query % result_type)  # Not an sql replacement
 
         competitors = []
 
@@ -154,7 +170,7 @@ def sum_of_all_ranks():
         event_index = None
 
         log.info("Handle competitors ranks")
-        for (wca_id, world_rank, event_id, name) in cursor:
+        for wca_id, world_rank, event_id, name in cursor:
             competitor = Competitor(wca_id, events)
 
             index = bisect_left(competitors, competitor)
@@ -189,24 +205,39 @@ def sum_of_all_ranks():
             # Mark some results as red
             for i in range(len(events)):
                 if competitor.ranks[i] == events[i].max_rank:
-                    competitor.ranks[i] = "<span style=\"color:red\">%s</span>" % (
-                        competitor.ranks[i])
+                    competitor.ranks[i] = '<span style="color:red">%s</span>' % (
+                        competitor.ranks[i]
+                    )
 
-            stat.append([get_competitor_html_link(competitor.wca_id,
-                                                  competitor.name), s, *competitor.ranks])
+            stat.append(
+                [
+                    get_competitor_html_link(competitor.wca_id, competitor.name),
+                    s,
+                    *competitor.ranks,
+                ]
+            )
             c += 1
 
         custom_query = get_custom_query(result_type, events)
 
-        headers = ["Name", "Sum", *map(lambda c:c.name, events)]
+        headers = ["Name", "Sum", *map(lambda c: c.name, events)]
         statistics["statistics"].append(
-            {"keys": [result_type], "content": stat, "headers": headers, "showPositions": True, "positionTieBreakerIndex": 1, "sqlQueryCustom": custom_query})
+            {
+                "keys": [result_type],
+                "content": stat,
+                "headers": headers,
+                "showPositions": True,
+                "positionTieBreakerIndex": 1,
+                "sqlQueryCustom": custom_query,
+            }
+        )
 
     cnx.close()
 
     return statistics
 
 
+@handle_statistics_control
 def main():
     log.info(" ========== %s ==========" % title)
     statistics = sum_of_all_ranks()

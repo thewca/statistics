@@ -8,7 +8,10 @@ from misc.python.util.database_util import get_database_connection
 from misc.python.util.event_util import get_current_events
 from misc.python.util.html_util import get_competitor_html_link
 from misc.python.util.log_util import log
-from misc.python.util.statistics_api_util import create_statistics
+from misc.python.util.statistics_api_util import (
+    create_statistics,
+    handle_statistics_control,
+)
 from misc.python.util.time_util import time_format
 
 title = "Recent success rate"
@@ -103,12 +106,18 @@ def recent_success():
 
     out = {}
     out["title"] = title
-    out["explanation"] = "Since %s, minimum %s successes" % (
-        min_date, MIN_SOLVES)
+    out["explanation"] = "Since %s, minimum %s successes" % (min_date, MIN_SOLVES)
     out["groupName"] = "Results"
     out["displayMode"] = "SELECTOR"
-    headers = ["Person", "Country", "Rate",
-               "Success / Attempts", "Best", "Worst", "Average"]
+    headers = [
+        "Person",
+        "Country",
+        "Rate",
+        "Success / Attempts",
+        "Best",
+        "Worst",
+        "Average",
+    ]
     out["statistics"] = []
 
     log.info("Get database connection")
@@ -141,41 +150,71 @@ def recent_success():
         log.info("Found %s competitors" % len(competitors))
 
         log.info("Discard competitors with few results")
-        competitors = list(
-            filter(lambda c: len(c.results) >= MIN_SOLVES, competitors))
+        competitors = list(filter(lambda c: len(c.results) >= MIN_SOLVES, competitors))
         log.info("%s competitors left" % len(competitors))
 
         log.info("Fill rates")
         for competitor in competitors:
             competitor.rate = float(
-                "%.2f" % (len(competitor.results) / competitor.attempts))
+                "%.2f" % (len(competitor.results) / competitor.attempts)
+            )
 
         log.info("Sort competitors")
         competitors = sorted(
-            competitors, key=lambda c: [-c.rate, -len(c.results), -c.attempts, c.name])
+            competitors, key=lambda c: [-c.rate, -len(c.results), -c.attempts, c.name]
+        )
 
         table = []
         count = 1
         prev = None
         for competitor in competitors:
             rate = competitor.rate
-            if (count > LIMIT and prev != rate) or count > 2*LIMIT:  # We interrupt the list anyways
+            if (
+                count > LIMIT and prev != rate
+            ) or count > 2 * LIMIT:  # We interrupt the list anyways
                 break
 
             link = get_competitor_html_link(competitor.wca_id, competitor.name)
-            table.append([link, competitor.country, "%.2f" % rate, "%s / %s" %
-                          (len(competitor.results), competitor.attempts), time_format(min(competitor.results), event.event_id), time_format(max(competitor.results), event.event_id), time_format(0 if event_id == '333mbf' else sum(competitor.results)/len(competitor.results), event.event_id, "average")])
+            table.append(
+                [
+                    link,
+                    competitor.country,
+                    "%.2f" % rate,
+                    "%s / %s" % (len(competitor.results), competitor.attempts),
+                    time_format(min(competitor.results), event.event_id),
+                    time_format(max(competitor.results), event.event_id),
+                    time_format(
+                        (
+                            0
+                            if event_id == "333mbf"
+                            else sum(competitor.results) / len(competitor.results)
+                        ),
+                        event.event_id,
+                        "average",
+                    ),
+                ]
+            )
 
             count += 1
             prev = rate
 
-        out["statistics"].append({"keys": [event.name], "content": table,
-                                  "headers": headers, "showPositions": True, "positionTieBreakerIndex": 2, "sqlQueryCustom": custom_query % {"event_id": event_id, "min_date": min_date}})
+        out["statistics"].append(
+            {
+                "keys": [event.name],
+                "content": table,
+                "headers": headers,
+                "showPositions": True,
+                "positionTieBreakerIndex": 2,
+                "sqlQueryCustom": custom_query
+                % {"event_id": event_id, "min_date": min_date},
+            }
+        )
     cnx.close()
 
     return out
 
 
+@handle_statistics_control
 def main():
     log.info("========== %s ==========" % title)
     statistics = recent_success()

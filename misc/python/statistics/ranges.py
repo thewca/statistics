@@ -10,7 +10,10 @@ from misc.python.util.html_util import get_competitor_html_link
 from misc.python.util.log_util import log
 from misc.python.util.mbld_util import get_mbld_points
 from misc.python.util.range_util import largest_range
-from misc.python.util.statistics_api_util import create_statistics
+from misc.python.util.statistics_api_util import (
+    create_statistics,
+    handle_statistics_control,
+)
 from misc.python.util.time_util import time_format
 
 
@@ -47,7 +50,7 @@ def has_multiple_results(results):
     if len(results) < 2:
         return False
     for i in range(1, len(results)):
-        if results[i] != results[i-1]:
+        if results[i] != results[i - 1]:
             return True
     return False
 
@@ -59,8 +62,7 @@ def ranges():
     out["title"] = title
     out["groupName"] = "Results"
     out["displayMode"] = "SELECTOR"
-    headers = ["Person", "Range Size",
-               "Country", "Range Start", "Range End"]
+    headers = ["Person", "Range Size", "Country", "Range Start", "Range End"]
     out["statistics"] = []
 
     current_events = get_current_events()
@@ -106,8 +108,7 @@ def ranges():
         log.info("Organize ranges")
         for competitor in competitors:
             # skipping people with only 1 result
-            range_size, range_start, range_end = largest_range(
-                competitor.results)
+            range_size, range_start, range_end = largest_range(competitor.results)
 
             if range_size == 1:
                 continue
@@ -118,7 +119,8 @@ def ranges():
 
         log.info("Sort results")
         competitors = sorted(
-            filter(lambda c: c.range, competitors), key=lambda c: -c.range)
+            filter(lambda c: c.range, competitors), key=lambda c: -c.range
+        )
         log.info("Found %s elegible competitors" % len(competitors))
 
         table = []
@@ -141,19 +143,31 @@ def ranges():
 
             link = get_competitor_html_link(competitor.wca_id, competitor.name)
             table.append(
-                [link, competitor.range, competitor.country, range_start, range_end])
+                [link, competitor.range, competitor.country, range_start, range_end]
+            )
 
             prev = competitor.range
 
-        explanation = "Competitors that got all results from the range start to the range end in %s" % ("steps of 1" if event in (
-            "333fm", "333mbf") else "steps of 0.01")
+        explanation = (
+            "Competitors that got all results from the range start to the range end in %s"
+            % ("steps of 1" if event in ("333fm", "333mbf") else "steps of 0.01")
+        )
         out["statistics"].append(
-            {"keys": [current_event.name], "content": table, "headers": headers, "explanation": explanation, "showPositions": True, "positionTieBreakerIndex": 1})
+            {
+                "keys": [current_event.name],
+                "content": table,
+                "headers": headers,
+                "explanation": explanation,
+                "showPositions": True,
+                "positionTieBreakerIndex": 1,
+            }
+        )
 
     cnx.close()
     return out
 
 
+@handle_statistics_control
 def main():
     log.info(" ========== %s ==========" % title)
     out = ranges()

@@ -1,27 +1,18 @@
-FROM ubuntu:20.04
+FROM ubuntu:24.04
 
-ARG DEBIAN_FRONTEND=noninteractive
-
-RUN apt-get update && apt-get install -y \
-    git \
-    default-jre \
-    curl \
-    python3 \
-    python3-pip \
-    wget \
-    python3-virtualenv \
-    unzip \
-    mysql-client
+RUN apt-get update
+RUN apt-get install -y git
+RUN apt-get install -y curl 
+RUN apt-get install -y python3 
+RUN apt-get install -y python3-pip 
+RUN apt-get install -y wget 
+RUN apt-get install -y python3-virtualenv 
+RUN apt-get install -y unzip 
+RUN apt-get install -y mysql-client
+RUN apt-get install -y openjdk-21-jdk
 
 ADD scripts/cron-docker.sh /usr/local/bin/cron-docker.sh
 
 RUN ["chmod", "+x", "/usr/local/bin/cron-docker.sh"]
-
-WORKDIR /tmp
-
-USER nobody
-
-RUN mkdir /tmp/gradle
-ENV GRADLE_USER_HOME=/tmp/gradle
 
 ENTRYPOINT ["/usr/local/bin/cron-docker.sh"]
