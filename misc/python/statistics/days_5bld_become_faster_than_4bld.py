@@ -32,18 +32,18 @@ class Competitor(Comp):
 
 
 query = """select
-    personId,
-    r.countryId,
-    personName,
+    person_id,
+    r.country_id,
+    person_name,
     best,
     start_date,
-    competitionId,
+    competition_id,
     c.name,
-    eventId
+    event_id
 from
-    Results r
-    inner join Competitions c on r.competitionId = c.id
-    inner join RoundTypes rt on r.roundTypeId = rt.id
+    results r
+    inner join competitions c on r.competition_id = c.id
+    inner join round_types rt on r.round_type_id = rt.id
 where
     eventId in ('%s', '%s')
     and best > 0

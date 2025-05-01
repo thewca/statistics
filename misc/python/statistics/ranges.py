@@ -31,9 +31,9 @@ class Competitor(Comp):
 title = "Ranges"
 
 query = """select
-	personId,
-	personName,
-	countryId,
+	person_id,
+	person_name,
+	country_id,
 	value1,
 	value2,
 	value3,

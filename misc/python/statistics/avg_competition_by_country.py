@@ -35,9 +35,9 @@ from
                 select
                     count(*) / 5
                 from
-                    Competitions c2
+                    competitions c2
                 where
-                    countryId = c.id
+                    country_id = c.id
                     and year(c2.start_date) >= %(min_year)s
                     and year(c2.start_date) <= %(max_year)s
                     and results_posted_at is not null
@@ -55,9 +55,9 @@ sub_query = """
 		select
 			count(*)
 		from
-			Competitions c2
+			competitions c2
 		where
-			c2.countryId = c.id
+			c2.country_id = c.id
             and results_posted_at is not null
 			and year(c2.start_date) = year(current_date())-%(diff)s) m%(diff)s"""
 
