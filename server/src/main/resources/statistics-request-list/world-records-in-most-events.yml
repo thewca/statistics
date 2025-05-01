@@ -10,31 +10,31 @@ queries:
     explanation: Current events, all time records
     sqlQuery: |-
       select
-          wca_statistics_person_link_format(personId, personName),
+          wca_statistics_person_link_format(person_id, person_name),
           worldRecordEvents,
           events
       from
           (
               select
-                  personId,
-                  personName,
-                  count(distinct eventId) worldRecordEvents,
+                  person_id,
+                  person_name,
+                  count(distinct event_id) worldRecordEvents,
                   group_concat(distinct e.name separator ', ') events
               from
-                  Results r
-                  inner join Events e on r.eventId = e.id
+                  results r
+                  inner join events e on r.event_id = e.id
               where
                   (
-                      regionalSingleRecord = 'WR'
-                      or regionalAverageRecord = 'WR'
+                      regional_single_record = 'WR'
+                      or regional_average_record = 'WR'
                   )
                   and e.`rank` < 900
               group by
-                  personId,
-                  personName
+                  person_id,
+                  person_name
               order by
                   worldRecordEvents DESC,
-                  personName
+                  person_name
           ) worldRecordEvents
       where
           worldRecordEvents >= (
@@ -43,22 +43,22 @@ queries:
               from
                   (
                       select
-                          count(distinct eventId) worldRecordEvents
+                          count(distinct event_id) worldRecordEvents
                       from
-                          Results r
-                          inner join Events e on r.eventId = e.id
+                          results r
+                          inner join events e on r.event_id = e.id
                       where
                           (
-                              regionalSingleRecord = 'WR'
-                              or regionalAverageRecord = 'WR'
+                              regional_single_record = 'WR'
+                              or regional_average_record = 'WR'
                           )
                           and e.`rank` < 900
                       group by
-                          personId,
-                          personName
+                          person_id,
+                          person_name
                       order by
                           worldRecordEvents DESC,
-                          personName
+                          person_name
                       limit
                           10
                   ) min_records
@@ -68,34 +68,34 @@ queries:
           name,
           (
               select
-                  count(distinct eventId)
+                  count(distinct event_id)
               from
-                  Results r
-                  inner join Events e on r.eventId = e.id
+                  results r
+                  inner join events e on r.event_id = e.id
               where
-                  r.personId = p.id
+                  r.person_id = p.id
                   and e.`rank` < 900 -- Active events
                   and (
-                      regionalAverageRecord = 'WR'
-                      or regionalSingleRecord = 'WR'
+                      regional_average_record = 'WR'
+                      or regional_single_record = 'WR'
                   )
           ) Records,
           (
               select
                   group_concat(distinct e.name separator ', ')
               from
-                  Results r
-                  inner join Events e on r.eventId = e.id
+                  results r
+                  inner join events e on r.event_id = e.id
               where
-                  r.personId = p.id
+                  r.person_id = p.id
                   and e.`rank` < 900 -- Active events
                   and (
-                      regionalAverageRecord = 'WR'
-                      or regionalSingleRecord = 'WR'
+                      regional_average_record = 'WR'
+                      or regional_single_record = 'WR'
                   )
-          ) Events
+          ) events
       from
-          Persons p
+          persons p
       where
           p.id = ':WCA_ID'
   - keys:
@@ -109,26 +109,26 @@ queries:
     explanation: Current events, all time records
     sqlQuery: |-
       select
-          countryId,
+          country_id,
           qt,
           events
       from
           (
               select
-                  countryId,
-                  count(distinct eventId) qt,
+                  country_id,
+                  count(distinct event_id) qt,
                   group_concat(distinct e.name separator ', ') events
               from
-                  Results r
-                  inner join Events e on r.eventId = e.id
+                  results r
+                  inner join events e on r.event_id = e.id
               where
                   (
-                      regionalSingleRecord = 'WR'
-                      or regionalAverageRecord = 'WR'
+                      regional_single_record = 'WR'
+                      or regional_average_record = 'WR'
                   )
                   and e.`rank` < 900 -- active events
               group by
-                  countryId
+                  country_id
               order by
                   qt desc
           ) results
@@ -139,18 +139,18 @@ queries:
               from
                   (
                       select
-                          count(distinct eventId) qt
+                          count(distinct event_id) qt
                       from
-                          Results r
-                          inner join Events e on r.eventId = e.id
+                          results r
+                          inner join events e on r.event_id = e.id
                       where
                           (
-                              regionalSingleRecord = 'WR'
-                              or regionalAverageRecord = 'WR'
+                              regional_single_record = 'WR'
+                              or regional_average_record = 'WR'
                           )
                           and e.`rank` < 900 -- active events
                       group by
-                          countryId
+                          country_id
                       order by
                           qt desc
                       limit
@@ -162,15 +162,15 @@ queries:
           id,
           (
               select
-                  count(distinct eventId)
+                  count(distinct event_id)
               from
-                  Results r
-                  inner join Events e on r.eventId = e.id
+                  results r
+                  inner join events e on r.event_id = e.id
               where
-                  r.countryId = c.id
+                  r.country_id = c.id
                   and (
-                      r.regionalAverageRecord = 'WR'
-                      or r.regionalSingleRecord = 'WR'
+                      r.regional_average_record = 'WR'
+                      or r.regional_single_record = 'WR'
                   )
                   and e.`rank` < 900
           ) Records,
@@ -178,18 +178,18 @@ queries:
               select
                   group_concat(distinct e.name separator ', ')
               from
-                  Results r
-                  inner join Events e on r.eventId = e.id
+                  results r
+                  inner join events e on r.event_id = e.id
               where
-                  r.countryId = c.id
+                  r.country_id = c.id
                   and (
-                      r.regionalAverageRecord = 'WR'
-                      or r.regionalSingleRecord = 'WR'
+                      r.regional_average_record = 'WR'
+                      or r.regional_single_record = 'WR'
                   )
                   and e.`rank` < 900
           ) events
       from
-          Countries c
+          countries c
       where
           id = ':COUNTRY_ID'
   - keys:
@@ -211,16 +211,16 @@ queries:
               select
                   c.name,
                   c.id,
-                  count(distinct eventId) qt,
+                  count(distinct event_id) qt,
                   group_concat(distinct e.name separator ', ') events
               from
-                  Results r
-                  inner join Competitions c on r.competitionId = c.id
-                  inner join Events e on r.eventId = e.id
+                  results r
+                  inner join competitions c on r.competition_id = c.id
+                  inner join events e on r.event_id = e.id
               where
                   (
-                      regionalAverageRecord = 'WR'
-                      or regionalSingleRecord = 'WR'
+                      regional_average_record = 'WR'
+                      or regional_single_record = 'WR'
                   )
               group by
                   name,
@@ -235,16 +235,16 @@ queries:
               from
                   (
                       select
-                          count(distinct eventId) qt
+                          count(distinct event_id) qt
                       from
-                          Results
+                          results
                       where
                           (
-                              regionalAverageRecord = 'WR'
-                              or regionalSingleRecord = 'WR'
+                              regional_average_record = 'WR'
+                              or regional_single_record = 'WR'
                           )
                       group by
-                          competitionId
+                          competition_id
                       order by
                           qt desc
                       limit
@@ -256,31 +256,31 @@ queries:
           id,
           (
               select
-                  count(distinct eventId)
+                  count(distinct event_id)
               from
-                  Results r
+                  results r
               where
-                  r.competitionId = c.id
+                  r.competition_id = c.id
                   and (
-                      r.regionalAverageRecord = 'WR'
-                      or r.regionalSingleRecord = 'WR'
+                      r.regional_average_record = 'WR'
+                      or r.regional_single_record = 'WR'
                   )
           ) Records,
           (
               select
                   group_concat(distinct e.name separator ', ')
               from
-                  Results r
-                  inner join Events e on r.eventId = e.id
+                  results r
+                  inner join events e on r.event_id = e.id
               where
-                  r.competitionId = c.id
+                  r.competition_id = c.id
                   and (
-                      r.regionalAverageRecord = 'WR'
-                      or r.regionalSingleRecord = 'WR'
+                      r.regional_average_record = 'WR'
+                      or r.regional_single_record = 'WR'
                   )
-          ) Events
+          ) events
       from
-          Competitions c
+          competitions c
       where
           c.id = ':COMPETITION_ID'
 title: World records in most events

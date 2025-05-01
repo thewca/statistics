@@ -11,9 +11,9 @@ queries:
       with averages as (
           select
               concat('Average,', e.name) key_name,
-              wca_statistics_person_link_format(personId, personName) person,
-              wca_statistics_time_format(average, eventId, 'average') average,
-              wca_statistics_competition_link_format(c.id, c.cellName) competition,
+              wca_statistics_person_link_format(person_id, person_name) person,
+              wca_statistics_time_format(average, event_id, 'average') average,
+              wca_statistics_competition_link_format(c.id, c.cell_name) competition,
               pos,
               rank() over (
                   partition by e.id
@@ -21,12 +21,12 @@ queries:
                       average
               ) the_rank
           from
-              Results r
-              inner join Competitions c on r.competitionId = c.id
-              inner join Events e on r.eventId = e.id
-              inner join Formats f on r.formatId = f.id
+              results r
+              inner join competitions c on r.competition_id = c.id
+              inner join events e on r.event_id = e.id
+              inner join formats f on r.format_id = f.id
           where
-              r.roundTypeId in ('c', 'f')
+              r.round_type_id in ('c', 'f')
               and pos > 3
               and e.`rank` < 900
               and f.sort_by = 'average'
@@ -58,9 +58,9 @@ queries:
       with singles as (
           select
               concat('Single,', e.name) key_name,
-              wca_statistics_person_link_format(personId, personName) person,
-              wca_statistics_time_format(best, eventId, 'single') single,
-              wca_statistics_competition_link_format(c.id, c.cellName) competition,
+              wca_statistics_person_link_format(person_id, person_name) person,
+              wca_statistics_time_format(best, event_id, 'single') single,
+              wca_statistics_competition_link_format(c.id, c.cell_name) competition,
               pos,
               rank() over (
                   partition by e.id
@@ -68,12 +68,12 @@ queries:
                       best
               ) the_rank
           from
-              Results r
-              inner join Competitions c on r.competitionId = c.id
-              inner join Events e on r.eventId = e.id
-              inner join Formats f on r.formatId = f.id
+              results r
+              inner join competitions c on r.competition_id = c.id
+              inner join events e on r.event_id = e.id
+              inner join formats f on r.format_id = f.id
           where
-              r.roundTypeId in ('c', 'f')
+              r.round_type_id in ('c', 'f')
               and pos > 3
               and e.`rank` < 900
               and f.sort_by = 'single'

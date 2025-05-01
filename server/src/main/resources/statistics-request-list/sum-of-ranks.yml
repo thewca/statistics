@@ -13,7 +13,7 @@ queries:
     sqlQuery: |-
       select
           wca_statistics_person_link_format(wca_id, name),
-          countryId Country,
+          country_id Country,
           r3 + r4 + r5 Sum,
           r3 '3x3',
           r4 '4x4',
@@ -23,7 +23,7 @@ queries:
               select
                   wca_id,
                   p.name,
-                  p.countryId,
+                  p.country_id,
                   (
                       select
                           world_rank
@@ -52,7 +52,7 @@ queries:
                           and event_id = '555'
                   ) r5
               from
-                  Persons p
+                  persons p
           ) r
       where
           r3 is not null
@@ -65,7 +65,7 @@ queries:
     sqlQueryCustom: |-
       select
           name Name,
-          countryId Country,
+          country_id Country,
           r3 + r4 + r5 Sum,
           r3 '3x3',
           r4 '4x4',
@@ -75,7 +75,7 @@ queries:
           select
               wca_id,
               p.name,
-              p.countryId,
+              p.country_id,
               (
               select
                   world_rank
@@ -101,7 +101,7 @@ queries:
                   person_id = p.wca_id
                   and event_id = '555') r5
           from
-              Persons p) r
+              persons p) r
       where
           r3 is not null
           and r4 is not null
@@ -124,7 +124,7 @@ queries:
     sqlQuery: |-
       select
           wca_statistics_person_link_format(wca_id, name),
-          countryId Country,
+          country_id Country,
           r3 + r4 + r5 Sum,
           r3 '3x3',
           r4 '4x4',
@@ -134,7 +134,7 @@ queries:
               select
                   wca_id,
                   p.name,
-                  p.countryId,
+                  p.country_id,
                   (
                       select
                           world_rank
@@ -163,7 +163,7 @@ queries:
                           and event_id = '555'
                   ) r5
               from
-                  Persons p
+                  persons p
           ) r
       where
           r3 is not null
@@ -176,7 +176,7 @@ queries:
     sqlQueryCustom: |-
       select
           name Name,
-          countryId Country,
+          country_id Country,
           r3 + r4 + r5 Sum,
           r3 '3x3',
           r4 '4x4',
@@ -186,7 +186,7 @@ queries:
           select
               wca_id,
               p.name,
-              p.countryId,
+              p.country_id,
               (
               select
                   world_rank
@@ -212,7 +212,7 @@ queries:
                   person_id = p.wca_id
                   and event_id = '555') r5
           from
-              Persons p) r
+              persons p) r
       where
           r3 is not null
           and r4 is not null
