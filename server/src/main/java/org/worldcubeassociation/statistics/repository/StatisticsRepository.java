@@ -15,6 +15,6 @@ public interface StatisticsRepository extends JpaRepository<Statistics, String> 
     List<ControlItemDTO> list(String term);
 
     // Actually, it is just an approximation
-    @Query(value = "select max(results_posted_at) from Competitions", nativeQuery = true)
+    @Query(value = "select max(results_posted_at) from competitions", nativeQuery = true)
     LocalDateTime getExportDate();
 }
