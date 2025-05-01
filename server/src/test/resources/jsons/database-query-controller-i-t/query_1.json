@@ -1,4 +1,4 @@
 {
     "status": 400,
-    "message": "StatementCallback; bad SQL grammar [select count(*) from (\ncelect * from Competitions\n) alias]"
+    "message": "StatementCallback; bad SQL grammar [select count(*) from (\ncelect * from competitions\n) alias]"
 }

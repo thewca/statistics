@@ -4,6 +4,10 @@
             "group": "Competitors",
             "statistics": [
                 {
+                    "path": "best-first-single",
+                    "title": "Best first single"
+                },
+                {
                     "path": "best-medal-collection",
                     "title": "Best medal collection"
                 },
@@ -12,7 +16,7 @@
                     "title": "World records in most events"
                 }
             ],
-            "size": 2
+            "size": 3
         },
         {
             "group": "Events",
@@ -39,6 +43,6 @@
             "size": 2
         }
     ],
-    "groups": 3,
-    "totalSize": 5
+    "totalSize": 6,
+    "groups": 3
 }

@@ -14,18 +14,18 @@ insert into
             c2.name region,
             (
                 select
-                    coalesce(max(continentRank), 0)
+                    coalesce(max(continent_rank), 0)
                 from
-                    RanksSingle r
-                    inner join users u on u.wca_id = r.personId
-                    inner join Countries c on c.iso2 = u.country_iso2
+                    ranks_single r
+                    inner join users u on u.wca_id = r.person_id
+                    inner join countries c on c.iso2 = u.country_iso2
                 where
-                    c.continentId = c2.id
-                    and r.eventId = e.id
+                    c.continent_id = c2.id
+                    and r.event_id = e.id
             ) + 1 default_rank
         from
-            Events e,
-            Continents c2
+            events e,
+            continents c2
         where
             e.`rank` < 900
     )

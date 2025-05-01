@@ -1,18 +1,18 @@
 select
-    personId wca_id,
+    person_id wca_id,
     ct.name continent,
     c.name country,
     single,
     average,
     (
         select
-            competitionId
+            competition_id
         from
-            Results results
-            inner join Competitions competitions on results.competitionId = competitions.id
+            results results
+            inner join competitions competitions on results.competition_id = competitions.id
         where
-            results.eventId = :EVENT_ID
-            and results.personId = today.personId
+            results.event_id = :EVENT_ID
+            and results.person_id = today.person_id
             and competitions.start_date = :DATE
             and (
                 results.best = today.single
@@ -24,8 +24,8 @@ select
 from
     (
         select
-            personId,
-            r.countryId,
+            person_id,
+            r.country_id,
             min(
                 case
                     when best > 0 then best
@@ -39,18 +39,18 @@ from
                 end
             ) average
         from
-            Results r
-            inner join Competitions c on r.competitionId = c.id
+            results r
+            inner join competitions c on r.competition_id = c.id
         where
-            eventId = :EVENT_ID
+            event_id = :EVENT_ID
             and c.start_date = :DATE
         group by
-            r.personId,
-            countryId
+            r.person_id,
+            country_id
         order by
-            personId
+            person_id
     ) today
-    inner join Countries c on today.countryId = c.id
-    inner join Continents ct on c.continentId = ct.id
+    inner join countries c on today.country_id = c.id
+    inner join continents ct on c.continent_id = ct.id
 where
     single is not null

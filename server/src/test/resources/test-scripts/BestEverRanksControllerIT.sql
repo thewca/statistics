@@ -8,16 +8,16 @@ VALUES
     ('1982FRID01', '[{"event": {"id": "333", "name": "3x3x3 Cube"}, "worlds": [{"wcaId": "1982FRID01", "single": {"current": {"end": null, "rank": 42118, "start": "2003-08-23", "result": 1712, "competition": "WC2003"}, "bestRank": {"end": "2004-01-23", "rank": 3, "start": "2003-08-23", "result": 1712, "competition": "WC2003"}}, "average": {"current": {"end": null, "rank": 41741, "start": "2003-08-23", "result": 2048, "competition": "WC2003"}, "bestRank": {"end": "2004-01-23", "rank": 1, "start": "2003-08-23", "result": 2048, "competition": "WC2003"}}}], "countries": [{"wcaId": "1982FRID01", "single": {"current": {"end": null, "rank": 274, "start": "1982-06-05", "result": 2911, "competition": "WC1982"}, "bestRank": {"end": "2003-08-22", "rank": 0, "start": "1982-06-05", "result": 2911, "competition": "WC1982"}}, "average": {"current": {"end": null, "rank": null, "start": "1982-06-05", "result": null, "competition": "WC1982"}, "bestRank": {"end": null, "rank": null, "start": null, "result": null, "competition": null}}, "country": "Czech Republic", "continent": "Europe"}, {"wcaId": "1982FRID01", "single": {"current": {"end": null, "rank": 7105, "start": "2003-08-23", "result": 1712, "competition": "WC2003"}, "bestRank": {"end": "2004-07-09", "rank": 2, "start": "2003-08-23", "result": 1712, "competition": "WC2003"}}, "average": {"current": {"end": null, "rank": 7031, "start": "2003-08-23", "result": 2048, "competition": "WC2003"}, "bestRank": {"end": "2004-07-09", "rank": 1, "start": "2003-08-23", "result": 2048, "competition": "WC2003"}}, "country": "United States", "continent": "North America"}], "continents": [{"wcaId": "1982FRID01", "single": {"current": {"end": null, "rank": 20380, "start": "1982-06-05", "result": 2911, "competition": "WC1982"}, "bestRank": {"end": "2003-08-22", "rank": 6, "start": "1982-06-05", "result": 2911, "competition": "WC1982"}}, "average": {"current": {"end": null, "rank": null, "start": "1982-06-05", "result": null, "competition": "WC1982"}, "bestRank": {"end": null, "rank": null, "start": null, "result": null, "competition": null}}, "continent": "Europe"}, {"wcaId": "1982FRID01", "single": {"current": {"end": null, "rank": 9762, "start": "2003-08-23", "result": 1712, "competition": "WC2003"}, "bestRank": {"end": "2004-07-09", "rank": 2, "start": "2003-08-23", "result": 1712, "competition": "WC2003"}}, "average": {"current": {"end": null, "rank": 9667, "start": "2003-08-23", "result": 2048, "competition": "WC2003"}, "bestRank": {"end": "2004-07-09", "rank": 1, "start": "2003-08-23", "result": 2048, "competition": "WC2003"}}, "continent": "North America"}]}]', '2022-01-18 06:00:25');
 
 -- Competitions
-INSERT INTO wca_development.Competitions
-    (id, name, cityName, countryId, information, venue, venueAddress, venueDetails, external_website, cellName, showAtAll, latitude, longitude, contact, remarks, registration_open, registration_close, use_wca_registration, guests_enabled, results_posted_at, results_nag_sent_at, generate_website, announced_at, base_entry_fee_lowest_denomination, currency_code, connected_stripe_account_id, start_date, end_date, enable_donations, competitor_limit_enabled, competitor_limit, competitor_limit_reason, extra_registration_requirements, on_the_spot_registration, on_the_spot_entry_fee_lowest_denomination, refund_policy_percent, refund_policy_limit_date, guests_entry_fee_lowest_denomination, created_at, updated_at, results_submitted_at, early_puzzle_submission, early_puzzle_submission_reason, qualification_results, qualification_results_reason, name_reason, external_registration_page, confirmed_at, event_restrictions, event_restrictions_reason, registration_reminder_sent_at, announced_by, results_posted_by, main_event_id, cancelled_at, cancelled_by, waiting_list_deadline_date, event_change_deadline_date, guest_entry_status, allow_registration_edits, allow_registration_self_delete_after_acceptance, competition_series_id, use_wca_live_for_scoretaking, allow_registration_without_qualification, guests_per_registration_limit, events_per_registration_limit, force_comment_in_registration)
+INSERT INTO wca_development.competitions
+    (id, name, city_name, country_id, information, venue, venue_address, venue_details, external_website, cell_name, show_at_all, latitude, longitude, contact, remarks, registration_open, registration_close, use_wca_registration, guests_enabled, results_posted_at, results_nag_sent_at, generate_website, announced_at, base_entry_fee_lowest_denomination, currency_code, connected_stripe_account_id, start_date, end_date, enable_donations, competitor_limit_enabled, competitor_limit, competitor_limit_reason, extra_registration_requirements, on_the_spot_registration, on_the_spot_entry_fee_lowest_denomination, refund_policy_percent, refund_policy_limit_date, guests_entry_fee_lowest_denomination, created_at, updated_at, results_submitted_at, early_puzzle_submission, early_puzzle_submission_reason, qualification_results, qualification_results_reason, name_reason, external_registration_page, confirmed_at, event_restrictions, event_restrictions_reason, registration_reminder_sent_at, announced_by, results_posted_by, main_event_id, guest_entry_status, allow_registration_edits, competition_series_id, use_wca_live_for_scoretaking, allow_registration_without_qualification, force_comment_in_registration)
 VALUES
-    ('DutchOpen2003', 'Dutch Open 2003', 'Veldhoven', 'Netherlands', '', '[ASML](http://www.asml.com)', 'De Run 6501, 5504 DR Veldhoven', 'Building 7', '', 'Dutch Open 2003', 1, 51405966, 5414813, NULL, 'remarks to the board here', NULL, NULL, 0, 1, '2003-10-11 00:00:00', '2016-09-04 14:00:23', NULL, '2003-09-13 00:00:00', NULL, 'USD', NULL, '2003-10-11', '2003-10-11', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2003-10-11 00:00:00', NULL, NULL, NULL, NULL, NULL, NULL, '2018-09-15 17:46:45', NULL, NULL, NULL, 125297, 1, '333', NULL, NULL, NULL, NULL, 0, 0, 0, NULL, 0, 0, NULL, NULL, NULL),
-    ('WC1982', 'World Rubik''s Cube Championship 1982', 'Budapest', 'Hungary', '', '', '', '', '', 'World Championship 1982', 1, 47498403, 19040759, '', 'remarks to the board here', NULL, NULL, 0, 1, '1982-06-05 00:00:00', '2016-09-04 14:01:15', NULL, '1982-05-08 00:00:00', NULL, 'USD', NULL, '1982-06-05', '1982-06-05', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '1982-06-05 00:00:00', NULL, NULL, NULL, NULL, NULL, NULL, '2018-09-15 17:46:45', NULL, NULL, NULL, 1681, 1, '333', NULL, NULL, NULL, NULL, 0, 0, 0, NULL, 0, 0, NULL, NULL, NULL),
-    ('WC2003', 'World Rubik''s Games Championship 2003', 'Toronto, Ontario', 'Canada', '', '[Ontario Science Center](http://www.osc.ca)', '770 Don Mills Rd, North York, ON M3C IT3, Canada', '', 'https://web.archive.org/web/20220820061419/http://www.speedcubing.com/events/wc2003/', 'World Championship 2003', 1, 43714618, -79339509, '', 'remarks to the board here', NULL, NULL, 0, 1, '2003-08-24 00:00:00', '2016-09-04 14:01:16', 0, '2003-07-26 00:00:00', NULL, 'USD', NULL, '2003-08-23', '2003-08-24', 0, NULL, NULL, '', '', NULL, NULL, NULL, NULL, NULL, NULL, '2023-08-03 05:20:36', '2003-08-24 00:00:00', 0, '', 0, '', '', '', '2018-09-15 17:46:45', 0, '', NULL, 125297, 1, '333', NULL, NULL, NULL, NULL, 0, 0, 0, NULL, 0, 0, NULL, NULL, 0);
+    ('DutchOpen2003', 'Dutch Open 2003', 'Veldhoven', 'Netherlands', '', '[ASML](http://www.asml.com)', 'De Run 6501, 5504 DR Veldhoven', 'Building 7', '', 'Dutch Open 2003', 1, 51405966, 5414813, NULL, 'remarks to the board here', NULL, NULL, 0, 1, '2003-10-11 00:00:00', '2016-09-04 14:00:23', NULL, '2003-09-13 00:00:00', NULL, 'USD', NULL, '2003-10-11', '2003-10-11', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2003-10-11 00:00:00', NULL, NULL, NULL, NULL, NULL, NULL, '2018-09-15 17:46:45', NULL, NULL, NULL, 125297, 1, '333', 0, 0, 0, 0, 0, NULL),
+    ('WC1982', 'World Rubik''s Cube Championship 1982', 'Budapest', 'Hungary', '', '', '', '', '', 'World Championship 1982', 1, 47498403, 19040759, '', 'remarks to the board here', NULL, NULL, 0, 1, '1982-06-05 00:00:00', '2016-09-04 14:01:15', NULL, '1982-05-08 00:00:00', NULL, 'USD', NULL, '1982-06-05', '1982-06-05', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '1982-06-05 00:00:00', NULL, NULL, NULL, NULL, NULL, NULL, '2018-09-15 17:46:45', NULL, NULL, NULL, 1681, 1, '333', 0, 0, 0, 0, 0, NULL),
+    ('WC2003', 'World Rubik''s Games Championship 2003', 'Toronto, Ontario', 'Canada', '', '[Ontario Science Center](http://www.osc.ca)', '770 Don Mills Rd, North York, ON M3C IT3, Canada', '', 'https://web.archive.org/web/20220820061419/http://www.speedcubing.com/events/wc2003/', 'World Championship 2003', 1, 43714618, -79339509, '', 'remarks to the board here', NULL, NULL, 0, 1, '2003-08-24 00:00:00', '2016-09-04 14:01:16', 0, '2003-07-26 00:00:00', NULL, 'USD', NULL, '2003-08-23', '2003-08-24', 0, NULL, NULL, '', '', NULL, NULL, NULL, NULL, NULL, NULL, '2023-08-03 05:20:36', '2003-08-24 00:00:00', 0, '', 0, '', '', '', '2018-09-15 17:46:45', 0, '', NULL, 125297, 1, '333', 0, 0, 0, 0, 0, 0);
 
 -- Continents
-INSERT INTO wca_development.Continents
-    (id, name, recordName, latitude, longitude, zoom)
+INSERT INTO wca_development.continents
+    (id, name, record_name, latitude, longitude, zoom)
 VALUES
     ('_Africa', 'Africa', 'AfR', 213671, 16984850, 3),
     ('_Asia', 'Asia', 'AsR', 34364439, 108330700, 2),
@@ -27,8 +27,8 @@ VALUES
     ('_Oceania', 'Oceania', 'OcR', -25274398, 133775136, 3),
     ('_South America', 'South America', 'SAR', -21735104, -63281250, 3);
 
-INSERT INTO wca_development.Countries
-    (id, name, continentId, iso2)
+INSERT INTO wca_development.countries
+    (id, name, continent_id, iso2)
 VALUES
     ('Australia', 'Australia', '_Oceania', 'AU'),
     ('Austria', 'Austria', '_Europe', 'AT'),
@@ -76,27 +76,27 @@ VALUES
     (8683, 'DutchOpen2003', '333', 0);
 
 -- Events
-INSERT INTO wca_development.Events
-    (id, name, `rank`, format, cellName)
+INSERT INTO wca_development.events
+    (id, name, `rank`, format)
 VALUES
-    ('333', '3x3x3 Cube', 10, 'time', '3x3x3 Cube'),
-    ('333bf', '3x3x3 Blindfolded', 70, 'time', '3x3x3 Blindfolded'),
-    ('333fm', '3x3x3 Fewest Moves', 80, 'number', '3x3x3 Fewest Moves'),
-    ('333oh', '3x3x3 One-Handed', 90, 'time', '3x3x3 One-Handed'),
-    ('444', '4x4x4 Cube', 30, 'time', '4x4x4 Cube'),
-    ('444bf', '4x4x4 Blindfolded', 160, 'time', '4x4x4 Blindfolded'),
-    ('555', '5x5x5 Cube', 40, 'time', '5x5x5 Cube'),
-    ('555bf', '5x5x5 Blindfolded', 170, 'time', '5x5x5 Blindfolded'),
-    ('clock', 'Clock', 110, 'time', 'Clock'),
-    ('magic', 'Magic', 997, 'time', 'Magic'),
-    ('minx', 'Megaminx', 120, 'time', 'Megaminx'),
-    ('mmagic', 'Master Magic', 998, 'time', 'Master Magic'),
-    ('pyram', 'Pyraminx', 130, 'time', 'Pyraminx'),
-    ('sq1', 'Square-1', 150, 'time', 'Square-1');
+    ('333', '3x3x3 Cube', 10, 'time'),
+    ('333bf', '3x3x3 Blindfolded', 70, 'time'),
+    ('333fm', '3x3x3 Fewest Moves', 80, 'number'),
+    ('333oh', '3x3x3 One-Handed', 90, 'time'),
+    ('444', '4x4x4 Cube', 30, 'time'),
+    ('444bf', '4x4x4 Blindfolded', 160, 'time'),
+    ('555', '5x5x5 Cube', 40, 'time'),
+    ('555bf', '5x5x5 Blindfolded', 170, 'time'),
+    ('clock', 'Clock', 110, 'time'),
+    ('magic', 'Magic', 997, 'time'),
+    ('minx', 'Megaminx', 120, 'time'),
+    ('mmagic', 'Master Magic', 998, 'time'),
+    ('pyram', 'Pyraminx', 130, 'time'),
+    ('sq1', 'Square-1', 150, 'time');
 
 -- Results
-INSERT INTO wca_development.Results
-    (id, pos, personId, personName, countryId, competitionId, eventId, roundTypeId, formatId, value1, value2, value3, value4, value5, best, average, regionalSingleRecord, regionalAverageRecord, updated_at)
+INSERT INTO wca_development.results
+    (id, pos, person_id, person_name, country_id, competition_id, event_id, round_type_id, format_id, value1, value2, value3, value4, value5, best, average, regional_single_record, regional_average_record, updated_at)
 VALUES
     (83462, 1, '1982THAI01', 'Minh Thai', 'USA', 'WC1982', '333', 'f', '3', 2716, 2295, 2797, 0, 0, 2295, 0, 'WR', NULL, '2018-10-04 06:09:31'),
     (83463, 2, '1982RAZO01', 'Guus Razoux Schultz', 'Netherlands', 'WC1982', '333', 'f', '3', 2432, 3151, 2615, 0, 0, 2432, 0, 'ER', NULL, '2018-10-04 06:09:31'),

@@ -2,7 +2,7 @@
 select
     distinct c.start_date
 from
-    Competitions c
+    competitions c
     inner join competition_events e on e.competition_id = c.id
 where
     event_id = :EVENT_ID
@@ -10,9 +10,9 @@ where
         select
             1
         from
-            Results r
+            results r
         where
-            r.competitionId = c.id
+            r.competition_id = c.id
     )
 order by
     start_date
