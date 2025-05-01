@@ -22,16 +22,16 @@ RANGE = 6
 query_wr = """select
 	best
 from
-	RanksSingle rs
+	ranks_single rs
 where
-	eventId = '%s'
-	and worldRank = 1
+	event_id = '%s'
+	and world_rank = 1
 limit 1"""
 
 query_results = """select
-	personId,
-	personName,
-	countryId,
+	person_id,
+	person_name,
+	country_id,
     best,
 	value1,
 	value2,
@@ -39,13 +39,13 @@ query_results = """select
 	value4,
 	value5
 from
-	Results
+	results
 where
 	eventId = '%s'
 """
 
 query_custom = """select
-    personName,
+    person_name,
     sum(
         IF(
             value1 > 0
@@ -73,15 +73,15 @@ query_custom = """select
             1,
             0
         )
-    ) Solves
+    ) solves
 from
-    Results r
+    results r
 where
-    eventId = '%(event_id)s'
-    and personId = ':WCA_ID'
+    event_id = '%(event_id)s'
+    and person_id = ':WCA_ID'
 group by
-    personId,
-    personName
+    person_id,
+    person_name
 """
 
 
