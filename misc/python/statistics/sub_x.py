@@ -73,7 +73,7 @@ query_custom = """select
             1,
             0
         )
-    ) solves
+    ) Solves
 from
     results r
 where
