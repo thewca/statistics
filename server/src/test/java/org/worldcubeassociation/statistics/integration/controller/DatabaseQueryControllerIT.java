@@ -64,11 +64,11 @@ public class DatabaseQueryControllerIT extends AbstractIT {
 
     private static Stream<Arguments> queryArguments() {
         return Stream.of(
-                Arguments.of(0, HttpStatus.OK, "Bearer token", Map.of("sqlQuery", "select c.id competition_name, count(1) events from Competitions c inner join competition_events ce on c.id = ce.competition_id group by c.id"), "Happy path"),
-                Arguments.of(1, HttpStatus.BAD_REQUEST, "Bearer token", Map.of("sqlQuery", "celect * from Competitions"), "Querry with error"),
-                Arguments.of(2, HttpStatus.OK, "Bearer token", Map.of("page", 0, "size", 5, "sqlQuery", "select * from Events order by `rank`"), "Pagination 0"),
-                Arguments.of(3, HttpStatus.OK, "Bearer token", Map.of("page", 1, "size", 5, "sqlQuery", "select * from Events order by `rank`"), "Pagination 1"),
-                Arguments.of(4, HttpStatus.UNAUTHORIZED, "", Map.of("sqlQuery", "select * from Events order by `rank`"), "Unauthorized")
+                Arguments.of(0, HttpStatus.OK, "Bearer token", Map.of("sqlQuery", "select c.id competition_name, count(1) events from competitions c inner join competition_events ce on c.id = ce.competition_id group by c.id"), "Happy path"),
+                Arguments.of(1, HttpStatus.BAD_REQUEST, "Bearer token", Map.of("sqlQuery", "celect * from competitions"), "Querry with error"),
+                Arguments.of(2, HttpStatus.OK, "Bearer token", Map.of("page", 0, "size", 5, "sqlQuery", "select * from events order by `rank`"), "Pagination 0"),
+                Arguments.of(3, HttpStatus.OK, "Bearer token", Map.of("page", 1, "size", 5, "sqlQuery", "select * from events order by `rank`"), "Pagination 1"),
+                Arguments.of(4, HttpStatus.UNAUTHORIZED, "", Map.of("sqlQuery", "select * from events order by `rank`"), "Unauthorized")
         );
     }
 }

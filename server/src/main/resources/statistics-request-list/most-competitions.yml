@@ -7,32 +7,32 @@ queries:
       - Competitions
     sqlQuery: |-
       select
-          wca_statistics_person_link_format(personId, p.name),
+          wca_statistics_person_link_format(person_id, p.name),
           numberOfCompetitions
       from
-          Persons p
+          persons p
           inner join (
               select
-                  personId,
-                  count(distinct competitionId) numberOfCompetitions
+                  person_id,
+                  count(distinct competition_id) numberOfCompetitions
               from
-                  Results r
+                  results r
               group by
-                  personId
+                  person_id
               order by
                   numberOfCompetitions desc,
-                  personId
+                  person_id
               limit
                   10
-          ) c on c.personId = p.wca_id
+          ) c on c.person_id = p.wca_id
     sqlQueryCustom: |-
       select
-      	personName Name, count(distinct competitionId) Competitions
+      	person_name Name, count(distinct competition_id) Competitions
       from
-      	Results
+      	results
       where
-      	personId = ':WCA_ID'
-      group by personId, personName
+      	person_id = ':WCA_ID'
+      group by person_id, person_name
   - keys:
       - Event
     headers:
@@ -45,7 +45,7 @@ queries:
           count(DISTINCT ce.competition_id) numberOfCompetitions
       FROM
           competition_events ce
-          inner join Events e on e.id = ce.event_id
+          inner join events e on e.id = ce.event_id
       where
           e.`rank` < 900
       GROUP BY
@@ -61,31 +61,31 @@ queries:
       - Competitions
     sqlQuery: |-
       SELECT
-          countryId,
+          country_id,
           count(*) numberOfCompetitions
       FROM
-          Competitions c
+          competitions c
       WHERE
-          showAtAll
+          show_at_all
           AND datediff(c.start_date, curdate()) < 0
       GROUP BY
-          countryId
+          country_id
       ORDER BY
           numberOfCompetitions DESC,
-          countryId
+          country_id
       LIMIT
           10
     sqlQueryCustom: |-
       SELECT
-          countryId,
+          country_id,
           count(*) numberOfCompetitions
       FROM
-          Competitions c
+          competitions c
       WHERE
-          showAtAll
+          show_at_all
           AND datediff(c.start_date, curdate()) < 0
-          and countryId = ':COUNTRY_ID'
+          and country_id = ':COUNTRY_ID'
       GROUP BY
-          countryId
+          country_id
 title: Most competitions
 groupName: Competitors

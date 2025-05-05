@@ -8,15 +8,15 @@ queries:
       - Solves / Attemps
     sqlQuery: |-
       select
-          wca_statistics_person_link_format(personId, personName),
-          wca_statistics_competition_link_format(competitionId, competitionId),
+          wca_statistics_person_link_format(person_id, person_name),
+          wca_statistics_competition_link_format(competition_id, competition_id),
           concat(solves, ' / ', attempts)
       from
           (
               SELECT
-                  personId,
-                  personName,
-                  competitionId,
+                  person_id,
+                  person_name,
+                  competition_id,
                   sum(
                       IF(value1 > 0, 1, 0) + IF(value2 > 0, 1, 0) + IF(value3 > 0, 1, 0) + IF(value4 > 0, 1, 0) + IF(value5 > 0, 1, 0)
                   ) solves,
@@ -49,11 +49,11 @@ queries:
                       )
                   ) attempts
               FROM
-                  Results
+                  results
               GROUP BY
-                  personId,
-                  personName,
-                  competitionId
+                  person_id,
+                  person_name,
+                  competition_id
               ORDER BY
                   solves DESC,
                   attempts
@@ -62,7 +62,7 @@ queries:
           ) result
     sqlQueryCustom: |-
       select
-          competitionId whereId,
+          competition_id whereId,
           sum(
               IF(value1 > 0, 1, 0) + IF(value2 > 0, 1, 0) + IF(value3 > 0, 1, 0) + IF(value4 > 0, 1, 0) + IF(value5 > 0, 1, 0)
           ) solves,
@@ -95,12 +95,12 @@ queries:
               )
           ) attempts
       FROM
-          Results r
+          results r
       where
-          personId = ':WCA_ID'
+          person_id = ':WCA_ID'
       GROUP BY
-          personId,
-          competitionId
+          person_id,
+          competition_id
       order by
           solves desc,
           attempts
@@ -112,14 +112,14 @@ queries:
       - Solves / Attemps
     sqlQuery: |-
       select
-          wca_statistics_person_link_format(personId, personName),
+          wca_statistics_person_link_format(person_id, person_name),
           the_year year,
           concat(solves, ' / ', attempts)
       from
           (
               SELECT
-                  personId,
-                  personName,
+                  person_id,
+                  person_name,
                   year(competition.start_date) the_year,
                   sum(
                       IF(value1 > 0, 1, 0) + IF(value2 > 0, 1, 0) + IF(value3 > 0, 1, 0) + IF(value4 > 0, 1, 0) + IF(value5 > 0, 1, 0)
@@ -153,11 +153,11 @@ queries:
                       )
                   ) attempts
               FROM
-                  Results r
-                  inner join Competitions competition on competition.id = r.competitionId
+                  results r
+                  inner join competitions competition on competition.id = r.competition_id
               GROUP BY
-                  personId,
-                  personName,
+                  person_id,
+                  person_name,
                   year(competition.start_date)
               ORDER BY
                   solves DESC,
@@ -167,7 +167,7 @@ queries:
           ) result
     sqlQueryCustom: |-
       SELECT
-          personName,
+          person_name,
           year(competition.start_date) the_year,
           sum(
               IF(value1 > 0, 1, 0) + IF(value2 > 0, 1, 0) + IF(value3 > 0, 1, 0) + IF(value4 > 0, 1, 0) + IF(value5 > 0, 1, 0)
@@ -201,14 +201,14 @@ queries:
               )
           ) attempts
       FROM
-          Results,
-          Competitions competition
+          results,
+          competitions competition
       WHERE
-          competition.id = competitionId
-          and personId = ':WCA_ID'
+          competition.id = competition_id
+          and person_id = ':WCA_ID'
       GROUP BY
-          personId,
-          personName,
+          person_id,
+          person_name,
           year(competition.start_date)
       ORDER BY
           solves DESC,
@@ -220,13 +220,13 @@ queries:
       - Solves / Attempts
     sqlQuery: |-
       select
-          wca_statistics_person_link_format(personId, personName),
+          wca_statistics_person_link_format(person_id, person_name),
           concat(solves, ' / ', attempts)
       from
           (
               SELECT
-                  personId,
-                  personName,
+                  person_id,
+                  person_name,
                   sum(
                       IF(value1 > 0, 1, 0) + IF(value2 > 0, 1, 0) + IF(value3 > 0, 1, 0) + IF(value4 > 0, 1, 0) + IF(value5 > 0, 1, 0)
                   ) solves,
@@ -259,10 +259,10 @@ queries:
                       )
                   ) attempts
               FROM
-                  Results
+                  results
               GROUP BY
-                  personId,
-                  personName
+                  person_id,
+                  person_name
               ORDER BY
                   solves DESC,
                   attempts
@@ -271,7 +271,7 @@ queries:
           ) result
     sqlQueryCustom: |-
       select
-          personName Name,
+          person_name Name,
           sum(
               IF(value1 > 0, 1, 0) + IF(value2 > 0, 1, 0) + IF(value3 > 0, 1, 0) + IF(value4 > 0, 1, 0) + IF(value5 > 0, 1, 0)
           ) Solves,
@@ -304,11 +304,11 @@ queries:
               )
           ) Attempts
       FROM
-          Results
+          results
       where
-          personId = ':WCA_ID'
+          person_id = ':WCA_ID'
       group by
-          personId,
-          personName
+          person_id,
+          person_name
 title: Most solves in one competition, year, or lifetime
 groupName: Results

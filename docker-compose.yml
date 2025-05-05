@@ -1,8 +1,9 @@
 version: "3.8"
 
 services:
-  mysql:
-    image: mysql:8.0
+  statistics_mysql:
+    image: mysql:8.4
+    container_name: statistics_mysql
     environment:
       MYSQL_ALLOW_EMPTY_PASSWORD: "true"
       MYSQL_DATABASE: wca_development
@@ -11,14 +12,17 @@ services:
     volumes:
       - mysql-data:/var/lib/mysql
 
-  db_restore:
-    image: ubuntu:20.04
+  statistics_db_restore:
+    image: ubuntu:24.04
+    container_name: statistics_db_restore
     depends_on:
-      - mysql
+      - statistics_mysql
     entrypoint: >
       sh -c "
-      apt update && apt install curl unzip mysql-client wget -y &&
-      result=$(mysql -h mysql -sN -u root -e 'use wca_development; select datediff(now(), max(results_posted_at)) from Competitions;'  || echo 999) &&
+      apt-get update && \
+      apt-get install curl unzip mysql-client wget -y && \
+      mysql -h statistics_mysql -sN -u root -e 'create database if not exists wca_development;' && \
+      result=$(mysql -h statistics_mysql -sN -u root -e 'use wca_development; select datediff(now(), max(results_posted_at)) from competitions;'  || echo 999) &&
       echo 'Days since last update: ' $result &&
       if [ -n \"$result\" ] && [ $result -lt 7 ]; then
         echo 'Database is already up to date, skipping restoration.'
@@ -31,7 +35,7 @@ services:
       rm -rf wca-developer-database-dump.sql &&
       unzip wca-developer-database-dump.zip &&
       echo 'Restoring WCA database. This also may take a while...' &&
-      mysql -h mysql -u root -e 'drop database if exists wca_development; create database wca_development; use wca_development; source wca-developer-database-dump.sql;' &&
+      mysql -h statistics_mysql -u root -e 'drop database if exists wca_development; create database wca_development; use wca_development; source wca-developer-database-dump.sql;' &&
       echo 'Restoration complete!'
       "
     volumes:

@@ -13,54 +13,54 @@ queries:
     sqlQuery: |-
       select days,
       	e.name,
-        wca_statistics_time_format(record, eventId, record_type) record,
+        wca_statistics_time_format(record, event_id, record_type) record,
       	record_type,
-      	wca_statistics_person_link_format(personId, personName),
-      	wca_statistics_competition_link_format(competitionId, records.cellName)
+      	wca_statistics_person_link_format(person_id, person_name),
+      	wca_statistics_competition_link_format(competition_id, records.cell_name)
       from (
       		select datediff(current_date, c.start_date) days,
-      			results.eventId,
+      			results.event_id,
       			results.best record,
       			'Single' record_type,
-      			results.personId,
-      			personName,
-      			competitionId,
-      			c.cellName
-      		from Results results
+      			results.person_id,
+      			person_name,
+      			competition_id,
+      			c.cell_name
+      		from results results
       			inner join (
-      				select personId,
-      					eventId,
+      				select person_id,
+      					event_id,
       					best
-      				from RanksSingle
-      				where worldRank = 1
+      				from ranks_single
+      				where world_rank = 1
       			) single_records on single_records.best = results.best
-      			and single_records.personId = results.personId
-      			and single_records.eventId = results.eventId
-      			and regionalSingleRecord = 'WR'
-      			inner join Competitions c on results.competitionId = c.id
+      			and single_records.person_id = results.person_id
+      			and single_records.event_id = results.event_id
+      			and regional_single_record = 'WR'
+      			inner join competitions c on results.competition_id = c.id
       		union all
       		select datediff(current_date, c.start_date) days,
-      			results.eventId,
+      			results.event_id,
       			results.average record,
       			'Average' record_type,
-      			results.personId,
-      			personName,
-      			competitionId,
-      			c.cellName
-      		from Results results
+      			results.person_id,
+      			person_name,
+      			competition_id,
+      			c.cell_name
+      		from results results
       			inner join (
-      				select personId,
-      					eventId,
+      				select person_id,
+      					event_id,
       					best
-      				from RanksAverage
-      				where worldRank = 1
+      				from ranks_average
+      				where world_rank = 1
       			) average_records on average_records.best = results.average
-      			and average_records.personId = results.personId
-      			and average_records.eventId = results.eventId
-      			and regionalAverageRecord = 'WR'
-      			inner join Competitions c on results.competitionId = c.id
+      			and average_records.person_id = results.person_id
+      			and average_records.event_id = results.event_id
+      			and regional_average_record = 'WR'
+      			inner join competitions c on results.competition_id = c.id
       	) records
-      	inner join Events e on records.eventId = e.id
+      	inner join events e on records.event_id = e.id
       where e.rank < 900
       order by days desc, e.rank
       limit 20
@@ -79,63 +79,63 @@ queries:
     sqlQuery: |-
       select days,
       	e.name,
-        wca_statistics_time_format(record, eventId, record_type) record,
+        wca_statistics_time_format(record, event_id, record_type) record,
       	record_type,
       	c3.name,
-      	wca_statistics_person_link_format(personId, personName),
-      	wca_statistics_competition_link_format(competitionId, records.cellName)
+      	wca_statistics_person_link_format(person_id, person_name),
+      	wca_statistics_competition_link_format(competition_id, records.cell_name)
       from (
       		select datediff(current_date, c.start_date) days,
-      			results.eventId,
+      			results.event_id,
       			results.best record,
       			'Single' record_type,
-      			regionalSingleRecord region,
-      			results.personId,
-      			personName,
-      			competitionId,
-      			c.cellName,
-      			results.countryId
-      		from Results results
+      			regional_single_record region,
+      			results.person_id,
+      			person_name,
+      			competition_id,
+      			c.cell_name,
+      			results.country_id
+      		from results results
       			inner join (
-      				select personId,
-      					eventId,
+      				select person_id,
+      					event_id,
       					best
-      				from RanksSingle
-      				where continentRank = 1
-      					and worldRank != 1
+      				from ranks_single
+      				where continent_rank = 1
+      					and world_rank != 1
       			) single_records on single_records.best = results.best
-      			and single_records.personId = results.personId
-      			and single_records.eventId = results.eventId
-      			and regionalSingleRecord not in ('WR', 'NR')
-      			inner join Competitions c on results.competitionId = c.id
+      			and single_records.person_id = results.person_id
+      			and single_records.event_id = results.event_id
+      			and regional_single_record not in ('WR', 'NR')
+      			inner join competitions c on results.competition_id = c.id
       		union all
       		select datediff(current_date, c.start_date) days,
-      			results.eventId,
+      			results.event_id,
       			results.average record,
       			'Average' record_type,
-      			regionalAverageRecord region,
-      			results.personId,
-      			personName,
-      			competitionId,
-      			c.cellName,
-      			results.countryId
-      		from Results results
+      			regional_average_record region,
+      			results.person_id,
+      			person_name,
+      			competition_id,
+      			c.cell_name,
+      			results.country_id
+      		from results results
       			inner join (
-      				select personId,
-      					eventId,
+      				select person_id,
+      					event_id,
       					best
-      				from RanksAverage
-      				where continentRank = 1
-      					and worldRank != 1
+      				from ranks_average
+      				where continent_rank = 1
+      					and world_rank != 1
       			) average_records on average_records.best = results.average
-      			and average_records.personId = results.personId
-      			and average_records.eventId = results.eventId
-      			and regionalAverageRecord not in ('WR', 'NR')
-      			inner join Competitions c on results.competitionId = c.id
+      			and average_records.person_id = results.person_id
+      			and average_records.event_id = results.event_id
+      			and regional_average_record not in ('WR', 'NR')
+      			inner join competitions c on results.competition_id = c.id
       	) records
-      	inner join Events e on records.eventId = e.id
-      	inner join Countries c2 on c2.id = records.countryId
-      	inner join Continents c3 on continentId = c3.id
+      	inner join events e on records.event_id = e.id
+      	inner join countries c2 on c2.id = records.country_id
+      	inner join continents c3 on continent_id = c3.id
       where e.rank < 900
       order by days desc, e.rank
       limit 20
@@ -154,62 +154,62 @@ queries:
     sqlQuery: |-
       select days,
       	e.name,
-        wca_statistics_time_format(record, eventId, record_type) record,
+        wca_statistics_time_format(record, event_id, record_type) record,
       	record_type,
       	c2.name,
-      	wca_statistics_person_link_format(personId, personName),
-      	wca_statistics_competition_link_format(competitionId, records.cellName)
+      	wca_statistics_person_link_format(person_id, person_name),
+      	wca_statistics_competition_link_format(competition_id, records.cell_name)
       from (
       		select datediff(current_date, c.start_date) days,
-      			results.eventId,
+      			results.event_id,
       			results.best record,
       			'Single' record_type,
-      			results.countryId region,
-      			results.personId,
-      			personName,
-      			competitionId,
-      			c.cellName
-      		from Results results
+      			results.country_id region,
+      			results.person_id,
+      			person_name,
+      			competition_id,
+      			c.cell_name
+      		from results results
       			inner join (
-      				select personId,
-      					eventId,
+      				select person_id,
+      					event_id,
       					best
-      				from RanksSingle
-      				where countryRank = 1
-      					and continentRank != 1
-      					and worldRank != 1
+      				from ranks_single
+      				where country_rank = 1
+      					and continent_rank != 1
+      					and world_rank != 1
       			) single_records on single_records.best = results.best
-      			and single_records.personId = results.personId
-      			and single_records.eventId = results.eventId
-      			and regionalSingleRecord = 'NR'
-      			inner join Competitions c on results.competitionId = c.id
+      			and single_records.person_id = results.person_id
+      			and single_records.event_id = results.event_id
+      			and regional_single_record = 'NR'
+      			inner join competitions c on results.competition_id = c.id
       		union all
       		select datediff(current_date, c.start_date) days,
-      			results.eventId,
+      			results.event_id,
       			results.average record,
       			'Average' record_type,
-      			results.countryId region,
-      			results.personId,
-      			personName,
-      			competitionId,
-      			c.cellName
-      		from Results results
+      			results.country_id region,
+      			results.person_id,
+      			person_name,
+      			competition_id,
+      			c.cell_name
+      		from results results
       			inner join (
-      				select personId,
-      					eventId,
+      				select person_id,
+      					event_id,
       					best
-      				from RanksAverage
-      				where countryRank = 1
-      					and continentRank != 1
-      					and worldRank != 1
+      				from ranks_average
+      				where country_rank = 1
+      					and continent_rank != 1
+      					and world_rank != 1
       			) average_records on average_records.best = results.average
-      			and average_records.personId = results.personId
-      			and average_records.eventId = results.eventId
-      			and regionalAverageRecord = 'NR'
-      			inner join Competitions c on results.competitionId = c.id
+      			and average_records.person_id = results.person_id
+      			and average_records.event_id = results.event_id
+      			and regional_average_record = 'NR'
+      			inner join competitions c on results.competition_id = c.id
       	) records
-      	inner join Events e on records.eventId = e.id
-      	inner join Countries c2 on c2.id = region
+      	inner join events e on records.event_id = e.id
+      	inner join countries c2 on c2.id = region
       where e.rank < 900
       order by days desc, e.rank
       limit 20

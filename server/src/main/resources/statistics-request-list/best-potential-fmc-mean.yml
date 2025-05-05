@@ -14,13 +14,13 @@ queries:
           r1,
           r2,
           r3,
-          wca_statistics_competition_link_format(competitionId, c.cellName),
+          wca_statistics_competition_link_format(competition_id, c.cell_name),
           rt.name
       from
           (
               select
-                  competitionId,
-                  roundTypeId,
+                  competition_id,
+                  round_type_id,
                   min(
                       case
                           when value1 > 0 then value1
@@ -40,14 +40,14 @@ queries:
                       end
                   ) r3
               from
-                  Results
+                  results
               where
-                  eventId = '333fm'
+                  event_id = '333fm'
               group by
-                  competitionId,
-                  roundTypeId
+                  competition_id,
+                  round_type_id
           ) best_results
-          inner join Competitions c on best_results.competitionId = c.id
+          inner join competitions c on best_results.competition_id = c.id
           inner join RoundTypes rt on rt.id = best_results.roundTypeId
       where
           r1 is not null
@@ -55,7 +55,7 @@ queries:
           and r3 is not null
       order by
           convert(average, float4),
-          competitionId
+          competition_id
       limit
           20
     sqlQueryCustom: |
@@ -64,21 +64,21 @@ queries:
       	coalesce(r1, 'DNF'),
       	coalesce(r2, 'DNF'),
       	coalesce(r3, 'DNF'),
-      	competitionId
+      	competition_id
       from
       	(
       	select
-      		competitionId,
+      		competition_id,
       		min(case when value1 > 0 then value1 else null end) r1,
       		min(case when value2 > 0 then value2 else null end) r2,
       		min(case when value3 > 0 then value3 else null end) r3
       	from
-      		Results
+      		results
       	where
-      		eventId = '333fm'
-      		and competitionId = ':COMPETITION_ID'
+      		event_id = '333fm'
+      		and competition_id = ':COMPETITION_ID'
       	group by
-      		competitionId, roundTypeId) best_results
+      		competition_id, roundTypeId) best_results
 title: Best potential FMC mean
 explanation: The means are computed by taking the best result for each attempt in the given round.
 groupName: Events

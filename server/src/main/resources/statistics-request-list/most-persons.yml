@@ -9,17 +9,17 @@ queries:
     sqlQuery: |-
       select
           e.name,
-          count(distinct personId) qt
+          count(distinct person_id) qt
       from
-          RanksSingle rs
-          inner join Events e on rs.eventId = e.id
+          ranks_single rs
+          inner join events e on rs.event_id = e.id
       where
           e.`rank` < 900
       group by
-          eventId
+          event_id
       order by
           qt desc,
-          eventId
+          event_id
   - keys:
       - Competition
     headers:
@@ -33,26 +33,26 @@ queries:
       from
           (
               select
-                  competitionId,
-                  count(distinct personId) qt
+                  competition_id,
+                  count(distinct person_id) qt
               from
-                  Results r
+                  results r
               group by
-                  competitionId
+                  competition_id
               order by
                   qt desc,
-                  competitionId
+                  competition_id
               limit
                   10
           ) result
-          inner join Competitions c on result.competitionId = c.id
+          inner join competitions c on result.competition_id = c.id
     sqlQueryCustom: |-
       select
           c.name Competition,
-          count(distinct personId) Competitors
+          count(distinct person_id) Competitors
       from
-          Results r
-          inner join Competitions c on r.competitionId = c.id
+          results r
+          inner join competitions c on r.competition_id = c.id
       where
           c.id = ':COMPETITION_ID'
       group by
@@ -67,26 +67,26 @@ queries:
       - Competitors
     sqlQuery: |-
       SELECT
-          countryId,
-          count(DISTINCT personId) numberOfPersons
+          country_id,
+          count(DISTINCT person_id) numberOfPersons
       FROM
-          Results
+          results
       GROUP BY
-          countryId
+          country_id
       ORDER BY
           numberOfPersons DESC,
-          countryId
+          country_id
       LIMIT
           10
     sqlQueryCustom: |-
       SELECT
-          countryId,
-          count(DISTINCT personId) numberOfPersons
+          country_id,
+          count(DISTINCT person_id) numberOfPersons
       FROM
-          Results
+          results
       where
-          countryId = ':COUNTRY_ID'
+          country_id = ':COUNTRY_ID'
       GROUP BY
-          countryId
+          country_id
 title: Most competitors
 groupName: Competitors

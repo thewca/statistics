@@ -23,7 +23,6 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.io.support.ResourcePatternUtils;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 import org.worldcubeassociation.statistics.dto.ControlItemDTO;
 import org.worldcubeassociation.statistics.dto.DatabaseQueryBaseDTO;
@@ -196,7 +195,7 @@ public class StatisticsServiceImpl implements StatisticsService {
     }
 
     @Override
-    @Transactional(isolation = Isolation.READ_UNCOMMITTED)
+    @Transactional(readOnly = true)
     public StatisticsListDTO list(String term) {
         /* It would be better if we could write a query to retrieve the items ordered already, but mysql does not
         support it
@@ -248,6 +247,7 @@ public class StatisticsServiceImpl implements StatisticsService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public StatisticsResponseDTO getStatistic(String path) {
         var cache = CACHE.get(path);
         if (cache != null && cache.getFirst().plusHours(CACHING_TIME)

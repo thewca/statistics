@@ -12,7 +12,7 @@ queries:
           select
               e.name,
               e.`rank`,
-              wca_statistics_person_link_format(personId, personName) person_name,
+              wca_statistics_person_link_format(person_id, person_name) person_name,
               sum(
                   case
                       when pos = 1 then 1
@@ -32,14 +32,14 @@ queries:
                   end
               ) bronzes
           from
-              Results r
-              inner join Events e on r.eventId = e.id
+              results r
+              inner join events e on r.event_id = e.id
           where
-              roundTypeId in ('c', 'f')
+              round_type_id in ('c', 'f')
               and best > 0
           group by
-              personName,
-              personId,
+              person_name,
+              person_id,
               e.name,
               e.`rank`
           order by
@@ -72,19 +72,19 @@ queries:
       order by golds desc, silvers desc, bronzes desc
     sqlQueryCustom: |
       select
-          personName,
+          person_name,
           sum( case when pos = 1 then 1 else 0 end ) Golds,
           sum( case when pos = 2 then 1 else 0 end ) Silvers,
           sum( case when pos = 3 then 1 else 0 end ) Bronzes
       from
-          Results
+          results
       where
-          roundTypeId in ('c', 'f')
+          round_type_id in ('c', 'f')
           and best > 0
-          and eventId = ':EVENT_ID'
-          and personId = ':WCA_ID'
+          and event_id = ':EVENT_ID'
+          and person_id = ':WCA_ID'
       group by
-          personName
+          person_name
       order by
           Golds desc
       limit 20
@@ -101,9 +101,9 @@ queries:
       select
           concat(
               '<a href="https://www.worldcubeassociation.org/persons/',
-              personId,
+              person_id,
               '">',
-              personName,
+              person_name,
               '</a>'
           ),
           sum(
@@ -125,31 +125,31 @@ queries:
               end
           ) Bronzes
       from
-          Results
+          results
       where
-          roundTypeId in ('c', 'f')
+          round_type_id in ('c', 'f')
           and best > 0
       group by
-          personName,
-          personId
+          person_name,
+          person_id
       order by
           Golds desc
       limit
           10
     sqlQueryCustom: |
       select
-          personName,
+          person_name,
           sum(case when pos = 1 then 1 else 0 end) Golds,
           sum(case when pos = 2 then 1 else 0 end) Silvers,
           sum(case when pos = 3 then 1 else 0 end) Bronzes
       from
-          Results
+          results
       where
-          roundTypeId in ('c', 'f')
+          round_type_id in ('c', 'f')
           and best > 0
-          and personId = ':WCA_ID'
+          and person_id = ':WCA_ID'
       group by
-          personName
+          person_name
       order by
           Golds desc
       limit 20

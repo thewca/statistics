@@ -18,20 +18,20 @@ from misc.python.util.time_util import time_format
 title = "Competitors who got 5BLD before 4BLD"
 
 query = """select
-	personId,
-	personName,
-	r.countryId,
-    eventId,
+	person_id,
+	person_name,
+	r.country_id,
+    event_id,
 	best,
 	c.id,
 	c.name,
 	c.start_date
 from
-	Results r
-inner join Competitions c on
-	r.competitionId = c.id
+	results r
+inner join competitions c on
+	r.competition_id = c.id
 where
-	eventId in ('%s', '%s')
+	event_id in ('%s', '%s')
 	and best > 0
 order by
 	c.start_date"""
@@ -51,22 +51,22 @@ from
                     select
                         min(start_date)
                     from
-                        Results r
-                        inner join Competitions c on r.competitionId = c.id
+                        results r
+                        inner join competitions c on r.competition_id = c.id
                     where
-                        r.personId = p.id
-                        and eventId = ':SECOND_EVENT_ID'
+                        r.person_id = p.id
+                        and event_id = ':SECOND_EVENT_ID'
                         and best > 0
                 ),
                 (
                     select
                         min(start_date)
                     from
-                        Results r
-                        inner join Competitions c on r.competitionId = c.id
+                        results r
+                        inner join competitions c on r.competition_id = c.id
                     where
-                        r.personId = p.id
-                        and eventId = ':FIRST_EVENT_ID'
+                        r.person_id = p.id
+                        and event_id = ':FIRST_EVENT_ID'
                         and best > 0
                 )
             ) days

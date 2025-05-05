@@ -6,7 +6,7 @@
             "keys": [
                 "3x3x3 Cube"
             ],
-            "sqlQueryCustom": "select%0A++++personName%2C%0A++++sum%28+case+when+pos+%3D+1+then+1+else+0+end+%29+Golds%2C%0A++++sum%28+case+when+pos+%3D+2+then+1+else+0+end+%29+Silvers%2C%0A++++sum%28+case+when+pos+%3D+3+then+1+else+0+end+%29+Bronzes%0Afrom%0A++++Results%0Awhere%0A++++roundTypeId+in+%28%27c%27%2C+%27f%27%29%0A++++and+best+%3E+0%0A++++and+eventId+%3D+%27%3AEVENT_ID%27%0A++++and+personId+%3D+%27%3AWCA_ID%27%0Agroup+by%0A++++personName%0Aorder+by%0A++++Golds+desc%0Alimit+20%0A",
+            "sqlQueryCustom": "select%0A++++person_name%2C%0A++++sum%28+case+when+pos+%3D+1+then+1+else+0+end+%29+Golds%2C%0A++++sum%28+case+when+pos+%3D+2+then+1+else+0+end+%29+Silvers%2C%0A++++sum%28+case+when+pos+%3D+3+then+1+else+0+end+%29+Bronzes%0Afrom%0A++++results%0Awhere%0A++++round_type_id+in+%28%27c%27%2C+%27f%27%29%0A++++and+best+%3E+0%0A++++and+event_id+%3D+%27%3AEVENT_ID%27%0A++++and+person_id+%3D+%27%3AWCA_ID%27%0Agroup+by%0A++++person_name%0Aorder+by%0A++++Golds+desc%0Alimit+20%0A",
             "headers": [
                 "Person",
                 "Golds",
@@ -208,7 +208,7 @@
             "keys": [
                 "5x5x5 Cube"
             ],
-            "sqlQueryCustom": "select%0A++++personName%2C%0A++++sum%28+case+when+pos+%3D+1+then+1+else+0+end+%29+Golds%2C%0A++++sum%28+case+when+pos+%3D+2+then+1+else+0+end+%29+Silvers%2C%0A++++sum%28+case+when+pos+%3D+3+then+1+else+0+end+%29+Bronzes%0Afrom%0A++++Results%0Awhere%0A++++roundTypeId+in+%28%27c%27%2C+%27f%27%29%0A++++and+best+%3E+0%0A++++and+eventId+%3D+%27%3AEVENT_ID%27%0A++++and+personId+%3D+%27%3AWCA_ID%27%0Agroup+by%0A++++personName%0Aorder+by%0A++++Golds+desc%0Alimit+20%0A",
+            "sqlQueryCustom": "select%0A++++person_name%2C%0A++++sum%28+case+when+pos+%3D+1+then+1+else+0+end+%29+Golds%2C%0A++++sum%28+case+when+pos+%3D+2+then+1+else+0+end+%29+Silvers%2C%0A++++sum%28+case+when+pos+%3D+3+then+1+else+0+end+%29+Bronzes%0Afrom%0A++++results%0Awhere%0A++++round_type_id+in+%28%27c%27%2C+%27f%27%29%0A++++and+best+%3E+0%0A++++and+event_id+%3D+%27%3AEVENT_ID%27%0A++++and+person_id+%3D+%27%3AWCA_ID%27%0Agroup+by%0A++++person_name%0Aorder+by%0A++++Golds+desc%0Alimit+20%0A",
             "headers": [
                 "Person",
                 "Golds",
@@ -242,7 +242,7 @@
             "keys": [
                 "3x3x3 Blindfolded"
             ],
-            "sqlQueryCustom": "select%0A++++personName%2C%0A++++sum%28+case+when+pos+%3D+1+then+1+else+0+end+%29+Golds%2C%0A++++sum%28+case+when+pos+%3D+2+then+1+else+0+end+%29+Silvers%2C%0A++++sum%28+case+when+pos+%3D+3+then+1+else+0+end+%29+Bronzes%0Afrom%0A++++Results%0Awhere%0A++++roundTypeId+in+%28%27c%27%2C+%27f%27%29%0A++++and+best+%3E+0%0A++++and+eventId+%3D+%27%3AEVENT_ID%27%0A++++and+personId+%3D+%27%3AWCA_ID%27%0Agroup+by%0A++++personName%0Aorder+by%0A++++Golds+desc%0Alimit+20%0A",
+            "sqlQueryCustom": "select%0A++++person_name%2C%0A++++sum%28+case+when+pos+%3D+1+then+1+else+0+end+%29+Golds%2C%0A++++sum%28+case+when+pos+%3D+2+then+1+else+0+end+%29+Silvers%2C%0A++++sum%28+case+when+pos+%3D+3+then+1+else+0+end+%29+Bronzes%0Afrom%0A++++results%0Awhere%0A++++round_type_id+in+%28%27c%27%2C+%27f%27%29%0A++++and+best+%3E+0%0A++++and+event_id+%3D+%27%3AEVENT_ID%27%0A++++and+person_id+%3D+%27%3AWCA_ID%27%0Agroup+by%0A++++person_name%0Aorder+by%0A++++Golds+desc%0Alimit+20%0A",
             "headers": [
                 "Person",
                 "Golds",
@@ -270,7 +270,7 @@
             "keys": [
                 "4x4x4 Cube"
             ],
-            "sqlQueryCustom": "select%0A++++personName%2C%0A++++sum%28+case+when+pos+%3D+1+then+1+else+0+end+%29+Golds%2C%0A++++sum%28+case+when+pos+%3D+2+then+1+else+0+end+%29+Silvers%2C%0A++++sum%28+case+when+pos+%3D+3+then+1+else+0+end+%29+Bronzes%0Afrom%0A++++Results%0Awhere%0A++++roundTypeId+in+%28%27c%27%2C+%27f%27%29%0A++++and+best+%3E+0%0A++++and+eventId+%3D+%27%3AEVENT_ID%27%0A++++and+personId+%3D+%27%3AWCA_ID%27%0Agroup+by%0A++++personName%0Aorder+by%0A++++Golds+desc%0Alimit+20%0A",
+            "sqlQueryCustom": "select%0A++++person_name%2C%0A++++sum%28+case+when+pos+%3D+1+then+1+else+0+end+%29+Golds%2C%0A++++sum%28+case+when+pos+%3D+2+then+1+else+0+end+%29+Silvers%2C%0A++++sum%28+case+when+pos+%3D+3+then+1+else+0+end+%29+Bronzes%0Afrom%0A++++results%0Awhere%0A++++round_type_id+in+%28%27c%27%2C+%27f%27%29%0A++++and+best+%3E+0%0A++++and+event_id+%3D+%27%3AEVENT_ID%27%0A++++and+person_id+%3D+%27%3AWCA_ID%27%0Agroup+by%0A++++person_name%0Aorder+by%0A++++Golds+desc%0Alimit+20%0A",
             "headers": [
                 "Person",
                 "Golds",
@@ -304,7 +304,7 @@
             "keys": [
                 "3x3x3 Fewest Moves"
             ],
-            "sqlQueryCustom": "select%0A++++personName%2C%0A++++sum%28+case+when+pos+%3D+1+then+1+else+0+end+%29+Golds%2C%0A++++sum%28+case+when+pos+%3D+2+then+1+else+0+end+%29+Silvers%2C%0A++++sum%28+case+when+pos+%3D+3+then+1+else+0+end+%29+Bronzes%0Afrom%0A++++Results%0Awhere%0A++++roundTypeId+in+%28%27c%27%2C+%27f%27%29%0A++++and+best+%3E+0%0A++++and+eventId+%3D+%27%3AEVENT_ID%27%0A++++and+personId+%3D+%27%3AWCA_ID%27%0Agroup+by%0A++++personName%0Aorder+by%0A++++Golds+desc%0Alimit+20%0A",
+            "sqlQueryCustom": "select%0A++++person_name%2C%0A++++sum%28+case+when+pos+%3D+1+then+1+else+0+end+%29+Golds%2C%0A++++sum%28+case+when+pos+%3D+2+then+1+else+0+end+%29+Silvers%2C%0A++++sum%28+case+when+pos+%3D+3+then+1+else+0+end+%29+Bronzes%0Afrom%0A++++results%0Awhere%0A++++round_type_id+in+%28%27c%27%2C+%27f%27%29%0A++++and+best+%3E+0%0A++++and+event_id+%3D+%27%3AEVENT_ID%27%0A++++and+person_id+%3D+%27%3AWCA_ID%27%0Agroup+by%0A++++person_name%0Aorder+by%0A++++Golds+desc%0Alimit+20%0A",
             "headers": [
                 "Person",
                 "Golds",
@@ -332,7 +332,7 @@
             "keys": [
                 "3x3x3 One-Handed"
             ],
-            "sqlQueryCustom": "select%0A++++personName%2C%0A++++sum%28+case+when+pos+%3D+1+then+1+else+0+end+%29+Golds%2C%0A++++sum%28+case+when+pos+%3D+2+then+1+else+0+end+%29+Silvers%2C%0A++++sum%28+case+when+pos+%3D+3+then+1+else+0+end+%29+Bronzes%0Afrom%0A++++Results%0Awhere%0A++++roundTypeId+in+%28%27c%27%2C+%27f%27%29%0A++++and+best+%3E+0%0A++++and+eventId+%3D+%27%3AEVENT_ID%27%0A++++and+personId+%3D+%27%3AWCA_ID%27%0Agroup+by%0A++++personName%0Aorder+by%0A++++Golds+desc%0Alimit+20%0A",
+            "sqlQueryCustom": "select%0A++++person_name%2C%0A++++sum%28+case+when+pos+%3D+1+then+1+else+0+end+%29+Golds%2C%0A++++sum%28+case+when+pos+%3D+2+then+1+else+0+end+%29+Silvers%2C%0A++++sum%28+case+when+pos+%3D+3+then+1+else+0+end+%29+Bronzes%0Afrom%0A++++results%0Awhere%0A++++round_type_id+in+%28%27c%27%2C+%27f%27%29%0A++++and+best+%3E+0%0A++++and+event_id+%3D+%27%3AEVENT_ID%27%0A++++and+person_id+%3D+%27%3AWCA_ID%27%0Agroup+by%0A++++person_name%0Aorder+by%0A++++Golds+desc%0Alimit+20%0A",
             "headers": [
                 "Person",
                 "Golds",
@@ -420,7 +420,7 @@
             "keys": [
                 "Clock"
             ],
-            "sqlQueryCustom": "select%0A++++personName%2C%0A++++sum%28+case+when+pos+%3D+1+then+1+else+0+end+%29+Golds%2C%0A++++sum%28+case+when+pos+%3D+2+then+1+else+0+end+%29+Silvers%2C%0A++++sum%28+case+when+pos+%3D+3+then+1+else+0+end+%29+Bronzes%0Afrom%0A++++Results%0Awhere%0A++++roundTypeId+in+%28%27c%27%2C+%27f%27%29%0A++++and+best+%3E+0%0A++++and+eventId+%3D+%27%3AEVENT_ID%27%0A++++and+personId+%3D+%27%3AWCA_ID%27%0Agroup+by%0A++++personName%0Aorder+by%0A++++Golds+desc%0Alimit+20%0A",
+            "sqlQueryCustom": "select%0A++++person_name%2C%0A++++sum%28+case+when+pos+%3D+1+then+1+else+0+end+%29+Golds%2C%0A++++sum%28+case+when+pos+%3D+2+then+1+else+0+end+%29+Silvers%2C%0A++++sum%28+case+when+pos+%3D+3+then+1+else+0+end+%29+Bronzes%0Afrom%0A++++results%0Awhere%0A++++round_type_id+in+%28%27c%27%2C+%27f%27%29%0A++++and+best+%3E+0%0A++++and+event_id+%3D+%27%3AEVENT_ID%27%0A++++and+person_id+%3D+%27%3AWCA_ID%27%0Agroup+by%0A++++person_name%0Aorder+by%0A++++Golds+desc%0Alimit+20%0A",
             "headers": [
                 "Person",
                 "Golds",
@@ -472,7 +472,7 @@
             "keys": [
                 "Megaminx"
             ],
-            "sqlQueryCustom": "select%0A++++personName%2C%0A++++sum%28+case+when+pos+%3D+1+then+1+else+0+end+%29+Golds%2C%0A++++sum%28+case+when+pos+%3D+2+then+1+else+0+end+%29+Silvers%2C%0A++++sum%28+case+when+pos+%3D+3+then+1+else+0+end+%29+Bronzes%0Afrom%0A++++Results%0Awhere%0A++++roundTypeId+in+%28%27c%27%2C+%27f%27%29%0A++++and+best+%3E+0%0A++++and+eventId+%3D+%27%3AEVENT_ID%27%0A++++and+personId+%3D+%27%3AWCA_ID%27%0Agroup+by%0A++++personName%0Aorder+by%0A++++Golds+desc%0Alimit+20%0A",
+            "sqlQueryCustom": "select%0A++++person_name%2C%0A++++sum%28+case+when+pos+%3D+1+then+1+else+0+end+%29+Golds%2C%0A++++sum%28+case+when+pos+%3D+2+then+1+else+0+end+%29+Silvers%2C%0A++++sum%28+case+when+pos+%3D+3+then+1+else+0+end+%29+Bronzes%0Afrom%0A++++results%0Awhere%0A++++round_type_id+in+%28%27c%27%2C+%27f%27%29%0A++++and+best+%3E+0%0A++++and+event_id+%3D+%27%3AEVENT_ID%27%0A++++and+person_id+%3D+%27%3AWCA_ID%27%0Agroup+by%0A++++person_name%0Aorder+by%0A++++Golds+desc%0Alimit+20%0A",
             "headers": [
                 "Person",
                 "Golds",
@@ -518,7 +518,7 @@
             "keys": [
                 "Pyraminx"
             ],
-            "sqlQueryCustom": "select%0A++++personName%2C%0A++++sum%28+case+when+pos+%3D+1+then+1+else+0+end+%29+Golds%2C%0A++++sum%28+case+when+pos+%3D+2+then+1+else+0+end+%29+Silvers%2C%0A++++sum%28+case+when+pos+%3D+3+then+1+else+0+end+%29+Bronzes%0Afrom%0A++++Results%0Awhere%0A++++roundTypeId+in+%28%27c%27%2C+%27f%27%29%0A++++and+best+%3E+0%0A++++and+eventId+%3D+%27%3AEVENT_ID%27%0A++++and+personId+%3D+%27%3AWCA_ID%27%0Agroup+by%0A++++personName%0Aorder+by%0A++++Golds+desc%0Alimit+20%0A",
+            "sqlQueryCustom": "select%0A++++person_name%2C%0A++++sum%28+case+when+pos+%3D+1+then+1+else+0+end+%29+Golds%2C%0A++++sum%28+case+when+pos+%3D+2+then+1+else+0+end+%29+Silvers%2C%0A++++sum%28+case+when+pos+%3D+3+then+1+else+0+end+%29+Bronzes%0Afrom%0A++++results%0Awhere%0A++++round_type_id+in+%28%27c%27%2C+%27f%27%29%0A++++and+best+%3E+0%0A++++and+event_id+%3D+%27%3AEVENT_ID%27%0A++++and+person_id+%3D+%27%3AWCA_ID%27%0Agroup+by%0A++++person_name%0Aorder+by%0A++++Golds+desc%0Alimit+20%0A",
             "headers": [
                 "Person",
                 "Golds",
@@ -570,7 +570,7 @@
             "keys": [
                 "Square-1"
             ],
-            "sqlQueryCustom": "select%0A++++personName%2C%0A++++sum%28+case+when+pos+%3D+1+then+1+else+0+end+%29+Golds%2C%0A++++sum%28+case+when+pos+%3D+2+then+1+else+0+end+%29+Silvers%2C%0A++++sum%28+case+when+pos+%3D+3+then+1+else+0+end+%29+Bronzes%0Afrom%0A++++Results%0Awhere%0A++++roundTypeId+in+%28%27c%27%2C+%27f%27%29%0A++++and+best+%3E+0%0A++++and+eventId+%3D+%27%3AEVENT_ID%27%0A++++and+personId+%3D+%27%3AWCA_ID%27%0Agroup+by%0A++++personName%0Aorder+by%0A++++Golds+desc%0Alimit+20%0A",
+            "sqlQueryCustom": "select%0A++++person_name%2C%0A++++sum%28+case+when+pos+%3D+1+then+1+else+0+end+%29+Golds%2C%0A++++sum%28+case+when+pos+%3D+2+then+1+else+0+end+%29+Silvers%2C%0A++++sum%28+case+when+pos+%3D+3+then+1+else+0+end+%29+Bronzes%0Afrom%0A++++results%0Awhere%0A++++round_type_id+in+%28%27c%27%2C+%27f%27%29%0A++++and+best+%3E+0%0A++++and+event_id+%3D+%27%3AEVENT_ID%27%0A++++and+person_id+%3D+%27%3AWCA_ID%27%0Agroup+by%0A++++person_name%0Aorder+by%0A++++Golds+desc%0Alimit+20%0A",
             "headers": [
                 "Person",
                 "Golds",
@@ -610,7 +610,7 @@
             "keys": [
                 "4x4x4 Blindfolded"
             ],
-            "sqlQueryCustom": "select%0A++++personName%2C%0A++++sum%28+case+when+pos+%3D+1+then+1+else+0+end+%29+Golds%2C%0A++++sum%28+case+when+pos+%3D+2+then+1+else+0+end+%29+Silvers%2C%0A++++sum%28+case+when+pos+%3D+3+then+1+else+0+end+%29+Bronzes%0Afrom%0A++++Results%0Awhere%0A++++roundTypeId+in+%28%27c%27%2C+%27f%27%29%0A++++and+best+%3E+0%0A++++and+eventId+%3D+%27%3AEVENT_ID%27%0A++++and+personId+%3D+%27%3AWCA_ID%27%0Agroup+by%0A++++personName%0Aorder+by%0A++++Golds+desc%0Alimit+20%0A",
+            "sqlQueryCustom": "select%0A++++person_name%2C%0A++++sum%28+case+when+pos+%3D+1+then+1+else+0+end+%29+Golds%2C%0A++++sum%28+case+when+pos+%3D+2+then+1+else+0+end+%29+Silvers%2C%0A++++sum%28+case+when+pos+%3D+3+then+1+else+0+end+%29+Bronzes%0Afrom%0A++++results%0Awhere%0A++++round_type_id+in+%28%27c%27%2C+%27f%27%29%0A++++and+best+%3E+0%0A++++and+event_id+%3D+%27%3AEVENT_ID%27%0A++++and+person_id+%3D+%27%3AWCA_ID%27%0Agroup+by%0A++++person_name%0Aorder+by%0A++++Golds+desc%0Alimit+20%0A",
             "headers": [
                 "Person",
                 "Golds",
@@ -632,7 +632,7 @@
             "keys": [
                 "Magic"
             ],
-            "sqlQueryCustom": "select%0A++++personName%2C%0A++++sum%28+case+when+pos+%3D+1+then+1+else+0+end+%29+Golds%2C%0A++++sum%28+case+when+pos+%3D+2+then+1+else+0+end+%29+Silvers%2C%0A++++sum%28+case+when+pos+%3D+3+then+1+else+0+end+%29+Bronzes%0Afrom%0A++++Results%0Awhere%0A++++roundTypeId+in+%28%27c%27%2C+%27f%27%29%0A++++and+best+%3E+0%0A++++and+eventId+%3D+%27%3AEVENT_ID%27%0A++++and+personId+%3D+%27%3AWCA_ID%27%0Agroup+by%0A++++personName%0Aorder+by%0A++++Golds+desc%0Alimit+20%0A",
+            "sqlQueryCustom": "select%0A++++person_name%2C%0A++++sum%28+case+when+pos+%3D+1+then+1+else+0+end+%29+Golds%2C%0A++++sum%28+case+when+pos+%3D+2+then+1+else+0+end+%29+Silvers%2C%0A++++sum%28+case+when+pos+%3D+3+then+1+else+0+end+%29+Bronzes%0Afrom%0A++++results%0Awhere%0A++++round_type_id+in+%28%27c%27%2C+%27f%27%29%0A++++and+best+%3E+0%0A++++and+event_id+%3D+%27%3AEVENT_ID%27%0A++++and+person_id+%3D+%27%3AWCA_ID%27%0Agroup+by%0A++++person_name%0Aorder+by%0A++++Golds+desc%0Alimit+20%0A",
             "headers": [
                 "Person",
                 "Golds",
@@ -684,7 +684,7 @@
             "keys": [
                 "Master Magic"
             ],
-            "sqlQueryCustom": "select%0A++++personName%2C%0A++++sum%28+case+when+pos+%3D+1+then+1+else+0+end+%29+Golds%2C%0A++++sum%28+case+when+pos+%3D+2+then+1+else+0+end+%29+Silvers%2C%0A++++sum%28+case+when+pos+%3D+3+then+1+else+0+end+%29+Bronzes%0Afrom%0A++++Results%0Awhere%0A++++roundTypeId+in+%28%27c%27%2C+%27f%27%29%0A++++and+best+%3E+0%0A++++and+eventId+%3D+%27%3AEVENT_ID%27%0A++++and+personId+%3D+%27%3AWCA_ID%27%0Agroup+by%0A++++personName%0Aorder+by%0A++++Golds+desc%0Alimit+20%0A",
+            "sqlQueryCustom": "select%0A++++person_name%2C%0A++++sum%28+case+when+pos+%3D+1+then+1+else+0+end+%29+Golds%2C%0A++++sum%28+case+when+pos+%3D+2+then+1+else+0+end+%29+Silvers%2C%0A++++sum%28+case+when+pos+%3D+3+then+1+else+0+end+%29+Bronzes%0Afrom%0A++++results%0Awhere%0A++++round_type_id+in+%28%27c%27%2C+%27f%27%29%0A++++and+best+%3E+0%0A++++and+event_id+%3D+%27%3AEVENT_ID%27%0A++++and+person_id+%3D+%27%3AWCA_ID%27%0Agroup+by%0A++++person_name%0Aorder+by%0A++++Golds+desc%0Alimit+20%0A",
             "headers": [
                 "Person",
                 "Golds",
@@ -730,7 +730,7 @@
             "keys": [
                 "Overall"
             ],
-            "sqlQueryCustom": "select%0A++++personName%2C%0A++++sum%28case+when+pos+%3D+1+then+1+else+0+end%29+Golds%2C%0A++++sum%28case+when+pos+%3D+2+then+1+else+0+end%29+Silvers%2C%0A++++sum%28case+when+pos+%3D+3+then+1+else+0+end%29+Bronzes%0Afrom%0A++++Results%0Awhere%0A++++roundTypeId+in+%28%27c%27%2C+%27f%27%29%0A++++and+best+%3E+0%0A++++and+personId+%3D+%27%3AWCA_ID%27%0Agroup+by%0A++++personName%0Aorder+by%0A++++Golds+desc%0Alimit+20%0A",
+            "sqlQueryCustom": "select%0A++++person_name%2C%0A++++sum%28case+when+pos+%3D+1+then+1+else+0+end%29+Golds%2C%0A++++sum%28case+when+pos+%3D+2+then+1+else+0+end%29+Silvers%2C%0A++++sum%28case+when+pos+%3D+3+then+1+else+0+end%29+Bronzes%0Afrom%0A++++results%0Awhere%0A++++round_type_id+in+%28%27c%27%2C+%27f%27%29%0A++++and+best+%3E+0%0A++++and+person_id+%3D+%27%3AWCA_ID%27%0Agroup+by%0A++++person_name%0Aorder+by%0A++++Golds+desc%0Alimit+20%0A",
             "headers": [
                 "Person",
                 "Golds",
@@ -805,6 +805,6 @@
     "displayMode": "SELECTOR",
     "groupName": "Competitors",
     "path": "best-medal-collection",
-    "lastModified": "2024-09-30T00:25:08",
+    "lastModified": "2025-05-01T18:02:46",
     "exportDate": "2003-10-11T00:00:00"
 }

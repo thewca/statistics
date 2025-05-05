@@ -3,44 +3,38 @@
         "id",
         "name",
         "rank",
-        "format",
-        "cellName"
+        "format"
     ],
     "content": [
         [
             "333oh",
             "3x3x3 One-Handed",
             "90",
-            "time",
-            "3x3x3 One-Handed"
+            "time"
         ],
         [
             "clock",
             "Clock",
             "110",
-            "time",
-            "Clock"
+            "time"
         ],
         [
             "minx",
             "Megaminx",
             "120",
-            "time",
-            "Megaminx"
+            "time"
         ],
         [
             "pyram",
             "Pyraminx",
             "130",
-            "time",
-            "Pyraminx"
+            "time"
         ],
         [
             "sq1",
             "Square-1",
             "150",
-            "time",
-            "Square-1"
+            "time"
         ]
     ],
     "number": 1,

@@ -3,44 +3,38 @@
         "id",
         "name",
         "rank",
-        "format",
-        "cellName"
+        "format"
     ],
     "content": [
         [
             "333",
             "3x3x3 Cube",
             "10",
-            "time",
-            "3x3x3 Cube"
+            "time"
         ],
         [
             "444",
             "4x4x4 Cube",
             "30",
-            "time",
-            "4x4x4 Cube"
+            "time"
         ],
         [
             "555",
             "5x5x5 Cube",
             "40",
-            "time",
-            "5x5x5 Cube"
+            "time"
         ],
         [
             "333bf",
             "3x3x3 Blindfolded",
             "70",
-            "time",
-            "3x3x3 Blindfolded"
+            "time"
         ],
         [
             "333fm",
             "3x3x3 Fewest Moves",
             "80",
-            "number",
-            "3x3x3 Fewest Moves"
+            "number"
         ]
     ],
     "number": 0,

@@ -28,29 +28,29 @@ class Competitor(Comp):
 
 
 query = """select
-    personId,
-    personName,
-    r.countryId,
+    person_id,
+    person_name,
+    r.country_id,
     value1,
     value2,
     value3,
     value4,
     value5
 from
-    Results r
-    inner join Competitions c on r.competitionId = c.id
+    results r
+    inner join competitions c on r.competition_id = c.id
 where
-    eventId = %(event_id)s
+    event_id = %(event_id)s
     and c.start_date >= date(%(min_date)s)"""
 
 custom_query = """select
-    personName,
+    person_name,
     format(solves / attempts, 2) Rate,
     concat(solves, ' / ', attempts) Successes
 from
     (
         select
-            personName,
+            person_name,
             sum(
                 IF(value1 > 0, 1, 0) + IF(value2 > 0, 1, 0) + IF(value3 > 0, 1, 0) + IF(value4 > 0, 1, 0) + IF(value5 > 0, 1, 0)
             ) solves,
@@ -83,15 +83,15 @@ from
                 )
             ) attempts
         from
-            Results r
-            inner join Competitions c on r.competitionId = c.id
+            results r
+            inner join competitions c on r.competition_id = c.id
         where
             c.start_date >= date('%(min_date)s')
-            and personId = ':WCA_ID'
-            and eventId = '%(event_id)s'
+            and person_id = ':WCA_ID'
+            and event_id = '%(event_id)s'
         group by
-            personId,
-            personName
+            person_id,
+            person_name
     ) result
 """
 

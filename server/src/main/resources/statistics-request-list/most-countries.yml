@@ -8,24 +8,24 @@ queries:
       - Countries
     sqlQuery: |-
       select
-          wca_statistics_person_link_format(personId, person.name),
-          count(competition_countries_by_person.countryId) numberOfCountries
+          wca_statistics_person_link_format(person_id, person.name),
+          count(competition_countries_by_person.country_id) numberOfCountries
       from
           (
               select
-                  distinct personId,
-                  competition.countryId
+                  distinct person_id,
+                  competition.country_id
               from
-                  Results
-                  join Competitions competition on competition.id = competitionId
+                  results
+                  join competitions competition on competition.id = competition_id
               where
-                  competition.countryId not regexp '^X[A-Z]{1}$'
+                  competition.country_id not regexp '^X[A-Z]{1}$'
           ) as competition_countries_by_person
-          join Persons person on person.wca_id = personId
-          and subId = 1
+          join persons person on person.wca_id = person_id
+          and sub_id = 1
       group by
           person.name,
-          personId
+          person_id
       order by
           numberOfCountries desc,
           person.name
@@ -33,14 +33,14 @@ queries:
           10
     sqlQueryCustom: |-
       select
-          r.personId,
-          count(distinct c.countryId) Countries
+          r.person_id,
+          count(distinct c.country_id) countries
       from
-          Results r
-          inner join Competitions c on r.competitionId = c.id
+          results r
+          inner join competitions c on r.competition_id = c.id
       where
-          personId = ':WCA_ID'
-          and c.countryId NOT REGEXP '^X[A-Z]{1}$'
+          person_id = ':WCA_ID'
+          and c.country_id NOT REGEXP '^X[A-Z]{1}$'
   - keys:
       - Event
     headers:
@@ -50,13 +50,13 @@ queries:
     sqlQuery: |-
       select
           e.name,
-          count(distinct c.countryId) qt
+          count(distinct c.country_id) qt
       from
           competition_events ce
-          inner join Competitions c on ce.competition_id = c.id
-          inner join Events e on ce.event_id = e.id
+          inner join competitions c on ce.competition_id = c.id
+          inner join events e on ce.event_id = e.id
       where
-          c.countryId NOT REGEXP '^X[A-Z]{1}$'
+          c.country_id NOT REGEXP '^X[A-Z]{1}$'
           and e.`rank` < 900
       group by
           ce.event_id
@@ -72,33 +72,33 @@ queries:
     explanation: Different nationalities competing in a competition
     sqlQuery: |-
       select
-          wca_statistics_competition_link_format(competitionId, c.name),
-          Countries
+          wca_statistics_competition_link_format(competition_id, c.name),
+          countries
       from
           (
               SELECT
-                  competitionId,
-                  count(DISTINCT result.countryId) Countries
+                  competition_id,
+                  count(DISTINCT result.country_id) countries
               FROM
-                  Results result
+                  results result
               WHERE
-                  result.countryId NOT REGEXP '^X[A-Z]{1}$'
+                  result.country_id NOT REGEXP '^X[A-Z]{1}$'
               GROUP BY
-                  competitionId
+                  competition_id
               ORDER BY
-                  Countries DESC,
-                  competitionId
+                  countries DESC,
+                  competition_id
               LIMIT
                   10
           ) r
-          inner join Competitions c on r.competitionId = c.id
+          inner join competitions c on r.competition_id = c.id
     sqlQueryCustom: |-
       select
-      	competitionId,
-      	count(distinct r.countryId) Countries
+      	competition_id,
+      	count(distinct r.country_id) countries
       from
-      	Results r
+      	results r
       where
-      	competitionId = ':COMPETITION_ID'
+      	competition_id = ':COMPETITION_ID'
 title: Most countries
 groupName: Countries

@@ -54,6 +54,12 @@ For Windows, I think you need to use `.\gradlew.bat bootRun`.
 
 The `-d` part means "detached", so you'll have to stop by killing the process running on port 8080.
 
+You can also generate a dump of the database by using
+
+```bash
+docker compose exec statistics_mysql mysqldump -u root --no-data wca_development > structure.sql
+```
+
 ## Tests
 
 This backend project uses integration tests so we need to actually connect to a database. We mock WCA profile response.

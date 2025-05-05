@@ -32,24 +32,23 @@ class Competitor(Comp):
 
 
 query = """select
-    personId,
-    r.countryId,
-    personName,
+    person_id,
+    r.country_id,
+    person_name,
     best,
     start_date,
-    competitionId,
+    competition_id,
     c.name,
-    eventId
+    event_id
 from
-    Results r
-    inner join Competitions c on r.competitionId = c.id
-    inner join RoundTypes rt on r.roundTypeId = rt.id
+    results r
+    inner join competitions c on r.competition_id = c.id
 where
-    eventId in ('%s', '%s')
+    event_id in ('%s', '%s')
     and best > 0
 order by
     c.start_date,
-    rt.`rank`"""
+    round_type_id"""
 
 
 def compare_results(ev1, ev2):

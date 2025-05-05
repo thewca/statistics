@@ -10,23 +10,22 @@ queries:
           select
               e.name event_name,
               e.id event_id,
-              personId person_id,
-              r.personName person_name,
+              person_id person_id,
+              r.person_name person_name,
               average,
               dense_rank() over (
-                  partition by personId,
-                  eventId
+                  partition by person_id,
+                  event_id
                   order by
                       c.start_date,
-                      rt.`rank`
+                      round_type_id
               ) competition_order,
               e.`rank`
           from
-              Results r
-              inner join Competitions c on r.competitionId = c.id
-              inner join RoundTypes rt on r.roundTypeId = rt.id
-              inner join Events e on r.eventId = e.id
-              inner join Formats f on r.formatId = f.id
+              results r
+              inner join competitions c on r.competition_id = c.id
+              inner join events e on r.event_id = e.id
+              inner join formats f on r.format_id = f.id
           where
               e.`rank` < 900 -- Active events
               and sort_by = 'average'

@@ -29,17 +29,17 @@ from
 		ct.name,
 		count(*)/ count(distinct competition_id) average
 	from
-		Competitions c
+		competitions c
 	inner join competition_events e on
 		c.id = e.competition_id
-	inner join Countries ct on
-		c.countryId = ct.id
+	inner join countries ct on
+		c.country_id = ct.id
 	where
 		year(c.start_date) <= %(max_year)s
 		and year(c.start_date) >= %(min_year)s
 		and results_posted_at is not null
 	group by
-		countryId) result
+		country_id) result
 order by
 	average desc,
 	name

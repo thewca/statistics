@@ -13,14 +13,14 @@ insert into
             e.id event_id,
             (
                 select
-                    coalesce(max(worldRank), 0)
+                    coalesce(max(world_rank), 0)
                 from
-                    RanksAverage r
+                    ranks_average r
                 where
-                    r.eventId = e.id
+                    r.event_id = e.id
             ) + 1 default_rank
         from
-            Events e
+            events e
         where
             e.`rank` < 900
     )
@@ -52,10 +52,10 @@ select
         )
     ) events
 from
-    Events e
+    events e
     left join users u on e.`rank` < 900 -- Filter by active ranks
-    left join RanksAverage r on r.eventId = e.id
-    and r.personId = u.wca_id
+    left join ranks_average r on r.event_id = e.id
+    and r.person_id = u.wca_id
     left join default_ranks dr on dr.event_id = e.id
 where
     wca_id is not null
@@ -64,9 +64,9 @@ where
         select
             1
         from
-            RanksAverage ra2
+            ranks_average ra2
         where
-            ra2.eventId = e.id
+            ra2.event_id = e.id
     )
 group by
     wca_id
