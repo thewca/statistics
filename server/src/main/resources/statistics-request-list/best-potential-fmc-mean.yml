@@ -48,7 +48,7 @@ queries:
                   round_type_id
           ) best_results
           inner join competitions c on best_results.competition_id = c.id
-          inner join RoundTypes rt on rt.id = best_results.roundTypeId
+          inner join round_types rt on rt.id = best_results.round_type_id
       where
           r1 is not null
           and r2 is not null
@@ -78,7 +78,7 @@ queries:
       		event_id = '333fm'
       		and competition_id = ':COMPETITION_ID'
       	group by
-      		competition_id, roundTypeId) best_results
+      		competition_id, round_type_id) best_results
 title: Best potential FMC mean
 explanation: The means are computed by taking the best result for each attempt in the given round.
 groupName: Events
