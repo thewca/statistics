@@ -59,6 +59,7 @@ from
     left join default_ranks dr on dr.event_id = e.id
 where
     wca_id is not null
+    and sub_id = 1
 group by
     wca_id,
     p.name,
