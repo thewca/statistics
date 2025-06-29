@@ -34,8 +34,8 @@ select
         select
             c2.name
         from
-            Countries c
-            left join Continents c2 on c.continentId = c2.id
+            countries c
+            left join continents c2 on c.continent_id = c2.id
         where
             u.country_iso2 = c.iso2
     ) region,
@@ -52,9 +52,9 @@ select
     ) result_type,
     sum(
         case
-            when continentRank is null
-            or continentRank = 0 then default_rank
-            else r.continentRank
+            when continent_rank is null
+            or continent_rank = 0 then default_rank
+            else r.continent_rank
         end
     ) overall,
     json_arrayagg(
@@ -63,22 +63,22 @@ select
             json_object('id', e.id, 'name', e.name, 'rank', e.rank),
             'regionalRank',
             case
-                when continentRank is null
-                or continentRank = 0 then default_rank
-                else r.continentRank
+                when continent_rank is null
+                or continent_rank = 0 then default_rank
+                else r.continent_rank
             end,
             'completed',
-            continentRank is not null
-            and continentRank > 0
+            continent_rank is not null
+            and continent_rank > 0
         )
     ) events
 from
-    Events e
+    events e
     left join users u on e.`rank` < 900 -- Filter by active ranks
-    left join RanksSingle r on r.eventId = e.id
-    and r.personId = u.wca_id
-    left join Countries c on c.iso2 = u.country_iso2
-    left join Continents c2 on c.continentId = c2.id
+    left join ranks_single r on r.event_id = e.id
+    and r.person_id = u.wca_id
+    left join countries c on c.iso2 = u.country_iso2
+    left join continents c2 on c.continent_id = c2.id
     left join default_ranks dr on dr.event_id = e.id
     and dr.region = c2.name
 where
