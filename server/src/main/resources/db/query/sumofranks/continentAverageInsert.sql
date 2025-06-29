@@ -14,11 +14,11 @@ insert into
             c2.name region,
             (
                 select
-                    coalesce(max(continentRank), 0)
+                    coalesce(max(continent_rank), 0)
                 from
-                    RanksAverage r
-                    inner join users u on u.wca_id = r.personId
-                    inner join Countries c on c.iso2 = u.country_iso2
+                    ranks_average r
+                    inner join users u on u.wca_id = r.person_id
+                    inner join countries c on c.iso2 = u.country_iso2
                 where
                     c.continent_id = c2.id
                     and r.event_id = e.id
@@ -75,7 +75,7 @@ select
 from
     events e
     left join users u on e.`rank` < 900 -- Filter by active ranks
-    left join RanksAverage r on r.eventId = e.id
+    left join ranks_average r on r.event_id = e.id
     and r.person_id = u.wca_id
     left join countries c on c.iso2 = u.country_iso2
     left join continents c2 on c.continent_id = c2.id
