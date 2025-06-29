@@ -14,17 +14,17 @@ insert into
             c2.iso2 region,
             (
                 select
-                    coalesce(max(countryRank), 0)
+                    coalesce(max(country_rank), 0)
                 from
-                    RanksAverage r
-                    inner join users u on u.wca_id = r.personId
+                    ranks_average r
+                    inner join users u on u.wca_id = r.person_id
                 where
-                    r.eventId = e.id
+                    r.event_id = e.id
                     and u.country_iso2 = c2.iso2
             ) + 1 default_rank
         from
-            Events e,
-            Countries c2
+            events e,
+            countries c2
         where
             e.`rank` < 900
     )
@@ -33,7 +33,7 @@ select
         select
             c.name
         from
-            Countries c
+            countries c
         where
             u.country_iso2 = c.iso2
     ) region,
@@ -50,9 +50,9 @@ select
     ) result_type,
     sum(
         case
-            when countryRank is null
-            or countryRank = 0 then default_rank
-            else r.countryRank
+            when country_rank is null
+            or country_rank = 0 then default_rank
+            else r.country_rank
         end
     ) overall,
     json_arrayagg(
@@ -61,21 +61,21 @@ select
             json_object('id', e.id, 'name', e.name, 'rank', e.rank),
             'regionalRank',
             case
-                when countryRank is null
-                or countryRank = 0 then default_rank
-                else r.countryRank
+                when country_rank is null
+                or country_rank = 0 then default_rank
+                else r.country_rank
             end,
             'completed',
-            countryRank is not null
-            and countryRank > 0
+            country_rank is not null
+            and country_rank > 0
         )
     ) events
 from
-    Events e
+    events e
     left join users u on e.`rank` < 900 -- Filter by active ranks
-    left join RanksAverage r on r.eventId = e.id
-    and r.personId = u.wca_id
-    left join Countries c on c.iso2 = u.country_iso2
+    left join ranks_average r on r.event_id = e.id
+    and r.person_id = u.wca_id
+    left join countries c on c.iso2 = u.country_iso2
     left join default_ranks dr on dr.event_id = e.id
     and dr.region = c.iso2
 where
@@ -85,9 +85,9 @@ where
         select
             1
         from
-            RanksAverage ra2
+            ranks_average ra2
         where
-            ra2.eventId = e.id
+            ra2.event_id = e.id
     )
 group by
     wca_id
