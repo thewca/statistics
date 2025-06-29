@@ -81,4 +81,6 @@ from
 where
     wca_id is not null
 group by
-    wca_id
+    wca_id,
+    country_id,
+    name
