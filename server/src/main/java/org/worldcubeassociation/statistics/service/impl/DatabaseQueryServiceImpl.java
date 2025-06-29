@@ -42,7 +42,7 @@ public class DatabaseQueryServiceImpl implements DatabaseQueryService {
     @Value("${service.seconds-to-timeout}")
     private int secondsToTimeout;
 
-    private static List<CachedToken> cachedTokens = new ArrayList<>();
+    private static final List<CachedToken> cachedTokens = new ArrayList<>();
 
     private static final String PAGINATION_WRAPPER = "select * from (\n%s\n) alias limit %s offset %s";
     private static final String PAGINATION_COUNT = "select count(*) from (\n%s\n) alias";

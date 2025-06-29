@@ -17,7 +17,7 @@ insert into
                 from
                     ranks_single r
                 where
-                    r.eventId = e.id
+                    r.event_id = e.id
             ) + 1 default_rank
         from
             events e
@@ -34,8 +34,8 @@ select
             'World'
     ) region_type,
     wca_id,
-    u.name,
-    country_iso2,
+    p.name,
+    country_id,
     (
         select
             'Single'
@@ -53,11 +53,14 @@ select
     ) events
 from
     events e
-    left join users u on e.`rank` < 900 -- Filter by active ranks
+    left join persons p on e.`rank` < 900 -- Filter by active ranks
     left join ranks_single r on r.event_id = e.id
-    and r.person_id = u.wca_id
+    and r.person_id = p.wca_id
     left join default_ranks dr on dr.event_id = e.id
 where
     wca_id is not null
+    and sub_id = 1
 group by
-    wca_id
+    wca_id,
+    p.name,
+    p.country_id

@@ -34,31 +34,32 @@ select
             'World'
     ) region_type,
     wca_id,
-    u.name,
-    country_iso2,
+    p.name,
+    country_id,
     (
         select
             'Average'
     ) result_type,
-    sum(coalesce(r.worldRank, default_rank)) overall,
+    sum(coalesce(r.world_rank, default_rank)) overall,
     json_arrayagg(
         json_object(
             'event',
             json_object('id', e.id, 'name', e.name, 'rank', e.rank),
             'regionalRank',
-            coalesce(r.worldRank, default_rank),
+            coalesce(r.world_rank, default_rank),
             'completed',
-            r.worldRank is not null
+            r.world_rank is not null
         )
     ) events
 from
     events e
-    left join users u on e.`rank` < 900 -- Filter by active ranks
+    left join persons p on e.`rank` < 900 -- Filter by active ranks
     left join ranks_average r on r.event_id = e.id
-    and r.person_id = u.wca_id
+    and r.person_id = p.wca_id
     left join default_ranks dr on dr.event_id = e.id
 where
     wca_id is not null
+    and sub_id = 1
     and exists (
         -- Some events has no averages and this excludes them to avoid adding 1 into the sum
         select
@@ -69,4 +70,6 @@ where
             ra2.event_id = e.id
     )
 group by
-    wca_id
+    wca_id,
+    p.name,
+    p.country_id

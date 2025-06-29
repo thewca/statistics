@@ -17,7 +17,7 @@ insert into
                     coalesce(max(country_rank), 0)
                 from
                     ranks_single r
-                    inner join persons p on p.wca_id = r.personId
+                    inner join persons p on p.wca_id = r.person_id
                 where
                     r.event_id = e.id
                     and p.country_id = c2.iso2
@@ -42,8 +42,8 @@ select
             'Country'
     ) region_type,
     wca_id,
-    u.name,
-    country_iso2,
+    p.name,
+    country_id,
     (
         select
             'Single'
@@ -61,9 +61,9 @@ select
             json_object('id', e.id, 'name', e.name, 'rank', e.rank),
             'regionalRank',
             case
-                when countryRank is null
+                when country_rank is null
                 or country_rank = 0 then default_rank
-                else r.countryRank
+                else r.country_rank
             end,
             'completed',
             country_rank is not null
@@ -73,7 +73,7 @@ select
 from
     events e
     left join persons p on e.`rank` < 900 -- Filter by active ranks
-    left join ranks_single r on r.eventId = e.id
+    left join ranks_single r on r.event_id = e.id
     and r.person_id = p.wca_id
     left join countries c on c.id = p.country_id
     left join default_ranks dr on dr.event_id = e.id
@@ -81,4 +81,6 @@ from
 where
     wca_id is not null
 group by
-    wca_id
+    wca_id,
+    country_id,
+    name
