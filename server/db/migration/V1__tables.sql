@@ -2333,7 +2333,7 @@ CREATE TABLE `sum_of_ranks` (
   `region_type` varchar(20) NOT NULL,
   `wca_id` varchar(10) NOT NULL,
   `name` varchar(255) DEFAULT NULL,
-  `country_iso2` varchar(2) DEFAULT NULL,
+  `country_iso2` varchar(100) DEFAULT NULL,
   `result_type` varchar(7) NOT NULL,
   `overall` int DEFAULT NULL,
   `events` json NOT NULL,

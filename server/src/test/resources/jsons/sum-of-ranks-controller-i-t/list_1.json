@@ -5,8 +5,8 @@
         {
             "regionRank": 7,
             "wcaId": "2016CETR01",
-            "name": "Joel Cetra",
-            "countryIso2": "DE",
+            "name": "2016CETR01",
+            "countryIso2": "Germany",
             "overall": 11470,
             "events": [
                 {
@@ -167,8 +167,8 @@
         {
             "regionRank": 8,
             "wcaId": "2013BOTZ01",
-            "name": "Alexander Botz",
-            "countryIso2": "DE",
+            "name": "2013BOTZ01",
+            "countryIso2": "Germany",
             "overall": 11710,
             "events": [
                 {
@@ -329,8 +329,8 @@
         {
             "regionRank": 9,
             "wcaId": "2016IHLE01",
-            "name": "Malte Ihlefeld",
-            "countryIso2": "DE",
+            "name": "2016IHLE01",
+            "countryIso2": "Germany",
             "overall": 11859,
             "events": [
                 {
@@ -491,8 +491,8 @@
         {
             "regionRank": 10,
             "wcaId": "2017MAND13",
-            "name": "Francisco Moraes Mandalozzo",
-            "countryIso2": "BR",
+            "name": "2017MAND13 Mandalozzo",
+            "countryIso2": "Brazil",
             "overall": 12063,
             "events": [
                 {
@@ -653,8 +653,8 @@
         {
             "regionRank": 11,
             "wcaId": "2012WESC01",
-            "name": "Lucas Wesche",
-            "countryIso2": "DE",
+            "name": "2012WESC01",
+            "countryIso2": "Germany",
             "overall": 12268,
             "events": [
                 {
@@ -815,8 +815,8 @@
         {
             "regionRank": 12,
             "wcaId": "2015KOEN01",
-            "name": "Christian König",
-            "countryIso2": "DE",
+            "name": "2015KOEN01",
+            "countryIso2": "Germany",
             "overall": 13372,
             "events": [
                 {
