@@ -16,7 +16,7 @@
     <li>
       <b><code>event_id</code></b
       >: is the WCA event code. You can find all accepted values by running the
-      query <b><code>select id from Events</code></b
+      query <b><code>select id from events</code></b
       >.
     </li>
     <li>
@@ -70,7 +70,7 @@
 
   <p>
     <code>
-      select * from Results r where eventId = :event_id and personId =
+      select * from results r where event_id = :event_id and person_id =
       :person_id
     </code>
   </p>
