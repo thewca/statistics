@@ -17,8 +17,7 @@ insert into
                     coalesce(max(continent_rank), 0)
                 from
                     ranks_single r
-                    inner join users u on u.wca_id = r.person_id
-                    inner join countries c on c.iso2 = u.country_iso2
+                    inner join countries c on c.iso2 = p.country_id
                 where
                     c.continent_id = c2.id
                     and r.event_id = e.id
@@ -37,14 +36,14 @@ select
             countries c
             left join continents c2 on c.continent_id = c2.id
         where
-            u.country_iso2 = c.iso2
+            p.countr_id = c.iso2
     ) region,
     (
         select
             'Continent'
     ) region_type,
     wca_id,
-    u.name,
+    p.name,
     country_iso2,
     (
         select
@@ -74,14 +73,15 @@ select
     ) events
 from
     events e
-    left join users u on e.`rank` < 900 -- Filter by active ranks
+    left join persons p on e.`rank` < 900 -- Filter by active ranks
     left join ranks_single r on r.event_id = e.id
-    and r.person_id = u.wca_id
-    left join countries c on c.iso2 = u.country_iso2
+    and r.person_id = p.wca_id
+    left join countries c on c.iso2 = p.country_id
     left join continents c2 on c.continent_id = c2.id
     left join default_ranks dr on dr.event_id = e.id
     and dr.region = c2.name
 where
     wca_id is not null
+    and sub_id = 1
 group by
     wca_id
