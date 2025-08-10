@@ -17,6 +17,7 @@ insert into
                     coalesce(max(continent_rank), 0)
                 from
                     ranks_single r
+                    inner join persons p on p.wca_id = r.person_id
                     inner join countries c on c.iso2 = p.country_id
                 where
                     c.continent_id = c2.id
@@ -36,7 +37,7 @@ select
             countries c
             left join continents c2 on c.continent_id = c2.id
         where
-            p.countr_id = c.iso2
+            p.country_id = c.id
     ) region,
     (
         select
@@ -44,7 +45,7 @@ select
     ) region_type,
     wca_id,
     p.name,
-    country_iso2,
+    country_id,
     (
         select
             'Single'

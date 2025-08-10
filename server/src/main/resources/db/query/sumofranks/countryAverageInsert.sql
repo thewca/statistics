@@ -17,7 +17,7 @@ insert into
                     coalesce(max(country_rank), 0)
                 from
                     ranks_average r
-                    inner join users u on p.wca_id = r.person_id
+                    inner join persons p on p.wca_id = r.person_id
                 where
                     r.event_id = e.id
                     and p.country_id = c2.iso2
@@ -35,7 +35,7 @@ select
         from
             countries c
         where
-            p.country_id = c.iso2
+            p.country_id = c.id
     ) region,
     (
         select
@@ -43,7 +43,7 @@ select
     ) region_type,
     wca_id,
     p.name,
-    country_iso2,
+    country_id,
     (
         select
             'Average'
