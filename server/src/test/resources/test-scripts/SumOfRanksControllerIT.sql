@@ -1,10 +1,53 @@
 -- Continent
-INSERT INTO wca_development.continents (id, name, record_name, latitude, longitude, zoom) VALUES('_Europe', 'Europe', 'ER', 58299984, 23049300, 3);
-INSERT INTO wca_development.continents (id, name, record_name, latitude, longitude, zoom) VALUES('_South America', 'South America', 'SAR', -21735104, -63281250, 3);
+INSERT INTO continents (id, name, record_name, latitude, longitude, zoom) VALUES('_Africa', 'Africa', 'AfR', 213671, 16984850, 3);
+INSERT INTO continents (id, name, record_name, latitude, longitude, zoom) VALUES('_Asia', 'Asia', 'AsR', 34364439, 108330700, 2);
+INSERT INTO continents (id, name, record_name, latitude, longitude, zoom) VALUES('_Europe', 'Europe', 'ER', 58299984, 23049300, 3);
+INSERT INTO continents (id, name, record_name, latitude, longitude, zoom) VALUES('_Multiple Continents', 'Multiple Continents', '', 0, 0, 1);
+INSERT INTO continents (id, name, record_name, latitude, longitude, zoom) VALUES('_North America', 'North America', 'NAR', 45486546, -93449700, 3);
+INSERT INTO continents (id, name, record_name, latitude, longitude, zoom) VALUES('_Oceania', 'Oceania', 'OcR', -25274398, 133775136, 3);
+INSERT INTO continents (id, name, record_name, latitude, longitude, zoom) VALUES('_South America', 'South America', 'SAR', -21735104, -63281250, 3);
 
 -- Countries
-INSERT INTO wca_development.countries (id, name, continent_id, iso2) VALUES('Brazil', 'Brazil', '_South America', 'BR');
-INSERT INTO wca_development.countries (id, name, continent_id, iso2) VALUES('Germany', 'Germany', '_Europe', 'DE');
+INSERT INTO countries (id, name, continent_id, iso2) VALUES('Brazil', 'Brazil', '_South America', 'BR');
+INSERT INTO countries (id, name, continent_id, iso2) VALUES('Germany', 'Germany', '_Europe', 'DE');
+
+-- Persons
+INSERT INTO persons (wca_id,sub_id,name,country_id,gender,dob,comments,incorrect_wca_id_claim_count) VALUES
+	 ('2010BENT01',1,'2010BENT01','Germany','m','1954-12-04','',0),
+	 ('2010KILD02',1,'2010KILD02','Germany','m','1954-12-04','',0),
+	 ('2011FRES01',1,'2011FRES01','Germany','m','1954-12-04','',0),
+	 ('2011LIMA01',1,'2011LIMA01 de Lima','Brazil','m','1954-12-04','',0),
+	 ('2011LIMA02',1,'2011LIMA02 Coelho Lima','Brazil','m','1954-12-04','',0),
+	 ('2011RHEI01',1,'2011RHEI01','Germany','m','1954-12-04','',0),
+	 ('2012ROQU01',1,'2012ROQU01','Brazil','m','1954-12-04','',0),
+	 ('2012WESC01',1,'2012WESC01','Germany','m','1954-12-04','',0),
+	 ('2013BOTZ01',1,'2013BOTZ01','Germany','m','1954-12-04','',0),
+	 ('2013GERH01',1,'2013GERH01','Germany','m','1954-12-04','',0),
+	 ('2014FRIT02',1,'2014FRIT02','Germany','m','1954-12-04','',0),
+	 ('2014GERB01',1,'2014GERB01','Germany','m','1954-12-04','',0),
+	 ('2014TONO01',1,'2014TONO01 Tono','Brazil','m','1954-12-04','',0),
+	 ('2014YUNO01',1,'2014YUNO01 Yunomae','Brazil','m','1954-12-04','',0),
+	 ('2015CECC01',1,'2015CECC01 Cecchini','Brazil','m','1954-12-04','',0),
+	 ('2015KOEN01',1,'2015KOEN01','Germany','m','1954-12-04','',0),
+	 ('2015MATT05',1,'2015MATT05','Brazil','m','1954-12-04','',0),
+	 ('2015ONOF01',1,'2015ONOF01 Abib Onofre','Brazil','m','1954-12-04','',0),
+	 ('2015SILV55',1,'2015SILV55 Freitas da Silva','Brazil','m','1954-12-04','',0),
+	 ('2016CETR01',1,'2016CETR01','Germany','m','1954-12-04','',0),
+	 ('2016HOLZ01',1,'2016HOLZ01','Germany','f','1954-12-04','',0),
+	 ('2016IHLE01',1,'2016IHLE01','Germany','m','1954-12-04','',0),
+	 ('2016KRAF01',1,'2016KRAF01','Germany','m','1954-12-04','',0),
+	 ('2016SANT66',1,'2016SANT66 de A. Santos','Brazil','m','1954-12-04','',0),
+	 ('2016SATO01',1,'2016SATO01 Sato','Brazil','m','1954-12-04','',0),
+	 ('2016TANN01',1,'2016TANN01 M. Tannenbaum','Brazil','f','1954-12-04','',0),
+	 ('2016WETZ01',1,'2016WETZ01','Germany','m','1954-12-04','',0),
+	 ('2017BORG02',1,'2017BORG02','Brazil','m','1954-12-04','',0),
+	 ('2017MAND13',1,'2017MAND13 Mandalozzo','Brazil','m','1954-12-04','',0),
+	 ('2017SOUZ10',1,'2017SOUZ10 Souza','Brazil','m','1954-12-04','',0),
+	 ('2018GOME29',1,'2018GOME29 Gomes','Brazil','m','1954-12-04','',0),
+	 ('2018MACH13',1,'2018MACH13','Germany','m','1954-12-04','',0),
+	 ('2019FUJI09',1,'2019FUJI09 Fujita','Brazil','m','1954-12-04','',0),
+	 ('2019MIYA05',1,'2019MIYA05 Miyamoto','Brazil','m','1954-12-04','',0);
+
 
 -- Ranks single
 INSERT INTO wca_development.ranks_single (id, person_id, event_id, best, world_rank, continent_rank, country_rank) VALUES(526727877, '2013GERH01', '222', 66, 32, 15, 1);

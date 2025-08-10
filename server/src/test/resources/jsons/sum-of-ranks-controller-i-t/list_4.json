@@ -5,9 +5,9 @@
         {
             "regionRank": 13,
             "wcaId": "2017SOUZ10",
-            "name": "Gabriel Lincon Souza",
-            "countryIso2": "BR",
-            "overall": 2242,
+            "name": "2017SOUZ10 Souza",
+            "countryIso2": "Brazil",
+            "overall": 2050,
             "events": [
                 {
                     "event": {
@@ -78,7 +78,7 @@
                         "name": "3x3x3 Fewest Moves",
                         "rank": 80
                     },
-                    "regionalRank": 190,
+                    "regionalRank": null,
                     "completed": false
                 },
                 {
@@ -141,7 +141,7 @@
                         "name": "4x4x4 Blindfolded",
                         "rank": 160
                     },
-                    "regionalRank": 1,
+                    "regionalRank": null,
                     "completed": false
                 },
                 {
@@ -150,17 +150,17 @@
                         "name": "5x5x5 Blindfolded",
                         "rank": 170
                     },
-                    "regionalRank": 1,
+                    "regionalRank": null,
                     "completed": false
                 }
             ]
         },
         {
             "regionRank": 14,
-            "wcaId": "2019MIYA05",
-            "name": "Pedro Lobeto Miyamoto",
-            "countryIso2": "BR",
-            "overall": 2292,
+            "wcaId": "2017BORG02",
+            "name": "2017BORG02",
+            "countryIso2": "Brazil",
+            "overall": 2054,
             "events": [
                 {
                     "event": {
@@ -168,7 +168,7 @@
                         "name": "3x3x3 Cube",
                         "rank": 10
                     },
-                    "regionalRank": 223,
+                    "regionalRank": 229,
                     "completed": true
                 },
                 {
@@ -177,7 +177,7 @@
                         "name": "2x2x2 Cube",
                         "rank": 20
                     },
-                    "regionalRank": 42,
+                    "regionalRank": 236,
                     "completed": true
                 },
                 {
@@ -186,7 +186,7 @@
                         "name": "4x4x4 Cube",
                         "rank": 30
                     },
-                    "regionalRank": 364,
+                    "regionalRank": 290,
                     "completed": true
                 },
                 {
@@ -195,7 +195,7 @@
                         "name": "5x5x5 Cube",
                         "rank": 40
                     },
-                    "regionalRank": 175,
+                    "regionalRank": 156,
                     "completed": true
                 },
                 {
@@ -204,8 +204,8 @@
                         "name": "6x6x6 Cube",
                         "rank": 50
                     },
-                    "regionalRank": 353,
-                    "completed": false
+                    "regionalRank": 59,
+                    "completed": true
                 },
                 {
                     "event": {
@@ -213,8 +213,8 @@
                         "name": "7x7x7 Cube",
                         "rank": 60
                     },
-                    "regionalRank": 285,
-                    "completed": false
+                    "regionalRank": 44,
+                    "completed": true
                 },
                 {
                     "event": {
@@ -222,8 +222,8 @@
                         "name": "3x3x3 Blindfolded",
                         "rank": 70
                     },
-                    "regionalRank": 40,
-                    "completed": true
+                    "regionalRank": null,
+                    "completed": false
                 },
                 {
                     "event": {
@@ -231,7 +231,7 @@
                         "name": "3x3x3 Fewest Moves",
                         "rank": 80
                     },
-                    "regionalRank": 165,
+                    "regionalRank": 78,
                     "completed": true
                 },
                 {
@@ -240,7 +240,7 @@
                         "name": "3x3x3 One-Handed",
                         "rank": 90
                     },
-                    "regionalRank": 208,
+                    "regionalRank": 136,
                     "completed": true
                 },
                 {
@@ -249,7 +249,7 @@
                         "name": "Clock",
                         "rank": 110
                     },
-                    "regionalRank": 18,
+                    "regionalRank": 76,
                     "completed": true
                 },
                 {
@@ -258,7 +258,7 @@
                         "name": "Megaminx",
                         "rank": 120
                     },
-                    "regionalRank": 125,
+                    "regionalRank": 146,
                     "completed": true
                 },
                 {
@@ -267,7 +267,7 @@
                         "name": "Pyraminx",
                         "rank": 130
                     },
-                    "regionalRank": 73,
+                    "regionalRank": 158,
                     "completed": true
                 },
                 {
@@ -276,7 +276,7 @@
                         "name": "Skewb",
                         "rank": 140
                     },
-                    "regionalRank": 162,
+                    "regionalRank": 60,
                     "completed": true
                 },
                 {
@@ -285,7 +285,7 @@
                         "name": "Square-1",
                         "rank": 150
                     },
-                    "regionalRank": 57,
+                    "regionalRank": 386,
                     "completed": true
                 },
                 {
@@ -294,7 +294,7 @@
                         "name": "4x4x4 Blindfolded",
                         "rank": 160
                     },
-                    "regionalRank": 1,
+                    "regionalRank": null,
                     "completed": false
                 },
                 {
@@ -303,7 +303,7 @@
                         "name": "5x5x5 Blindfolded",
                         "rank": 170
                     },
-                    "regionalRank": 1,
+                    "regionalRank": null,
                     "completed": false
                 }
             ]
@@ -311,9 +311,9 @@
         {
             "regionRank": 15,
             "wcaId": "2011LIMA02",
-            "name": "Bruno Fonsêca Coelho Lima",
-            "countryIso2": "BR",
-            "overall": 2518,
+            "name": "2011LIMA02 Coelho Lima",
+            "countryIso2": "Brazil",
+            "overall": 2378,
             "events": [
                 {
                     "event": {
@@ -375,7 +375,7 @@
                         "name": "3x3x3 Blindfolded",
                         "rank": 70
                     },
-                    "regionalRank": 138,
+                    "regionalRank": null,
                     "completed": false
                 },
                 {
@@ -447,7 +447,7 @@
                         "name": "4x4x4 Blindfolded",
                         "rank": 160
                     },
-                    "regionalRank": 1,
+                    "regionalRank": null,
                     "completed": false
                 },
                 {
@@ -456,7 +456,7 @@
                         "name": "5x5x5 Blindfolded",
                         "rank": 170
                     },
-                    "regionalRank": 1,
+                    "regionalRank": null,
                     "completed": false
                 }
             ]

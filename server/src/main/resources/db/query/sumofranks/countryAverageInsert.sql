@@ -17,10 +17,10 @@ insert into
                     coalesce(max(country_rank), 0)
                 from
                     ranks_average r
-                    inner join users u on u.wca_id = r.person_id
+                    inner join persons p on p.wca_id = r.person_id
                 where
                     r.event_id = e.id
-                    and u.country_iso2 = c2.iso2
+                    and p.country_id = c2.iso2
             ) + 1 default_rank
         from
             events e,
@@ -35,15 +35,15 @@ select
         from
             countries c
         where
-            u.country_iso2 = c.iso2
+            p.country_id = c.id
     ) region,
     (
         select
             'Country'
     ) region_type,
     wca_id,
-    u.name,
-    country_iso2,
+    p.name,
+    country_id,
     (
         select
             'Average'
@@ -72,14 +72,15 @@ select
     ) events
 from
     events e
-    left join users u on e.`rank` < 900 -- Filter by active ranks
+    left join persons p on e.`rank` < 900 -- Filter by active ranks
     left join ranks_average r on r.event_id = e.id
-    and r.person_id = u.wca_id
-    left join countries c on c.iso2 = u.country_iso2
+    and r.person_id = p.wca_id
+    left join countries c on c.iso2 = p.country_id
     left join default_ranks dr on dr.event_id = e.id
     and dr.region = c.iso2
 where
     wca_id is not null
+    and sub_id = 1
     and exists (
         -- Some events has no averages and this excludes them to avoid adding 1 into the sum
         select

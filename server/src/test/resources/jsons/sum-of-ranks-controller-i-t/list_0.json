@@ -5,8 +5,8 @@
         {
             "regionRank": 1,
             "wcaId": "2014GERB01",
-            "name": "Henri Gerber",
-            "countryIso2": "DE",
+            "name": "2014GERB01",
+            "countryIso2": "Germany",
             "overall": 3277,
             "events": [
                 {
@@ -167,8 +167,8 @@
         {
             "regionRank": 2,
             "wcaId": "2015CECC01",
-            "name": "Vicenzo Guerino Cecchini",
-            "countryIso2": "BR",
+            "name": "2015CECC01 Cecchini",
+            "countryIso2": "Brazil",
             "overall": 5495,
             "events": [
                 {
@@ -329,8 +329,8 @@
         {
             "regionRank": 3,
             "wcaId": "2014FRIT02",
-            "name": "Oliver Fritz",
-            "countryIso2": "DE",
+            "name": "2014FRIT02",
+            "countryIso2": "Germany",
             "overall": 5515,
             "events": [
                 {
@@ -491,8 +491,8 @@
         {
             "regionRank": 4,
             "wcaId": "2013GERH01",
-            "name": "Kevin Gerhardt",
-            "countryIso2": "DE",
+            "name": "2013GERH01",
+            "countryIso2": "Germany",
             "overall": 6035,
             "events": [
                 {
@@ -653,8 +653,8 @@
         {
             "regionRank": 5,
             "wcaId": "2015MATT05",
-            "name": "Enzo Mattos",
-            "countryIso2": "BR",
+            "name": "2015MATT05",
+            "countryIso2": "Brazil",
             "overall": 9504,
             "events": [
                 {
@@ -815,8 +815,8 @@
         {
             "regionRank": 6,
             "wcaId": "2010BENT01",
-            "name": "Jan Bentlage",
-            "countryIso2": "DE",
+            "name": "2010BENT01",
+            "countryIso2": "Germany",
             "overall": 9967,
             "events": [
                 {
@@ -977,8 +977,8 @@
         {
             "regionRank": 7,
             "wcaId": "2016CETR01",
-            "name": "Joel Cetra",
-            "countryIso2": "DE",
+            "name": "2016CETR01",
+            "countryIso2": "Germany",
             "overall": 11470,
             "events": [
                 {
@@ -1139,8 +1139,8 @@
         {
             "regionRank": 8,
             "wcaId": "2013BOTZ01",
-            "name": "Alexander Botz",
-            "countryIso2": "DE",
+            "name": "2013BOTZ01",
+            "countryIso2": "Germany",
             "overall": 11710,
             "events": [
                 {
@@ -1301,8 +1301,8 @@
         {
             "regionRank": 9,
             "wcaId": "2016IHLE01",
-            "name": "Malte Ihlefeld",
-            "countryIso2": "DE",
+            "name": "2016IHLE01",
+            "countryIso2": "Germany",
             "overall": 11859,
             "events": [
                 {
@@ -1463,8 +1463,8 @@
         {
             "regionRank": 10,
             "wcaId": "2017MAND13",
-            "name": "Francisco Moraes Mandalozzo",
-            "countryIso2": "BR",
+            "name": "2017MAND13 Mandalozzo",
+            "countryIso2": "Brazil",
             "overall": 12063,
             "events": [
                 {

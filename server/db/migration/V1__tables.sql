@@ -1,7 +1,6 @@
 /*M!999999\- enable the sandbox mode */ 
 -- MariaDB dump 10.19-11.7.2-MariaDB, for osx10.20 (arm64)
 --
--- Host: localhost    Database: wca_development
 -- ------------------------------------------------------
 -- Server version	8.0.33
 
@@ -392,7 +391,7 @@ CREATE TABLE `assignments` (
   PRIMARY KEY (`id`),
   KEY `index_assignments_on_registration_id_and_registration_type` (`registration_id`,`registration_type`),
   KEY `index_assignments_on_schedule_activity_id` (`schedule_activity_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=72549755 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=79843055 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -424,7 +423,7 @@ CREATE TABLE `bookmarked_competitions` (
   PRIMARY KEY (`id`),
   KEY `index_bookmarked_competitions_on_competition_id` (`competition_id`),
   KEY `index_bookmarked_competitions_on_user_id` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=302079 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=312951 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -457,7 +456,7 @@ CREATE TABLE `championships` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `index_championships_on_competition_id_and_championship_type` (`competition_id`,`championship_type`),
   KEY `index_championships_on_championship_type` (`championship_type`)
-) ENGINE=InnoDB AUTO_INCREMENT=908 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=935 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -478,7 +477,7 @@ CREATE TABLE `competition_delegates` (
   UNIQUE KEY `index_competition_delegates_on_competition_id_and_delegate_id` (`competition_id`,`delegate_id`),
   KEY `index_competition_delegates_on_competition_id` (`competition_id`),
   KEY `index_competition_delegates_on_delegate_id` (`delegate_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=43834 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=45102 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -497,7 +496,7 @@ CREATE TABLE `competition_events` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `index_competition_events_on_competition_id_and_event_id` (`competition_id`,`event_id`),
   KEY `fk_rails_ba6cfdafb1` (`event_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=145730 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=148201 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -541,7 +540,7 @@ CREATE TABLE `competition_organizers` (
   UNIQUE KEY `idx_competition_organizers_on_competition_id_and_organizer_id` (`competition_id`,`organizer_id`),
   KEY `index_competition_organizers_on_competition_id` (`competition_id`),
   KEY `index_competition_organizers_on_organizer_id` (`organizer_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=43257 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=44417 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -579,7 +578,7 @@ CREATE TABLE `competition_series` (
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=354 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=370 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -598,7 +597,7 @@ CREATE TABLE `competition_tabs` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `index_competition_tabs_on_display_order_and_competition_id` (`display_order`,`competition_id`),
   KEY `index_competition_tabs_on_competition_id` (`competition_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=61555 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=63307 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -622,7 +621,7 @@ CREATE TABLE `competition_venues` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `index_competition_venues_on_competition_id_and_wcif_id` (`competition_id`,`wcif_id`),
   KEY `index_competition_venues_on_competition_id` (`competition_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12166 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=12531 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -707,6 +706,7 @@ CREATE TABLE `competitions` (
   `auto_close_threshold` int DEFAULT NULL,
   `auto_accept_registrations` tinyint(1) NOT NULL DEFAULT '0',
   `auto_accept_disable_threshold` int DEFAULT NULL,
+  `auto_accept_preference` int NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `index_competitions_on_cancelled_at` (`cancelled_at`),
   KEY `index_Competitions_on_countryId` (`country_id`),
@@ -921,7 +921,27 @@ CREATE TABLE `delegate_reports` (
   `reminder_sent_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `index_delegate_reports_on_competition_id` (`competition_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=17858 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=18176 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `duplicate_checker_job_runs`
+--
+
+DROP TABLE IF EXISTS `duplicate_checker_job_runs`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `duplicate_checker_job_runs` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `competition_id` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `start_time` datetime(6) DEFAULT NULL,
+  `end_time` datetime(6) DEFAULT NULL,
+  `run_status` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` datetime(6) NOT NULL,
+  `updated_at` datetime(6) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `index_duplicate_checker_job_runs_on_competition_id` (`competition_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1054,7 +1074,7 @@ CREATE TABLE `groups_metadata_translators` (
   `created_at` datetime(6) NOT NULL,
   `updated_at` datetime(6) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=71 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=73 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1131,7 +1151,6 @@ CREATE TABLE `inbox_scramble_sets` (
   `created_at` datetime(6) NOT NULL,
   `updated_at` datetime(6) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `idx_on_competition_id_event_id_round_number_scrambl_d9248c75e4` (`competition_id`,`event_id`,`round_number`,`scramble_set_number`),
   KEY `idx_on_competition_id_event_id_round_number_063e808d5f` (`competition_id`,`event_id`,`round_number`),
   KEY `index_inbox_scramble_sets_on_competition_id` (`competition_id`),
   KEY `fk_rails_7a55abc2f3` (`event_id`),
@@ -1199,7 +1218,7 @@ CREATE TABLE `incident_tags` (
   UNIQUE KEY `index_incident_tags_on_incident_id_and_tag` (`incident_id`,`tag`),
   KEY `index_incident_tags_on_incident_id` (`incident_id`),
   KEY `index_incident_tags_on_tag` (`tag`)
-) ENGINE=InnoDB AUTO_INCREMENT=263 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=264 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1501,7 +1520,7 @@ CREATE TABLE `persons` (
   KEY `Persons_name` (`name`),
   KEY `index_persons_on_wca_id` (`wca_id`),
   FULLTEXT KEY `index_persons_on_name` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=267208 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=269777 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1555,7 +1574,7 @@ CREATE TABLE `post_tags` (
   UNIQUE KEY `index_post_tags_on_post_id_and_tag` (`post_id`,`tag`),
   KEY `index_post_tags_on_post_id` (`post_id`),
   KEY `index_post_tags_on_tag` (`tag`)
-) ENGINE=InnoDB AUTO_INCREMENT=22597 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=22607 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1581,7 +1600,33 @@ CREATE TABLE `posts` (
   KEY `index_posts_on_world_readable_and_created_at` (`created_at`),
   KEY `idx_show_wr_sticky_created_at` (`show_on_homepage`,`sticky`,`created_at`),
   KEY `index_posts_on_world_readable_and_sticky_and_created_at` (`sticky`,`created_at`)
-) ENGINE=InnoDB AUTO_INCREMENT=14205 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=14211 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `potential_duplicate_persons`
+--
+
+DROP TABLE IF EXISTS `potential_duplicate_persons`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `potential_duplicate_persons` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `duplicate_checker_job_run_id` bigint NOT NULL,
+  `original_user_id` int NOT NULL,
+  `duplicate_person_id` int NOT NULL,
+  `name_matching_algorithm` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `score` int NOT NULL,
+  `created_at` datetime(6) NOT NULL,
+  `updated_at` datetime(6) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `idx_on_duplicate_checker_job_run_id_12b05a3796` (`duplicate_checker_job_run_id`),
+  KEY `index_potential_duplicate_persons_on_duplicate_person_id` (`duplicate_person_id`),
+  KEY `index_potential_duplicate_persons_on_original_user_id` (`original_user_id`),
+  CONSTRAINT `fk_rails_212c95c62c` FOREIGN KEY (`duplicate_checker_job_run_id`) REFERENCES `duplicate_checker_job_runs` (`id`),
+  CONSTRAINT `fk_rails_7ae0e67c87` FOREIGN KEY (`duplicate_person_id`) REFERENCES `persons` (`id`),
+  CONSTRAINT `fk_rails_9d6e9b137a` FOREIGN KEY (`original_user_id`) REFERENCES `users` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1618,7 +1663,7 @@ CREATE TABLE `ranks_average` (
   PRIMARY KEY (`id`),
   KEY `fk_events` (`event_id`),
   KEY `fk_persons` (`person_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=799803 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=808426 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1639,7 +1684,7 @@ CREATE TABLE `ranks_single` (
   PRIMARY KEY (`id`),
   KEY `fk_events` (`event_id`),
   KEY `fk_persons` (`person_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=923656 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=933527 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1682,7 +1727,7 @@ CREATE TABLE `regional_organizations` (
   PRIMARY KEY (`id`),
   KEY `index_regional_organizations_on_country` (`country`),
   KEY `index_regional_organizations_on_name` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=71 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=72 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1724,7 +1769,7 @@ CREATE TABLE `registration_competition_events` (
   KEY `index_registration_competition_events_on_competition_event_id` (`competition_event_id`),
   KEY `index_reg_events_reg_id_comp_event_id` (`registration_id`,`competition_event_id`),
   KEY `index_registration_competition_events_on_registration_id` (`registration_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6484303 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6660263 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1826,7 +1871,7 @@ CREATE TABLE `registrations` (
   KEY `index_registrations_on_competition_id_and_competing_status` (`competition_id`,`competing_status`),
   KEY `index_registrations_on_competition_id` (`competition_id`),
   KEY `index_registrations_on_user_id` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1172235 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1195504 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1846,7 +1891,7 @@ CREATE TABLE `result_attempts` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `index_result_attempts_on_result_id_and_attempt_number` (`result_id`,`attempt_number`),
   KEY `index_result_attempts_on_result_id` (`result_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=56021 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=83493 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1898,7 +1943,7 @@ CREATE TABLE `results` (
   KEY `index_results_on_round_id` (`round_id`),
   KEY `Results_fk_round` (`round_type_id`),
   CONSTRAINT `fk_rails_8293cc5c42` FOREIGN KEY (`round_id`) REFERENCES `rounds` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7245549 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci PACK_KEYS=1;
+) ENGINE=InnoDB AUTO_INCREMENT=7368643 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci PACK_KEYS=1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1951,7 +1996,7 @@ CREATE TABLE `roles_metadata_delegate_regions` (
   `created_at` datetime(6) NOT NULL,
   `updated_at` datetime(6) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1289 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1340 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1983,7 +2028,7 @@ CREATE TABLE `roles_metadata_teams_committees` (
   `created_at` datetime(6) NOT NULL,
   `updated_at` datetime(6) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=644 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=646 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2026,7 +2071,7 @@ CREATE TABLE `rounds` (
   `old_type` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `index_rounds_on_competition_event_id_and_number` (`competition_event_id`,`number`)
-) ENGINE=InnoDB AUTO_INCREMENT=901561 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=906497 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2111,7 +2156,7 @@ CREATE TABLE `schedule_activities` (
   CONSTRAINT `fk_rails_576aac0864` FOREIGN KEY (`round_id`) REFERENCES `rounds` (`id`),
   CONSTRAINT `fk_rails_7045722310` FOREIGN KEY (`venue_room_id`) REFERENCES `venue_rooms` (`id`),
   CONSTRAINT `fk_rails_999dc22d7e` FOREIGN KEY (`parent_activity_id`) REFERENCES `schedule_activities` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=770747 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=794762 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2173,7 +2218,7 @@ CREATE TABLE `scrambles` (
   KEY `competitionId` (`competition_id`,`event_id`),
   KEY `index_scrambles_on_round_id` (`round_id`),
   CONSTRAINT `fk_rails_ef5833e6ef` FOREIGN KEY (`round_id`) REFERENCES `rounds` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4821678 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4915558 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2333,7 +2378,7 @@ CREATE TABLE `sum_of_ranks` (
   `region_type` varchar(20) NOT NULL,
   `wca_id` varchar(10) NOT NULL,
   `name` varchar(255) DEFAULT NULL,
-  `country_iso2` varchar(2) DEFAULT NULL,
+  `country_iso2` varchar(100) DEFAULT NULL,
   `result_type` varchar(7) NOT NULL,
   `overall` int DEFAULT NULL,
   `events` json NOT NULL,
@@ -2384,6 +2429,25 @@ CREATE TABLE `ticket_comments` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `ticket_log_changes`
+--
+
+DROP TABLE IF EXISTS `ticket_log_changes`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `ticket_log_changes` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `ticket_log_id` bigint NOT NULL,
+  `field_name` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `field_value` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` datetime(6) NOT NULL,
+  `updated_at` datetime(6) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `index_ticket_log_changes_on_ticket_log_id` (`ticket_log_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `ticket_logs`
 --
 
@@ -2394,7 +2458,6 @@ CREATE TABLE `ticket_logs` (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `ticket_id` bigint NOT NULL,
   `action_type` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `action_value` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `acting_user_id` int NOT NULL,
   `acting_stakeholder_id` bigint NOT NULL,
   `created_at` datetime(6) NOT NULL,
@@ -2419,7 +2482,7 @@ CREATE TABLE `ticket_stakeholders` (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `ticket_id` bigint NOT NULL,
   `stakeholder_type` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `stakeholder_id` bigint NOT NULL,
+  `stakeholder_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `connection` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `is_active` tinyint(1) NOT NULL,
   `created_at` datetime(6) NOT NULL,
@@ -2446,6 +2509,26 @@ CREATE TABLE `tickets` (
   `updated_at` datetime(6) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `index_tickets_on_metadata` (`metadata_type`,`metadata_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `tickets_competition_result`
+--
+
+DROP TABLE IF EXISTS `tickets_competition_result`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8mb4 */;
+CREATE TABLE `tickets_competition_result` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `status` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `competition_id` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `delegate_message` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` datetime(6) NOT NULL,
+  `updated_at` datetime(6) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `index_tickets_competition_result_on_competition_id` (`competition_id`),
+  CONSTRAINT `fk_rails_b292c1317c` FOREIGN KEY (`competition_id`) REFERENCES `competitions` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -2530,7 +2613,7 @@ CREATE TABLE `user_avatars` (
   KEY `index_user_avatars_on_status` (`status`),
   KEY `index_user_avatars_on_user_id` (`user_id`),
   CONSTRAINT `fk_rails_e4b8c035c3` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=78697 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=80689 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2554,7 +2637,7 @@ CREATE TABLE `user_groups` (
   PRIMARY KEY (`id`),
   KEY `index_user_groups_on_parent_group_id` (`parent_group_id`),
   CONSTRAINT `fk_rails_d1e69a9bb2` FOREIGN KEY (`parent_group_id`) REFERENCES `user_groups` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=111 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=113 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2570,7 +2653,7 @@ CREATE TABLE `user_preferred_events` (
   `event_id` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `index_user_preferred_events_on_user_id_and_event_id` (`user_id`,`event_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=412289 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=417575 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2595,7 +2678,7 @@ CREATE TABLE `user_roles` (
   KEY `index_user_roles_on_user_id` (`user_id`),
   CONSTRAINT `fk_rails_318345354e` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
   CONSTRAINT `fk_rails_66cd95bfa8` FOREIGN KEY (`group_id`) REFERENCES `user_groups` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2291 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2355 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2652,7 +2735,7 @@ CREATE TABLE `users` (
   UNIQUE KEY `index_users_on_wca_id` (`wca_id`),
   KEY `index_users_on_delegate_id_to_handle_wca_id_claim` (`delegate_id_to_handle_wca_id_claim`),
   KEY `index_users_on_delegate_reports_region` (`delegate_reports_region_type`,`delegate_reports_region_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=490796 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=496845 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2673,7 +2756,7 @@ CREATE TABLE `venue_rooms` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `index_venue_rooms_on_competition_venue_id_and_wcif_id` (`competition_venue_id`,`wcif_id`),
   KEY `index_venue_rooms_on_competition_venue_id` (`competition_venue_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=15215 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=15693 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2724,7 +2807,7 @@ CREATE TABLE `waiting_lists` (
   `updated_at` datetime(6) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `index_waiting_lists_on_holder` (`holder_type`,`holder_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=864 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=976 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2793,4 +2876,4 @@ CREATE TABLE `wfc_xero_users` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*M!100616 SET NOTE_VERBOSITY=@OLD_NOTE_VERBOSITY */;
 
--- Dump completed on 2025-06-29 15:58:01
+-- Dump completed on 2025-08-10 17:45:27

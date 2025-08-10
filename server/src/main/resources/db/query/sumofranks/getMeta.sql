@@ -14,7 +14,7 @@ select
                 )
             )
         from
-            Events e
+            events e
         where
             e.`rank` < 900
             and (
@@ -24,9 +24,9 @@ select
                     select
                         1
                     from
-                        RanksAverage ra
+                        ranks_average ra
                     where
-                        ra.eventId = e.id
+                        ra.event_id = e.id
                 )
             )
     ) availableEvents

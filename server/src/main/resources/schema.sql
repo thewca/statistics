@@ -39,7 +39,7 @@ create table if not exists sum_of_ranks (
     region_type varchar(20) not null,
     wca_id varchar(10) not null,
     name varchar(255),
-    country_iso2 varchar(2),
+    country_iso2 varchar(100),
     result_type varchar(7) not null,
     overall int default null,
     events json not null,

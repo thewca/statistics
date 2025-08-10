@@ -80,6 +80,7 @@ from
     and dr.region = c.id
 where
     wca_id is not null
+    and sub_id = 1
 group by
     wca_id,
     country_id,

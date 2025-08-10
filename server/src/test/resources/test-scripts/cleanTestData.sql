@@ -8,6 +8,8 @@ truncate wca_development.competition_events;
 
 truncate wca_development.results;
 
+truncate wca_development.persons;
+
 truncate wca_development.continents;
 
 truncate wca_development.countries;
