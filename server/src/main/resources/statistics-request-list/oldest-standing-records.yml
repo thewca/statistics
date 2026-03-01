@@ -11,59 +11,75 @@ queries:
       - Person
       - Competition
     sqlQuery: |-
-      select days,
-      	e.name,
-        wca_statistics_time_format(record, event_id, record_type) record,
-      	record_type,
-      	wca_statistics_person_link_format(person_id, person_name),
-      	wca_statistics_competition_link_format(competition_id, records.cell_name)
-      from (
-      		select datediff(current_date, c.start_date) days,
-      			results.event_id,
-      			results.best record,
-      			'Single' record_type,
-      			results.person_id,
-      			person_name,
-      			competition_id,
-      			c.cell_name
-      		from results results
-      			inner join (
-      				select person_id,
-      					event_id,
-      					best
-      				from ranks_single
-      				where world_rank = 1
-      			) single_records on single_records.best = results.best
-      			and single_records.person_id = results.person_id
-      			and single_records.event_id = results.event_id
-      			and regional_single_record = 'WR'
-      			inner join competitions c on results.competition_id = c.id
-      		union all
-      		select datediff(current_date, c.start_date) days,
-      			results.event_id,
-      			results.average record,
-      			'Average' record_type,
-      			results.person_id,
-      			person_name,
-      			competition_id,
-      			c.cell_name
-      		from results results
-      			inner join (
-      				select person_id,
-      					event_id,
-      					best
-      				from ranks_average
-      				where world_rank = 1
-      			) average_records on average_records.best = results.average
-      			and average_records.person_id = results.person_id
-      			and average_records.event_id = results.event_id
-      			and regional_average_record = 'WR'
-      			inner join competitions c on results.competition_id = c.id
-      	) records
-      	inner join events e on records.event_id = e.id
-      where e.rank < 900
-      order by days desc, e.rank
-      limit 20
+      with
+        ordered_wrs as (
+          select
+            c.start_date,
+            event_id,
+            'Single' record_type,
+            best record,
+            person_id,
+            r.person_name,
+            c.id competition_id,
+            c.name competition,
+            row_number() over (
+              partition by
+                event_id
+              order by
+                c.start_date desc
+            ) rn
+          from
+            results r
+            inner join competitions c on r.competition_id = c.id
+          where
+            regional_single_record = 'WR'
+          union all
+          select
+            c.start_date,
+            event_id,
+            'Average' record_type,
+            best record,
+            person_id,
+            r.person_name,
+            c.id competition_id,
+            c.name competition,
+            row_number() over (
+              partition by
+                event_id
+              order by
+                c.start_date desc
+            ) rn
+          from
+            results r
+            inner join competitions c on r.competition_id = c.id
+          where
+            regional_average_record = 'WR'
+        ),
+        current_wrs as (
+          select
+            *
+          from
+            ordered_wrs
+          where
+            rn = 1
+        )
+      select
+        datediff (current_date, start_date) days,
+        e.name,
+        wca_statistics_time_format (record, event_id, record_type) record,
+        record_type,
+        wca_statistics_person_link_format (person_id, person_name),
+        wca_statistics_competition_link_format (competition_id, competition)
+      from
+        current_wrs cw
+        inner join events e on e.id = cw.event_id
+      where
+        e.rank < 900
+      order by
+        1 desc,
+        e.rank
+      limit
+        20
   - showPositions: true
     keys:
       - Continental record
@@ -77,68 +93,86 @@ queries:
       - Person
       - Competition
     sqlQuery: |-
-      select days,
-      	e.name,
-        wca_statistics_time_format(record, event_id, record_type) record,
-      	record_type,
-      	c3.name,
-      	wca_statistics_person_link_format(person_id, person_name),
-      	wca_statistics_competition_link_format(competition_id, records.cell_name)
-      from (
-      		select datediff(current_date, c.start_date) days,
-      			results.event_id,
-      			results.best record,
-      			'Single' record_type,
-      			regional_single_record region,
-      			results.person_id,
-      			person_name,
-      			competition_id,
-      			c.cell_name,
-      			results.country_id
-      		from results results
-      			inner join (
-      				select person_id,
-      					event_id,
-      					best
-      				from ranks_single
-      				where continent_rank = 1
-      					and world_rank != 1
-      			) single_records on single_records.best = results.best
-      			and single_records.person_id = results.person_id
-      			and single_records.event_id = results.event_id
-      			and regional_single_record not in ('WR', 'NR')
-      			inner join competitions c on results.competition_id = c.id
-      		union all
-      		select datediff(current_date, c.start_date) days,
-      			results.event_id,
-      			results.average record,
-      			'Average' record_type,
-      			regional_average_record region,
-      			results.person_id,
-      			person_name,
-      			competition_id,
-      			c.cell_name,
-      			results.country_id
-      		from results results
-      			inner join (
-      				select person_id,
-      					event_id,
-      					best
-      				from ranks_average
-      				where continent_rank = 1
-      					and world_rank != 1
-      			) average_records on average_records.best = results.average
-      			and average_records.person_id = results.person_id
-      			and average_records.event_id = results.event_id
-      			and regional_average_record not in ('WR', 'NR')
-      			inner join competitions c on results.competition_id = c.id
-      	) records
-      	inner join events e on records.event_id = e.id
-      	inner join countries c2 on c2.id = records.country_id
-      	inner join continents c3 on continent_id = c3.id
-      where e.rank < 900
-      order by days desc, e.rank
-      limit 20
+      with
+        ordered_records as (
+          select
+            c.start_date,
+            event_id,
+            'Single' record_type,
+            best record,
+            person_id,
+            r.person_name,
+            c.id competition_id,
+            c.name competition,
+            ctn.name region,
+            row_number() over (
+              partition by
+                event_id,
+                continent_id
+              order by
+                c.start_date desc
+            ) rn
+          from
+            results r
+            inner join competitions c on r.competition_id = c.id
+            inner join countries ct on ct.id = r.country_id
+            inner join continents ctn on ctn.id = ct.continent_id
+          where
+            regional_single_record is not null
+            and regional_single_record not in ('WR', 'NR')
+          union all
+          select
+            c.start_date,
+            event_id,
+            'Average' record_type,
+            best record,
+            person_id,
+            r.person_name,
+            c.id competition_id,
+            c.name competition,
+            ctn.name region,
+            row_number() over (
+              partition by
+                event_id,
+                continent_id
+              order by
+                c.start_date desc
+            ) rn
+          from
+            results r
+            inner join competitions c on r.competition_id = c.id
+            inner join countries ct on ct.id = r.country_id
+            inner join continents ctn on ctn.id = ct.continent_id
+          where
+            regional_average_record is not null
+            and regional_average_record not in ('WR', 'NR')
+        ),
+        current_records as (
+          select
+            *
+          from
+            ordered_records
+          where
+            rn = 1
+        )
+      select
+        datediff (current_date, start_date) days,
+        e.name,
+        wca_statistics_time_format (record, event_id, record_type) record,
+        record_type,
+        region,
+        wca_statistics_person_link_format (person_id, person_name),
+        wca_statistics_competition_link_format (competition_id, competition)
+      from
+        current_records cw
+        inner join events e on e.id = cw.event_id
+      where
+        e.rank < 900
+      order by
+        1 desc,
+        e.rank
+      limit
+        20
   - showPositions: true
     keys:
       - National record
@@ -152,67 +186,80 @@ queries:
       - Person
       - Competition
     sqlQuery: |-
-      select days,
-      	e.name,
-        wca_statistics_time_format(record, event_id, record_type) record,
-      	record_type,
-      	c2.name,
-      	wca_statistics_person_link_format(person_id, person_name),
-      	wca_statistics_competition_link_format(competition_id, records.cell_name)
-      from (
-      		select datediff(current_date, c.start_date) days,
-      			results.event_id,
-      			results.best record,
-      			'Single' record_type,
-      			results.country_id region,
-      			results.person_id,
-      			person_name,
-      			competition_id,
-      			c.cell_name
-      		from results results
-      			inner join (
-      				select person_id,
-      					event_id,
-      					best
-      				from ranks_single
-      				where country_rank = 1
-      					and continent_rank != 1
-      					and world_rank != 1
-      			) single_records on single_records.best = results.best
-      			and single_records.person_id = results.person_id
-      			and single_records.event_id = results.event_id
-      			and regional_single_record = 'NR'
-      			inner join competitions c on results.competition_id = c.id
-      		union all
-      		select datediff(current_date, c.start_date) days,
-      			results.event_id,
-      			results.average record,
-      			'Average' record_type,
-      			results.country_id region,
-      			results.person_id,
-      			person_name,
-      			competition_id,
-      			c.cell_name
-      		from results results
-      			inner join (
-      				select person_id,
-      					event_id,
-      					best
-      				from ranks_average
-      				where country_rank = 1
-      					and continent_rank != 1
-      					and world_rank != 1
-      			) average_records on average_records.best = results.average
-      			and average_records.person_id = results.person_id
-      			and average_records.event_id = results.event_id
-      			and regional_average_record = 'NR'
-      			inner join competitions c on results.competition_id = c.id
-      	) records
-      	inner join events e on records.event_id = e.id
-      	inner join countries c2 on c2.id = region
-      where e.rank < 900
-      order by days desc, e.rank
-      limit 20
+      with
+        ordered_records as (
+          select
+            c.start_date,
+            event_id,
+            'Single' record_type,
+            best record,
+            person_id,
+            r.person_name,
+            c.id competition_id,
+            c.name competition,
+            r.country_id region,
+            row_number() over (
+              partition by
+                event_id,
+                r.country_id
+              order by
+                c.start_date desc
+            ) rn
+          from
+            results r
+            inner join competitions c on r.competition_id = c.id
+          where
+            regional_single_record = 'NR'
+          union all
+          select
+            c.start_date,
+            event_id,
+            'Average' record_type,
+            best record,
+            person_id,
+            r.person_name,
+            c.id competition_id,
+            c.name competition,
+            r.country_id region,
+            row_number() over (
+              partition by
+                event_id,
+                r.country_id
+              order by
+                c.start_date desc
+            ) rn
+          from
+            results r
+            inner join competitions c on r.competition_id = c.id
+          where
+            regional_average_record = 'NR'
+        ),
+        current_records as (
+          select
+            *
+          from
+            ordered_records
+          where
+            rn = 1
+        )
+      select
+        datediff (current_date, start_date) days,
+        e.name,
+        wca_statistics_time_format (record, event_id, record_type) record,
+        record_type,
+        region,
+        wca_statistics_person_link_format (person_id, person_name),
+        wca_statistics_competition_link_format (competition_id, competition)
+      from
+        current_records cw
+        inner join events e on e.id = cw.event_id
+      where
+        e.rank < 900
+      order by
+        1 desc,
+        e.rank
+      limit
+        20
 explanation: The first day of the competition is assumed here and thus the ages might be some days off.
 title: Oldest standing records
 groupName: Events
