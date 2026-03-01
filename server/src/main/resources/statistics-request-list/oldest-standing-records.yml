@@ -260,6 +260,78 @@ queries:
         e.rank
       limit
         20
+    sqlQueryCustom: |-
+      with
+        ordered_results as (
+          select
+            c.start_date,
+            event_id,
+            'Single' record_type,
+            best record,
+            person_id,
+            r.person_name,
+            c.id competition_id,
+            c.name competition,
+            row_number() over (
+              partition by
+                event_id
+              order by
+                best
+            ) rn
+          from
+            results r
+            inner join competitions c on r.competition_id = c.id
+          where
+            best > 0
+            and person_id = ':WCA_ID'
+          union all
+          select
+            c.start_date,
+            event_id,
+            'Average' record_type,
+            best record,
+            person_id,
+            r.person_name,
+            c.id competition_id,
+            c.name competition,
+            row_number() over (
+              partition by
+                event_id
+              order by
+                average
+            ) rn
+          from
+            results r
+            inner join competitions c on r.competition_id = c.id
+          where
+            average > 0
+            and person_id = ':WCA_ID'
+        ),
+        current_records as (
+          select
+            *
+          from
+            ordered_results
+          where
+            rn = 1
+        )
+      select
+        datediff (current_date, start_date) days,
+        e.name,
+        wca_statistics_time_format (record, event_id, record_type) record,
+        record_type,
+        wca_statistics_person_link_format (person_id, person_name),
+        wca_statistics_competition_link_format (competition_id, competition)
+      from
+        current_records cr
+        inner join events e on e.id = cr.event_id
+      where
+        e.rank < 900
+      order by
+        1 desc,
+        e.rank
+      limit
+        20
 explanation: The first day of the competition is assumed here and thus the ages might be some days off.
 title: Oldest standing records
 groupName: Events
