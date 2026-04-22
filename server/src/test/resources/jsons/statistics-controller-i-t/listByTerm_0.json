@@ -24,9 +24,13 @@
                 {
                     "path": "appearances-in-3x3x3-cube-top-100-results",
                     "title": "Appearances in 3x3x3 Cube top 100 results"
+                },
+                {
+                    "path": "oldest-standing-records",
+                    "title": "Oldest standing records"
                 }
             ],
-            "size": 1
+            "size": 2
         },
         {
             "group": "Results",
@@ -43,6 +47,6 @@
             "size": 2
         }
     ],
-    "totalSize": 6,
+    "totalSize": 7,
     "groups": 3
 }
